@@ -57,10 +57,14 @@ Langtang→Trishuli flood water was mostly channel/river-derived rather than fri
 
 ## 7. Independent convergence — Philip Prince (video analysis, seen 3 Sept 2026)
 
-Geologist Philip Prince (a geomorphology explainer known for terrain analysis;
-**URL and publication date to be recorded — summarised to us second-hand, not
-yet viewed directly**) reaches the same headline conclusion from classical
-debris-flow geomorphology rather than from routing arithmetic:
+**Philip Prince**, geologist, Virginia Tech Department of Geosciences —
+video: https://youtu.be/jsm8o5Wi7Xo (he has also discussed this event on Fox
+Weather). **Provenance note:** summarised to us by Dave and cross-checked
+against independent search descriptions of the same analysis; the video itself
+was not machine-readable (YouTube renders client-side) so the **exact title and
+publication date remain unrecorded** — fill these in before citing formally.
+He reaches the same headline conclusion from classical debris-flow
+geomorphology rather than from routing arithmetic:
 
 - **No lake was required.** The event is explained by debris-flow mechanics.
   Matches Petley ("no evidence this was a GLOF") and our own finding. NOTE the
@@ -105,9 +109,19 @@ Our own Seti 2012 blind hindcast REQUIRED a stored-water release (~3 Mm³) to
 match the clocks — there, water storage was essential. Different events,
 different water sources; the framework is what ports, not the answer.
 
-**Action:** get the URL/date and add to the dossier source table; Prince is a
-strong outreach candidate alongside Willsey (this project began with a Willsey
-video) — see PLAN Phase E.
+**Institutional note worth knowing for outreach:** Prince is at Virginia Tech
+Geosciences — the same department as **Manoochehr Shirzaei**, whose Sentinel-1
+InSAR analysis of precursory creep at the failure zone was reported in *Nature*
+news on 2 Sept and which currently **conflicts with geopera's finding of no
+precursory acceleration** (see imagery-composition-memo §1). An approach to
+Prince plausibly reaches that work too, and the creep disagreement is exactly
+the kind of open question worth putting to people who can settle it.
+
+**Action:** record the video's title and date; add to the dossier source table.
+Prince is a strong outreach candidate alongside Willsey (this project began
+with a Willsey video) — see PLAN Phase E. He has independently published the
+qualitative version of our result, which makes him close to an ideal first
+reader for the arithmetic.
 
 ## Synthesis
 
