@@ -408,6 +408,35 @@ impounded behind a rockfall dam for weeks (Kargel; Hanisch et al. 2013).
 
 </details>
 
+### MAP FIGURES (4 Sept) — overview + upper-corridor detail
+
+`report/report.src.html`'s map code is now ONE `drawCorridorMap(sel, opt)`
+called twice, rather than a second copy (same lesson as `model/core.py`).
+Every layer clips to the frame's own lat/lon box, so a reach can be enlarged
+without editing the drawing code.
+
+- **fig-map (overview, 199 km, 5.9 px/km)** gains the Nepal–China boundary
+  (OSM admin_level=2, `data/osm_border.json`), the 2015 Langtang village site,
+  Langtang Lirung's summit, and a dashed locator box for the panel below.
+- **fig-map-upper (km 0–42, 25.7 px/km = 4.4×)** carries what the overview
+  cannot: the observed CLOCK at each place merged into its marker (08:37 scar
+  / 08:44 Gyirong CCTV / 08:50 Syabrubesi stage), geopera's superelevation
+  speeds along the reach (37 → 45–52 → ~50 → 11 m/s at the valley opening),
+  and each plant's loss (Rasuwagadhi 49 missing, Langtang Khola HP 42 missing
+  — the latter was missing from the cascade list entirely and is now added).
+- **Extent chosen for SCALE, and the reasoning is in the code:** km 0–68 gives
+  only 2.2× because the corridor swings 48 km north–south by Betrawati and the
+  frame becomes height-bound; km 0–42 gives 4.4×. Betrawati's 09:20 / 43-min
+  anchor moves to the caption.
+- **The panel makes the snowplow visible in the observations alone:**
+  Syabrubesi's gauge rose 3.8 m at 08:50 but inundation is reconstructed at
+  09:10–09:25, and the superelevation speed collapses 50 → 11 m/s at exactly
+  that opening. A water wave ~25 min ahead of the debris body is what H2
+  predicts, so the two clocks are evidence, not a discrepancy.
+- Label placement was **simulated in Python against the JS engine's own
+  geometry** before publishing: 24 labels on the overview, 19 on the panel,
+  **0 dropped** on either.
+
 ### IMAGERY MEMO (3 Sept) — research/imagery-composition-memo.md
 Open-evidence audit of the composition question. **Route (a) ice-rich source:
 SUPPORTED qualitatively** — Shugar, GFZ, Steiner, Azam/ICIMOD and the Chinese

@@ -116,6 +116,7 @@ POIS = [
 PLANTS = [
     {"label": "Rasuwagadhi 111 MW", "lat": 28.2760, "lon": 85.3790, "status": "op", "dx": -10, "dy": -8, "anchor": "end"},
     {"label": "Chilime 22 MW ~", "lat": 28.2100, "lon": 85.3100, "status": "op", "dx": -10, "dy": 4, "anchor": "end"},
+    {"label": "Langtang Khola 20 MW ~", "lat": 28.1700, "lon": 85.3280, "status": "op", "dx": 10, "dy": 8, "anchor": "start"},
     {"label": "Upper Trishuli-1 216 MW (u/c)", "lat": 28.0639, "lon": 85.2066, "status": "uc", "dx": 10, "dy": -4, "anchor": "start"},
     {"label": "Upper Trishuli 3A 60 MW", "lat": 28.0253, "lon": 85.1864, "status": "op", "dx": 10, "dy": 6, "anchor": "start"},
     {"label": "UT-3B 37 MW + 220 kV hub (u/c) ~", "lat": 27.9900, "lon": 85.1720, "status": "uc", "dx": 10, "dy": 12, "anchor": "start"},
@@ -123,10 +124,81 @@ PLANTS = [
     {"label": "Devighat 14 MW ~", "lat": 27.8747, "lon": 85.1565, "status": "op", "dx": 10, "dy": 12, "anchor": "start"},
 ]
 
+# ---- upper-corridor detail panel (fig-map-upper) ---------------------------
+# The overview runs 199 km into 780 px — under 6 px/km, which is why the scar,
+# the summit and the 2015 site stack into 42 px of column. The upper reach is
+# where every hard timing anchor sits, where the flow ran 40-134 m deep, and
+# where the border destruction happened, so it gets its own frame at ~4x the
+# scale, carrying what the overview cannot: the observed CLOCK at each place
+# and what was lost there.
+def at_km(km):
+    """Snap a feature to the modelled path at a given path-km."""
+    b = min(main, key=lambda m: abs(m[2] - km))
+    return round(b[0], 5), round(b[1], 5)
+
+
+UPPER_KM = 42.0    # scar -> just past the Syabrubesi valley opening. Chosen
+                   # for SCALE: 0-42 km gives ~4x the overview, 0-68 only
+                   # 2.2x, because the corridor swings 48 km north-south by
+                   # Betrawati and the frame is then height-bound. This is
+                   # also the reach with the extreme flow (40-134 m trimlines)
+                   # and the border destruction; the lower hydropower cluster
+                   # is a different kind of loss and stays on the overview.
+_t, _l = at_km(26.0)
+UPPER = {
+    "km_max": UPPER_KM,
+    # observed arrival clocks — the seven-minute problem made visible.
+    # Two entries at Syabrubesi on purpose: the stage rose at 08:50 but
+    # inundation is reconstructed at 09:10-09:25, which is the snowplow
+    # signature — river water pushed ahead of the slower debris body.
+    "clocks": [
+        # `poi` merges the clock into an existing marker's label instead of
+        # drawing a second mark and a second label on the same spot.
+        {"km": 0.0, "lat": 28.2765, "lon": 85.5194, "t": "08:37",
+         "sub": "seismic", "hard": True, "poi": "collapse scar 08:37"},
+        {"km": 22.0, "lat": 28.2781, "lon": 85.3770, "t": "08:44",
+         "sub": "7 min", "hard": True,
+         "poi": "Gyirong Port CCTV 08:44 — the T-junction"},
+        {"km": 37.6, "lat": 28.1606, "lon": 85.3345, "t": "08:50",
+         "sub": "stage +3.8 m, water first", "hard": True,
+         "poi": "Syabrubesi"},
+        {"km": 40.0, "lat": 28.1530, "lon": 85.3250, "t": "09:10–09:25",
+         "sub": "…then inundation — the debris body arrives", "hard": False},
+    ],
+    # geopera superelevation-at-bends velocities
+    "speeds": [
+        {"km": 12.0, "v": "37 m/s", "note": "upper Lhende"},
+        {"km": 22.0, "v": "45–52 m/s", "note": "at the border"},
+        {"km": 30.0, "v": "~50 m/s", "note": "gorge, 40–134 m trimlines"},
+        {"km": 40.0, "v": "11 m/s", "note": "Syabrubesi opening — collapse"},
+    ],
+    "extra_pois": [
+        {"label": "Timure dry port", "lat": _t, "lon": _l, "kind": "town"},
+        {"label": "Miteri / Friendship Bridge", "lat": 28.2775, "lon": 85.3785,
+         "kind": "town"},
+    ],
+}
+for s in UPPER["speeds"]:
+    s["lat"], s["lon"] = at_km(s["km"])
+
+# what was lost, for the plants inside the panel (dossier §9)
+LOSS = {
+    "Rasuwagadhi 111 MW": "destroyed · 49 staff missing",
+    "Chilime 22 MW ~": "tunnel + powerhouse damaged",
+    "Langtang Khola 20 MW ~": "42 missing",
+    "Upper Trishuli-1 216 MW (u/c)": "~300 in tunnel, 254 rescued",
+    "Upper Trishuli 3A 60 MW": "35+ missing",
+    "UT-3B 37 MW + 220 kV hub (u/c) ~": "substation destroyed",
+}
+for p in PLANTS:
+    if p["label"] in LOSS:
+        p["loss"] = LOSS[p["label"]]
+
 d = json.load(open(CHART))
 d["map"] = {"main": [[round(a,5), round(b,5), round(c,2)] for a,b,c in main_ds],
             "tribs": tribs, "junctions": junctions, "pois": POIS,
-            "plants": PLANTS, "border": border, "hist": HIST}
+            "plants": PLANTS, "border": border, "hist": HIST,
+            "upper": UPPER}
 json.dump(d, open(CHART, "w"), separators=(",", ":"))
 print(f"map appended: {len(main_ds)} main pts, "
       f"{sum(len(s) for s in tribs.values())} trib segs, "

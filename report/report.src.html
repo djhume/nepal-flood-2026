@@ -276,7 +276,25 @@ border T-junction is the first and sharpest (§08).</p>
   Junction positions are computed from OSM tributary mouths. Red diamonds: the
   hydropower cascade (filled = operating, hollow = under construction) — every
   plant on this river is run-of-river; no storage reservoir exists anywhere on
-  the system.</figcaption>
+  the system. The dashed box is the reach enlarged in the next figure.</figcaption>
+</figure>
+
+<figure>
+  <div id="fig-map-upper" role="img" aria-label="Enlarged map of the first 68 km of the flood corridor, from the collapse scar to Betrawati, showing observed arrival times, superelevation-derived speeds, the international boundary and the hydropower losses"></div>
+  <figcaption>The first 68 km, at roughly four times the scale above — the reach
+  that holds every hard timing anchor and almost all of the destruction. The
+  clocks are the observations, not the model: 08:37 at the scar, 08:44 at the
+  Gyirong Port camera 22 km away, 09:20 on the Betrawati rising limb. Note the
+  two entries at Syabrubesi. The gauge recorded a 3.8 m rise at 08:50, but
+  inundation there is reconstructed at 09:10–09:25, and geopera's
+  superelevation speeds fall from ~50 m/s in the gorge to 11 m/s where the
+  valley opens at exactly that point. A water wave arriving twenty-five minutes
+  ahead of the debris body is what the snowplow picture predicts (§04), so this
+  split is evidence rather than a discrepancy. The boundary is worth following
+  too: the scar is about 4 km inside Nepal, and from km 8 to km 22 the Lhende
+  <em>is</em> the border — the modelled path stays within 180 m of it — which is
+  why a Chinese port and a Nepali customs post were destroyed by the same
+  seven-minute wave.</figcaption>
 </figure>
 
 <div class="prose">
@@ -1229,6 +1247,17 @@ drawLadder("run2");
    tick is dropped rather than allowed to collide. */
 (function(){
   const MP = DATA.map; if (!MP) return;
+  const UP = MP.upper || {};
+
+  /* One drawing routine, two figures. opt.kmMax clips the corridor to a
+     reach (the upper-corridor panel); opt.locator draws the panel's frame
+     on the overview so a reader can see what has been enlarged. */
+  function drawCorridorMap(sel, opt){
+  opt = opt || {};
+  const kmMax = opt.kmMax || 1e9;
+  const mainPts = MP.main.filter(m => m[2] <= kmMax + 0.01);
+  const inBox = (la, lo) => la >= BB[0] && la <= BB[2]
+                         && lo >= BB[1] && lo <= BB[3];
   const kx = 111.32 * Math.cos(28.05 * Math.PI / 180), ky = 110.574;
   const lat0 = 27.62, lon0 = 84.36;
   const P = (la, lo) => [(lo - lon0) * kx, (la - lat0) * ky];
@@ -1236,11 +1265,20 @@ drawLadder("run2");
   const acc = function(la, lo){ const p = P(la, lo);
     xmin = Math.min(xmin, p[0]); xmax = Math.max(xmax, p[0]);
     ymin = Math.min(ymin, p[1]); ymax = Math.max(ymax, p[1]); };
-  MP.main.forEach(m => acc(m[0], m[1]));
-  Object.values(MP.tribs).forEach(segs => segs.forEach(
-    seg => seg.forEach(q => acc(q[0], q[1]))));
+  mainPts.forEach(m => acc(m[0], m[1]));
+  if (!opt.kmMax)
+    Object.values(MP.tribs).forEach(segs => segs.forEach(
+      seg => seg.forEach(q => acc(q[0], q[1]))));
+  else {                                   /* margin around the reach */
+    const mx = (xmax - xmin) * 0.10, my = (ymax - ymin) * 0.10;
+    xmin -= mx; xmax += mx; ymin -= my; ymax += my;
+  }
 
-  const W = 900, H = 800, padL = 58, padR = 58, padT = 44, padB = 62;
+  /* lat/lon bounding box of the frame, for clipping every other layer */
+  const invLa = y => y / ky + lat0, invLo = x => x / kx + lon0;
+  const BB = [invLa(ymin), invLo(xmin), invLa(ymax), invLo(xmax)];
+
+  const W = 900, H = opt.H || 800, padL = 58, padR = 58, padT = 44, padB = 62;
   const sc = Math.min((W - padL - padR) / (xmax - xmin),
                       (H - padT - padB) / (ymax - ymin));   // px per km
   const ox = padL + ((W - padL - padR) - (xmax - xmin) * sc) / 2;
@@ -1256,7 +1294,7 @@ drawLadder("run2");
     .map(v => v.toFixed(1)).join(",")).join("L");
 
   /* --- label placement engine --- */
-  const placed = [];
+  const placed = [];   /* per figure */
   const textW = (s, size) => s.length * size * 0.53;
   function free(r){
     if (r.x < 4 || r.x + r.w > W - 4 || r.y < 4 || r.y + r.h > H - 4)
@@ -1287,7 +1325,7 @@ drawLadder("run2");
     return null;
   }
   // local river bearing (radians, math convention) at a screen point
-  const mainXY = MP.main.map(m => p2(m[0], m[1]));
+  const mainXY = mainPts.map(m => p2(m[0], m[1]));
   function bearingAt(x, y){
     let bi = 0, bd = 1e9;
     mainXY.forEach(function(q, i){
@@ -1319,7 +1357,9 @@ drawLadder("run2");
   /* international boundary first, underneath everything: it is a reference
      frame, not a feature of the flood. The collapse was in Nepal, ~4 km
      inside the border; the flood was transboundary in seven minutes. */
-  (MP.border || []).forEach(function(seg){
+  (MP.border || []).forEach(function(seg0){
+    const seg = seg0.filter(q => inBox(q[0], q[1]));
+    if (seg.length < 2) return;
     gLines.append("path").attr("d", lineOf(seg)).attr("fill", "none")
       .attr("stroke", "var(--ink-soft)").attr("stroke-width", 1.1)
       .attr("stroke-dasharray", "7 3 2 3").attr("opacity", 0.65);
@@ -1340,24 +1380,47 @@ drawLadder("run2");
           .text(c[2]);
       });
   }
-  Object.values(MP.tribs).forEach(segs => segs.forEach(function(seg){
+  Object.values(MP.tribs).forEach(segs => segs.forEach(function(seg0){
+    const seg = seg0.filter(q => inBox(q[0], q[1]));
+    if (seg.length < 2) return;
     gLines.append("path").attr("d", lineOf(seg)).attr("fill", "none")
       .attr("stroke", "var(--mark)").attr("stroke-width", 1.3)
       .attr("stroke-linecap", "round"); }));
-  gLines.append("path").attr("d", lineOf(MP.main)).attr("fill", "none")
+  gLines.append("path").attr("d", lineOf(mainPts)).attr("fill", "none")
     .attr("stroke", "var(--ice)").attr("stroke-width", 7)
     .attr("stroke-linejoin", "round").attr("stroke-linecap", "round")
     .attr("opacity", 0.30);
-  gLines.append("path").attr("d", lineOf(MP.main)).attr("fill", "none")
+  gLines.append("path").attr("d", lineOf(mainPts)).attr("fill", "none")
     .attr("stroke", "var(--river)").attr("stroke-width", 2.6)
     .attr("stroke-linejoin", "round").attr("stroke-linecap", "round");
+
+  /* --- 1a. the clock at each place (detail figure only) ------------------
+     Placed BEFORE everything else so the observations win the good label
+     slots; a dropped distance tick costs nothing, a dropped clock costs the
+     figure its point. Clocks carrying a `poi` are merged into that marker's
+     label below rather than drawn twice on the same spot. */
+  const clockFor = {};
+  if (opt.detail)
+    (UP.clocks || []).forEach(c => { if (c.poi) clockFor[c.poi] = c; });
+  if (opt.detail){
+    (UP.clocks || []).filter(c => !c.poi && inBox(c.lat, c.lon))
+      .forEach(function(c){
+        const q = p2(c.lat, c.lon), x = q[0], y = q[1];
+        gMarks.append("circle").attr("cx", x).attr("cy", y).attr("r", 2.6)
+          .attr("fill", "var(--ground)").attr("stroke", "var(--ink)")
+          .attr("stroke-width", 1.4);
+        label(x, y, c.t + "  " + c.sub, 10, "mono", "var(--ink-soft)", 400);
+      });
+  }
 
   /* --- 1. event points and gauges (highest priority) --- */
   const NAMES = {"collapse": "Langtang Lirung scar",
                  "Gyirong": "Gyirong Port CCTV"};
   const prio = o => (o.kind === "scar" || o.kind === "camera") ? 0
                   : (o.kind === "gauge" ? 1 : 2);
-  MP.pois.slice().sort((a, b) => prio(a) - prio(b)).forEach(function(o){
+  MP.pois.concat(opt.detail ? (UP.extra_pois || []) : [])
+    .filter(o => inBox(o.lat, o.lon))
+    .sort((a, b) => prio(a) - prio(b)).forEach(function(o){
     const q = p2(o.lat, o.lon), x = q[0], y = q[1];
     let col = "var(--ink-soft)", size = 11.5, weight = 400;
     if (o.kind === "camera"){
@@ -1385,6 +1448,9 @@ drawLadder("run2");
     let txt = o.label;
     Object.keys(NAMES).forEach(function(k){
       if (txt.indexOf(k) >= 0) txt = NAMES[k]; });
+    const ck = clockFor[o.label];
+    if (ck){ txt = ck.t + " · " + txt + " (" + ck.sub + ")";
+             weight = 700; size = Math.max(size, 11.5); }
     label(x, y, txt, size, "serif", col, weight);
   });
 
@@ -1394,7 +1460,7 @@ drawLadder("run2");
      the village), north into the Chhochen/Lhende on 26 Aug 2026. Different
      valleys — they rejoin only at Syabrubesi — so the hollow triangle is a
      scale and exposure reference, not part of this flood's path. */
-  (MP.hist || []).forEach(function(o){
+  (MP.hist || []).filter(o => inBox(o.lat, o.lon)).forEach(function(o){
     const q = p2(o.lat, o.lon), x = q[0], y = q[1];
     if (o.year){
       gMarks.append("path")
@@ -1412,7 +1478,7 @@ drawLadder("run2");
   });
 
   /* --- 2. junctions --- */
-  MP.junctions.forEach(function(j){
+  MP.junctions.filter(j => inBox(j.lat, j.lon)).forEach(function(j){
     const q = p2(j.lat, j.lon);
     gMarks.append("rect").attr("x", q[0] - 4.2).attr("y", q[1] - 4.2)
       .attr("width", 8.4).attr("height", 8.4).attr("fill", "var(--ground)")
@@ -1420,7 +1486,7 @@ drawLadder("run2");
   });
 
   /* --- 3. hydropower plants --- */
-  (MP.plants || []).forEach(function(p){
+  (MP.plants || []).filter(p => inBox(p.lat, p.lon)).forEach(function(p){
     const q = p2(p.lat, p.lon), x = q[0], y = q[1];
     const r = gMarks.append("rect").attr("x", x - 4).attr("y", y - 4)
       .attr("width", 8).attr("height", 8)
@@ -1429,13 +1495,16 @@ drawLadder("run2");
       .attr("stroke", "var(--ground)").attr("stroke-width", 1);
     else r.attr("fill", "var(--ground)").attr("stroke", "var(--plant)")
       .attr("stroke-width", 1.8);
-    label(x, y, p.label.replace(" ~", ""), 10, "serif", "var(--plant)", 400);
+    label(x, y, p.label.replace(" ~", "")
+             + (opt.detail && p.loss ? "  · " + p.loss : ""),
+          10, "serif", "var(--plant)", 400);
   });
 
   /* --- 4. distance ticks (lowest priority, droppable) --- */
-  [25, 50, 75, 100, 125, 150, 175].forEach(function(k){
-    let best = MP.main[0];
-    MP.main.forEach(function(m){
+  (opt.ticks || [25, 50, 75, 100, 125, 150, 175]).forEach(function(k){
+    if (k > kmMax) return;
+    let best = mainPts[0];
+    mainPts.forEach(function(m){
       if (Math.abs(m[2] - k) < Math.abs(best[2] - k)) best = m; });
     const q = p2(best[0], best[1]);
     const b = bearingAt(q[0], q[1]), pp = b + Math.PI / 2;
@@ -1467,7 +1536,42 @@ drawLadder("run2");
     .attr("text-anchor", "middle").attr("font-size", 10.5)
     .attr("font-family", "var(--mono)").attr("fill", "var(--ink-soft)").text("N");
 
-  legend("#fig-map", [
+  /* --- 5. superelevation speeds (detail figure only) --- */
+  if (opt.detail)
+    (UP.speeds || []).filter(s => inBox(s.lat, s.lon)).forEach(function(s){
+      const q = p2(s.lat, s.lon);
+      label(q[0], q[1], s.v + " — " + s.note, 9.5, "mono", "var(--silt)", 600);
+    });
+
+  /* --- 6. locator frame for the enlarged reach (overview only) --- */
+  if (opt.locator){
+    const lp = MP.main.filter(m => m[2] <= opt.locator + 0.01)
+                      .map(m => p2(m[0], m[1]));
+    const lx0 = Math.min(...lp.map(q => q[0])) - 16,
+          lx1 = Math.max(...lp.map(q => q[0])) + 16,
+          ly0 = Math.min(...lp.map(q => q[1])) - 16,
+          ly1 = Math.max(...lp.map(q => q[1])) + 16;
+    gLines.insert("rect", ":first-child")
+      .attr("x", lx0).attr("y", ly0)
+      .attr("width", lx1 - lx0).attr("height", ly1 - ly0)
+      .attr("fill", "var(--panel)").attr("fill-opacity", 0.55)
+      .attr("stroke", "var(--ink-soft)").attr("stroke-width", 1)
+      .attr("stroke-dasharray", "3 3").attr("rx", 4);
+    gText.append("text").attr("x", lx1 - 3).attr("y", ly1 + 13)
+      .attr("text-anchor", "end").attr("font-size", 9.5)
+      .attr("font-family", "var(--mono)").attr("fill", "var(--ink-soft)")
+      .attr("paint-order", "stroke").attr("stroke", "var(--ground)")
+      .attr("stroke-width", 3.2).text("enlarged below");
+  }
+
+  legend(sel, opt.detail ? [
+    ["var(--river)", "flood path — ticks every 10 river-km"],
+    ["var(--ink)", "● observed arrival clock (filled: hard datum)", true],
+    ["var(--silt)", "superelevation speed (geopera)", true],
+    ["var(--ink)", "▲ collapse scar · △ Langtang village 2015", true],
+    ["var(--ink-soft)", "┄ Nepal–China boundary — the Lhende IS the border, km 8–22", true],
+    ["var(--plant)", "◆ hydro plant, with what was lost there", true]
+  ] : [
     ["var(--river)", "flood path — ticks every 25 river-km"],
     ["var(--mark)", "tributaries / side arms"],
     ["var(--ink)", "▲ collapse scar 2026", true],
@@ -1475,6 +1579,12 @@ drawLadder("run2");
     ["var(--silt)", "◆ Gyirong Port CCTV · □ junction (capacitance step)", true],
     ["var(--river-deep)", "● gauge station", true],
     ["var(--plant)", "◆ hydro plant — filled: operating, hollow: under construction", true]]);
+  }
+
+  drawCorridorMap("#fig-map", {locator: (UP.km_max || 0)});
+  if (UP.km_max)
+    drawCorridorMap("#fig-map-upper", {kmMax: UP.km_max, detail: true,
+                                       H: 780, ticks: [10, 20, 30, 40]});
 })();
 
 /* ---- side valleys ---- */
