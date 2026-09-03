@@ -70,9 +70,8 @@ kind of ask, and it should not be bundled with a gift.
 
 - [x] **Entrainment term built** (3 Sept night, `model/ENTRAINMENT.md`) — but
       it opened two new items below
-- [ ] **Seti withdrawal propagated everywhere** — hub artifact republished
-      (file corrected, not yet pushed live), README and this note done; check
-      nothing else claims a passed blind test
+- [x] **Seti withdrawal propagated** — hub + technical report republished
+      4 Sept; README, PLAN and this note done. Plain pages still to check.
 - [ ] Decide how to state the event-size contradiction (entrainment ledger says
       the release delivered <=3-5 Mm3 of solids; our routing wants 30-60 Mm3
       through the border) — it is the sharpest open question and the note
