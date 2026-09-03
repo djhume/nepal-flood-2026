@@ -55,6 +55,60 @@ Langtang→Trishuli flood water was mostly channel/river-derived rather than fri
 - **1D Saint-Venant / kinematic routing with source terms:** entirely respectable core — lateral-inflow + entrainment terms directly test "cumulative river water" vs "melt slug at source" against observed timing; transparent water bookkeeping by reach; seconds to run.
 - **Data:** Copernicus GLO-30 ([OpenTopography](https://portal.opentopography.org/raster?opentopoID=OTSDEM.032021.4326.3)); HMA 8-m DEM ([NSIDC](https://nsidc.org/data/highmountainasia)); Sentinel-2; DHM stn 447; hydropower design docs.
 
+## 7. Independent convergence — Philip Prince (video analysis, seen 3 Sept 2026)
+
+Geologist Philip Prince (a geomorphology explainer known for terrain analysis;
+**URL and publication date to be recorded — summarised to us second-hand, not
+yet viewed directly**) reaches the same headline conclusion from classical
+debris-flow geomorphology rather than from routing arithmetic:
+
+- **No lake was required.** The event is explained by debris-flow mechanics.
+  Matches Petley ("no evidence this was a GLOF") and our own finding. NOTE the
+  distinction that must not be collapsed: "no *pre-existing mountain lake*" is
+  a different claim from ICIMOD's H3, which proposes a **minutes-scale**
+  blockage of the Lhende by the avalanche itself. Both can be true.
+- **The flow does not need a large initial water volume; it gains size by
+  "gobbling up" saturated soil, debris and water as it travels.** This is H1
+  stated in geomorphological language, and it is the strongest independent
+  support we have for the water-provenance result.
+- **Self-amplifying bulking**, illustrated with USGS flume experiments and with
+  satellite imagery showing massive expansion of the scoured channel — the same
+  observation as geopera's stereo DEM (net erosional, gorge floor 8–12 m lower).
+- **Terrain control:** U-shaped glacial valley → confined V-shaped gorge keeps
+  the flow concentrated. Our width profile and the observed Syabrubesi velocity
+  collapse are the same physics.
+- **Huascarán 1970** cited as the long-runout analogue — already in §5 above.
+
+**Why this matters for the model, specifically.** Prince's emphasis falls on
+entrainment of *saturated soil and debris* — the SEDIMENT side of the uptake.
+Our unified model currently has the WATER side (channel water mixes in via the
+dilution dial) and lacks the sediment side entirely. So an independent expert's
+public account foregrounds precisely the term we identified on 3 Sept as
+missing. That is simultaneously a validation of direction and a sharpened case
+for making entrainment the next build.
+
+His three mechanisms map cleanly onto our ledger, which is reassuring:
+landslide rock+ice = the source term; "saturated soil and debris" = sediment
+entrainment + its pore water (hand-estimated at ~9 Mm³ in Phase A, would become
+emergent); "and water" = the channel water of the snowplow.
+
+**Positioning, honestly.** This is convergent qualitative reasoning of the kind
+we have said all along the field already possesses — Prince is not wrong and is
+not being corrected. Our distinct contribution remains the arithmetic: the
+relative sizes of the terms, the energy ceiling on melt, and the composition
+inference from the border clock. If anything this *strengthens* the case for
+publishing the numbers, since the qualitative account is now being told
+publicly by several people with no quantities attached.
+
+**Counterpoint to keep:** do not over-generalise "no lake needed" into a rule.
+Our own Seti 2012 blind hindcast REQUIRED a stored-water release (~3 Mm³) to
+match the clocks — there, water storage was essential. Different events,
+different water sources; the framework is what ports, not the answer.
+
+**Action:** get the URL/date and add to the dossier source table; Prince is a
+strong outreach candidate alongside Willsey (this project began with a Willsey
+video) — see PLAN Phase E.
+
 ## Synthesis
 
 1. **Energetics bound melt.** A ~1,200 m fall cannot melt more than a modest fraction of its ice; Chamoli needed 3,400 m AND a near-perfect 80:20 ratio to melt ~5 Mm³, and its authors called that combination rare.
