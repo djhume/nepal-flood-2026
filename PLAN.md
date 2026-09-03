@@ -540,11 +540,16 @@ with the mass, relaxing over τ ~ d²/(π²κ) (a-priori 2–60 min for 4–20 c
 τ = the ONE fitted dof; arrival monotone in τ selects τ≈5 min ⇒ d≈6 cm.
 Result: Tapovan 37.4 vs 34–37 min (+5% PASS, robust 28–52 across all
 sensitivities), mean speed 10.3 vs ~11 m/s, km 16 flow speed passes; near-
-<!-- 3 Sept night: voellmy_curves.json was STALE — committed before the
-arrival() plateau fix, so the published report figure still says 37.4 min /
-10.3 m/s. Regenerating gives Tapovan 36.3 min (INSIDE the 34–37 window) and
-10.6 m/s; sensitivity band 27–51. The published number is the pessimistic one,
-so nothing is overclaimed, but the report needs a rebuild to sync. -->
+**[4 Sept — RESTATED after a stale-artifact fix.** voellmy_curves.json had been
+committed *before* the arrival() plateau fix, so the published report showed
+37.4 min / 10.3 m/s. Regenerated and the report rebuilt: **Tapovan 36.3 min,
+now INSIDE the 34–37 window rather than beside it; mean speed 10.6 m/s.**
+Not all of it improved — the km 18→22 basin crossing fell from ~21 min to
+**13.0 min against Rana et al.'s ~27**, i.e. that anchor got worse. Both
+directions are now in the report prose. Standing lesson: a derived artifact
+committed out of step with the code produced a *pessimistic* published number
+here, but it could as easily have gone the other way — regenerate exports in
+the same commit as the physics.]**
 Tapovan local speeds still fail (~4 vs 12–16) because the real front was
 stick-slip (data prove it: mean 11 < slowest local 12) and τ-relaxation smears
 that into steady creep. Two design payloads: the water-limit U(S) is the
