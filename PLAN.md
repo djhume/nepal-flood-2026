@@ -431,6 +431,24 @@ exposed per Taylor et al. 2023) but Langtang 2026 HAD NO LAKE — the
 steep-ice-face-over-river class (LLOF) is the under-mapped superset. Operational
 scale = ICIMOD/WMO/GFDRR program; our scope = method demo + regional prototype.
 
+### Phase E0b — RELEASE POSTURE (decided 3 Sept, prepared not sent)
+
+**Dave's decision: gift the work, don't run a campaign.** Release it to the
+people who can use it, with NO ongoing involvement — no co-authorship, no
+correspondence obligation, no preprint commitment. Authorship stays (it is the
+accountability signature) but participation does not.
+
+Prepared this session: `LICENSE` (MIT code / CC-BY-4.0 prose / third-party data
+under its own terms, plus an explicit no-operational-warning-use clause);
+`README.md` rewritten so a stranger can reproduce everything;
+`DATA-SOURCES.md`; `outreach/gift-note.md` with the note, a four-name recipient
+list and a release checklist.
+
+**NOT SENT.** Checklist to clear first (full version in gift-note.md): build
+entrainment, update the published pages with the Seti result and the corrected
+geopera figures, native-speaker check on the Nepali page, record the Prince
+video title/date, push the repo public, verify DHM data redistribution terms.
+
 ### Phase E0 — Artifact structure (decided 3 Sept, TO BUILD NEXT)
 
 Four published artifacts now exist with no shared front door. Decision: build a
