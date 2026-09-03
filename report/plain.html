@@ -1,0 +1,363 @@
+<title>The Water Was Already in the River</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#f2f5f4; --panel:#ffffff; --ink:#22303a; --ink-soft:#54646f;
+  --river:#1e5f8e; --river-deep:#164a70; --ice:#7fb3cf; --silt:#9a7146;
+  --line:#d3dcda; --plant:#a5403a;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --display:"Newsreader",Georgia,serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#131b21; --panel:#1b262e; --ink:#e2e9ec; --ink-soft:#9fb0ba;
+    --river:#6aa8d8; --river-deep:#8dbfe6; --ice:#4f7d99; --silt:#c49a6c;
+    --line:#2c3a44; --plant:#d98079;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#131b21; --panel:#1b262e; --ink:#e2e9ec; --ink-soft:#9fb0ba;
+  --river:#6aa8d8; --river-deep:#8dbfe6; --ice:#4f7d99; --silt:#c49a6c;
+  --line:#2c3a44; --plant:#d98079;
+}
+body{background:var(--ground);color:var(--ink);font-family:var(--serif);
+  font-size:18px;line-height:1.7;margin:0}
+.wrap{max-width:680px;margin:0 auto;padding:0 22px 90px}
+header{padding:64px 0 10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--display);font-weight:600;font-size:44px;line-height:1.12;
+  margin:.35em 0 .3em;text-wrap:balance}
+.standfirst{font-size:21px;line-height:1.55;color:var(--ink-soft);
+  margin:0 0 8px}
+h2{font-family:var(--display);font-weight:600;font-size:27px;line-height:1.25;
+  margin:2.1em 0 .5em;text-wrap:balance}
+p{margin:0 0 1.1em}
+a{color:var(--river);text-decoration-color:var(--ice)}
+strong{font-weight:600}
+.callout{background:var(--panel);border-left:4px solid var(--river);
+  padding:16px 20px;margin:1.6em 0;border-radius:0 6px 6px 0}
+.callout .lbl{display:block;font-family:var(--mono);font-size:11px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--river);
+  margin-bottom:6px}
+.honesty{background:var(--panel);border:1px solid var(--line);
+  border-radius:8px;padding:20px 24px;margin:2em 0}
+.honesty .lbl{display:block;font-family:var(--mono);font-size:11px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--silt);
+  margin-bottom:10px}
+.honesty ul{margin:0;padding-left:20px}
+.honesty li{margin-bottom:8px}
+figure{margin:2em -10px}
+figcaption{font-size:14.5px;color:var(--ink-soft);line-height:1.55;
+  padding:8px 10px 0}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--mono);fill:var(--ink)}
+.footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);
+  font-size:15px;color:var(--ink-soft)}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Plain-English companion · 3 September 2026 · v1 — not peer-reviewed</div>
+  <h1>The Water Was Already in the River</h1>
+  <p class="standfirst">On 26 August 2026 a piece of a Himalayan mountain fell
+  into a river valley in Nepal. Seven minutes later a wall of water and debris
+  taller than a ten-storey building crossed the Chinese border, 22 kilometres
+  away. This is a plain-English account of where we think all that water came
+  from, how we tested the idea, and what it means for keeping people alive
+  next time. The full technical version, with every number and every
+  assumption on display, is <a href="https://claude.ai/code/artifact/1fd064d2-fdc3-407e-b748-99b0e3cb3eb8">here</a>.</p>
+</header>
+
+<h2>What happened</h2>
+<p>At 8:37 on a clear monsoon morning, seismometers felt a mountainside let
+go: part of Langtang Lirung, a 7,200-metre peak about 60 kilometres north of
+Kathmandu, collapsed into the gorge of a small river called the Lende Khola.
+At 8:44 — seven minutes later — a border security camera 22 kilometres
+downstream filmed the flood arriving. That is an average speed of about
+190&nbsp;km/h down a mountain gorge.</p>
+<p>The wave then ran the length of the Trishuli River, one of the most
+densely developed hydropower corridors in the Himalaya. Thirteen power
+stations were damaged. Hundreds of people — most of them hydropower workers
+— were killed or are missing; about 350 were rescued alive from one plant's
+tunnels two days later. The first SMS warnings went out 38 minutes after the
+collapse. For everyone in the upper valley, the flood had already come and
+gone.</p>
+<p>By four in the afternoon, at Devghat 168 river-kilometres away, the river
+crested at roughly four times its normal monsoon flow. Nepal's flood
+authority estimated the event pushed about 20 million cubic metres of
+"extra" water down the river — around 8,000 Olympic swimming pools — in a
+single afternoon.</p>
+
+<h2>The puzzle</h2>
+<p>A falling mountain is rock and ice. Rock doesn't flood. So where did
+8,000 pools of water come from? The standard first guess after disasters
+like this is <em>melted glacier ice</em> — the fall grinds the ice up,
+friction heats it, and it melts into flood water.</p>
+<p>We doubted that, for a reason you can check with high-school physics.</p>
+
+<h2>Falling a kilometre doesn't buy much melting</h2>
+<p>When something falls, its energy of height turns into heat. A fall of
+1,200 metres — roughly what this mass fell before it hit the river — gives
+each kilogram of material only enough heat to melt about <strong>40 grams of
+ice</strong>, and that's if every scrap of the heat goes into melting, which
+it never does. Even under generous assumptions, melted ice can account for
+only a few million cubic metres here. The official estimate of extra water
+is several times bigger than any defensible melting budget.</p>
+<p>So most of the flood's water was not made by the mountain.
+<strong>It was already in the valley.</strong></p>
+
+<figure>
+<svg viewBox="0 0 900 330" role="img" aria-label="Bar chart comparing how much water melting could supply against the flood's measured extra water">
+<text x="24" y="26" font-size="14" fill="var(--ink)">Melt — realistic</text>
+<rect x="24" y="34" width="98" height="24" fill="var(--ice)" rx="3"/>
+<text x="130" y="51" font-size="13" fill="var(--ink-soft)">4</text>
+<text x="24" y="92" font-size="14" fill="var(--ink)">Melt — the most generous physics allows</text>
+<rect x="24" y="100" width="366" height="24" fill="var(--ice)" rx="3"/>
+<text x="398" y="117" font-size="13" fill="var(--ink-soft)">15</text>
+<text x="24" y="158" font-size="14" fill="var(--ink)">Official 'extra water' estimate</text>
+<rect x="24" y="166" width="488" height="24" fill="var(--river)" rx="3"/>
+<text x="520" y="183" font-size="13" fill="var(--ink-soft)">20</text>
+<text x="24" y="224" font-size="14" fill="var(--ink)">The wave our model routes past Devghat</text>
+<rect x="24" y="232" width="781" height="24" fill="var(--river-deep)" rx="3"/>
+<text x="813" y="249" font-size="13" fill="var(--ink-soft)">32</text>
+<line x1="24" y1="278" x2="854" y2="278" stroke="var(--line)" stroke-width="1.5"/>
+<line x1="24" y1="278" x2="24" y2="284" stroke="var(--line)" stroke-width="1.5"/>
+<text x="24" y="300" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">0</text>
+<line x1="268" y1="278" x2="268" y2="284" stroke="var(--line)" stroke-width="1.5"/>
+<text x="268" y="300" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">10</text>
+<line x1="512" y1="278" x2="512" y2="284" stroke="var(--line)" stroke-width="1.5"/>
+<text x="512" y="300" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">20</text>
+<line x1="756" y1="278" x2="756" y2="284" stroke="var(--line)" stroke-width="1.5"/>
+<text x="756" y="300" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">30</text>
+<text x="24" y="322" font-size="13" fill="var(--ink-soft)">million cubic metres of water</text>
+<line x1="390" y1="176" x2="512" y2="176" stroke="var(--plant)" stroke-width="2.5"/>
+<text x="522" y="181" font-size="12.5" fill="var(--plant)">the gap is river water</text>
+</svg>
+<figcaption>Why the water cannot mostly be melted ice. A 1,200-metre fall
+releases enough heat to melt only so much: even granting every generous
+assumption, melting tops out far below the flood's officially estimated extra
+water. The shortfall is the monsoon river, swept up and delivered at once.
+Model figures; the official estimate is Nepal's flood authority.</figcaption>
+</figure>
+
+<h2>The snowplow</h2>
+<p>Picture the monsoon-swollen river as a long line of water lying in the
+valley, already flowing. Now send a fast, heavy wave down it. The wave acts
+like a <strong>snowplow</strong>: its front overruns the slower river water
+ahead of it, sweeps it up, and pushes it along. Kilometre after kilometre,
+the wave grows by collecting river that was already there.</p>
+<p>When we do the arithmetic along the whole 168&nbsp;km, roughly
+<strong>three-quarters of the water</strong> that passed the downstream
+gauge was ordinary river water, gathered up and delivered all at once. The
+mountain provided the push; the monsoon provided the water. Other Himalayan
+and Andean disasters, when examined closely, have told the same story.</p>
+<p>This distinction is not academic. If flood volume comes mostly from the
+valley's own river, then <em>the size of a future flood depends on the
+season</em> — the same collapse in February and in August produce utterly
+different disasters. Warning systems should know that.</p>
+
+<h2>A river is a kind of electrical circuit</h2>
+<p>One more idea from the technical work, because it explains something
+survivors reported: the flood came in <em>surges</em>, not one clean wave.</p>
+<p>A river valley behaves surprisingly like an electrical circuit. Narrow
+gorges are like wires — the flood shoots through. Wide basins and side
+valleys are like <em>capacitors</em> — they fill up while the surge passes,
+storing water, then drain back out afterwards, stretching the flood's tail.
+And when debris temporarily dams the river, pressure builds until the dam
+snaps — releasing a fresh surge, like a spark jumping a gap. A valley with
+many side valleys and temporary dams doesn't deliver one wave; it delivers a
+train of them. That is what people downstream saw.</p>
+
+<h2>We tested the model on a different disaster</h2>
+<p>Any model can be tuned to "explain" the event it was built on. The test
+is whether it works somewhere else. So we ran ours, unchanged, against the
+Chamoli disaster of February 2021 in India — a similar mountain collapse but
+in <em>opposite</em> conditions: winter, a nearly dry river, and a mass that
+was four-fifths rock.</p>
+<p>The first version failed there, in an honest and useful way: it predicted
+the flow would arrive three times too fast. Chasing that failure taught us
+the missing physics — how wet a moving mass is controls how much it grinds
+against itself, and heat takes minutes to soak into ice before it melts.
+With those two pieces added, one set of equations now explains both events:
+Chamoli's slow, grinding, stop-and-go rock flow, and Langtang's fast, wet
+monsoon wave. The details, including what still doesn't fit, are in the
+technical report.</p>
+
+<h2>The newest finding: it fell like slush, not gravel</h2>
+<p>This week the model produced something we didn't expect.</p>
+<p>Remember the border camera: 22&nbsp;km in seven minutes. We simulated the
+collapse many different ways — small and large, dry rock, icy, wet — and
+asked which versions could reach that camera on time. The result was
+stark. <strong>Every dry-rock version arrived late</strong> — 25 to 50
+minutes, never 7 — <em>no matter how big we made it</em>. Every icy or wet
+version arrived on time.</p>
+<p>The physics is intuitive once said aloud: dry broken rock fights itself.
+Every fragment grinds against its neighbours, burning off the energy of the
+fall — like a truckload of gravel dumped down a slope, violent but
+self-braking. Ice and water lubricate. A wet or icy mass keeps the fall's
+energy as speed. Only something running like slush covers that gorge in
+seven minutes.</p>
+<p>Satellite images clearly show a large rocky buttress missing from the
+mountain — real rock certainly fell. The resolution is that <em>what
+detaches is not the same as what flows</em>. The slipperiness could have
+come from three places: ice that fell with the rock; the glacier below the
+cliff, gouged up and swept along by the falling rock (this is exactly what
+happened in the Caucasus in 2002); or the monsoon water already soaking the
+valley floor. Each of those leaves a different fingerprint in satellite
+images — an excavated glacier surface, a debris field that slumps and ponds
+as buried ice melts out — so this question is answerable, and we've flagged
+what to look for.</p>
+<figure>
+<svg viewBox="0 0 900 300" role="img" aria-label="Dot plot of modelled arrival times at the border camera for different collapse compositions">
+<rect x="547" y="40" width="313" height="172" fill="var(--plant)" opacity="0.07"/>
+<rect x="300" y="40" width="198" height="172" fill="var(--river)" opacity="0.07"/>
+<line x1="415" y1="40" x2="415" y2="222" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6,4"/>
+<text x="415" y="30" font-size="14" text-anchor="middle" fill="var(--ink)" font-weight="600">observed: 7 min</text>
+<circle cx="382" cy="62" r="7.5" fill="var(--river-deep)"/>
+<text x="286" y="67" font-size="13.5" text-anchor="end" fill="var(--ink)">wet slurry, large</text>
+<circle cx="399" cy="88" r="7.5" fill="var(--river-deep)"/>
+<text x="286" y="93" font-size="13.5" text-anchor="end" fill="var(--ink)">wet slurry</text>
+<circle cx="415" cy="114" r="7.5" fill="var(--river)"/>
+<text x="286" y="119" font-size="13.5" text-anchor="end" fill="var(--ink)">ice-rich, large</text>
+<circle cx="465" cy="140" r="7.5" fill="var(--river)"/>
+<text x="286" y="145" font-size="13.5" text-anchor="end" fill="var(--ink)">ice-rich, small</text>
+<circle cx="596" cy="166" r="7.5" fill="var(--plant)"/>
+<text x="286" y="171" font-size="13.5" text-anchor="end" fill="var(--ink)">dry rock, large</text>
+<circle cx="794" cy="192" r="7.5" fill="var(--plant)"/>
+<text x="286" y="197" font-size="13.5" text-anchor="end" fill="var(--ink)">dry rock, small</text>
+<line x1="300" y1="222" x2="860" y2="222" stroke="var(--line)" stroke-width="1.5"/>
+<line x1="300" y1="222" x2="300" y2="228" stroke="var(--line)" stroke-width="1.5"/>
+<text x="300" y="244" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">0</text>
+<line x1="465" y1="222" x2="465" y2="228" stroke="var(--line)" stroke-width="1.5"/>
+<text x="465" y="244" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">10</text>
+<line x1="629" y1="222" x2="629" y2="228" stroke="var(--line)" stroke-width="1.5"/>
+<text x="629" y="244" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">20</text>
+<line x1="794" y1="222" x2="794" y2="228" stroke="var(--line)" stroke-width="1.5"/>
+<text x="794" y="244" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">30</text>
+<text x="300" y="270" font-size="13" fill="var(--ink-soft)">modelled minutes to the border camera, 22 km away</text>
+</svg>
+<figcaption>The composition test. We ran the collapse many ways and asked which
+versions could reach the border camera in the seven minutes the clocks allow.
+Dry rock arrives late however big it is made; icy and wet versions arrive on
+time. All bars are model output, scored against one hard observation.</figcaption>
+</figure>
+
+<div class="callout"><span class="lbl">Why it matters</span>
+Steep icy faces hanging above monsoon rivers are a specific, mappable kind
+of danger — and much of the attention today goes to a different one (glacial
+lakes). This valley had no lake. If timing data alone can identify
+"slush-type" collapses, then the world's existing cameras, seismometers and
+satellites can help find the valleys most at risk of the next one.</div>
+
+<h2>The seven-minute problem — and the seven-hour opportunity</h2>
+<p>Here is the flood, as a race between the wave and the warning:</p>
+
+<figure>
+<svg viewBox="0 0 900 300" role="img" aria-label="Diagram of flood arrival times along the river versus the 38-minute SMS alert">
+  <line x1="60" y1="210" x2="860" y2="210" stroke="var(--line)" stroke-width="2"/>
+  <rect x="60" y="60" width="252" height="150" fill="var(--plant)" opacity="0.12"/>
+  <text x="70" y="82" font-size="13" fill="var(--plant)">hit BEFORE the first SMS existed</text>
+  <text x="70" y="100" font-size="12" fill="var(--plant)">only machines can act here</text>
+  <text x="330" y="82" font-size="13" fill="var(--river)">hours of potential warning</text>
+  <text x="330" y="100" font-size="12" fill="var(--river)">if the alert chain works</text>
+  <line x1="312" y1="60" x2="312" y2="216" stroke="var(--plant)" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <text x="318" y="132" font-size="12" fill="var(--plant)">first SMS: 38 min</text>
+  <!-- stations: x = 60 + km*4 -->
+  <g>
+    <circle cx="60" cy="210" r="6" fill="var(--river-deep)"/>
+    <text x="60" y="238" font-size="13" text-anchor="middle">collapse</text>
+    <text x="60" y="256" font-size="12" text-anchor="middle" fill="var(--ink-soft)">8:37</text>
+    <circle cx="148" cy="210" r="6" fill="var(--river-deep)"/>
+    <text x="148" y="238" font-size="13" text-anchor="middle">border</text>
+    <text x="148" y="256" font-size="12" text-anchor="middle" fill="var(--ink-soft)">8:44</text>
+    <circle cx="210" cy="210" r="6" fill="var(--river-deep)"/>
+    <text x="210" y="185" font-size="13" text-anchor="middle">Syabrubesi</text>
+    <text x="210" y="167" font-size="12" text-anchor="middle" fill="var(--ink-soft)">8:50</text>
+    <circle cx="334" cy="210" r="6" fill="var(--river)"/>
+    <text x="334" y="238" font-size="13" text-anchor="middle">Betrawati</text>
+    <text x="334" y="256" font-size="12" text-anchor="middle" fill="var(--ink-soft)">9:20</text>
+    <circle cx="490" cy="210" r="6" fill="var(--river)"/>
+    <text x="490" y="185" font-size="13" text-anchor="middle">Galchhi</text>
+    <text x="490" y="167" font-size="12" text-anchor="middle" fill="var(--ink-soft)">~11:00</text>
+    <circle cx="528" cy="210" r="6" fill="var(--river)"/>
+    <text x="528" y="238" font-size="13" text-anchor="middle">Malekhu</text>
+    <text x="528" y="256" font-size="12" text-anchor="middle" fill="var(--ink-soft)">11:20</text>
+    <circle cx="857" cy="210" r="6" fill="var(--river)"/>
+    <text x="845" y="185" font-size="13" text-anchor="middle">Devghat</text>
+    <text x="845" y="167" font-size="12" text-anchor="middle" fill="var(--ink-soft)">peak 16:00</text>
+  </g>
+  <text x="60" y="288" font-size="12" fill="var(--ink-soft)">0 km</text>
+  <text x="460" y="288" font-size="12" fill="var(--ink-soft)" text-anchor="middle">distance down the river →</text>
+  <text x="860" y="288" font-size="12" fill="var(--ink-soft)" text-anchor="end">200 km</text>
+</svg>
+<figcaption>Where the wave was when the first warning went out. Everything in
+roughly the first 60&nbsp;km — the border towns, the gorge, most of the
+hydropower workforce — was hit before the first SMS existed. Below that
+line, the wave took hours: Devghat had more than seven hours of physics
+available, and got its flood in the afternoon.</figcaption>
+</figure>
+
+<p>This picture carries the whole life-safety argument, and it splits the
+valley in two:</p>
+<p><strong>The upper valley can never be warned by people.</strong> No
+control room, no phone tree, no SMS gateway acts in seven minutes at 8:37 in
+the morning. The only things fast enough are machines: seismometers that
+recognise a collapse and trip sirens, tunnel-evacuation alarms and intake
+gates <em>automatically</em>, within a minute or two. Scientists at the
+German geoscience centre GFZ have said publicly that minutes-scale detection
+of this collapse was feasible. The technology is ordinary; what's missing is
+the wiring between detection and action.</p>
+<p><strong>The lower valley can absolutely be warned — and mostly
+wasn't.</strong> The wave took 43 minutes to Betrawati, two and a half hours
+to Galchhi, over seven hours to Devghat. That is enormous time. The physics
+gives it away for free; the model in the technical report predicts these
+arrival times well. What failed was the chain between knowing and telling.</p>
+<p>Two more practical lessons from the modelling: <strong>river junctions
+are the danger spots</strong> — where valleys meet, the flood piles up,
+backs up side rivers, and hits hardest, which is exactly where hydropower
+infrastructure tends to be built. And <strong>the best flood records of this
+event are probably sitting in the damaged power stations' own control
+computers</strong> — water-level sensors and gate logs that sampled every
+few seconds. Recovering those records would teach us more than any
+instrument installed now, and we'd urge every plant owner in the corridor to
+preserve them.</p>
+
+<h2>What we're not sure of</h2>
+<div class="honesty"><span class="lbl">The honesty box</span>
+<ul>
+<li>Nobody has published how big the fallen mass was. Estimates span
+10 to 200 million cubic metres. Our conclusions are stated to survive that
+whole range, but the range is real.</li>
+<li>Nobody has published its ice content — the "slush" finding is our
+model's inference from timing, made this week, and it awaits checking
+against satellite imagery.</li>
+<li>The official "20 million cubic metres of extra water" comes from an
+unpublished method. We treat it as a target with error bars, not gospel.</li>
+<li>Most river gauges in the flood's path were destroyed. Some of our
+downstream checks rest on press-reported readings from India.</li>
+<li>This is independent, fast-turnaround analysis — a human analyst working
+with an AI research assistant, days after the event. It is not
+peer-reviewed. Where we've had to guess, the technical report says so in
+bold. When the facts move, this page will move.</li>
+</ul>
+</div>
+
+<h2>The one-paragraph version</h2>
+<div class="callout"><span class="lbl">In short</span>
+A collapsing mountain face doesn't need to bring its own flood — in monsoon
+season the flood is already lying in the valley, waiting to be pushed. The
+26 August wave was mostly the Trishuli's own water, swept up like snow
+before a plough; the mountain's contribution was speed, and our modelling
+says it moved like slush, not gravel — which is why it beat every possible
+human warning to the border. Upstream, only automatic tripwires can save
+lives. Downstream, hours of warning exist for free. Wiring up the first and
+honouring the second is the whole game.</div>
+
+<p class="footer">Companion to
+<a href="https://claude.ai/code/artifact/1fd064d2-fdc3-407e-b748-99b0e3cb3eb8">The
+Trishuli Water Ledger</a> (technical report, with sources, models and
+workings). Independent analysis, version 1, 3 September 2026. Numbers for
+casualties and volumes are as reported at this date and will change.</p>
+</div>

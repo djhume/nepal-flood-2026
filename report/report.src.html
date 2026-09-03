@@ -1,0 +1,1424 @@
+<title>The Trishuli Water Ledger</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+Devanagari:wght@500&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+:root{
+  --ground:#f2f5f4; --panel:#ffffff; --ink:#22303a; --ink-soft:#54646f;
+  --river:#1e5f8e; --river-deep:#164a70; --ice:#7fb3cf; --silt:#9a7146;
+  --line:#d3dcda; --mark:#c7d6d2;
+  --c-melt:#a8cede; --c-pore:#9fc49a; --c-chan:#3d7fae; --c-infl:#1d4f78;
+  --st1:#9dc3dc; --st2:#5f97c4; --st3:#33719f; --st4:#164a70;
+  --plant:#a5403a;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --display:"Newsreader",Georgia,serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#131b21; --panel:#1b262e; --ink:#e2e9ec; --ink-soft:#9fb0ba;
+    --river:#6aa8d8; --river-deep:#8dbfe6; --ice:#4f7d99; --silt:#c49a6c;
+    --line:#2c3a44; --mark:#37474f;
+    --c-melt:#46708c; --c-pore:#567a52; --c-chan:#4a89b8; --c-infl:#7fb3d9;
+    --st1:#3f6a85; --st2:#5f97c4; --st3:#8db8dd; --st4:#c3dcee;
+    --plant:#d98079;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#131b21; --panel:#1b262e; --ink:#e2e9ec; --ink-soft:#9fb0ba;
+  --river:#6aa8d8; --river-deep:#8dbfe6; --ice:#4f7d99; --silt:#c49a6c;
+  --line:#2c3a44; --mark:#37474f;
+  --c-melt:#46708c; --c-pore:#567a52; --c-chan:#4a89b8; --c-infl:#7fb3d9;
+  --st1:#3f6a85; --st2:#5f97c4; --st3:#8db8dd; --st4:#c3dcee;
+  --plant:#d98079;
+}
+body{background:var(--ground);color:var(--ink);font-family:var(--serif);
+  font-size:17px;line-height:1.65;margin:0}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px 80px}
+.prose{max-width:680px;margin:0 auto}
+header{padding:56px 0 8px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--river);margin:0 0 18px}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(38px,6vw,58px);
+  line-height:1.04;margin:0 0 20px;text-wrap:balance;letter-spacing:-.01em}
+.dek{font-size:20px;line-height:1.55;color:var(--ink-soft);max-width:640px;
+  margin:0 0 34px;text-wrap:pretty}
+.dek strong{color:var(--ink);font-weight:600}
+h2{font-family:var(--display);font-weight:600;font-size:29px;line-height:1.15;
+  margin:64px 0 16px;text-wrap:balance}
+h2 .no{font-family:var(--mono);font-size:13px;color:var(--river);
+  vertical-align:.45em;margin-right:8px;letter-spacing:.08em}
+p{margin:0 0 16px}
+a{color:var(--river);text-decoration-thickness:1px;text-underline-offset:2px}
+a:focus-visible{outline:2px solid var(--river);outline-offset:2px}
+strong{font-weight:600}
+figure{margin:28px 0;background:var(--panel);border:1px solid var(--line);
+  border-radius:6px;padding:16px 16px 8px}
+figure svg{display:block;width:100%;height:auto}
+figcaption{font-family:var(--mono);font-size:12px;line-height:1.5;
+  color:var(--ink-soft);padding:8px 6px 8px;max-width:820px}
+.lungta{display:flex;height:5px;border-bottom:1px solid var(--line)}
+.lungta span{flex:1}
+.lungta span:nth-child(1){background:#4a7cae}
+.lungta span:nth-child(2){background:#ece9e0}
+.lungta span:nth-child(3){background:#b5473a}
+.lungta span:nth-child(4){background:#4f8258}
+.lungta span:nth-child(5){background:#cfa13a}
+.dedication{display:block;margin-top:10px;font-family:"Noto Serif Devanagari",var(--serif);
+  font-size:18px;color:var(--ink)}
+.dedication em{font-family:var(--serif);font-size:14px;color:var(--ink-soft);font-style:italic}
+.axis text{font-family:var(--mono);font-size:11px;fill:var(--ink-soft)}
+.axis path,.axis line{stroke:var(--mark)}
+.grid line{stroke:var(--line);stroke-opacity:.6}
+.grid path{display:none}
+.axlab{font-family:var(--mono);font-size:11px;fill:var(--ink-soft);
+  letter-spacing:.05em}
+.leg{display:flex;flex-wrap:wrap;gap:6px 18px;padding:2px 6px 8px;
+  font-family:var(--mono);font-size:12px;color:var(--ink-soft)}
+.leg i{display:inline-block;width:14px;height:3px;vertical-align:middle;
+  margin-right:6px;border-radius:2px}
+.leg i.box{height:10px;border-radius:2px}
+.runbtns{display:flex;gap:8px;padding:0 6px 10px;flex-wrap:wrap}
+.runbtns button{font-family:var(--mono);font-size:12px;letter-spacing:.04em;
+  padding:6px 12px;border:1px solid var(--mark);border-radius:4px;
+  background:transparent;color:var(--ink-soft);cursor:pointer}
+.runbtns button[aria-pressed="true"]{background:var(--river);
+  border-color:var(--river);color:var(--ground);font-weight:500}
+.runbtns button:focus-visible{outline:2px solid var(--river);outline-offset:2px}
+.explorer{border:1px solid var(--line);border-radius:6px;background:var(--panel);
+  padding:18px 18px 10px;margin:28px 0}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:12px 26px;margin:8px 0 16px}
+.ctl label{display:flex;justify-content:space-between;font-family:var(--mono);
+  font-size:12px;color:var(--ink-soft);letter-spacing:.03em;margin-bottom:2px}
+.ctl output{color:var(--river);font-weight:500;font-variant-numeric:tabular-nums}
+.ctl input[type=range]{width:100%;accent-color:var(--river)}
+.readouts{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--line);
+  margin-top:6px}
+.readouts div{flex:1 1 140px;padding:12px 14px 10px;border-left:1px solid var(--line)}
+.readouts div:first-child{border-left:none}
+.readouts b{display:block;font-family:var(--mono);font-weight:500;font-size:19px;
+  font-variant-numeric:tabular-nums;color:var(--ink)}
+.readouts b.good{color:#2e7d4f}.readouts b.bad{color:#b3512e}
+:root[data-theme="dark"] .readouts b.good,
+:root:not([data-theme="light"]) .readouts b.good{color:#69c98f}
+:root[data-theme="dark"] .readouts b.bad,
+:root:not([data-theme="light"]) .readouts b.bad{color:#e08b66}
+.readouts span{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--ink-soft)}
+.numbers{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);margin:36px 0 8px}
+.numbers div{flex:1 1 150px;padding:16px 18px 14px;border-left:1px solid var(--line)}
+.numbers div:first-child{border-left:none}
+.numbers b{display:block;font-family:var(--mono);font-weight:500;font-size:22px;
+  color:var(--river);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.numbers span{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-soft)}
+svg text{font-family:var(--mono);font-size:11px;fill:var(--ink-soft)}
+svg .riverline{stroke:var(--river);stroke-width:2.2;fill:none}
+svg .riverfill{fill:var(--river);opacity:.13}
+svg .tick{stroke:var(--mark);stroke-width:1}
+svg .stamp{fill:var(--river);font-weight:500}
+table{border-collapse:collapse;width:100%;font-size:15px;margin:22px 0;
+  font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto;margin:22px 0}
+.tablewrap table{margin:0;min-width:640px}
+th{font-family:var(--mono);font-size:11.5px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--ink-soft);font-weight:500;
+  text-align:left;padding:10px 14px 8px;border-bottom:1px solid var(--ink)}
+td{padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+td.mono, .mono{font-family:var(--mono);font-size:13.5px}
+td.num{text-align:right;font-family:var(--mono);font-size:14px}
+tr.hit td{background:color-mix(in srgb,var(--river) 8%,transparent)}
+.verdict{font-family:var(--mono);font-size:12px;letter-spacing:.05em}
+.verdict.pass{color:#2e7d4f}.verdict.fail{color:#b3512e}
+:root[data-theme="dark"] .verdict.pass,
+:root:not([data-theme="light"]) .verdict.pass{color:#69c98f}
+:root[data-theme="dark"] .verdict.fail,
+:root:not([data-theme="light"]) .verdict.fail{color:#e08b66}
+.callout{border-left:3px solid var(--silt);padding:4px 0 4px 20px;margin:26px 0;
+  color:var(--ink);font-size:16.5px}
+.callout .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--silt);display:block;margin-bottom:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+.foot{border-top:1px solid var(--line);margin-top:70px;padding-top:22px;
+  font-size:14px;color:var(--ink-soft)}
+.foot p{margin:0 0 10px}
+ul.src{font-size:14.5px;line-height:1.8;padding-left:20px;margin:12px 0;
+  column-gap:40px}
+@media (min-width:761px){ul.src{columns:2}}
+ul.src li{break-inside:avoid;margin-bottom:4px}
+</style>
+
+<div class="lungta" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+<div class="wrap">
+<header>
+  <p class="eyebrow">Preliminary analysis · v1 · 2 September 2026 ·
+  <a href="https://claude.ai/code/artifact/39288bec-8708-4d94-8366-7a4966692543">plain-English version</a></p>
+  <h1>The Trishuli Water Ledger</h1>
+  <p class="dek">On 26 August 2026 a collapsing mountainside in Langtang sent a wall of
+  water — 70&nbsp;metres high in the gorges — down 199&nbsp;km of river into Nepal,
+  killing more than a thousand people. Early accounts lead with frictionally melted
+  glacier ice. <strong>The arithmetic says most of the water was already in the
+  river.</strong></p>
+
+  <svg viewBox="0 0 960 250" role="img" aria-label="Longitudinal profile of the flood path from the collapse scar at 4,928 m to Devghat at 186 m over 199 km">
+    <polygon class="riverfill" points="20,20 29,60 43,82 66,110 89,128 112,140 122,144 159,154 194,161 251,174 336,193 436,199 517,201 561,202 713,206 875,209 940,210 940,210 20,210"/>
+    <polyline class="riverline" points="20,20 29,60 43,82 66,110 89,128 112,140 122,144 159,154 194,161 251,174 336,193 436,199 517,201 561,202 713,206 875,209 940,210"/>
+    <line class="tick" x1="122" y1="144" x2="122" y2="228"/>
+    <line class="tick" x1="194" y1="161" x2="194" y2="228"/>
+    <line class="tick" x1="336" y1="193" x2="336" y2="228"/>
+    <line class="tick" x1="517" y1="201" x2="517" y2="228"/>
+    <line class="tick" x1="940" y1="210" x2="940" y2="228"/>
+    <text x="26" y="18">collapse scar · 4,928 m · 08:37:10</text>
+    <text x="126" y="140" class="stamp">border, km 22 · 08:44</text>
+    <text x="198" y="158">Syabrubesi</text>
+    <text x="340" y="189">Betrawati · 09:20</text>
+    <text x="521" y="197">Galchhi · ~11:00</text>
+    <text x="936" y="206" text-anchor="end" class="stamp">Devghat, km 199 · peak 16:00</text>
+    <text x="122" y="242" text-anchor="middle">22</text>
+    <text x="336" y="242" text-anchor="middle">68</text>
+    <text x="517" y="242" text-anchor="middle">108</text>
+    <text x="940" y="242" text-anchor="end">199 km</text>
+    <text x="20" y="242">0</text>
+    <text x="480" y="242" text-anchor="middle">— vertical exaggeration ×8.7 —</text>
+  </svg>
+
+  <div class="numbers">
+    <div><b>~1,200 m</b><span>initial fall</span></div>
+    <div><b>52 m/s</b><span>avg, first 22 km</span></div>
+    <div><b>5,850 m³/s</b><span>peak at Devghat</span></div>
+    <div><b>~20 Mm³</b><span>FFD "excess" water</span></div>
+    <div><b>≈5 Mm³</b><span>max frictional melt</span></div>
+  </div>
+</header>
+
+<div class="prose">
+<h2><span class="no">01</span>The question</h2>
+<p>When part of Langtang Lirung's north face let go — bedrock plus a hanging
+glacier; published guesses now span ~1–10 million&nbsp;m³ for the initial
+detachment to an unsourced 100–200 million&nbsp;m³ total, and nobody has yet
+published a firm volume or ice fraction — the mass fell about 1,200&nbsp;m, hit the valley
+floor, and arrived at the China–Nepal border 22&nbsp;km away six minutes and fifty
+seconds later. What followed down the Bhote Koshi and Trishuli was not a landslide
+but a flood: a sediment-charged wave that gauges tracked all the way to the
+Narayani confluence.</p>
+<p>The question this page tries to answer with arithmetic rather than adjectives:
+<strong>where did that much water come from?</strong> The narrative that leads most
+coverage — inherited from the well-studied 2021 Chamoli disaster — is that the fall's
+energy frictionally melted the glacier ice. Our hypothesis, formed watching the
+videos: the debris wave acted as a moving dam, <em>sweeping up the monsoon river
+that was already in the channel</em>, kilometre after kilometre, and that
+cumulative river water dominates the ledger.</p>
+<p>To be fair to the scientists quoted in the press: Jeff Kargel's own account
+names "melted avalanche ice, entrained sediment and the river itself", and Dave
+Petley's is similar. Nobody serious is ignoring river water. But nobody has
+published the <em>relative fractions</em> either — and the fractions are the whole
+story. Dan Shugar put it plainly: "Figuring out where that water came from is
+actually probably the hardest thing about all this."</p>
+
+<div class="callout"><span class="lbl">The human ledger</span>
+More than 1,200 people are confirmed dead and nearly 5,000 remain missing
+(2 September count), among them hundreds of hydropower workers — though some
+560 were brought out of the Upper Trishuli-1 and Trishuli-III tunnels alive in
+the days that followed. The "entrained mass" in this analysis
+included bridges, vehicles, homes — and people. We do this arithmetic because
+where the water comes from determines what a warning system must watch for,
+and the 38 minutes between collapse and SMS alert were not enough. Every term
+in the ledger has a human cost.
+<span class="dedication" lang="ne">दिवंगतहरूको स्मृतिमा <em>— in memory of those lost.
+The five colours above are those of the lungta, the prayer flags of the Langtang
+valley, which carry prayers on the wind for the benefit of all beings.</em></span></div>
+
+<h2><span class="no">02</span>The corridor</h2>
+<p>Geography first. The collapse fell into the Chhochen Khola, a headwater of
+the Lhende Khola in Tibet; the Lhende dead-ends into the main Kyirong
+Tsangpo–Trishuli stem at the China–Nepal border, where Gyirong Port sat
+directly opposite the mouth. From there the river is Nepal's Bhote Koshi, then
+the Trishuli, gathering tributaries until it meets the Kali Gandaki at Devghat
+to form the Narayani. The junctions on this map are more than scenery: when
+the surge arrives, an entire side arm's storage suddenly connects and the flow
+pays a momentum toll to turn — a piecewise step in the system, of which the
+border T-junction is the first and sharpest (§08).</p>
+</div>
+
+<figure>
+  <div id="fig-map" role="img" aria-label="Plan-view map of the flood corridor: main path, tributaries, junctions, gauges, collapse scar and border camera location"></div>
+  <figcaption>The corridor as a network. Blue: the 199-km main flood path (dots
+  every 25 km). Grey: tributaries and side arms. Squares: junctions — capacitance
+  steps. The diamond is Gyirong Port, home of the 08:44 CCTV, sitting exactly on
+  the T-junction where the Lhende (from the collapse scar, upper right) meets the
+  main Kyirong Tsangpo–Trishuli stem. Note the Kali Gandaki joining at km 199 —
+  precisely at the Devghat gauge, supporting the Narayani-gauge reading of §07.
+  Junction positions are computed from OSM tributary mouths. Red diamonds: the
+  hydropower cascade (filled = operating, hollow = under construction) — every
+  plant on this river is run-of-river; no storage reservoir exists anywhere on
+  the system.</figcaption>
+</figure>
+
+<div class="prose">
+<h2><span class="no">03</span>The clocks</h2>
+<p>The event left a chain of timestamps — a CCTV camera, four drowned gauging
+stations, one surviving gauge, and an official peak — now anchored by the
+DHM/FFD press release of 27 August (a scanned two-page PDF we obtained via the
+Wayback Machine). They are the calibration targets for everything below.
+Distances are measured along the river channel we stitched from OpenStreetMap
+(199&nbsp;km scar→Devghat; the FFD quotes 168&nbsp;km on a shorter reckoning).</p>
+<div class="tablewrap"><table>
+<tr><th>NPT, 26 Aug</th><th>km</th><th>What happened</th><th>Quality</th></tr>
+<tr><td class="mono">08:37:10</td><td class="num">0</td><td>Collapse. Registered as a magnitude-5.2 landslide-generated seismic event (USGS); Mw 5.7 per GFZ.</td><td class="verdict pass">HARD</td></tr>
+<tr><td class="mono">08:44</td><td class="num">22</td><td>CCTV captures destruction beginning at Gyirong Port — 22 km in ~7 min, average ≈52 m/s.</td><td class="verdict pass">HARD</td></tr>
+<tr><td class="mono">08:50</td><td class="num">38</td><td>Syabrubesi station's last transmission: 3.8 m and rising (warning level 5.5 m).</td><td class="verdict">MEDIUM</td></tr>
+<tr><td class="mono">09:20</td><td class="num">68</td><td>Betrawati station's last transmission on the rising limb (3.55 m); peak passage ~10:30.</td><td class="verdict">MEDIUM</td></tr>
+<tr><td class="mono">~11:00</td><td class="num">108</td><td>Galchhi — the gauge that survived — rises ~9 m in 30 minutes.</td><td class="verdict pass">GOOD</td></tr>
+<tr><td class="mono">11:20</td><td class="num">117</td><td>Malekhu (Phurke) crosses warning level (7 m) at 11:20, danger (8 m) at 11:40; maximum 10.48 m before washout.</td><td class="verdict pass">OFFICIAL</td></tr>
+<tr><td class="mono">14:14</td><td class="num">185</td><td>Kalikhola, near Muglin, crosses danger (12.1 m); maximum 12.35 m — effectively peak passage.</td><td class="verdict pass">OFFICIAL</td></tr>
+<tr><td class="mono">15:20</td><td class="num">199</td><td>Flood arrives at Devghat; peak 6.57 m / <strong>5,850 m³/s</strong> at 16:00; near normal by 18:30 — a ~3.2-hour surge.</td><td class="verdict pass">OFFICIAL</td></tr>
+</table></div>
+
+<h2><span class="no">04</span>The energy wedge</h2>
+<p>Melting ice is expensive: 334&nbsp;kJ per kilogram. A kilogram of anything
+falling 1,200&nbsp;m releases just 11.8&nbsp;kJ. So even if <em>every joule</em> of
+the initial fall became heat and every joule of that heat went into ice, the
+collapse could melt no more than ~3.5% of its own mass. Frictional melt is
+<strong>energy-limited, not ice-limited</strong> — it doesn't matter how much ice
+fell; it matters how far it fell.</p>
+<p>We tested this bookkeeping against the one well-instrumented analogue. For
+Chamoli 2021 (26.9&nbsp;Mm³, 80:20 rock:ice, 3,400&nbsp;m fall — winter, rivers
+near empty), our budget reproduces the Science paper's published answer:
+~5&nbsp;Mm³ of meltwater, ice-limited, with river water a ~8% term. Shugar,
+Kargel and colleagues called that rock:ice ratio "almost exactly the critical
+value required for near-complete melting" — a rare coincidence, not a general
+rule.</p>
+<p>Run the same bookkeeping on Langtang 2026 — 100&nbsp;Mm³ source, 30% ice,
+the full ~2,400&nbsp;m scar-to-channel descent, a realistic 35% of frictional
+heat entering the ice — and melt caps out near <strong>5&nbsp;Mm³</strong>.
+Meanwhile the monsoon Trishuli corridor held roughly <strong>22&nbsp;Mm³ of water
+standing in the channel</strong> (300–600&nbsp;m³/s flowing at ~3&nbsp;m/s over
+199&nbsp;km), delivered ~10&nbsp;Mm³ more of baseflow during the seven hours the
+wave took to pass, and its saturated bed sediments carried ~9&nbsp;Mm³ of pore
+water. The wedge between those numbers is the whole argument. And the early-September
+estimates trend <em>smaller</em>: if the initial detachment was ~5–10&nbsp;Mm³
+(the EGU hydrology blog's order-of-magnitude; Jakob Steiner's elevation-data
+reading, which also raises the initial fall to ~2,100&nbsp;m), the melt term
+shrinks toward 1–2&nbsp;Mm³ and the wave's growth becomes almost entirely an
+entrainment story — the snowplow in its purest form.</p>
+<div class="callout"><span class="lbl">The precedent nobody mentions</span>
+For the 2012 Seti River disaster — also Nepal, also a rock mass off a high peak —
+Kargel's own analysis concluded the flood water was dominated by <em>river and
+snowmelt water impounded in the gorge</em>, with melt supplying perhaps a tenth.
+The monsoon version of that conclusion is our hypothesis.</div>
+
+<h2><span class="no">05</span>The snowplow model</h2>
+<p>To go beyond static budgets we built a one-dimensional routing model along the
+real channel: 499 elevation samples down the stitched OSM river path (Copernicus-
+derived terrain via the Mapzen dataset). The front advances at a speed set by
+local slope plus a flood-wave floor, <span class="mono">U = 300·S<sup>0.82</sup> +
+4 m/s</span>, calibrated against the clocks above. As it advances it
+<em>integrates</em> the river: standing channel water is swept into the wave,
+baseflow keeps arriving, pore water is liberated from the bed the flow tears up,
+and the meltwater slug from the steep upper reach rides along. The wave body
+travels slower than the front (fitted factor 0.90), so the pulse stretches —
+about 45 minutes long at the border, ~3.3 hours long at Devghat, matching the
+FFD's observed 15:20 arrival → 16:00 peak → 18:30 return to normal — and the
+peak decays except where re-fed.</p>
+</div>
+
+<figure>
+  <div id="fig-timing" role="img" aria-label="Model front and peak arrival times versus observed timestamps"></div>
+  <figcaption>Model arrival times against the observed clocks (▼ front, ▲ peak).
+  Fitted vs observed: Malekhu front minute 163 vs 163; Devghat front 403 vs 403
+  (15:20 NPT), peak 448 vs 443 (16:00 NPT). Larger markers are higher-confidence
+  observations.</figcaption>
+</figure>
+<figure>
+  <div id="fig-speed" role="img" aria-label="Model front speed versus distance with observed velocity estimates"></div>
+  <figcaption>Two regimes: a slope-driven debris-torrent phase through the gorge
+  collapsing at the Syabrubesi valley opening, then a deep-flood wave riding at
+  6–12 m/s across slopes as low as 0.001 — the √(gh) celerity floor. The geopera
+  border point (45–52 m/s, from trimline superelevation at bends) sits well above
+  the fitted ~31 m/s there, and we have left it unreconciled deliberately: the
+  fit is pinned by travel times on either side (08:44 at the border and 09:20 at
+  Betrawati force a ~21 m/s average over km 22–68), so if both observations are
+  right, the real flow carried momentum through the border and shed speed over
+  distance — inertia our memoryless slope-law omits (the same missing inductor
+  as §08). Superelevation also tracks the surge crest, which outruns the
+  front.</figcaption>
+</figure>
+
+<div class="prose">
+<h2><span class="no">06</span>What the ledger says</h2>
+<p>Four scenarios, one test: reproduce the only two hard downstream numbers —
+the 5,850&nbsp;m³/s peak at Devghat and the Flood Forecasting Division's
+~20&nbsp;Mm³ of "excess" water.</p>
+</div>
+
+<div class="tablewrap"><table>
+<tr><th>Scenario</th><th style="text-align:right">Melt</th><th style="text-align:right">River-derived</th><th style="text-align:right">Net-new water</th><th style="text-align:right">Peak Q @ Devghat</th><th>Against observation</th></tr>
+<tr><td>Melt-only <span class="mono">(no sweep-up)</span></td><td class="num">4.4 Mm³</td><td class="num">15.7 Mm³</td><td class="num">4.4 Mm³</td><td class="num">3,383 m³/s</td><td class="verdict fail">42% LOW</td></tr>
+<tr><td>Melt-maximal <span class="mono">(15 Mm³ melt, weak sweep)</span></td><td class="num">9.8 Mm³</td><td class="num">20.8 Mm³</td><td class="num">12.6 Mm³</td><td class="num">4,619 m³/s</td><td class="verdict fail">21% LOW</td></tr>
+<tr class="hit"><td><strong>Snowplow</strong> <span class="mono">(best-evidence mix)</span></td><td class="num">3.7 Mm³</td><td class="num">36.7 Mm³</td><td class="num">10.3 Mm³</td><td class="num">5,913 m³/s</td><td class="verdict pass">WITHIN 1%</td></tr>
+<tr><td>Snowplow + brief impoundment</td><td class="num">3.6 Mm³</td><td class="num">36.0 Mm³</td><td class="num">10.1 Mm³</td><td class="num">6,087 m³/s</td><td class="verdict pass">WITHIN 4%</td></tr>
+</table></div>
+<div class="prose"><p style="font-size:14.5px;color:var(--ink-soft)">Pulse shape
+(duration growth and the fraction of active water riding in the main window) is
+calibrated once against the FFD's Devghat stage record and shared across all four
+scenarios — so the discriminator is the ratio between rows, not the absolute
+tuning. Melt-only cannot reach the observed peak even with the same generous
+shape. <em>Late caveat (2 Sept):</em> the FFD's volume/duration arithmetic
+suggests the Devghat gauge base flow is ~2,900&nbsp;m³/s (Narayani — see §07),
+not the ~1,500 assumed in this table's peak column; on that reading the
+observed <em>excess</em> is ~2,900&nbsp;m³/s, the snowplow overshoots it and
+the ladder undershoots it, and the verdicts will be re-scored once the gauge
+and rating are confirmed (§13). The volume-based discrimination — melt-only
+cannot supply the FFD's 20&nbsp;Mm³ — is unaffected.</p></div>
+
+<figure>
+  <div id="fig-sources" role="img" aria-label="Stacked cumulative water sources along the flood path"></div>
+  <figcaption>The snowplow scenario's cumulative ledger. By Devghat the active wave
+  carries ~47 Mm³: 50% swept-up channel water, 28% baseflow collected en route,
+  14% sediment pore water, 8% frictional ice melt. The dashed line is the FFD's
+  20 Mm³ — see §07 for why the wave can legitimately exceed it.</figcaption>
+</figure>
+
+<div class="explorer">
+<p class="eyebrow" style="margin-bottom:10px">Try your own assumptions</p>
+<p style="max-width:680px;margin:0 0 14px;font-size:15.5px">The contested inputs —
+source volume, ice fraction, heat partition — will firm up as teams publish. This
+explorer re-computes the full water ledger client-side with your values (front
+timing stays fixed at the calibrated fit) and scores the result against the two
+hard observations. Defaults are our best-evidence scenario.</p>
+<div class="controls">
+  <div class="ctl"><label>source volume <output id="o-vol">100 Mm³</output></label>
+    <input type="range" id="c-vol" min="10" max="220" step="5" value="100"></div>
+  <div class="ctl"><label>ice fraction <output id="o-ice">30%</output></label>
+    <input type="range" id="c-ice" min="0" max="90" step="5" value="30"></div>
+  <div class="ctl"><label>heat entering ice <output id="o-part">35%</output></label>
+    <input type="range" id="c-part" min="5" max="80" step="5" value="35"></div>
+  <div class="ctl"><label>drop for melt energy <output id="o-drop">2,400 m</output></label>
+    <input type="range" id="c-drop" min="1200" max="4000" step="100" value="2400"></div>
+  <div class="ctl"><label>baseflow scale <output id="o-bf">1.0×</output></label>
+    <input type="range" id="c-bf" min="40" max="160" step="5" value="100"></div>
+  <div class="ctl"><label>channel sweep fraction <output id="o-sweep">80%</output></label>
+    <input type="range" id="c-sweep" min="0" max="100" step="5" value="80"></div>
+  <div class="ctl"><label>sediment pore water <output id="o-pore">9.0 Mm³</output></label>
+    <input type="range" id="c-pore" min="0" max="15" step="0.5" value="9"></div>
+</div>
+<div class="runbtns" id="presets">
+  <button data-preset="best" aria-pressed="true">Best evidence</button>
+  <button data-preset="meltonly" aria-pressed="false">Melt-only</button>
+  <button data-preset="meltmax" aria-pressed="false">Melt-maximal</button>
+</div>
+<div id="fig-explorer" role="img" aria-label="Interactive stacked water sources chart"></div>
+<div class="readouts">
+  <div><b id="r-wave">—</b><span>wave at Devghat</span></div>
+  <div><b id="r-melt">—</b><span>melt share</span></div>
+  <div><b id="r-river">—</b><span>river-derived</span></div>
+  <div><b id="r-limit">—</b><span>melt limited by</span></div>
+  <div><b id="r-peak">—</b><span>peak Q vs obs 5,850</span></div>
+  <div><b id="r-net">—</b><span>net-new vs FFD ~20 Mm³</span></div>
+</div>
+</div>
+
+<div class="prose">
+<p>Melt-only physics cannot make this flood. Even granting melt three times the
+energy budget's best estimate, the wave arrives at Devghat a fifth too small.
+The scenarios that work are the ones where <strong>close to four-fifths of the
+water in the distal wave is channel-derived</strong> — swept-up monsoon flow plus
+collected baseflow — with saturated-sediment pore water second and glacier melt
+a ~8% term. In the upper gorge, where the world's cameras pointed, melt and
+displaced river water were more evenly matched; with every kilometre downstream
+the river's share compounds.</p>
+
+<h2><span class="no">07</span>Gross versus net — the subtlety in the 20&nbsp;Mm³</h2>
+<p>One bookkeeping distinction does a lot of work. Water the wave merely
+<em>redistributes</em> — channel water concentrated from 199&nbsp;km of river into
+a three-hour pulse — shows up at a gauge as a huge surge, but over a day-scale
+window it nets toward zero: the emptied channel refills from the baseflow behind
+it. Genuinely <em>new</em> water — melt, and pore water squeezed from entrained
+sediment — does not cancel. Our snowplow scenario puts the gross surge at
+~65&nbsp;Mm³ and net-new water at ~10&nbsp;Mm³.</p>
+<p>The FFD's press release resolves what their "20 million cubic metres of
+excess" means: it is the flow above base level <strong>measured at Devghat
+between 14:10 and 18:00</strong> — a windowed gross excess at one station,
+marked preliminary. That definition captures redistributed channel water that
+arrived inside the window and misses the long tail. Run their arithmetic
+backwards and it also reveals the gauge: 20&nbsp;Mm³ over the ~3.8-hour window
+is a mean excess of ~1,450&nbsp;m³/s — a triangular peak excess of ~2,900 —
+implying a base flow near 2,950&nbsp;m³/s at the gauge. That is the
+<strong>Narayani below the Kali Gandaki confluence</strong> (Trishuli ~1,500
+plus Kali Gandaki ~1,450), not the Trishuli arm alone — a reading their
+numbers make mutually consistent, and one that changes what "peak 5,850"
+demands of a routing model (§08, §13). Either way, the gap between the gross
+wave and the net-new water is itself the evidence: redistribution, not
+creation, is what made this flood enormous. A melt-only event has no such
+gap.</p>
+
+<h2><span class="no">08</span>The river as a circuit</h2>
+<p>There is a second way to see all of this, natural to anyone who works on
+power systems. Drop the inertia term from the shallow-water equations and what
+remains — the diffusive wave approximation used in flood routing since the
+1930s — is <em>mathematically identical to a nonlinear RC transmission
+line</em>: the telegrapher's equations without the inductor. Stage is voltage,
+discharge is current, Manning friction is a nonlinear series resistor, valley
+storage is shunt capacitance (tiny in the gorges, huge where valleys open — the
+observed velocity collapse from ~50 to ~11&nbsp;m/s at Syabrubesi is a fat shunt
+capacitor clipping the pulse). Side valleys are RC branches: the passing surge
+drives water <em>up</em> each tributary mouth (charging), which drains back
+after the peak — clipping the crest and feeding the tail. A temporary debris
+dam is a breakdown element — a capacitor behind a rising resistance that fails
+at threshold, like an SCR firing; a chain of them is a relaxation-oscillator
+cascade, which is what the 2012 Seti flood's ~27 successive surges look
+like.</p>
+<p>The corridor map (§02) is one drawing of the network. Here it is as a
+circuit engineer would draw it — every element mapping to a physical piece of
+the valley:</p>
+</div>
+
+<figure>
+<svg viewBox="0 0 920 320" role="img" aria-label="Equivalent circuit diagram of the river ladder network: series nonlinear resistor and inductor per reach, shunt capacitors for valley storage, side-valley RC branch, lateral current sources for baseflow, erodible-crest breach element, outflow resistor">
+  <g stroke="var(--ink)" stroke-width="1.6" fill="none">
+    <!-- ground rail (riverbed datum) -->
+    <line x1="40" y1="260" x2="880" y2="260" stroke="var(--mark)"/>
+    <!-- event pulse current source -->
+    <line x1="70" y1="260" x2="70" y2="201"/>
+    <circle cx="70" cy="185" r="16"/>
+    <line x1="70" y1="194" x2="70" y2="179"/>
+    <path d="M66,182 L70,174 L74,182 Z" fill="var(--ink)" stroke="none"/>
+    <line x1="70" y1="169" x2="70" y2="110"/>
+    <!-- top rail + node A with shunt C -->
+    <line x1="70" y1="110" x2="170" y2="110"/>
+    <circle cx="140" cy="110" r="3.2" fill="var(--ink)" stroke="none"/>
+    <line x1="140" y1="110" x2="140" y2="182"/>
+    <line x1="125" y1="182" x2="155" y2="182"/>
+    <line x1="125" y1="192" x2="155" y2="192"/>
+    <line x1="140" y1="192" x2="140" y2="260"/>
+    <!-- series nonlinear resistor (Manning) -->
+    <path d="M170,110 l8,0 l6,-12 l10,24 l10,-24 l10,24 l10,-24 l6,12 l8,0"/>
+    <line x1="182" y1="126" x2="238" y2="94"/>
+    <path d="M240,93 L230,95 L236,102 Z" fill="var(--ink)" stroke="none"/>
+    <!-- series inductor -->
+    <line x1="238" y1="110" x2="254" y2="110"/>
+    <path d="M254,110 a8.5,8.5 0 0 1 17,0 a8.5,8.5 0 0 1 17,0 a8.5,8.5 0 0 1 17,0 a8.5,8.5 0 0 1 17,0"/>
+    <line x1="322" y1="110" x2="450" y2="110"/>
+    <!-- node B, shunt C -->
+    <circle cx="360" cy="110" r="3.2" fill="var(--ink)" stroke="none"/>
+    <line x1="360" y1="110" x2="360" y2="182"/>
+    <line x1="345" y1="182" x2="375" y2="182"/>
+    <line x1="345" y1="192" x2="375" y2="192"/>
+    <line x1="360" y1="192" x2="360" y2="260"/>
+    <!-- lateral baseflow current source -->
+    <line x1="410" y1="260" x2="410" y2="224"/>
+    <circle cx="410" cy="210" r="14"/>
+    <line x1="410" y1="218" x2="410" y2="204"/>
+    <path d="M406,207 L410,199 L414,207 Z" fill="var(--ink)" stroke="none"/>
+    <line x1="410" y1="196" x2="410" y2="110"/>
+    <!-- side-valley RC branch off node B -->
+    <line x1="360" y1="110" x2="360" y2="70"/>
+    <path d="M360,70 l6,0 l5,-9 l8,18 l8,-18 l8,18 l5,-9 l6,0"/>
+    <line x1="374" y1="58" x2="416" y2="82"/>
+    <path d="M418,83 L409,84 L413,76 Z" fill="var(--ink)" stroke="none"/>
+    <line x1="406" y1="70" x2="455" y2="70"/>
+    <line x1="458" y1="55" x2="458" y2="85"/>
+    <line x1="468" y1="55" x2="468" y2="85"/>
+    <line x1="468" y1="70" x2="500" y2="70"/>
+    <line x1="500" y1="70" x2="500" y2="260"/>
+    <!-- second series R + L + erodible crest -->
+    <path d="M450,110 l8,0 l6,-12 l10,24 l10,-24 l10,24 l10,-24 l6,12 l8,0"/>
+    <line x1="518" y1="110" x2="534" y2="110"/>
+    <path d="M534,110 a8.5,8.5 0 0 1 17,0 a8.5,8.5 0 0 1 17,0 a8.5,8.5 0 0 1 17,0 a8.5,8.5 0 0 1 17,0"/>
+    <line x1="602" y1="110" x2="622" y2="110"/>
+    <path d="M622,104 L634,110 L622,116 Z" fill="var(--ink)" stroke="none"/>
+    <path d="M650,104 L638,110 L650,116 Z" fill="var(--ink)" stroke="none"/>
+    <line x1="650" y1="110" x2="670" y2="110"/>
+    <!-- node C, shunt C, continuation, outflow -->
+    <circle cx="670" cy="110" r="3.2" fill="var(--ink)" stroke="none"/>
+    <line x1="670" y1="110" x2="670" y2="182"/>
+    <line x1="655" y1="182" x2="685" y2="182"/>
+    <line x1="655" y1="192" x2="685" y2="192"/>
+    <line x1="670" y1="192" x2="670" y2="260"/>
+    <line x1="670" y1="110" x2="700" y2="110"/>
+    <line x1="748" y1="110" x2="790" y2="110"/>
+    <path d="M790,110 l8,0 l6,-12 l10,24 l10,-24 l10,24 l10,-24 l6,12 l8,0"/>
+    <line x1="858" y1="110" x2="858" y2="260"/>
+    <!-- ground hatching -->
+    <g stroke="var(--mark)">
+      <line x1="60" y1="266" x2="52" y2="274"/><line x1="72" y1="266" x2="64" y2="274"/>
+      <line x1="848" y1="266" x2="840" y2="274"/><line x1="860" y1="266" x2="852" y2="274"/>
+    </g>
+  </g>
+  <g fill="var(--ink-soft)" font-size="11" font-family="IBM Plex Mono,monospace">
+    <text x="92" y="182">Q_in(t)</text>
+    <text x="92" y="196">event pulse</text>
+    <text x="162" y="196">C = w·Δx</text>
+    <text x="208" y="88" text-anchor="middle">R(Q): Manning ΔH ∝ Q|Q|</text>
+    <text x="288" y="140" text-anchor="middle">L = Δx/gA</text>
+    <text x="383" y="40">weir: Q ∝ Δh^3/2</text>
+    <text x="463" y="46" text-anchor="middle" font-size="10">side-valley C_s</text>
+    <text x="428" y="215">q_lat</text>
+    <text x="428" y="229">baseflow</text>
+    <text x="636" y="88" text-anchor="middle">erodible crest</text>
+    <text x="636" y="132" text-anchor="middle" font-size="10">(blocks, then fires)</text>
+    <text x="724" y="114" text-anchor="middle" font-size="14">···</text>
+    <text x="824" y="88" text-anchor="middle">outflow</text>
+    <text x="460" y="296" text-anchor="middle">node voltage = stage η · branch current = discharge Q · ground rail = riverbed datum</text>
+  </g>
+</svg>
+<figcaption>The Trishuli as an RLC ladder. Each ~2 km reach contributes a
+nonlinear series resistor (Manning friction, head loss ∝ Q|Q|) and a series
+inductor L = Δx/gA (flow inertia — the v2 upgrade); each node holds a shunt
+capacitor C = w·Δx (valley storage). Tributary baseflow enters as distributed
+current sources. A side valley is an RC branch behind a nonlinear weir — it
+charges on the rising limb and discharges into the tail. A debris dam is a
+breakdown element: it blocks until overtopped, then its crest erodes and it
+fires like an SCR. The line terminates in a normal-depth outflow
+resistor.</figcaption>
+</figure>
+
+<div class="prose">
+<p>We built that ladder — 90 nodes, border to Devghat, side-valley branches at
+the eight main tributary mouths, an erodible-crest breach element — and ran it
+under both solvers:</p>
+</div>
+
+<figure>
+  <div class="runbtns" id="ladder-runs">
+    <button data-run="run1" aria-pressed="false">Run 1 · bare line</button>
+    <button data-run="run2" aria-pressed="true">Run 2 · side valleys</button>
+    <button data-run="run2d" aria-pressed="false">Run 2 · no inductor (RC-only)</button>
+    <button data-run="run3" aria-pressed="false">Run 3 · + breach (hypothetical)</button>
+  </div>
+  <div id="fig-ladder" role="img" aria-label="Ladder network hydrographs at four stations for the selected run"></div>
+  <figcaption>The ladder network, v3 — junction physics included (y-axis
+  rescales per run). Runs 1–3 solve the local-inertia (RLC) form; the "no
+  inductor" button removes the momentum term (the contrast is now modest
+  because the junction losses dominate both solvers — the inductor's isolated
+  effect was +14–17%). Run 3's HYPOTHETICAL mid-route dam breach makes a clear
+  double pulse at mid-stations — smeared into one broad wave by Devghat.
+  Clocks (RLC): Betrawati peak 09:49, Galchhi 11:15, Malekhu 11:42, Devghat
+  16:30 vs observed ~10:30 / ~11:00 / 11:40 danger / 16:00.</figcaption>
+</figure>
+<figure>
+  <div id="fig-sidevalleys" role="img" aria-label="Side valley stage above sill versus time for eight tributaries"></div>
+  <figcaption>The capacitors themselves: stage above each tributary sill as the
+  main-stem surge passes (run 2). Water and debris are driven up each side valley
+  on the rising limb — where many riverside settlements stood — then drain back
+  into the tail. Branch geometries are order-of-magnitude placeholders pending
+  Sentinel-2 mapping.</figcaption>
+</figure>
+
+<div class="prose">
+<p>We then <em>installed the inductor</em>: the ladder's default solver is now
+the local-inertia form of Saint-Venant (Bates et&nbsp;al. 2010) — discharge is a
+state variable obeying dQ/dt = −gA·∂η/∂x − friction, semi-implicit in friction
+and Froude-capped through the supercritical gorge. In isolation (junction
+physics off) the inductor raised mid-reach peaks 14–17% with earlier, steeper
+fronts, and improved the untouched out-of-sample test — the Galchhi 30-minute
+stage rise went from 5.2 to 5.9&nbsp;m against the observed ~9&nbsp;m (6.7&nbsp;m
+at 1-km grid). Every change in the direction the missing-inductor diagnosis
+predicted.</p>
+<p><strong>Then we added the junction step</strong> (v3, the runs charted
+above): the upstream Kyirong arm as a low-sill capacitor branch at the border
+node, and minor-loss elements (K·v²/2g, K = 1–3, engineering estimates) at the
+four major confluences — the momentum toll of turning. The step response is
+exactly as hypothesised: the border arm charges 5.5&nbsp;m — <em>the largest
+side-branch response in the network</em> — the over-hot Betrawati peak drops
+from ~12,400 to ~7,900&nbsp;m³/s, and Malekhu's peak passage lands at 11:42
+against the observed 11:40 danger-crossing. Two honest costs: the junction loss dominates both
+solvers, narrowing the visible RLC-vs-RC contrast to a few percent, and the
+Galchhi rise test falls back to 4.5&nbsp;m — the partition between front
+momentum and junction dissipation is not yet calibrated.</p>
+<p>What the upgrade did <em>not</em> fix is equally informative: the Devghat
+peak barely moved, and sensitivity runs (double resolution, narrower channel)
+show the remaining distal gap is not the L and not the numerics — it is the
+<em>C</em> of the lower line (how much storage per kilometre the last 80&nbsp;km
+really has) and, we now suspect, partly the observation itself: the FFD's own
+volume-and-duration arithmetic implies the Devghat gauge sits on the combined
+Narayani with a base flow near 2,900&nbsp;m³/s (§07), which would put the true
+observed <em>excess</em> peak near 2,900 rather than 4,350&nbsp;m³/s — between
+the two models. Pinning that gauge down is now a top data task (§13).</p>
+<p><strong>What the border cameras probably saw.</strong> If the 08:44 CCTV
+frames captured the junction impact — the debris field slamming the far wall
+and surging <em>up</em> the main valley — rather than a down-valley front,
+then the fastest "border" speed estimates describe the end of the Lhende
+descent, not the start of the Trishuli run, and a brief up-valley flow (a
+reversal, from a camera's point of view) is entirely plausible. That single
+geometric fact would reconcile our stubbornest data conflict: 45–52&nbsp;m/s
+measured <em>at</em> the junction, ~21&nbsp;m/s averaged <em>beyond</em> it —
+the junction ate the difference, as a step response. And the first
+peer-reviewed study of the event — a Chinese Academy of Sciences frame-by-frame
+video analysis published 1 September — now measures the surface velocity
+<em>at the Gyirong Port checkpoint</em> at just <strong>19&nbsp;m/s</strong>:
+far below the 45–52&nbsp;m/s superelevation estimates and below our fitted 31.
+Three instruments, three answers — descent speed, splash-line speed, post-turn
+speed — is exactly the fingerprint a junction step leaves. The remaining
+verification needs the footage geometry: geolocating the cameras, orienting their view axes
+against the corridor map (§02), and feature-tracking the frames is now a
+top task (§13). It matters because the border speed is simultaneously the most-quoted
+number of the disaster and the one our model currently reproduces worst.</p>
+
+<h2><span class="no">09</span>Downstream into India</h2>
+<p>The wave did not stop at Devghat. At the Valmikinagar barrage on the Gandak
+(the Narayani's Indian name), roughly 90 river-kilometres further on, Bihar's
+control-room figures — transcribed in local press — show the arrival: from a
+~2,900–3,100&nbsp;m³/s base, discharge climbed from 20:30 IST to a flat peak of
+<strong>4,253&nbsp;m³/s (150,200 cusecs) at 23:00–23:30 IST</strong>, the highest
+figure recorded there that day, then receded overnight. All 36 gates were open.
+That is a lag of ~7¼ hours from the Devghat peak and ~27% attenuation — and a
+celerity of only ~3.4&nbsp;m/s, half the hill-reach value, exactly what the
+circuit picture predicts when the line runs onto the Chitwan floodplain: a wide,
+flat, fat-capacitance section. (An earlier spike in the barrage record at 16:00
+IST is almost certainly a gate-operation transient, not routed flow — it is
+simultaneous with the Devghat peak 90&nbsp;km upstream.)</p>
+<p>The 28 August barrier-lake overtopping in the headwaters — feared as a second
+flood — is <em>not resolvable</em> at the barrage: fluctuations stayed within
+~±150&nbsp;m³/s of normal. Consistent with the ladder's lesson: by 300&nbsp;km,
+the RC cascade has low-pass-filtered small pulses into the noise. The fine
+multi-pulse structure, if it existed, lived in the reaches where the gauges
+died; the Galchhi record and India's CWC hourly archive are where it would still
+be written.</p>
+
+<h2><span class="no">10</span>Does it travel? The Chamoli stress test</h2>
+<p>Every fitted law flatters the event it was fitted to. If this pipeline is to
+be worth anything as a warning tool it has to travel &mdash; so we took it, frozen,
+to the most hostile documented case: Chamoli, 7&nbsp;February 2021. Winter, a
+near-dry channel, a 26.9&nbsp;Mm&sup3; mass that was ~80% rock &mdash; the opposite of a
+monsoon river valley in every regime variable &mdash; and ground truth of rare
+quality (a seismic detachment time, video-tracked speeds at three points, a
+34&ndash;37&nbsp;minute arrival at Tapovan 23&nbsp;km downstream; Shugar et&nbsp;al.,
+<em>Science</em>). The Trishuli-fitted kinematic law, applied verbatim, fails
+exactly as regime thinking predicts: it delivers the front to Tapovan in
+11&nbsp;minutes &mdash; three times too fast &mdash; while passing all three local speed
+checks. A slope-only law has no flow regime and no event size; Chamoli is
+precisely the event that exposes both omissions.</p>
+<p>So we routed the actual release block down the actual profile with the
+ladder&rsquo;s momentum equation (&sect;08) plus one new term: Coulomb basal friction,
+which turns the friction law into Voellmy&rsquo;s &mdash; and collapses back to Manning
+(and to every published chart in this report, bit for bit) when
+&mu;&nbsp;=&nbsp;0. The dissection came out clean. A constant &mu; fails in both
+directions at once: a hundred-metre-deep flow outruns Coulomb friction in the
+steep upper canyon, while the flat basin at Raini (slope ~0.015) is terminal &mdash;
+the front dies there and never reaches Tapovan. And the observations themselves
+contain the diagnosis: the mean speed to Tapovan (~11&nbsp;m/s) is <em>below the
+slowest of the three local speeds</em> (12&nbsp;m/s) &mdash; arithmetic that forces an
+intermittent, stop-and-go front, surging when moving and stopped in between.</p>
+<p>What closes the gap is Shugar et&nbsp;al.&rsquo;s own mechanism, made dynamic. The
+~20% ice melted progressively under frictional heating &mdash; their energy budget
+(and ours, &sect;04) shows the fall&rsquo;s energy was almost exactly sufficient to melt
+all of it &mdash; so the friction dial &mu; slides from a dry-granular value toward a
+watery one as the mass descends. Both endpoints exist in the literature
+untouched by Chamoli: Scheidegger&rsquo;s 1973 volume&ndash;mobility law gives
+&mu;&nbsp;&asymp;&nbsp;0.30 for a dry rock avalanche of this volume, and the wet
+endpoint (~0.02) is this report&rsquo;s own Manning limit. One physical constant
+remains: dissipated heat takes minutes to conduct into ice fragments before it
+melts them, so the melt state rides <em>with the mass</em> and lags the fall.
+That thermal lag &tau; is the one degree of freedom we fit, and the observed
+arrival selects &tau;&nbsp;&asymp;&nbsp;5&nbsp;minutes &mdash; ice debris of
+~6&nbsp;cm, a plausible comminuted size. The rest is then out of sample: arrival
+37.4&nbsp;min against an observed 34&ndash;37; mean speed 10.3&nbsp;m/s against ~11;
+the km-16 flow speed passes; and the basin crossing takes ~21&nbsp;minutes
+against the ~27 that an independent analysis (Rana et&nbsp;al.) published for
+that reach. The model still cannot do stick-slip &mdash; it smears the surging into
+steady creep, so the two local speeds nearest Tapovan read low &mdash; and we say so
+rather than fit harder: that microstructure needs friction hysteresis or
+two-phase mechanics (Shugar&rsquo;s team needed full r.avaflow to do better than
+this).</p>
+<figure>
+  <div id="fig-chamoli" role="img" aria-label="Chamoli front trajectories under successive friction laws versus the observed Tapovan arrival"></div>
+  <figcaption>The Chamoli dissection &mdash; each curve adds one piece of physics.
+  Water-limit dynamics reach Tapovan in ~9 minutes (the kinematic law&rsquo;s
+  failure, reproduced); constant Voellmy &mu; dies in the Raini basin (grey
+  band); the instant melt dial crosses it too easily; the thermal-lag dial
+  (&tau;&nbsp;=&nbsp;5&nbsp;min, the one fitted constant) passes through the
+  observed 34&ndash;37&nbsp;minute window, and its arrival stays at 28&ndash;52&nbsp;min
+  across every width, roughness and friction-endpoint sensitivity. Reproduce:
+  <code>hindcast/chamoli/run_voellmy.py</code>.</figcaption>
+</figure>
+<div class="callout"><span class="lbl">Why this matters for warning</span>
+The water-limit law is the <em>earliest-arrival envelope</em>: every gram of
+granular character only delays a front. A warning-tier map built on the water
+law therefore errs toward promising less time than a real mixed flow would
+allow &mdash; the conservative direction &mdash; and the regime dial Chamoli forced into
+the model is exactly the physics that says how much extra time a drier, rockier
+event grants. One equation family now spans both endmembers: &mu;&nbsp;&rarr;&nbsp;0
+is Langtang&rsquo;s monsoon flood; &mu;(f) with thermal lag is Chamoli&rsquo;s rock
+avalanche.</div>
+
+<h2><span class="no">11</span>The climate question</h2>
+<p>Much of the coverage frames this as a climate disaster. For <em>this
+event</em>, that framing claims more than the evidence holds — and so does its
+mirror image, "nothing to do with climate." The two claims need separating.</p>
+<p>What the record does not support: this was not a weather event (a clear,
+rain-free morning), not a glacial-lake outburst, and — per the ledger above —
+not even mostly glacial water: melt was a ~8% term. The proximate cause was a
+bedrock wedge failure of a kind steep, tectonically active Himalayan faces have
+produced throughout the Holocene; USGS notes a smaller event at nearly the same
+location in 2015. And much of the death toll is an exposure story — a border
+post, a customs yard, and hundreds of hydropower workers from 13 projects
+packed into one corridor, with 38 minutes between collapse and SMS alert. No
+formal attribution study exists yet; any causal percentage quoted this week is
+ahead of the science.</p>
+<p>What is genuinely climate-linked — mechanism, not hand-waving: the failure
+zone sits at ~5,200&nbsp;m, in the elevation band where warming permafrost
+degrades the ice that cements jointed rock — the best-documented driver of
+increasing high-mountain rock-slope failure. Locally, glacierised areas above
+4,000&nbsp;m are warming ~0.31&nbsp;°C per decade; Langtang's glaciers have
+retreated 1.5× faster since 2000 than before; Lirung itself is back 450&nbsp;m
+since 1990, debuttressing the slopes it once held up. The warmest ground and
+lake temperatures in two years were observed in the weeks before failure, with
+meltwater filling crevasses — the same water-at-the-bed mechanism blamed for
+the 2016 Aru glacier collapses in Tibet. And the neighbouring headwater
+produced a supraglacial-lake outburst thirteen months earlier — one of the most
+directly warming-linked hazard types in the Himalaya. Two disasters in one
+corridor in thirteen months is anecdote, not statistics; it is also what the
+trend literature predicts.</p>
+<div class="callout"><span class="lbl">The defensible one-liner</span>
+Climate change did not cause this flood — but it is plausibly raising the base
+rate of the thing that triggered it, and nobody can yet say by how much. The
+water and the casualties are a story of monsoon rivers, valley geometry and
+exposure; the climate signal, if it is anywhere, is in the rock face at
+5,200&nbsp;metres, not in the wave.</div>
+
+<h2><span class="no">12</span>For the hydropower cascade</h2>
+<p>This corridor carried one of the densest hydropower cascades in the
+Himalaya: 13 projects — 748&nbsp;MW built or building — took damage,
+431&nbsp;MW came off Nepal's grid, and the missing include on the order of
+nine hundred hydropower workers, from the 111&nbsp;MW Rasuwagadhi plant at the
+border T-junction to the hundreds caught in Upper Trishuli-1's tunnel (~350 of whom were rescued alive on 28 August). Every one
+of these projects is run-of-river — small weirs, hours of pondage at most.
+There was no storage reservoir anywhere on the system capable of absorbing a
+surge (the basin's one large storage proposal, the 1,200&nbsp;MW Budhi
+Gandaki, is unbuilt): in circuit terms the cascade added no meaningful
+capacitance to the line — only exposure. For readers in the industry, three
+things in this analysis translate directly:</p>
+<p>— <strong>Up-valley, the wave outruns any human alert chain.</strong> The
+front covered the first 22&nbsp;km in seven minutes; SMS alerts left 38
+minutes after the collapse. Only automated, upstream-triggered protection —
+seismic or stage tripwires wired into plant control, tunnel egress alarms,
+intake gates that fail safe — operates on the timescale that matters in the
+upper reach. Below Betrawati the wave took hours: there the alert chain can
+work, and routing models of the kind in this report are the relevant planning
+tool.<br>
+— <strong>Confluences are exposure hot-spots.</strong> The junction step
+(§08) concentrates impact, backwater and momentum exchange exactly where
+cascade infrastructure tends to sit — at tributary mouths. Rasuwagadhi's
+headworks stood 400&nbsp;m below one.<br>
+— <strong>Plant records are the missing instrument.</strong> Headworks stage
+sensors, gate logs and SCADA historians across the thirteen projects —
+including drowned plants whose servers survived — plausibly hold the only
+high-frequency hydrographs of the event's upper reach, better than anything
+the washed-out public gauges left behind. Recovering those records would do
+more for understanding this flood, and for protecting the next cascade, than
+any instrument that could be deployed now.<br>
+— <strong>The trigger can extend weeks earlier.</strong> Sentinel-1 InSAR shows
+the failed mass creeping ~10&nbsp;mm/month and accelerating in the days before
+collapse (Shirzaei, Virginia Tech, via <em>Nature</em> news, 2 Sept) — a
+satellite watchlist tier above the seismic tripwire. And GFZ's Niels Hovius has
+said seismic-signal-based downstream warning was feasible "with only minutes'
+delay" — the automated-tier case, made independently.</p>
+
+<h2><span class="no">13</span>What would change our mind</h2>
+<p>This is a v1 built five days after the event, on contested numbers. It moves
+if the facts move:</p>
+<p>— A published source volume and ice fraction. If the failed mass was
+predominantly ice <em>and</em> bigger than ~150&nbsp;Mm³, the melt ceiling rises
+(though it stays energy-limited near ~15–20&nbsp;Mm³ under generous partitioning).<br>
+— The full Galchhi hydrograph (DHM) and India's CWC hourly stage archive for the
+Gandak stations — the datasets that would show any surviving multi-pulse
+structure and settle the gross-versus-net accounting.<br>
+— The border camera geometry: geolocate the Gyirong Port CCTV (and the
+mountaintop drone), orient their view axes on the map, and feature-track the
+frames. If 08:44 shows the junction impact and an up-valley surge rather than
+a down-valley front, the most-quoted speed of the disaster needs
+reinterpreting (§08).<br>
+— Confirmation of which river the Devghat gauge measures and its rating curve.
+DHM's Devghat station is very likely the combined Narayani below the Kali
+Gandaki confluence (base ~2,900&nbsp;m³/s in late August, as the FFD's own
+numbers imply) — this single fact sets the observed excess peak the routing
+models must hit, and re-scores the scenario table.<br>
+— Evidence of a significant pre-event lake in the Chhochen headwater. Petley and
+Davies both say no GLOF; a pre-event Sentinel-2 lake inventory would close that
+loophole for good.<br>
+— Satellite confirmation of the reported brief damming of the Lhende Khola.
+ICIMOD proposes it; Hugh Sinclair objects that the 7-minute border arrival is too
+fast for damming to be primary. Our timing fit accommodates a minutes-scale
+impoundment but does not require one.</p>
+
+<h2><span class="no">14</span>Method &amp; sources</h2>
+<p>River path stitched from OpenStreetMap waterways (Chhochen Khola →
+东林藏布/Lhende → 吉隆藏布/Kyirong Tsangpo → भोटे कोशी → Trishuli), sampled every
+400&nbsp;m, elevations from the Mapzen terrain dataset via OpenTopoData. Energy
+and water budgets validated against Shugar et&nbsp;al. (2021). Front speed and
+peak celerity grid-fitted to the six timestamps. The complete workings — every
+equation, fit and figure, executed end-to-end from the data files — are
+published as a companion notebook: <a href="{{WORKINGS_URL}}">Trishuli Model
+Workings</a>; a jargon-free telling of the whole analysis is
+<a href="https://claude.ai/code/artifact/39288bec-8708-4d94-8366-7a4966692543">The
+Water Was Already in the River</a>. The interactive charts on this page re-compute the same ledger
+client-side. All code, data and the full evidence dossier (~30 sources,
+contested numbers flagged) live in the project repository. Analysis: Dave Hume,
+with Claude as research and modelling assistant.</p>
+<ul class="src">
+<li><a href="https://en.wikipedia.org/wiki/Timeline_of_the_2026_Nepal_floods">Timeline of the 2026 Nepal floods</a> — Wikipedia</li>
+<li><a href="https://www.usgs.gov/programs/landslide-hazards/science/2026-nepal-debris-avalanche-and-flash-flood">2026 Nepal Debris Avalanche and Flash Flood</a> — USGS</li>
+<li><a href="https://english.nepalnews.com/s/nation/technical-report-20-million-cubic-meters-of-excess-surge-swept-down-bhote-koshi-trishuli-narayani-river-system/">FFD technical report: 20 Mm³ excess surge</a> — nepalnews</li>
+<li><a href="https://www.sciencemediacentre.org/expert-reaction-to-flash-floods-in-nepal/">Expert reaction to flash floods in Nepal</a> — Science Media Centre</li>
+<li><a href="https://eos.org/thelandslideblog/26-august-2026-nepal-and-tibet">The Landslide Blog, 26 August 2026</a> — Dave Petley, Eos</li>
+<li><a href="https://web.archive.org/web/20260831074529if_/https://hydrology.gov.np/cm/files/report_bhotekoshi_1787808964794.pdf">DHM/FFD press release, 27 Aug 2026 (PDF)</a> — official chronology &amp; the 20 Mm³ method</li>
+<li><a href="https://www.prabhatkhabar.com/state/bihar/bettiah/gandak-barrage-water-level-fluctuation">Valmikinagar barrage hourly discharge</a> — Prabhat Khabar (Bihar WRD figures)</li>
+<li><a href="https://kathmandupost.com/national/2026/08/27/how-the-bhotekoshi-flood-unfolded-over-10-hours">How the Bhotekoshi flood unfolded over 10 hours</a> — Kathmandu Post</li>
+<li><a href="https://www.scmp.com/news/china/science/article/3366020/china-nepal-floods-first-research-shows-no-one-could-have-outrun-debris-flow">First peer-reviewed study (CAS, <em>Yangtze River</em>)</a> — via SCMP</li>
+<li><a href="https://www.nature.com/articles/d41586-026-02746-4">InSAR precursor creep before the collapse</a> — Nature news</li>
+<li><a href="https://english.onlinekhabar.com/technical-report-rasuwa-flood.html">FFD technical report, station by station</a> — OnlineKhabar</li>
+<li><a href="https://geopera.com/blog/bhote-koshi-flood-2026-satellite-analysis">Bhote Koshi flood satellite reconstruction</a> — geopera</li>
+<li><a href="https://www.icimod.org/press-release/major-flash-flood-sweeps-through-nepals-rasuwa-district-raising-fears-of-further-downstream-flooding/">Rasuwa flash flood press release</a> — ICIMOD</li>
+<li><a href="https://www.science.org/doi/10.1126/science.abh4455">Shugar et al. 2021, the Chamoli disaster</a> — Science</li>
+<li><a href="https://sandrp.in/2014/01/26/explained-seti-river-floods-in-may-2012-nepal-a-chain-of-events-starting-at-25000-feet/">Seti River 2012 flood analysis (Kargel)</a> — SANDRP</li>
+<li><a href="https://www.nature.com/articles/ngeo1040">Iverson et al. 2011, wet-bed entrainment</a> — Nature Geoscience</li>
+<li><a href="https://www.sciencedirect.com/science/article/abs/pii/S0169555X0100037X">Cenderelli &amp; Wohl 2001, GLOF attenuation</a> — Geomorphology</li>
+<li><a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/WR021i010p01511">Pierson &amp; Scott 1985, lahar dilution</a> — Water Resources Research</li>
+<li><a href="https://www.antarcticglaciers.org/2026/08/august-2026-nepal-tibet-floods/">August 2026 Nepal–Tibet floods</a> — Bethan Davies, AntarcticGlaciers (warming &amp; retreat figures)</li>
+<li><a href="https://yaleclimateconnections.org/2026/08/the-worrying-climate-link-to-nepals-avalanche-and-flood-catastrophe/">The worrying climate link</a> — Yale Climate Connections (the framing §11 responds to)</li>
+</ul>
+
+<div class="foot">
+<p>Preliminary and unreviewed. Source volume (10–200 Mm³) and ice fraction are
+unpublished as of 2 September 2026; every conclusion above is an envelope over
+that range, not a point claim. Casualty figures are still rising. Corrections
+welcome.</p>
+<p class="mono" style="font-size:12px">v4.2 · 3 September 2026 · Wellington, NZ</p>
+</div>
+</div>
+</div>
+
+<script type="application/json" id="chart-data">{{CHART_DATA}}</script>
+<script>
+(function(){
+"use strict";
+const DATA = JSON.parse(document.getElementById("chart-data").textContent);
+const M = {t:14, r:18, b:44, l:62};
+
+function baseChart(sel, w, h, xdom, ydom, xlab, ylab){
+  const svg = d3.select(sel).append("svg").attr("viewBox", `0 0 ${w} ${h}`);
+  const iw = w - M.l - M.r, ih = h - M.t - M.b;
+  const g = svg.append("g").attr("transform", `translate(${M.l},${M.t})`);
+  const x = d3.scaleLinear().domain(xdom).range([0, iw]);
+  const y = d3.scaleLinear().domain(ydom).nice().range([ih, 0]);
+  g.append("g").attr("class","grid")
+    .call(d3.axisLeft(y).ticks(6).tickSize(-iw).tickFormat(""));
+  g.append("g").attr("class","axis").attr("transform",`translate(0,${ih})`)
+    .call(d3.axisBottom(x).ticks(8).tickFormat(d3.format("~s")));
+  g.append("g").attr("class","axis")
+    .call(d3.axisLeft(y).ticks(6).tickFormat(d3.format(",")));
+  svg.append("text").attr("class","axlab").attr("x", M.l + iw/2).attr("y", h-8)
+    .attr("text-anchor","middle").text(xlab);
+  svg.append("text").attr("class","axlab")
+    .attr("transform",`translate(15,${M.t + ih/2}) rotate(-90)`)
+    .attr("text-anchor","middle").text(ylab);
+  return {svg, g, x, y, iw, ih};
+}
+function linePath(g, xs, ys, x, y, stroke, wpx, dash){
+  const ln = d3.line().x((d,i)=>x(xs[i])).y(d=>y(d));
+  g.append("path").attr("d", ln(ys)).attr("fill","none")
+    .attr("stroke", stroke).attr("stroke-width", wpx || 2)
+    .attr("stroke-linejoin","round")
+    .attr("stroke-dasharray", dash || null);
+}
+function legend(sel, items){
+  const div = document.createElement("div");
+  div.className = "leg";
+  items.forEach(function(it){
+    const s = document.createElement("span");
+    const i = document.createElement("i");
+    if (it[2]) i.className = "box";
+    i.style.background = it[0];
+    s.appendChild(i);
+    s.appendChild(document.createTextNode(it[1]));
+    div.appendChild(s);
+  });
+  document.querySelector(sel).appendChild(div);
+}
+
+/* ---- timing chart ---- */
+(function(){
+  const T = DATA.timing;
+  const c = baseChart("#fig-timing", 860, 380, [0,205], [0,470],
+    "distance from collapse scar (km)", "minutes after 08:37 NPT");
+  linePath(c.g, T.km, T.front, c.x, c.y, "var(--river)");
+  linePath(c.g, T.km, T.peak, c.x, c.y, "var(--silt)");
+  const triDown = "M0,7 L7,-6 L-7,-6 Z", triUp = "M0,-7 L7,6 L-7,6 Z";
+  T.front_obs.forEach(function(o){
+    c.g.append("path").attr("d", triDown)
+      .attr("transform", `translate(${c.x(o[0])},${c.y(o[1])}) scale(${o[2]>=2?1.1:0.7})`)
+      .attr("fill","var(--river)");
+  });
+  T.peak_obs.forEach(function(o){
+    c.g.append("path").attr("d", triUp)
+      .attr("transform", `translate(${c.x(o[0])},${c.y(o[1])}) scale(${o[2]>=2?1.1:0.7})`)
+      .attr("fill","var(--silt)");
+  });
+  legend("#fig-timing", [
+    ["var(--river)","model front · U = 300·S^0.82 + 4 m/s (▼ observed)"],
+    ["var(--silt)","model peak · celerity ×0.90 (▲ observed)"]]);
+})();
+
+/* ---- speed chart ---- */
+(function(){
+  const S = DATA.speed;
+  const c = baseChart("#fig-speed", 860, 360, [0,205], [0,68],
+    "distance from collapse scar (km)", "front speed (m/s)");
+  linePath(c.g, S.km, S.u, c.x, c.y, "var(--river)");
+  const off = [[6,-10],[8,20],[6,16],[6,-10],[6,-10],[6,-10],[8,26]];
+  S.obs.forEach(function(o, i){
+    c.g.append("circle").attr("cx", c.x(o[0])).attr("cy", c.y(o[1]))
+      .attr("r", 4).attr("fill","var(--ink)");
+    c.g.append("text").attr("class","axlab")
+      .attr("x", c.x(o[0]) + off[i][0]).attr("y", c.y(o[1]) + off[i][1])
+      .text(o[2]);
+  });
+  legend("#fig-speed", [["var(--river)","model front speed"],
+    ["var(--ink)","observed velocity / celerity estimates", true]]);
+})();
+
+/* ---- chamoli hindcast chart ---- */
+(function(){
+  const C = DATA.chamoli;
+  if (!C) return;
+  const c = baseChart("#fig-chamoli", 860, 400, [0,120], [0,33],
+    "minutes after detachment (10:21 IST, 7 Feb 2021)", "front position (path km)");
+  c.g.append("rect").attr("x",0).attr("width",c.iw)
+    .attr("y", c.y(C.basin[1])).attr("height", c.y(C.basin[0])-c.y(C.basin[1]))
+    .attr("fill","var(--ink)").attr("opacity",0.06);
+  c.g.append("text").attr("class","axlab").attr("x", c.iw-6)
+    .attr("y", c.y(C.basin[1])+14).attr("text-anchor","end")
+    .text("Raini basin (slope ~0.015)");
+  const styles = {
+    water:  ["var(--plant)", 1.6, null],
+    const:  ["var(--silt)", 1.6, "6,4"],
+    static: ["var(--ice)", 1.6, "2,3"],
+    t2:     ["var(--river)", 1.1, "5,3"],
+    t15:    ["var(--river)", 1.1, "1,4"],
+    t30:    ["var(--river)", 1.1, "1,6"],
+    t5:     ["var(--river-deep)", 3, null],
+  };
+  C.curves.filter(cv => cv.key !== "t5").forEach(function(cv){
+    const st = styles[cv.key] || ["var(--ink)", 1, null];
+    linePath(c.g, cv.t, cv.km, c.x, c.y, st[0], st[1], st[2]);
+  });
+  const t5 = C.curves.find(cv => cv.key === "t5");
+  linePath(c.g, t5.t, t5.km, c.x, c.y, styles.t5[0], styles.t5[1]);
+  const yk = c.y(C.tapovan_km);
+  c.g.append("line").attr("x1", c.x(C.band50[0])).attr("x2", c.x(C.band50[1]))
+    .attr("y1", yk).attr("y2", yk).attr("stroke","var(--ink)")
+    .attr("stroke-width", 1.5).attr("opacity", .35);
+  c.g.append("line").attr("x1", c.x(C.obs_window[0])).attr("x2", c.x(C.obs_window[1]))
+    .attr("y1", yk).attr("y2", yk).attr("stroke","var(--ink)")
+    .attr("stroke-width", 6).attr("stroke-linecap","round");
+  c.g.append("text").attr("class","axlab").attr("x", c.x(C.band50[1]) + 8)
+    .attr("y", yk + 4).text("observed: Tapovan 34\u201337 min (faint: \u00b150% band)");
+  legend("#fig-chamoli", [
+    ["var(--plant)","water limit \u03bc=0"],
+    ["var(--silt)","constant \u03bc=0.155 (=H/L)"],
+    ["var(--ice)","melt dial, instant"],
+    ["var(--river)","thermal lag \u03c4 = 2 / 15 / 30 min"],
+    ["var(--river-deep)","thermal lag \u03c4 = 5 min (fitted)"],
+    ["var(--ink)","observed Tapovan window", true]]);
+})();
+
+/* ---- stacked sources renderer (shared by static chart + explorer) ---- */
+function stacked(sel, km, layers, ymin){
+  d3.select(sel).selectAll("*").remove();
+  const n = km.length;
+  const cum = [], zero = new Array(n).fill(0);
+  let prev = zero;
+  layers.forEach(function(L){
+    const c = prev.map((v,i)=>v + L.vals[i]);
+    cum.push({lo:prev, hi:c, color:L.color, label:L.label});
+    prev = c;
+  });
+  const top = Math.max(ymin || 0, d3.max(prev) * 1.06);
+  const c = baseChart(sel, 860, 380, [0,205], [0, top],
+    "distance from collapse scar (km)", "cumulative water (Mm³)");
+  cum.forEach(function(L){
+    const area = d3.area().x((d,i)=>c.x(km[i]))
+      .y0((d,i)=>c.y(L.lo[i])).y1((d,i)=>c.y(L.hi[i]));
+    c.g.append("path").attr("d", area(km)).attr("fill", L.color)
+      .attr("fill-opacity", 0.92);
+  });
+  c.g.append("line").attr("x1",0).attr("x2",c.iw)
+    .attr("y1",c.y(20)).attr("y2",c.y(20))
+    .attr("stroke","var(--ink)").attr("stroke-dasharray","5,4");
+  c.g.append("text").attr("class","axlab").attr("x",8).attr("y",c.y(20)-6)
+    .text("FFD “excess water” ≈ 20 Mm³ (Devghat, 14:10–18:00 window)");
+  legend(sel, layers.map(L=>[L.color, L.label, true]));
+}
+const SRC_LAYERS = function(m,p,ch,inf){ return [
+  {vals:m, color:"var(--c-melt)", label:"frictional ice melt"},
+  {vals:p, color:"var(--c-pore)", label:"sediment pore water"},
+  {vals:ch, color:"var(--c-chan)", label:"swept-up channel water"},
+  {vals:inf, color:"var(--c-infl)", label:"baseflow inflow"}]; };
+stacked("#fig-sources", DATA.sources.km,
+  SRC_LAYERS(DATA.sources.melt, DATA.sources.pore, DATA.sources.chan, DATA.sources.infl), 25);
+
+/* ---- budget explorer ---- */
+const B = DATA.budget, G = 9.81, LF = 3.34e5;
+function ledger(p){
+  const n = B.km.length;
+  const mIce = p.vol*1e6*p.ice*900, mRock = p.vol*1e6*(1-p.ice)*2700;
+  const meltCapEnergy = (mIce+mRock)*G*p.drop*p.part/LF;    // kg
+  const iceLimited = mIce <= meltCapEnergy;
+  const meltTotal = Math.min(mIce, meltCapEnergy)/1000;     // m3 water
+  let mNorm = 0, pNorm = 0;
+  const mrel = [], prel = [];
+  for (let i=0;i<n;i++){
+    mrel.push(Math.exp(-B.km[i]/10));
+    prel.push(B.km[i]>=5 && B.km[i]<=70 ? 1 : 0);
+    mNorm += mrel[i]*B.dx_m[i];
+    pNorm += prel[i]*B.dx_m[i];
+  }
+  const melt=[], pore=[], chan=[], infl=[];
+  let cm=0, cp=0, cc=0, ci=0, cl=0;
+  const lost=[];
+  for (let i=0;i<n;i++){
+    if (i>0){
+      cm += meltTotal*mrel[i]/mNorm*B.dx_m[i];
+      cp += p.pore*1e6*prel[i]/pNorm*B.dx_m[i];
+      cc += p.sweep*(B.qbase[i]*p.bf/3.0)*B.dx_m[i];
+      ci += B.qbase[i]*p.bf*B.dt_s[i];
+      const W = cm+cp+cc+ci-cl;
+      cl += 0.004*W*(B.dx_m[i]/1000);
+    }
+    melt.push(cm); pore.push(cp); chan.push(cc); infl.push(ci); lost.push(cl);
+  }
+  const mA=[], pA=[], cA=[], iA=[];
+  for (let i=0;i<n;i++){
+    const gross = melt[i]+pore[i]+chan[i]+infl[i];
+    const keep = gross>0 ? Math.max(gross-lost[i],0)/gross : 1;
+    mA.push(melt[i]*keep/1e6); pA.push(pore[i]*keep/1e6);
+    cA.push(chan[i]*keep/1e6); iA.push(infl[i]*keep/1e6);
+  }
+  const e = n-1, W = mA[e]+pA[e]+cA[e]+iA[e];
+  return {mA,pA,cA,iA, W,
+    meltShare: mA[e]/W, riverShare: (cA[e]+iA[e])/W,
+    netNew: mA[e]+pA[e], iceLimited,
+    peak: 2*0.55*W*1e6/B.dur_dev_s + B.qbase[e]*p.bf};
+}
+const CTL = {vol:"c-vol", ice:"c-ice", part:"c-part", drop:"c-drop",
+             bf:"c-bf", sweep:"c-sweep", pore:"c-pore"};
+function params(){
+  const v = id => +document.getElementById(id).value;
+  return {vol:v(CTL.vol), ice:v(CTL.ice)/100, part:v(CTL.part)/100,
+          drop:v(CTL.drop), bf:v(CTL.bf)/100, sweep:v(CTL.sweep)/100,
+          pore:v(CTL.pore)};
+}
+const fmt = d3.format(",");
+function refresh(){
+  const p = params();
+  document.getElementById("o-vol").textContent = p.vol + " Mm³";
+  document.getElementById("o-ice").textContent = Math.round(p.ice*100) + "%";
+  document.getElementById("o-part").textContent = Math.round(p.part*100) + "%";
+  document.getElementById("o-drop").textContent = fmt(p.drop) + " m";
+  document.getElementById("o-bf").textContent = p.bf.toFixed(2).replace(/0$/,"") + "×";
+  document.getElementById("o-sweep").textContent = Math.round(p.sweep*100) + "%";
+  document.getElementById("o-pore").textContent = p.pore.toFixed(1) + " Mm³";
+  const r = ledger(p);
+  stacked("#fig-explorer", B.km, SRC_LAYERS(r.mA, r.pA, r.cA, r.iA), 25);
+  const set = function(id, txt, cls){
+    const el = document.getElementById(id);
+    el.textContent = txt; el.className = cls || "";
+  };
+  set("r-wave", r.W.toFixed(1) + " Mm³");
+  set("r-melt", Math.round(r.meltShare*100) + "%");
+  set("r-river", Math.round(r.riverShare*100) + "%");
+  set("r-limit", r.iceLimited ? "ice supply" : "energy");
+  const err = (r.peak - 5850)/5850*100;
+  set("r-peak", fmt(Math.round(r.peak)) + " (" + (err>=0?"+":"") + err.toFixed(0) + "%)",
+      Math.abs(err) <= 15 ? "good" : "bad");
+  set("r-net", r.netNew.toFixed(1) + " Mm³",
+      (r.netNew >= 8 && r.netNew <= 32) ? "good" : "bad");
+}
+Object.values(CTL).forEach(function(id){
+  document.getElementById(id).addEventListener("input", function(){
+    document.querySelectorAll("#presets button").forEach(b=>b.setAttribute("aria-pressed","false"));
+    refresh();
+  });
+});
+const PRESETS = {
+  best:    {vol:100, ice:30, part:35, drop:2400, bf:100, sweep:80, pore:9},
+  meltonly:{vol:100, ice:30, part:35, drop:2400, bf:100, sweep:0,  pore:0},
+  meltmax: {vol:200, ice:80, part:50, drop:4000, bf:100, sweep:30, pore:4}};
+document.querySelectorAll("#presets button").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    const p = PRESETS[btn.dataset.preset];
+    document.getElementById(CTL.vol).value = p.vol;
+    document.getElementById(CTL.ice).value = p.ice;
+    document.getElementById(CTL.part).value = p.part;
+    document.getElementById(CTL.drop).value = p.drop;
+    document.getElementById(CTL.bf).value = p.bf;
+    document.getElementById(CTL.sweep).value = p.sweep;
+    document.getElementById(CTL.pore).value = p.pore;
+    document.querySelectorAll("#presets button").forEach(b=>b.setAttribute("aria-pressed", b===btn ? "true":"false"));
+    refresh();
+  });
+});
+refresh();
+
+/* ---- ladder chart ---- */
+const ST_COLS = ["var(--st1)","var(--st2)","var(--st3)","var(--st4)"];
+const STATIONS = Object.keys(DATA.ladder.runs.run2);
+function drawLadder(runKey){
+  d3.select("#fig-ladder").selectAll("*").remove();
+  const runs = DATA.ladder.runs[runKey];
+  let top = 0;
+  STATIONS.forEach(s => { top = Math.max(top, d3.max(runs[s])); });
+  top = Math.max(top*1.08, 6400);
+  const c = baseChart("#fig-ladder", 860, 380, [0,12], [0, top],
+    "hours after 08:37 NPT", "discharge (m³/s)");
+  STATIONS.forEach(function(s,i){
+    linePath(c.g, DATA.ladder.t, runs[s], c.x, c.y, ST_COLS[i]);
+  });
+  c.g.append("path").attr("d", d3.symbol().type(d3.symbolStar).size(200)())
+    .attr("transform", `translate(${c.x(DATA.ladder.obs_devghat[0])},${c.y(DATA.ladder.obs_devghat[1])})`)
+    .attr("fill","var(--ink)");
+  c.g.append("path").attr("d", d3.symbol().type(d3.symbolStar).size(200)())
+    .attr("transform", `translate(${c.x(DATA.ladder.obs_devghat[0])},${c.y(4400)})`)
+    .attr("fill","none").attr("stroke","var(--ink)").attr("stroke-width",1.5);
+  legend("#fig-ladder", STATIONS.map((s,i)=>[ST_COLS[i], s])
+    .concat([["var(--ink)","★ gauge peak 5,850 at 16:00 (likely incl. ~1,450 Kali Gandaki baseflow)", true],
+             ["transparent","☆ Trishuli-arm equivalent ≈ 4,400 if the gauge is the Narayani (§07)", true]]));
+}
+document.querySelectorAll("#ladder-runs button").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    document.querySelectorAll("#ladder-runs button").forEach(b=>b.setAttribute("aria-pressed", b===btn ? "true":"false"));
+    drawLadder(btn.dataset.run);
+  });
+});
+drawLadder("run2");
+
+/* ---- corridor map ----
+   Cartography notes: labels are placed by a collision-avoiding engine —
+   candidate positions radiate perpendicular to the local river bearing
+   first (the cartographic convention), stepping outward until a slot is
+   free of every previously placed label; anything pushed beyond ~26 px
+   gets a leader line back to its feature. Features are placed in priority
+   order (event points, then gauges/towns, then plants, then distance
+   ticks) so the important labels win the good positions and a distance
+   tick is dropped rather than allowed to collide. */
+(function(){
+  const MP = DATA.map; if (!MP) return;
+  const kx = 111.32 * Math.cos(28.05 * Math.PI / 180), ky = 110.574;
+  const lat0 = 27.62, lon0 = 84.36;
+  const P = (la, lo) => [(lo - lon0) * kx, (la - lat0) * ky];
+  let xmin = 1e9, xmax = -1e9, ymin = 1e9, ymax = -1e9;
+  const acc = function(la, lo){ const p = P(la, lo);
+    xmin = Math.min(xmin, p[0]); xmax = Math.max(xmax, p[0]);
+    ymin = Math.min(ymin, p[1]); ymax = Math.max(ymax, p[1]); };
+  MP.main.forEach(m => acc(m[0], m[1]));
+  Object.values(MP.tribs).forEach(segs => segs.forEach(
+    seg => seg.forEach(q => acc(q[0], q[1]))));
+
+  const W = 900, H = 800, padL = 58, padR = 58, padT = 44, padB = 62;
+  const sc = Math.min((W - padL - padR) / (xmax - xmin),
+                      (H - padT - padB) / (ymax - ymin));   // px per km
+  const ox = padL + ((W - padL - padR) - (xmax - xmin) * sc) / 2;
+  const oy = padT + ((H - padT - padB) - (ymax - ymin) * sc) / 2;
+  const p2 = function(la, lo){ const p = P(la, lo);
+    return [ox + (p[0] - xmin) * sc, oy + (ymax - p[1]) * sc]; };
+
+  const svg = d3.select("#fig-map").append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`);
+  const gLines = svg.append("g"), gMarks = svg.append("g"),
+        gLead = svg.append("g"), gText = svg.append("g");
+  const lineOf = pts => "M" + pts.map(q => p2(q[0], q[1])
+    .map(v => v.toFixed(1)).join(",")).join("L");
+
+  /* --- label placement engine --- */
+  const placed = [];
+  const textW = (s, size) => s.length * size * 0.53;
+  function free(r){
+    if (r.x < 4 || r.x + r.w > W - 4 || r.y < 4 || r.y + r.h > H - 4)
+      return false;
+    return !placed.some(q => !(r.x + r.w < q.x - 3 || q.x + q.w < r.x - 3
+                            || r.y + r.h < q.y - 2 || q.y + q.h < r.y - 2));
+  }
+  function place(x, y, label, size, bearing){
+    const w = textW(label, size), h = size * 1.1;
+    const perp = bearing + Math.PI / 2;
+    const dirs = [perp, perp + Math.PI, perp + 0.55, perp - 0.55,
+                  perp + Math.PI + 0.55, perp + Math.PI - 0.55,
+                  bearing, bearing + Math.PI];
+    for (const rad of [13, 21, 30, 42, 56, 72, 92]){
+      for (const d of dirs){
+        const cx = x + Math.cos(d) * rad, cy = y - Math.sin(d) * rad;
+        const anchor = Math.cos(d) >= -0.15 ? "start" : "end";
+        const pad = 5;
+        const rx = anchor === "start" ? cx + pad : cx - pad - w;
+        const r = {x: rx, y: cy - h * 0.78, w: w, h: h};
+        if (!free(r)) continue;
+        placed.push(r);
+        return {x: anchor === "start" ? cx + pad : cx - pad,
+                y: cy + size * 0.34, anchor: anchor, rad: rad,
+                edge: [rx + (anchor === "start" ? 0 : w), cy]};
+      }
+    }
+    return null;
+  }
+  // local river bearing (radians, math convention) at a screen point
+  const mainXY = MP.main.map(m => p2(m[0], m[1]));
+  function bearingAt(x, y){
+    let bi = 0, bd = 1e9;
+    mainXY.forEach(function(q, i){
+      const d = (q[0] - x) * (q[0] - x) + (q[1] - y) * (q[1] - y);
+      if (d < bd){ bd = d; bi = i; } });
+    const a = mainXY[Math.max(bi - 2, 0)],
+          b = mainXY[Math.min(bi + 2, mainXY.length - 1)];
+    return Math.atan2(-(b[1] - a[1]), b[0] - a[0]);
+  }
+  function label(x, y, text, size, cls, colour, weight){
+    const sol = place(x, y, text, size, bearingAt(x, y));
+    if (!sol) return false;
+    if (sol.rad > 26)
+      gLead.append("line").attr("x1", x).attr("y1", y)
+        .attr("x2", sol.edge[0]).attr("y2", sol.edge[1])
+        .attr("stroke", colour).attr("stroke-width", 0.8)
+        .attr("opacity", 0.55);
+    gText.append("text").attr("x", sol.x).attr("y", sol.y)
+      .attr("text-anchor", sol.anchor).attr("font-size", size)
+      .attr("fill", colour).attr("font-weight", weight || 400)
+      .attr("font-family", cls === "mono" ? "var(--mono)" : "var(--serif)")
+      .attr("paint-order", "stroke").attr("stroke", "var(--ground)")
+      .attr("stroke-width", 3.4).attr("stroke-linejoin", "round")
+      .text(text);
+    return true;
+  }
+
+  /* --- geometry --- */
+  Object.values(MP.tribs).forEach(segs => segs.forEach(function(seg){
+    gLines.append("path").attr("d", lineOf(seg)).attr("fill", "none")
+      .attr("stroke", "var(--mark)").attr("stroke-width", 1.3)
+      .attr("stroke-linecap", "round"); }));
+  gLines.append("path").attr("d", lineOf(MP.main)).attr("fill", "none")
+    .attr("stroke", "var(--ice)").attr("stroke-width", 7)
+    .attr("stroke-linejoin", "round").attr("stroke-linecap", "round")
+    .attr("opacity", 0.30);
+  gLines.append("path").attr("d", lineOf(MP.main)).attr("fill", "none")
+    .attr("stroke", "var(--river)").attr("stroke-width", 2.6)
+    .attr("stroke-linejoin", "round").attr("stroke-linecap", "round");
+
+  /* --- 1. event points and gauges (highest priority) --- */
+  const NAMES = {"collapse": "Langtang Lirung scar",
+                 "Gyirong": "Gyirong Port CCTV"};
+  const prio = o => (o.kind === "scar" || o.kind === "camera") ? 0
+                  : (o.kind === "gauge" ? 1 : 2);
+  MP.pois.slice().sort((a, b) => prio(a) - prio(b)).forEach(function(o){
+    const q = p2(o.lat, o.lon), x = q[0], y = q[1];
+    let col = "var(--ink-soft)", size = 11.5, weight = 400;
+    if (o.kind === "camera"){
+      gMarks.append("path")
+        .attr("d", `M${x},${y-7.5} L${x+7.5},${y} L${x},${y+7.5} L${x-7.5},${y} Z`)
+        .attr("fill", "var(--silt)").attr("stroke", "var(--ground)")
+        .attr("stroke-width", 1.2);
+      col = "var(--silt)"; weight = 600;
+    } else if (o.kind === "scar"){
+      gMarks.append("path")
+        .attr("d", `M${x},${y-9} L${x+8},${y+5.5} L${x-8},${y+5.5} Z`)
+        .attr("fill", "var(--ink)").attr("stroke", "var(--ground)")
+        .attr("stroke-width", 1.2);
+      col = "var(--ink)"; weight = 600; size = 12;
+    } else if (o.kind === "gauge"){
+      gMarks.append("circle").attr("cx", x).attr("cy", y).attr("r", 4.6)
+        .attr("fill", "var(--river-deep)").attr("stroke", "var(--ground)")
+        .attr("stroke-width", 1.4);
+      col = "var(--river-deep)"; weight = 600;
+    } else {
+      gMarks.append("circle").attr("cx", x).attr("cy", y).attr("r", 3.4)
+        .attr("fill", "var(--ground)").attr("stroke", "var(--ink-soft)")
+        .attr("stroke-width", 1.6);
+    }
+    let txt = o.label;
+    Object.keys(NAMES).forEach(function(k){
+      if (txt.indexOf(k) >= 0) txt = NAMES[k]; });
+    label(x, y, txt, size, "serif", col, weight);
+  });
+
+  /* --- 2. junctions --- */
+  MP.junctions.forEach(function(j){
+    const q = p2(j.lat, j.lon);
+    gMarks.append("rect").attr("x", q[0] - 4.2).attr("y", q[1] - 4.2)
+      .attr("width", 8.4).attr("height", 8.4).attr("fill", "var(--ground)")
+      .attr("stroke", "var(--silt)").attr("stroke-width", 1.8);
+  });
+
+  /* --- 3. hydropower plants --- */
+  (MP.plants || []).forEach(function(p){
+    const q = p2(p.lat, p.lon), x = q[0], y = q[1];
+    const r = gMarks.append("rect").attr("x", x - 4).attr("y", y - 4)
+      .attr("width", 8).attr("height", 8)
+      .attr("transform", `rotate(45 ${x} ${y})`);
+    if (p.status === "op") r.attr("fill", "var(--plant)")
+      .attr("stroke", "var(--ground)").attr("stroke-width", 1);
+    else r.attr("fill", "var(--ground)").attr("stroke", "var(--plant)")
+      .attr("stroke-width", 1.8);
+    label(x, y, p.label.replace(" ~", ""), 10, "serif", "var(--plant)", 400);
+  });
+
+  /* --- 4. distance ticks (lowest priority, droppable) --- */
+  [25, 50, 75, 100, 125, 150, 175].forEach(function(k){
+    let best = MP.main[0];
+    MP.main.forEach(function(m){
+      if (Math.abs(m[2] - k) < Math.abs(best[2] - k)) best = m; });
+    const q = p2(best[0], best[1]);
+    const b = bearingAt(q[0], q[1]), pp = b + Math.PI / 2;
+    gMarks.append("line")
+      .attr("x1", q[0] - Math.cos(pp) * 4.5).attr("y1", q[1] + Math.sin(pp) * 4.5)
+      .attr("x2", q[0] + Math.cos(pp) * 4.5).attr("y2", q[1] - Math.sin(pp) * 4.5)
+      .attr("stroke", "var(--river-deep)").attr("stroke-width", 1.6);
+    label(q[0], q[1], k + " km", 9.5, "mono", "var(--river-deep)", 400);
+  });
+
+  /* --- scale bar + north arrow --- */
+  const barKm = 25, bx = padL - 14, by = H - 26;
+  const gS = svg.append("g");
+  gS.append("line").attr("x1", bx).attr("y1", by)
+    .attr("x2", bx + barKm * sc).attr("y2", by)
+    .attr("stroke", "var(--ink)").attr("stroke-width", 2.4);
+  [0, barKm * sc].forEach(function(dx){
+    gS.append("line").attr("x1", bx + dx).attr("y1", by - 4)
+      .attr("x2", bx + dx).attr("y2", by + 4)
+      .attr("stroke", "var(--ink)").attr("stroke-width", 2.4); });
+  gS.append("text").attr("x", bx + barKm * sc / 2).attr("y", by - 8)
+    .attr("text-anchor", "middle").attr("font-size", 10.5)
+    .attr("font-family", "var(--mono)").attr("fill", "var(--ink-soft)")
+    .text(barKm + " km straight-line");
+  const nx = W - 40, ny = 54;
+  gS.append("path").attr("d", `M${nx},${ny-20} L${nx+6},${ny} L${nx},${ny-6} L${nx-6},${ny} Z`)
+    .attr("fill", "var(--ink-soft)");
+  gS.append("text").attr("x", nx).attr("y", ny + 14)
+    .attr("text-anchor", "middle").attr("font-size", 10.5)
+    .attr("font-family", "var(--mono)").attr("fill", "var(--ink-soft)").text("N");
+
+  legend("#fig-map", [
+    ["var(--river)", "flood path — ticks every 25 river-km"],
+    ["var(--mark)", "tributaries / side arms"],
+    ["var(--ink)", "▲ collapse scar", true],
+    ["var(--silt)", "◆ Gyirong Port CCTV · □ junction (capacitance step)", true],
+    ["var(--river-deep)", "● gauge station", true],
+    ["var(--plant)", "◆ hydro plant — filled: operating, hollow: under construction", true]]);
+})();
+
+/* ---- side valleys ---- */
+(function(){
+  const SV = DATA.sidevalleys;
+  const names = Object.keys(SV.series);
+  const cols = ["#4e79a7","#f28e2b","#59a14f","#e15759","#76b7b2","#d5a327","#b07aa1","#9c755f"];
+  let top = 0;
+  names.forEach(nm => { top = Math.max(top, d3.max(SV.series[nm])); });
+  const c = baseChart("#fig-sidevalleys", 860, 320, [0,12], [0, top*1.1],
+    "hours after 08:37 NPT", "stage above tributary sill (m)");
+  names.forEach(function(nm,i){
+    linePath(c.g, SV.t, SV.series[nm], c.x, c.y, cols[i], 1.8);
+  });
+  legend("#fig-sidevalleys", names.map((nm,i)=>[cols[i], nm]));
+})();
+})();
+</script>

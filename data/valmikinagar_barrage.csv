@@ -1,0 +1,39 @@
+# Valmikinagar (Gandak) barrage discharge, 26-31 Aug 2026, hourly where available.
+# Source: Bihar WRD control-room figures transcribed in Prabhat Khabar (Bettiah),
+# Amrit Vichar, Daily Pioneer, Live Dainik, Prime TV India (see event-dossier §12).
+# Times are IST (= NPT - 15 min). 1 cusec = 0.0283 m3/s.
+# CAUTION: this is barrage RELEASE through 36 gates, not natural flow. The
+# 26 Aug 16:00 spike is likely a gate-operation transient (all 36 gates opened
+# that afternoon) and is nearly simultaneous with the Devghat peak 70+ km
+# upstream - not routed flow. The 23:00-23:30 peak IS consistent with the
+# routed Devghat wave (lag ~7.25 h). Two published series disagree pre-16:00
+# (alt series: 12:00 86000, 14:00 88300, 15:00 92900 cusecs).
+date,time_ist,cusecs,m3s,note
+2026-08-26,13:00,103800,2939,
+2026-08-26,14:00,106100,3004,
+2026-08-26,15:00,110700,3134,
+2026-08-26,16:00,150200,4253,likely gate-operation transient
+2026-08-26,17:00,109000,3086,
+2026-08-26,17:30,106600,3018,
+2026-08-26,18:00,104400,2956,
+2026-08-26,20:30,114000,3228,routed wave rising
+2026-08-26,21:00,126500,3582,
+2026-08-26,21:30,136700,3871,
+2026-08-26,22:00,142100,4024,
+2026-08-26,22:30,147500,4177,
+2026-08-26,23:00,150200,4253,routed main peak
+2026-08-26,23:30,150200,4253,
+2026-08-27,01:00,129000,3653,
+2026-08-27,03:30,83900,2376,
+2026-08-27,04:00,81800,2316,
+2026-08-28,21:00,95200,2696,barrier-lake overtop NOT resolvable
+2026-08-28,22:00,92900,2630,
+2026-08-29,04:00,90600,2564,
+2026-08-29,06:00,95200,2696,normal cited as 97500 cusecs
+2026-08-30,11:00,136700,3871,late swell attribution ambiguous
+2026-08-30,12:00,144800,4098,
+2026-08-30,13:00,147500,4177,
+2026-08-30,16:00,163800,4636,
+2026-08-30,18:00,172200,4873,held 17:00-20:00
+2026-08-31,08:00,124000,3509,
+2026-08-31,18:00,177800,5032,U/S 356.30 ft
