@@ -1299,15 +1299,38 @@ drawLadder("run2");
 
   /* --- label placement engine --- */
   const placed = [];   /* per figure */
-  const textW = (s, size) => s.length * size * 0.53;
+  /* Text width by MEASUREMENT, not by counting characters. The old estimate
+     (chars x size x 0.53) is an average that under-reads any label with
+     capitals, digits, em-dashes or the middot separators we use, which is
+     exactly where labels were still touching. getComputedTextLength on a
+     hidden node in this SVG gives the real advance width for the real font;
+     results are cached because the engine probes up to 56 positions per
+     label. Drawing is gated on document.fonts.ready so the measurement is
+     taken with the webfont loaded, not with the fallback metrics. */
+  const _mt = svg.append("text").attr("visibility", "hidden")
+    .attr("x", -9999).attr("y", -9999);
+  const _wc = new Map();
+  function textW(s, size, mono){
+    const key = size + "|" + (mono ? 1 : 0) + "|" + s;
+    let v = _wc.get(key);
+    if (v !== undefined) return v;
+    _mt.attr("font-size", size)
+       .attr("font-family", mono ? "var(--mono)" : "var(--serif)")
+       .text(s);
+    try { v = _mt.node().getComputedTextLength(); }
+    catch (e) { v = s.length * size * 0.53; }
+    if (!(v > 0)) v = s.length * size * 0.53;
+    _wc.set(key, v);
+    return v;
+  }
   function free(r){
     if (r.x < 4 || r.x + r.w > W - 4 || r.y < 4 || r.y + r.h > H - 4)
       return false;
-    return !placed.some(q => !(r.x + r.w < q.x - 3 || q.x + q.w < r.x - 3
-                            || r.y + r.h < q.y - 2 || q.y + q.h < r.y - 2));
+    return !placed.some(q => !(r.x + r.w < q.x - 5 || q.x + q.w < r.x - 5
+                            || r.y + r.h < q.y - 4 || q.y + q.h < r.y - 4));
   }
-  function place(x, y, label, size, bearing){
-    const w = textW(label, size), h = size * 1.1;
+  function place(x, y, label, size, bearing, mono){
+    const w = textW(label, size, mono), h = size * 1.1;
     const perp = bearing + Math.PI / 2;
     const dirs = [perp, perp + Math.PI, perp + 0.55, perp - 0.55,
                   perp + Math.PI + 0.55, perp + Math.PI - 0.55,
@@ -1340,7 +1363,7 @@ drawLadder("run2");
     return Math.atan2(-(b[1] - a[1]), b[0] - a[0]);
   }
   function label(x, y, text, size, cls, colour, weight){
-    const sol = place(x, y, text, size, bearingAt(x, y));
+    const sol = place(x, y, text, size, bearingAt(x, y), cls === "mono");
     if (!sol) return false;
     if (sol.rad > 26)
       gLead.append("line").attr("x1", x).attr("y1", y)
@@ -1585,10 +1608,20 @@ drawLadder("run2");
     ["var(--plant)", "◆ hydro plant — filled: operating, hollow: under construction", true]]);
   }
 
-  drawCorridorMap("#fig-map", {locator: (UP.km_max || 0)});
-  if (UP.km_max)
-    drawCorridorMap("#fig-map-upper", {kmMax: UP.km_max, detail: true,
-                                       H: 780, ticks: [10, 20, 30, 40]});
+  function drawAll(){
+    drawCorridorMap("#fig-map", {locator: (UP.km_max || 0)});
+    if (UP.km_max)
+      drawCorridorMap("#fig-map-upper", {kmMax: UP.km_max, detail: true,
+                                         H: 780, ticks: [10, 20, 30, 40]});
+  }
+  /* measure with the real font, but never let a stalled font request stop
+     the figure appearing */
+  let drawn = false;
+  const once = () => { if (!drawn){ drawn = true; drawAll(); } };
+  if (document.fonts && document.fonts.ready){
+    document.fonts.ready.then(once).catch(once);
+    setTimeout(once, 2500);
+  } else once();
 })();
 
 /* ---- side valleys ---- */
