@@ -63,6 +63,42 @@ for label, segs in tribs.items():
         junctions.append({"label": label, "lat": best[1][0],
                           "lon": best[1][1], "km": round(best[1][2], 1)})
 
+# ---- Nepal / China (Tibet AR) international boundary -----------------------
+# OSM admin_level=2 ways in the corridor's northern bbox (data/osm_border.json,
+# Overpass). Drawn so a reader can see what the geography actually is: the
+# collapse was in NEPAL, on Langtang Lirung's north face, and the flood was
+# transboundary within seven minutes -- the Lhende meets the Kyirong Tsangpo
+# (which comes out of Tibet) at the border, and the 08:44 CCTV that anchors
+# our whole timing chain sits on the Chinese side at Gyirong Port.
+# clipped to the drawn map's own extent (main path + tributaries) so we do not
+# carry the Kodari salient 60 km east of anything on this figure
+_la = [m[0] for m in main] + [p[0] for s in tribs.values() for g in s for p in g]
+_lo = [m[1] for m in main] + [p[1] for s in tribs.values() for g in s for p in g]
+BORDER_BOX = (min(_la) - 0.05, min(_lo) - 0.05, max(_la) + 0.12, max(_lo) + 0.05)
+border = []
+bpath = os.path.join(DATA, "osm_border.json")
+if os.path.exists(bpath):
+    for e in json.load(open(bpath))["elements"]:
+        g = e.get("geometry") or []
+        pts = [[round(p["lat"], 5), round(p["lon"], 5)] for p in g
+               if BORDER_BOX[0] <= p["lat"] <= BORDER_BOX[2]
+               and BORDER_BOX[1] <= p["lon"] <= BORDER_BOX[3]]
+        if len(pts) >= 2:
+            border.append(pts[::2] if len(pts) > 40 else pts)
+
+# ---- historic events on the same massif ------------------------------------
+# 2015 site coordinates are map reads (+-1 km), flagged as such in the dossier.
+HIST = [
+    {"label": "Langtang village — destroyed 2015, 7 km south",
+     "lat": 28.2117, "lon": 85.5178, "year": 2015,
+     "note": "M7.8 Gorkha coseismic rock-ice avalanche off the SOUTH flank of "
+             "the same peak; 6.8 Mm3 deposit (Fujita et al. 2017), >200 dead "
+             "in the village. Different valley: it drains west to Syabrubesi."},
+    {"label": "Langtang Lirung 7,227 m", "lat": 28.2556, "lon": 85.5183,
+     "year": None, "note": "the 2026 scar is 2.3 km north of the summit, the "
+                           "2015 source 5 km south of it"},
+]
+
 POIS = [
     {"label": "collapse scar 08:37", "lat": 28.2765, "lon": 85.5194, "kind": "scar"},
     {"label": "Gyirong Port CCTV 08:44 — the T-junction", "lat": 28.2781, "lon": 85.3770, "kind": "camera"},
@@ -90,10 +126,18 @@ PLANTS = [
 d = json.load(open(CHART))
 d["map"] = {"main": [[round(a,5), round(b,5), round(c,2)] for a,b,c in main_ds],
             "tribs": tribs, "junctions": junctions, "pois": POIS,
-            "plants": PLANTS}
+            "plants": PLANTS, "border": border, "hist": HIST}
 json.dump(d, open(CHART, "w"), separators=(",", ":"))
 print(f"map appended: {len(main_ds)} main pts, "
       f"{sum(len(s) for s in tribs.values())} trib segs, "
-      f"{len(junctions)} junctions; {os.path.getsize(CHART)//1024} KB total")
+      f"{len(junctions)} junctions, {len(border)} border segs "
+      f"({sum(len(s) for s in border)} pts), {len(HIST)} historic marks; "
+      f"{os.path.getsize(CHART)//1024} KB total")
+if border:
+    la = [p[0] for s in border for p in s]
+    print(f"  border spans lat {min(la):.3f}-{max(la):.3f}; "
+          f"scar at 28.277 is "
+          f"{'SOUTH of (inside Nepal)' if 28.2765 < max(la) else 'north of'} "
+          f"the northernmost border segment drawn")
 for j in sorted(junctions, key=lambda j: j["km"]):
     print(f"  junction {j['label']:28s} at path-km {j['km']}")

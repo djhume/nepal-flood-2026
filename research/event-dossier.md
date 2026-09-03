@@ -40,6 +40,8 @@ Casualties (date-stamp everything; still rising): as of ~1 Sept, Nepal 1,114 dea
 
 ## 3. Runout path and geometry
 
+**Which country (routinely reported wrongly — checked 4 Sept 2026 against OSM `admin_level=2` boundary ways, `data/osm_border.json`):** the collapse was **in Nepal**. At the scar's longitude the border lies at 28.315–28.334 N; the scar is at 28.2765 N, i.e. **~4 km inside Nepal**. From about **path km 8 to km 22 the Lhende IS the boundary** — the modelled path never departs from the mapped border by more than **180 m** over that stretch (0.08–0.18 km at 2 km sampling) — Nepal on one bank, Tibet on the other. Below the Gyirong Port–Rasuwagadhi confluence the river turns south into Nepal proper. The main stem it joins there, the Kyirong Tsangpo, has itself come out of Tibet, so much of the standing river water H1 identifies as the flood's source was Chinese water. Our own report said "a headwater of the Lhende Khola in Tibet" until 4 Sept — corrected.
+
 Naming (sources are sloppy): avalanche fell into the **Chhochen Khola**, headwater of the **Lhende/Lende Khola** (Donglin Tsangpo), which joins the main **Kyirong Tsangpo/upper Trishuli** stem at the Gyirong Port–Rasuwagadhi border confluence. In Nepal: **Bhote Koshi (Rasuwa)** → joined by Langtang Khola near Syabrubesi → **Trishuli** → meets Kali Gandaki at Devghat → **Narayani** (→ Gandak, India). The **Purepu Tsangpo** (July 2025 GLOF source) is a neighbouring headwater of the same Lhende system — both disasters used the same corridor.
 
 | Point | Dist from source | Elevation | Notes |
@@ -87,6 +89,73 @@ Total relief source→Devghat ≈ 5,000 m over 168 km. Destruction ~100 km; debr
 ## 6. Precursor: 8 July 2025 Lhende Khola GLOF (same corridor)
 
 Supraglacial lake on the Purepu Glacier (~5,100–5,150 m, ~35 km upstream of Rasuwagadhi). Lake area grew from first ponds Dec 2023 to max 638,000 m² on 7 Jul 2025; ruptured 8 Jul; shrank to 435,000 m² (~200,000 m² drained; no published volume/discharge) ([khabarhub](https://english.khabarhub.com/2025/10/484718/)). Destroyed Friendship Bridge and Timure dry port, damaged the new Rasuwagadhi HEP; ~9–18 dead/missing (contested). 2025 deposits were still in the channel in Aug 2026 (Shahgedanova). ([Manila Times comparison](https://www.manilatimes.net/2026/08/29/business/science-technology/how-two-glacier-disasters-devastated-nepal/2414370), [Stimson](https://www.stimson.org/2025/investigating-an-emerging-climate-hazard-transboundary-glacial-floods-on-the-china-nepal-border/))
+
+## 6b. The other side of the same mountain: Langtang village, 25 April 2015
+
+**Added 4 Sept 2026.** Not previously in this dossier, and it should have been:
+it is the strongest local precedent for the hazard class, it comes with
+*peer-reviewed volumes* for a rock–ice avalanche off this exact peak, and it is
+the event people in the valley actually remember.
+
+| Quantity | Value | Source |
+|---|---|---|
+| Date / trigger | 25 Apr 2015, M7.8 Gorkha earthquake (coseismic, not climatic) | multiple |
+| Source | flank of **Langtang Lirung** (7,227 m), initiating **above 5,000 m**; the peak forms the **north wall of the Langtang valley**, so this fell **south** | [Collins & Jibson 2015 via Petley](https://blogs.agu.org/landslideblog/2016/04/24/langtang-1-2/) |
+| Descent | ice/snow initiating near ~7,000 m, entraining rock; airborne from ~4,500 m to the riverbed at ~3,250 m | Fujita et al. 2017 |
+| **Deposit volume** | **6.81 ± 1.54 Mm³** primary event, **+0.84 ± 0.92 Mm³** succeeding rockfalls | [Fujita et al. 2017, NHESS 17, 749–764](https://nhess.copernicus.org/articles/17/749/2017/nhess-17-749-2017.html) |
+| Mobilized volume | ~14.4 Mm³ mostly ice with some rock; largest avalanche covered 2.3 km² **[soft — secondary summary]** | [Landslides / ScienceDirect](https://www.sciencedirect.com/science/article/abs/pii/S001379521931302X) |
+| Deaths | **"over 200 in the village"** (Petley/Collins & Jibson); **"at least 350"** widely cited for the wider disaster incl. trekkers | as above; [Nature Comms E&E 2024](https://www.nature.com/articles/s43247-024-01624-z) |
+| Air blast | flattened forest on the **opposite** valley wall — "sufficiently mobile to create an air blast that knocked over huge numbers of trees" | Petley |
+| River damming | dammed the Langtang Khola for a few days **[soft — secondary summary]** | ScienceDirect summary |
+| Amplifier | anomalous winter snow, source-area depth 1.82 ± 0.46 m, "extreme event with a return interval of at least 100 years" | Fujita et al. 2017 |
+
+**Geometry relative to 2026** (our scar coordinates; 2015 site coordinates are
+map reads, ±1 km):
+
+| | distance from the 2026 scar |
+|---|---|
+| Langtang Lirung summit | 2.3 km (2026 scar is on the **north** face) |
+| Langtang village (2015) | **7.2 km, due south** |
+| Langtang Khola mouth at Syabrubesi | flood-path km 36.8 |
+
+**Same peak, opposite flanks, different drainage.** 2015 fell south into the
+Langtang Khola; 2026 fell north into the Chhochen → Lhende. The two systems
+rejoin only at Syabrubesi, ~15 km below the border confluence, so the 2026
+flood passed the *mouth* of the 2015 valley and never entered it. Rebuilt
+Langtang village is ~13 km up that valley and was not affected. **Anyone
+describing 2026 as "the same valley" as 2015 is wrong; "the same mountain,
+twice in eleven years, on both sides" is right and stronger.**
+
+**Resolves a loose end in §2.** This dossier recorded that "USGS cites a 2015
+event at nearly the same location (~5,000 m source, ~1,900 m fall, several
+Mm³)". Those three numbers match the Langtang village avalanche closely
+(initiation above 5,000 m; ~5,000 → ~3,250 m is ~1,750 m; 6.8 Mm³ deposit),
+so the USGS reference is almost certainly *this* event and **not** a second
+north-face failure. The USGS event page was TLS-broken and never fetched
+directly, so this is an inference — **[medium confidence; check if the page
+becomes readable]**.
+
+**Why it matters to this project — three ways:**
+
+1. **An independent scale check on the 2026 source, from the same mountain.**
+   Fujita et al.'s 6.8 Mm³ deposit is a measured, peer-reviewed volume for a
+   rock–ice avalanche off Langtang Lirung. Our entrainment mass balance
+   (`model/ENTRAINMENT.md`) independently concludes the 2026 release delivered
+   **≲3–5 Mm³ of solids** to the channel. Two unrelated methods, same order of
+   magnitude, both **one to two orders below** the 100–200 Mm³ figures in
+   circulation for 2026. This is now the third pointer at a small solid source.
+2. **Composition.** 2015 was ice-dominated ("mostly ice and some rock"). Our
+   2026 composition finding — the border clock is only reachable by an
+   ice-rich or wet mass — says the same thing about the other face.
+3. **Damming.** 2015 blocked its river for days. H3's minutes-scale
+   impoundment is the same mechanism on a different timescale, on the same
+   massif. **[the 2015 damming claim is soft; worth confirming before use]**
+
+**Difference worth stating plainly, and not blurring:** 2015 was triggered by
+an earthquake and amplified by anomalous snow; 2026 had no trigger event and
+is being attributed to thaw of ice-cemented rock. A mountain that fails
+coseismically is not evidence that the same mountain fails thermally, and vice
+versa. The shared lesson is exposure, not mechanism.
 
 ## 7. Landslide dams
 

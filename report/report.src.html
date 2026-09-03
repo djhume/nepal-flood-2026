@@ -239,10 +239,18 @@ The five colours above are those of the lungta, the prayer flags of the Langtang
 valley, which carry prayers on the wind for the benefit of all beings.</em></span></div>
 
 <h2><span class="no">02</span>The corridor</h2>
-<p>Geography first. The collapse fell into the Chhochen Khola, a headwater of
-the Lhende Khola in Tibet; the Lhende dead-ends into the main Kyirong
-Tsangpo–Trishuli stem at the China–Nepal border, where Gyirong Port sat
-directly opposite the mouth. From there the river is Nepal's Bhote Koshi, then
+<p>Geography first, because it is routinely reported wrongly. The collapse
+was <em>in Nepal</em> — the scar sits about 4 km inside the international
+boundary, on the north face of Langtang Lirung, and fell into the Chhochen
+Khola, a headwater of the Lhende. But from roughly km 8 the Lhende
+<em>is</em> the boundary: over the next 14 km the modelled path never
+departs from the mapped border by more than 180 m, Nepal on one bank and
+Tibet on the other. The Lhende then dead-ends into the main Kyirong
+Tsangpo–Trishuli stem — a river that has itself come out of Tibet — at the
+crossing where Gyirong Port sat directly opposite the mouth, on the far
+bank from Rasuwagadhi. So the flood was transboundary within seven minutes,
+and a good share of the water it swept up was already Chinese. From there
+the river is Nepal's Bhote Koshi, then
 the Trishuli, gathering tributaries until it meets the Kali Gandaki at Devghat
 to form the Narayani. The junctions on this map are more than scenery: when
 the surge arrives, an entire side arm's storage suddenly connects and the flow
@@ -254,7 +262,14 @@ border T-junction is the first and sharpest (§08).</p>
   <div id="fig-map" role="img" aria-label="Plan-view map of the flood corridor: main path, tributaries, junctions, gauges, collapse scar and border camera location"></div>
   <figcaption>The corridor as a network. Blue: the 199-km main flood path (dots
   every 25 km). Grey: tributaries and side arms. Squares: junctions — capacitance
-  steps. The diamond is Gyirong Port, home of the 08:44 CCTV, sitting exactly on
+  steps. The dashed line is the Nepal–China (Tibet AR) boundary: the filled
+  triangle of the collapse scar sits inside Nepal, and the path then follows the
+  boundary itself for 14 km. The hollow triangle is Langtang village, destroyed
+  on 25 April 2015 by a coseismic rock–ice avalanche off the <em>south</em> flank
+  of the same 7,227 m peak — 7 km from the 2026 scar, a different valley, and a
+  measured 6.8 Mm³ deposit (Fujita et al. 2017) that is a useful independent
+  yardstick for how much rock this mountain sheds. The diamond is Gyirong Port,
+  home of the 08:44 CCTV, sitting exactly on
   the T-junction where the Lhende (from the collapse scar, upper right) meets the
   main Kyirong Tsangpo–Trishuli stem. Note the Kali Gandaki joining at km 199 —
   precisely at the Devghat gauge, supporting the Narayani-gauge reading of §07.
@@ -1301,6 +1316,30 @@ drawLadder("run2");
   }
 
   /* --- geometry --- */
+  /* international boundary first, underneath everything: it is a reference
+     frame, not a feature of the flood. The collapse was in Nepal, ~4 km
+     inside the border; the flood was transboundary in seven minutes. */
+  (MP.border || []).forEach(function(seg){
+    gLines.append("path").attr("d", lineOf(seg)).attr("fill", "none")
+      .attr("stroke", "var(--ink-soft)").attr("stroke-width", 1.1)
+      .attr("stroke-dasharray", "7 3 2 3").attr("opacity", 0.65);
+  });
+  if ((MP.border || []).length){
+    /* country names straddling the boundary near the Rasuwagadhi crossing */
+    /* positions checked against the boundary geometry and the drawn features:
+       each sits on its own side of the line with >3 km clearance */
+    [[28.420, 85.400, "CHINA — Tibet AR"], [28.120, 85.400, "NEPAL"]]
+      .forEach(function(c){
+        const q = p2(c[0], c[1]);
+        gText.append("text").attr("x", q[0]).attr("y", q[1])
+          .attr("text-anchor", "middle").attr("font-size", 10)
+          .attr("letter-spacing", 1.6).attr("fill", "var(--ink-soft)")
+          .attr("font-family", "var(--mono)").attr("opacity", 0.8)
+          .attr("paint-order", "stroke").attr("stroke", "var(--ground)")
+          .attr("stroke-width", 3.4).attr("stroke-linejoin", "round")
+          .text(c[2]);
+      });
+  }
   Object.values(MP.tribs).forEach(segs => segs.forEach(function(seg){
     gLines.append("path").attr("d", lineOf(seg)).attr("fill", "none")
       .attr("stroke", "var(--mark)").attr("stroke-width", 1.3)
@@ -1347,6 +1386,29 @@ drawLadder("run2");
     Object.keys(NAMES).forEach(function(k){
       if (txt.indexOf(k) >= 0) txt = NAMES[k]; });
     label(x, y, txt, size, "serif", col, weight);
+  });
+
+  /* --- 1b. the same mountain, eleven years earlier ---
+     Langtang Lirung has now failed on both flanks: south into the Langtang
+     Khola on 25 Apr 2015 (Gorkha earthquake, 6.8 Mm3 deposit, >200 dead in
+     the village), north into the Chhochen/Lhende on 26 Aug 2026. Different
+     valleys — they rejoin only at Syabrubesi — so the hollow triangle is a
+     scale and exposure reference, not part of this flood's path. */
+  (MP.hist || []).forEach(function(o){
+    const q = p2(o.lat, o.lon), x = q[0], y = q[1];
+    if (o.year){
+      gMarks.append("path")
+        .attr("d", `M${x},${y-8} L${x+7},${y+5} L${x-7},${y+5} Z`)
+        .attr("fill", "var(--ground)").attr("stroke", "var(--ink-soft)")
+        .attr("stroke-width", 1.8);
+      label(x, y, o.label, 10.5, "serif", "var(--ink-soft)", 400);
+    } else {
+      gMarks.append("path")
+        .attr("d", `M${x-6},${y+3} L${x},${y-6} L${x+6},${y+3}`)
+        .attr("fill", "none").attr("stroke", "var(--ink-soft)")
+        .attr("stroke-width", 2).attr("stroke-linejoin", "round");
+      label(x, y, o.label, 10, "serif", "var(--ink-soft)", 400);
+    }
   });
 
   /* --- 2. junctions --- */
@@ -1408,7 +1470,8 @@ drawLadder("run2");
   legend("#fig-map", [
     ["var(--river)", "flood path — ticks every 25 river-km"],
     ["var(--mark)", "tributaries / side arms"],
-    ["var(--ink)", "▲ collapse scar", true],
+    ["var(--ink)", "▲ collapse scar 2026", true],
+    ["var(--ink-soft)", "△ Langtang village, destroyed 2015 (other flank) · ┄ international boundary", true],
     ["var(--silt)", "◆ Gyirong Port CCTV · □ junction (capacitance step)", true],
     ["var(--river-deep)", "● gauge station", true],
     ["var(--plant)", "◆ hydro plant — filled: operating, hollow: under construction", true]]);
