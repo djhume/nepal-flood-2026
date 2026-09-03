@@ -45,10 +45,18 @@ basin (S ~ 0.015 << mu -> Coulomb predicts pile-up/creep there).
 
 Outputs: scorecard to stdout, chamoli_voellmy.png.
 """
-import csv, json, math, os
+import csv, json, math, os, sys
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(HERE, "..", "..", "model"))
+from core import arrival_fn      # the shared first-crossing helper; this is
+                                 # the function whose plateau bug had to be
+                                 # fixed in three files at once. The rest of
+                                 # this script keeps its own step(): Chamoli
+                                 # advects a melt state f rather than the
+                                 # water tracers, so it is a different
+                                 # equation, not a copy.
 G = 9.81
 
 # ------------------------------------------------------------- geometry -----
@@ -237,23 +245,7 @@ def simulate(mu, w=W_NOM, n=N_MAN, dt=0.5, t_end=3 * 3600.0, thermal=None):
                                  if hfe[j] > 0.05 else 0.0)
     t = np.array(rec_t)
     front = np.maximum.accumulate(np.array(rec_front))       # monotone front
-    def arrival(km):
-        # first crossing, not np.interp: once the front saturates at the last
-        # node the front array has a long flat tail, and np.interp on repeated
-        # x-values returns a point inside the plateau (it reported Seti's
-        # Pokhara arrival as 180 min instead of ~100). Interpolate linearly
-        # between the two samples that straddle the crossing.
-        idx = np.nonzero(front >= km)[0]
-        if len(idx) == 0:
-            return float("inf")
-        i = int(idx[0])
-        if i == 0:
-            return float(t[0])
-        f0, f1 = front[i - 1], front[i]
-        if f1 <= f0:
-            return float(t[i])
-        return float(t[i - 1] + (km - f0) / (f1 - f0)
-                     * (t[i] - t[i - 1]))
+    arrival = arrival_fn(front, t)
     def speed_at(km, half_min=0.75):                         # +-45 s window
         ta = arrival(km)
         if not np.isfinite(ta):

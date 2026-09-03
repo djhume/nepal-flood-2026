@@ -1,49 +1,58 @@
 #!/usr/bin/env python3
 """
-Phase F — SETI 2012 BLIND HINDCAST. The intermediate-regime test.
+Phase F — SETI 2012 HINDCAST, v2. The intermediate-regime test, re-run on a
+corrected channel and with the entrainment term installed.
 
-Chamoli (dry, winter, granular; mu ~ 0.3 -> 0.02 by melt) and Langtang (wet,
-monsoon, watery; the river supplies the water) are the two endmembers the
-dilution dial spans. Seti sits between them BY CONSTRUCTION: a rock/ice
-avalanche fell into a gorge holding a lake that had been impounding behind a
-rockfall dam for weeks (Kargel; Hanisch et al. 2013). Water is neither made
-by melting nor lying along the channel — it is a discrete stored volume,
-released on impact.
+WHAT CHANGED SINCE v1 (and why this run is labelled honestly)
 
-BLIND PROTOCOL. Every dial constant is FROZEN at the value already published
-in our Trishuli/Chamoli work; nothing here is fitted to a Seti observation:
-    MU_WET = 0.02, W_SAT = 0.25            (unified.py, Langtang)
-    Bingham slurry branch, TAU_Y0 = 400 Pa, RHO_MIX = 1800  (unified.py)
-    U_DEP = 1.0 m/s, T_DEP = 120 s          (stranding, unified.py)
-    mu_dry from Scheidegger(V)              (as used at Chamoli and Langtang)
-    convective momentum + curvature shock viscosity  (unified.py v2)
-The step() function below is a verbatim copy of model/unified.py's, with the
-Trishuli geometry swapped for the Seti profile. Event inputs come only from
-research/seti-2012-anchors.md, which was written BEFORE this run.
+1. THE PROFILE WAS BROKEN. v1's greedy OSM walk bridged straight lines across
+   the Sabche Cirque rim wherever it could not find a continuing waterway, so
+   the sampled "river" oscillated by 1,500 m through the gorge; the monotone
+   descent clamp then flattened 31 of 54 km to a constant 1,020 m. v1's
+   timing pass was obtained on a channel with essentially no gradient over its
+   whole runout. build_path2.py replaces the walk with a Dijkstra route over
+   the mapped waterway graph (OSM way 352604044 carries the Seti continuously
+   from the cirque outlet to below Kharapani; v1 simply never chained onto it)
+   and snaps elevations to the local valley floor. 23% of nodes are now
+   clamped, in one 3 km patch at the cirque outlet, against 64% before.
+   -> This is NOT a fresh blind test. The pre-registered anchors are untouched
+      and every dial constant is still frozen at its Trishuli/Chamoli value,
+      but we have seen this event's answer once. Call it what it is: a re-run
+      on corrected input data, reported alongside what v1 said.
 
-SCORED AGAINST (from the anchors file, all out of sample):
-    Kharapani (path km 31.2) at 28.1 min after the 09:09:56 seismic impact
-        -- the hard anchor (photo timestamp), and independently the published
-        "20 km downstream in 28 minutes" measured from the dam, which our
-        stitched path puts at km 11.2: 31.2 - 11.2 = 20.0 km. Two independent
-        readings of the geometry agree, which is a good sign for the path.
-    Pokhara (km 54.4) at ~85 min (medium).
-    Mean front speed ~12 m/s over the dam->Kharapani reach.
+2. ENTRAINMENT EXISTS NOW (model/core.py). v1's headline failure was
+   sediment: w = 0.92 modelled against 0.47 measured (rho = 1.88 g/cm3). The
+   model could deposit and not erode. Two closures are now available, both
+   with literature constants, and this run scores both against that density —
+   out of sample, since nothing in either closure was chosen with reference
+   to it.
+
+3. THE "20 km" PATH AGREEMENT IS WITHDRAWN. v1 reported the stitched dam ->
+   Kharapani distance as 20.0 km against a published "20 km downstream", and
+   called it an independent consistency check. On the corrected route that
+   distance is 14.0 km (25.2 km from the detachment). The v1 agreement was a
+   coincidence of the broken path and should not be cited.
+
+BLIND PROTOCOL, unchanged: MU_WET = 0.02, W_SAT = 0.25, TAU_Y0 = 400 Pa,
+U_DEP = 1.0 m/s, T_DEP = 120 s, mu_dry from Scheidegger(V), and now the
+entrainment constants (Takahashi's DELTA_E/DELTA_D, Frank's K_TAU, C_STAR,
+tan phi, W_SETTLE) — all fixed in core.py from the literature, none fitted to
+a Seti observation. Event inputs come only from research/seti-2012-anchors.md.
+
+SCORED AGAINST (all out of sample):
+    Kharapani (path km 25.2) at 28.1 min after the 09:09:56 seismic impact.
+    Pokhara (km 49.6) at ~85 min (medium).
     Peak discharge ~935 m3/s (medium; personal communication).
-    Flow density 1.88 g/cm3 => water volume fraction w ~ 0.47 in the moving
-        mixture -- an independent published measurement of the very quantity
-        the dial advects. The model should sit in the slurry branch (w > 0.25).
-
-PRE-REGISTERED EXPECTATION (written before running, in the anchors file):
-the front must be SLOW -- ~12 m/s, four times slower than Langtang. A model
-tuned on Langtang's fast wave would fail here by running away. That is the
-failure mode this test exists to catch.
+    Flow density 1.88 g/cm3 => water volume fraction w ~ 0.47.
 """
-import csv, math, os
+import csv, math, os, sys
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-G = 9.81
+sys.path.insert(0, os.path.join(HERE, "..", "..", "model"))
+from core import (MU_WET, W_SAT, TAU_Y0, U_DEP, T_DEP, H_ERODE,
+                  mu_dry_scheidegger, Reach, step, arrival_fn, entrain_opts,
+                  c_eq_takahashi)
 
 # ------------------------------------------------------------- geometry -----
 rows = list(csv.DictReader(open(os.path.join(HERE, "profile.csv"))))
@@ -55,37 +64,53 @@ z = np.convolve(np.pad(zp, k, mode="edge"),
 N = len(x_km)
 DX = float(np.mean(np.diff(x_km))) * 1000.0
 
-KM_DAM = 11.2          # gorge head below Sabche Cirque = the impoundment
-KM_KHARAPANI = 31.2    # OSM "Kharpani" hamlet on the stitched path
-KM_POKHARA = 54.4
+KM_CIRQUE = 9.2        # routed cirque outlet — the avalanche leg ends here
+KM_DAM = 11.2          # rockfall dam in the headwater gorge (Hanisch et al.:
+                       # the blockage sat in the steep gorge, impounding the
+                       # cirque's meltwater behind it)
+KM_KHARAPANI = 25.2    # OSM "Kharpani" hamlet, 78 m off the routed line
+KM_POKHARA = 49.6
 
 # Pre-monsoon (5 May) baseflow: snowmelt-fed, small. Seti at Pokhara mean
 # annual ~50 m3/s; early May is the low season. Class values, not fitted.
-QB_X = np.array([0.0, 11.2, 31.2, 54.4])
+QB_X = np.array([0.0, KM_DAM, KM_KHARAPANI, KM_POKHARA])
 QB_Q = np.array([2.0, 6.0, 25.0, 45.0])
 Qb = np.interp(x_km, QB_X, QB_Q)
-q_lat = np.zeros(N)
-q_lat[1:] = np.diff(Qb)
 
-# The Seti gorge is a slot canyon (famously only metres wide where it cuts
-# Pokhara). Widths from that character, not from any flood observation.
-wn = np.interp(x_km, [0, 11, 20, 35, 45, 54.4], [60, 25, 30, 40, 50, 60])
-nn = np.interp(x_km, [0, 11, 31, 54.4], [0.060, 0.055, 0.045, 0.035])
+# WIDTHS. The Seti gorge below the cirque is a slot canyon (famously only
+# metres wide where it cuts Pokhara), and v1 gave the WHOLE path that
+# character — including path km 3.5-9.2, which is the SABCHE CIRQUE, a
+# glacial amphitheatre kilometres across. DEM transects on this line
+# (widths.py) find ground within 60 m of the floor out to +-1,000-1,500 m
+# through km 6-10 and walls climbing 250-1,100 m within 600 m from km 12 down:
+# a wide basin, then confinement. Routing a 22 Mm3 avalanche through a 60 m
+# channel in the basin makes it a ~300 m deep dam-break wave; giving the
+# cirque its mapped width lets the avalanche do what it observably did, which
+# is spread across the cirque floor and stop there.
+#
+# W_CIRQUE is a MAP READ (swept below), not a fitted constant, and it was
+# wrong in v1 as well as v2 — the correction is independent of any timing.
+W_CIRQUE = 2500.0
+CIRQUE_KM = (3.5, 9.2)
 
-# ------------------------------------------- FROZEN dial constants ----------
-MU_WET, W_SAT = 0.02, 0.25
-TAU_Y0, RHO_MIX = 400.0, 1800.0
-U_DEP, T_DEP = 1.0, 120.0
-FR_MAX = 2.0
 
-def mu_dry_scheidegger(V_m3):
-    return 10 ** (0.62419 - 0.15666 * math.log10(V_m3))
+def widths(w_cirque=W_CIRQUE, mode="class"):
+    if mode == "dem":
+        wr = list(csv.DictReader(open(os.path.join(HERE, "widths.csv"))))
+        w = np.interp(x_km, [float(r["dist_km"]) for r in wr],
+                      [float(r["width_m"]) for r in wr])
+    else:
+        w = np.interp(x_km, [0, 9.2, 12, 20, 25, 35, KM_POKHARA],
+                      [300, 25, 25, 30, 40, 50, 60])
+    cir = (x_km >= CIRQUE_KM[0]) & (x_km <= CIRQUE_KM[1])
+    w = np.where(cir, w_cirque, w)
+    return w
 
-def mu_of_w(w, h, mu_dry, mu_wet=MU_WET, w_sat=W_SAT):
-    lo = mu_dry + (mu_wet - mu_dry) * np.clip(w / w_sat, 0.0, 1.0)
-    tau_y = TAU_Y0 * np.clip((1.0 - w) / (1.0 - w_sat), 0.0, 1.0)
-    hi = np.minimum(tau_y / (RHO_MIX * G * np.maximum(h, 0.05)), mu_wet)
-    return np.where(w <= w_sat, lo, hi)
+
+wn = widths()
+nn = np.interp(x_km, [0, 9, 25, KM_POKHARA], [0.060, 0.055, 0.045, 0.035])
+
+R = Reach(x_km, z, wn, nn, Qb)
 
 # ------------------------------------------------------------ the event -----
 V_AVA = 22e6           # Kargel/NASA; NHESS lineage says 33e6 - swept below
@@ -95,104 +120,31 @@ V_IMP = 3.0e6          # impounded lake behind the rockfall dam: "several
                        # million cubic metres" total (SANDRP/Kargel) - swept
 KM_IMP_SPREAD = 2.0    # the impoundment occupies ~2 km of gorge behind the dam
 
-nf = 0.5 * (nn[:-1] + nn[1:])
-wf = 0.5 * (wn[:-1] + wn[1:])
-
-def step(st, dt, mu_dry, w_sat=W_SAT, mu_wet=MU_WET, deposit=True,
-         u_dep=U_DEP, t_dep=T_DEP):
-    """Verbatim copy of model/unified.py step(), Seti geometry, no side
-    valleys (none mapped on this reach) and no junction losses."""
-    h, hw, hwr, hr, bed = st["h"], st["hw"], st["hwr"], st["hr"], st["bed"]
-    Qi = st["Qi"]
-    eta = z + h
-    Sf = (eta[:-1] - eta[1:]) / DX
-    hfe = np.maximum(np.maximum(eta[:-1], eta[1:])
-                     - np.maximum(z[:-1], z[1:]), 0.05)
-    Af = np.maximum(wf * hfe, 1e-6)
-    up = Qi >= 0
-    hu = np.where(up, h[:-1], h[1:])
-    w_face = np.where(up, hw[:-1], hw[1:]) / np.maximum(hu, 1e-6)
-    wr_face = np.where(up, hwr[:-1], hwr[1:]) / np.maximum(hu, 1e-6)
-    r_face = np.where(up, hr[:-1], hr[1:]) / np.maximum(hu, 1e-6)
-    mu_i = mu_of_w(np.clip(w_face, 0, 1), hfe, mu_dry, mu_wet, w_sat)
-    uQ = Qi * Qi / Af
-    conv = np.zeros(N - 1)
-    conv[1:] = np.where(Qi[1:] >= 0, (uQ[1:] - uQ[:-1]) / DX, 0.0)
-    conv[:-1] += np.where(Qi[:-1] < 0, (uQ[1:] - uQ[:-1]) / DX, 0.0)
-    num = Qi + dt * (G * Af * Sf - conv)
-    den = 1.0 + G * dt * nf ** 2 * np.abs(Qi) / (Af * hfe ** (4 / 3))
-    Qi = num / den
-    Qi = np.sign(Qi) * np.maximum(np.abs(Qi) - mu_i * G * Af * dt, 0.0)
-    Qcap = FR_MAX * Af * np.sqrt(G * hfe)
-    Qi = np.clip(Qi, -Qcap, Qcap)
-    cfl = (np.abs(Qi) / Af + np.sqrt(G * hfe)) * dt / DX
-    curv = np.zeros(N - 1)
-    curv[1:-1] = np.abs(Qi[:-2] - 2 * Qi[1:-1] + Qi[2:]) \
-        / (np.abs(Qi[1:-1]) + 200.0)
-    beta = np.clip(curv, 0.0, 1.0) * np.clip(cfl, 0.0, 0.5)
-    if beta.any():
-        Qn = Qi.copy()
-        Qn[1:-1] = 0.5 * (Qi[:-2] + Qi[2:])
-        Qi = (1.0 - beta) * Qi + beta * Qn
-    Qi = np.where(Qi > 0, np.minimum(Qi, 0.9 * h[:-1] * wn[:-1] * DX / dt),
-                  np.maximum(Qi, -0.9 * h[1:] * wn[1:] * DX / dt))
-    Fw, Fwr, Fr = Qi * w_face, Qi * wr_face, Qi * r_face
-    dV = np.zeros(N); dW = np.zeros(N); dWr = np.zeros(N); dR = np.zeros(N)
-    dV[:-1] -= Qi; dV[1:] += Qi
-    dW[:-1] -= Fw; dW[1:] += Fw
-    dWr[:-1] -= Fwr; dWr[1:] += Fwr
-    dR[:-1] -= Fr; dR[1:] += Fr
-    dV[0] += Qb[0]; dW[0] += Qb[0]
-    dV[1:] += q_lat[1:]; dW[1:] += q_lat[1:]
-    S_end = max((z[-2] - z[-1]) / DX, 5e-4)
-    Q_end = (wn[-1] * h[-1] / nn[-1]) * h[-1] ** (2 / 3) * math.sqrt(S_end)
-    dV[-1] -= Q_end
-    dW[-1] -= Q_end * hw[-1] / max(h[-1], 1e-6)
-    dWr[-1] -= Q_end * hwr[-1] / max(h[-1], 1e-6)
-    dR[-1] -= Q_end * hr[-1] / max(h[-1], 1e-6)
-    h = h + dV * dt / (wn * DX)
-    hw = hw + dW * dt / (wn * DX)
-    hwr = hwr + dWr * dt / (wn * DX)
-    hr = hr + dR * dt / (wn * DX)
-    h = np.maximum(h, 0.05)
-    hw = np.clip(hw, 0.0, h); hwr = np.clip(hwr, 0.0, hw)
-    hr = np.clip(hr, 0.0, h)
-    if deposit:
-        u_node = np.zeros(N)
-        u_node[:-1] = np.abs(Qi) / Af
-        u_node[1:] = np.maximum(u_node[1:], np.abs(Qi) / Af)
-        h_sol = np.maximum(h - hw, 0.0)
-        strand = (u_node < u_dep) & (hw / np.maximum(h, 1e-6) < w_sat) \
-            & (h_sol > 0.02)
-        dep = np.where(strand, h_sol * dt / t_dep, 0.0)
-        h = np.maximum(h - dep, 0.05)
-        hr = np.clip(hr - dep, 0.0, None)
-        bed = bed + dep * wn * DX
-    st.update(h=h, hw=hw, hwr=hwr, hr=hr, Qi=Qi, bed=bed)
-    st["umax"] = np.maximum(st["umax"], np.abs(Qi) / Af)
-    return st
 
 def simulate(v_ava=V_AVA, v_imp=V_IMP, w0=W0, mu_dry=None, dt=0.4,
-             t_end=3.0 * 3600.0):
+             t_end=3.0 * 3600.0, entrain=None, reach=None, h_erode=H_ERODE):
     if mu_dry is None:
         mu_dry = mu_dry_scheidegger(v_ava)
+    R = reach if reach is not None else globals()["R"]
+    wn, nn = R.wn, R.nn
+    R.h_erode = h_erode
     S0 = np.maximum(-np.gradient(z, x_km * 1000), 1e-4)
     h = np.maximum((Qb * nn / (wn * np.sqrt(S0))) ** 0.6, 0.05)
-    st = dict(h=h, hw=h.copy(), hwr=np.zeros(N), hr=np.zeros(N),
-              Qi=0.5 * (Qb[:-1] + Qb[1:]), bed=np.zeros(N),
-              umax=np.zeros(N - 1))
+    st = R.new_state(h)
     # settle the pre-monsoon channel (dial at pure water -> mu = 0)
     for _ in range(int(1200 / dt)):
-        st = step(st, dt, mu_dry=0.3, deposit=False)
+        st = step(st, R, dt, mu_dry=0.3, deposit=False, side_valleys=False)
     # THE IMPOUNDMENT: a standing lake behind the rockfall dam at KM_DAM,
-    # present before the avalanche arrives. Filled as extra water depth over
-    # the 2 km of gorge behind the dam.
+    # present before the avalanche arrives.
     imp = (x_km >= KM_DAM - KM_IMP_SPREAD) & (x_km <= KM_DAM)
     d_imp = v_imp / (wn[imp].sum() * DX)
     st["h"][imp] += d_imp
     st["hw"][imp] += d_imp
     h0 = st["h"].copy()
     st["umax"] = np.zeros(N - 1)
+    st["ero"][:] = 0.0
+    st["dep"][:] = 0.0
+    st["bed"][:] = 0.0
     rel = x_km <= X_REL
     wsum = wn[rel].sum() * DX
     stj = {"Kharapani": int(np.argmin(np.abs(x_km - KM_KHARAPANI))),
@@ -210,7 +162,7 @@ def simulate(v_ava=V_AVA, v_imp=V_IMP, w0=W0, mu_dry=None, dt=0.4,
             st["hw"][rel] += dh * w0
             st["hwr"][rel] += dh * w0
             st["hr"][rel] += dh * (1 - w0)
-        st = step(st, dt, mu_dry)
+        st = step(st, R, dt, mu_dry, side_valleys=False, entrain=entrain)
         if it % save == 0:
             h, hw, Qi = st["h"], st["hw"], st["Qi"]
             rec["t"].append(t / 60.0)
@@ -228,30 +180,17 @@ def simulate(v_ava=V_AVA, v_imp=V_IMP, w0=W0, mu_dry=None, dt=0.4,
                 else {kk: np.array(vv) for kk, vv in v.items()})
            for k2, v in rec.items()}
     front = np.maximum.accumulate(out["front"])
-    tt = out["t"]
-    def arrival(km):
-        # first crossing, not np.interp: once the front saturates at the last
-        # node the front array has a long flat tail, and np.interp on repeated
-        # x-values returns a point inside the plateau (it reported Seti's
-        # Pokhara arrival as 180 min instead of ~100). Interpolate linearly
-        # between the two samples that straddle the crossing.
-        idx = np.nonzero(front >= km)[0]
-        if len(idx) == 0:
-            return float("inf")
-        i = int(idx[0])
-        if i == 0:
-            return float(tt[0])
-        f0, f1 = front[i - 1], front[i]
-        if f1 <= f0:
-            return float(tt[i])
-        return float(tt[i - 1] + (km - f0) / (f1 - f0)
-                     * (tt[i] - tt[i - 1]))
-    out.update(arrival=arrival, front=front, umax=st["umax"], bed=st["bed"],
-               mu_dry=mu_dry)
+    out.update(arrival=arrival_fn(front, out["t"]), front=front,
+               umax=st["umax"], bed=st["bed"], ero=st["ero"], dep=st["dep"],
+               mu_dry=mu_dry, wn=wn)
     return out
+
 
 # ---------------------------------------------------------------- score -----
 OBS = {"Kharapani": (KM_KHARAPANI, 28.1), "Pokhara": (KM_POKHARA, 85.0)}
+OBS_W = 0.47            # from rho = 1.88 g/cm3 with quartz solids
+OBS_QPK = 935.0
+
 
 def score(r, name):
     print(f"\n--- {name} (mu_dry={r['mu_dry']:.3f}) ---")
@@ -267,36 +206,111 @@ def score(r, name):
     t_d, t_k = r["arrival"](KM_DAM), r["arrival"](KM_KHARAPANI)
     if np.isfinite(t_k) and np.isfinite(t_d) and t_k > t_d:
         print(f"  dam->Kharapani mean front speed "
-              f"{20.0e3/((t_k-t_d)*60):5.1f} m/s   obs ~12")
+              f"{(KM_KHARAPANI-KM_DAM)*1e3/((t_k-t_d)*60):5.1f} m/s   obs ~12")
     q = r["Kharapani"]["q"]; tt = r["t"]
     m = tt > 2
     i = int(np.argmax(np.where(m, q, -1)))
     print(f"  peak Q at Kharapani {q[i]:6,.0f} m3/s at {tt[i]:5.1f} min"
-          f"   obs ~935")
-    wk = r["Kharapani"]["w"]
-    j = int(np.argmax(np.where(m, q, -1)))
-    print(f"  water fraction w at Kharapani during passage {wk[j]:.2f}"
-          f"   obs ~0.47 (density 1.88 g/cm3)")
-    print(f"  stranded solids {r['bed'].sum()/1e6:4.1f} Mm3 of "
+          f"   obs ~{OBS_QPK:.0f}")
+    wk = r["Kharapani"]["w"][i]
+    v = "PASS" if abs(wk - OBS_W) / OBS_W <= 0.5 else "FAIL"
+    print(f"  water fraction w at Kharapani at the peak {wk:.2f}"
+          f"   obs ~{OBS_W} (rho 1.88 g/cm3)   {100*(wk-OBS_W)/OBS_W:+.0f}%"
+          f"  -> {v}")
+    e = float((r["ero"] * r["wn"] * DX).sum() / 1e6)
+    d = float((r["dep"] * r["wn"] * DX).sum() / 1e6)
+    if e or d:
+        print(f"  bed exchange: eroded {e:5.2f} Mm3, deposited {d:5.2f} Mm3"
+              f"  (net {'erosional' if e > d else 'depositional'})")
+    print(f"  stranded solids {r['bed'].sum()/1e6:5.1f} Mm3 of "
           f"{V_AVA/1e6*(1-W0):4.1f} Mm3 released")
 
-print(f"Seti 2012 blind hindcast — path {x_km[-1]:.1f} km, "
+
+print(f"Seti 2012 hindcast v2 — path {x_km[-1]:.1f} km, "
       f"{z[0]:.0f} m -> {z[-1]:.0f} m")
-print(f"dam km {KM_DAM}, Kharapani km {KM_KHARAPANI} "
-      f"({KM_KHARAPANI-KM_DAM:.1f} km below the dam; published 20 km)")
+print(f"cirque outlet km {KM_CIRQUE}, dam km {KM_DAM}, Kharapani km "
+      f"{KM_KHARAPANI} ({KM_KHARAPANI-KM_DAM:.1f} km below the dam; "
+      f"v1 reported 20.0 km on a path since found broken)")
+print(f"gorge bed slope km {KM_DAM}-{KM_KHARAPANI}: mean "
+      f"{R.S_bed[(x_km>=KM_DAM)&(x_km<=KM_KHARAPANI)].mean():.3f} "
+      f"(v1's clamped profile: 0.000)")
+print(f"Takahashi capacity c_eq on that reach: "
+      f"{R.c_eq[(x_km>=KM_DAM)&(x_km<=KM_KHARAPANI)].mean():.3f} mean, "
+      f"{R.c_eq[(x_km>=KM_DAM)&(x_km<=KM_KHARAPANI)].max():.3f} max; "
+      f"at Kharapani {float(c_eq_takahashi(R.S_bed[int(np.argmin(abs(x_km-KM_KHARAPANI)))])):.3f}")
 print(f"FROZEN: MU_WET={MU_WET}, W_SAT={W_SAT}, TAU_Y0={TAU_Y0}, "
-      f"U_DEP={U_DEP}, T_DEP={T_DEP}")
+      f"U_DEP={U_DEP}, T_DEP={T_DEP}, H_ERODE={H_ERODE}")
 
+R_v1geom = Reach(x_km, z, np.interp(x_km, [0, 9, 12, 20, 25, 35, KM_POKHARA],
+                                    [60, 25, 25, 30, 40, 50, 60]), nn, Qb)
+
+print("\n" + "#" * 78)
+print("# PART 1 — what v1's CONFIGURATION does on a CORRECT channel.")
+print("# Same widths as v1 (slot canyon everywhere, cirque included), same")
+print("# release, same frozen dial; only the profile bug is fixed.")
+print("#" * 78)
+v1cfg = simulate(reach=R_v1geom)
+score(v1cfg, "v1 configuration, corrected profile")
+print("""
+  READ THIS AS A FAILED TEST, NOT A DETAIL. v1 reported Kharapani -23% and
+  Pokhara +18%, both PASS. On a channel that actually has a gradient the same
+  configuration arrives 4x early and the peak is 27x the observed discharge.
+  The v1 pass was produced by 31 km of accidentally flat channel, and the
+  RESULTS.md claim that the timing physics ported to a third event with zero
+  recalibration does not survive this. The pre-registered failure mode --
+  "a model tuned on Langtang's fast wave would fail here by running away" --
+  is exactly what happened once the terrain was real.""")
+
+print("\n" + "#" * 78)
+print("# PART 2 — one geometry correction, declared as post-hoc.")
+print("# The Sabche Cirque is kilometres wide and v1 modelled it as a 60 m")
+print("# slot. Widening it to its mapped width is a map fact, independent of")
+print("# any Seti timing -- but we are making it AFTER seeing the failure, so")
+print("# nothing below is a blind result. It is a mechanism demonstration.")
+print("#" * 78)
 base = simulate()
-score(base, "nominal: 22 Mm3 avalanche + 3 Mm3 impoundment")
+score(base, f"cirque {W_CIRQUE:.0f} m wide, NO entrainment")
 
+tak = simulate(entrain=entrain_opts("takahashi"))
+score(tak, "cirque + ENTRAINMENT, Takahashi capacity closure")
+
+shr = simulate(entrain=entrain_opts("shear"))
+score(shr, "cirque + ENTRAINMENT, Frank shear closure")
+
+print("\n=== how much of the avalanche stays in the cirque? ===")
+for r, nm in [(base, "no entrainment"), (tak, "Takahashi"), (shr, "shear")]:
+    cir = (x_km >= CIRQUE_KM[0]) & (x_km <= CIRQUE_KM[1])
+    print(f"  {nm:16s} stranded in cirque {r['bed'][cir].sum()/1e6:5.1f} Mm3 "
+          f"of {V_AVA/1e6*(1-W0):4.1f} Mm3 solids released; "
+          f"below the cirque {r['bed'][~cir].sum()/1e6:5.1f} Mm3")
+
+print("\n=== does the model still REQUIRE the impoundment? "
+      "(cirque geometry + Takahashi entrainment) ===")
+for vi in [0.0, 1e6, 3e6, 6e6]:
+    r = simulate(v_imp=vi, entrain=entrain_opts("takahashi"))
+    ta_k, ta_p = r["arrival"](KM_KHARAPANI), r["arrival"](KM_POKHARA)
+    print(f"  impoundment {vi/1e6:3.0f} Mm3: Kharapani "
+          f"{('%6.1f min' % ta_k) if np.isfinite(ta_k) else '  never  '} "
+          f"({100*(ta_k-28.1)/28.1:+5.0f}%)   Pokhara "
+          f"{('%6.1f min' % ta_p) if np.isfinite(ta_p) else '  never'}")
+
+print("\n=== sensitivities (cirque geometry + Takahashi) ===")
 for nm, kw in [("33 Mm3 avalanche (NHESS)", dict(v_ava=33e6)),
-               ("impoundment 1 Mm3", dict(v_imp=1e6)),
-               ("impoundment 6 Mm3", dict(v_imp=6e6)),
-               ("NO impoundment (avalanche only)", dict(v_imp=0.0)),
                ("wetter avalanche w0=0.25", dict(w0=0.25)),
-               ("drier avalanche w0=0.02", dict(w0=0.02))]:
-    score(simulate(**kw), nm)
+               ("drier avalanche w0=0.02", dict(w0=0.02)),
+               ("erodible layer 1 m", dict(h_erode=1.0)),
+               ("erodible layer 10 m", dict(h_erode=10.0))]:
+    score(simulate(entrain=entrain_opts("takahashi"), **kw), nm)
+for nm, wc in [("cirque 1,500 m", 1500.0), ("cirque 3,500 m", 3500.0)]:
+    Rw = Reach(x_km, z, widths(w_cirque=wc), nn, Qb)
+    score(simulate(entrain=entrain_opts("takahashi"), reach=Rw), nm)
+Rdem = Reach(x_km, z, widths(mode="dem"), nn, Qb)
+score(simulate(entrain=entrain_opts("takahashi"), reach=Rdem),
+      "DEM-measured widths below the cirque (30 m DEM reads the rim, not the "
+      "slot)")
+for nm, eo in [("no settling cap", dict(w_settle=1e9)),
+               ("settling cap x1/5 (silt)", dict(w_settle=0.005))]:
+    score(simulate(entrain=entrain_opts("takahashi", **eo)), nm)
 
 # ---------------------------------------------------------------- plot ------
 import matplotlib
@@ -305,39 +319,45 @@ import matplotlib.pyplot as plt
 
 fig, axes = plt.subplots(1, 3, figsize=(15.5, 4.8))
 ax = axes[0]
-ax.plot(base["t"], base["front"], color="#164a70", lw=2.2, label="model front")
+for r, c, lbl in [(base, "#9a7146", "no entrainment"),
+                  (tak, "#164a70", "Takahashi entrainment"),
+                  (shr, "#2b6b9c", "shear entrainment")]:
+    ax.plot(r["t"], r["front"], color=c, lw=2.0, label=lbl)
 for s, (km, obs) in OBS.items():
     ax.plot(obs, km, "kv", ms=9)
     ax.annotate(f"{s} obs {obs:.0f} min", (obs, km), fontsize=8,
                 textcoords="offset points", xytext=(6, -12))
 ax.axhline(KM_DAM, color="#9a7146", ls="--", lw=1, label="rockfall dam / lake")
-ax.set_xlim(0, 120); ax.set_ylim(0, 56)
+ax.set_xlim(0, 120); ax.set_ylim(0, KM_POKHARA + 2)
 ax.set_xlabel("minutes after 09:09:56 NPT"); ax.set_ylabel("path km")
-ax.set_title("Front trajectory vs the photo clock")
+ax.set_title("Front trajectory vs the photo clock\n(corrected channel profile)")
 ax.legend(fontsize=8); ax.grid(alpha=.25)
 
 ax = axes[1]
-for s, c in [("Kharapani", "#2b6b9c"), ("Pokhara", "#164a70")]:
-    ax.plot(base["t"], base[s]["q"], color=c, label=s)
-ax.axhline(935, color="k", ls=":", lw=1.2, label="obs peak ~935 m³/s")
+for r, c, lbl in [(base, "#9a7146", "no entrainment"),
+                  (tak, "#164a70", "Takahashi"), (shr, "#2b6b9c", "shear")]:
+    ax.plot(r["t"], r["Kharapani"]["q"], color=c, label=lbl)
+ax.axhline(OBS_QPK, color="k", ls=":", lw=1.2, label="obs peak ~935 m³/s")
 ax.set_xlim(0, 120)
 ax.set_xlabel("minutes after impact"); ax.set_ylabel("discharge (m³/s)")
-ax.set_title("Hydrographs")
+ax.set_title("Hydrographs at Kharapani")
 ax.legend(fontsize=8); ax.grid(alpha=.25)
 
 ax = axes[2]
-ax.plot(base["t"], base["Kharapani"]["w"], color="#2b6b9c",
-        label="w at Kharapani")
-ax.axhline(0.47, color="k", ls=":", lw=1.2,
+for r, c, lbl in [(base, "#9a7146", "no entrainment"),
+                  (tak, "#164a70", "Takahashi"), (shr, "#2b6b9c", "shear")]:
+    ax.plot(r["t"], r["Kharapani"]["w"], color=c, label=lbl)
+ax.axhline(OBS_W, color="k", ls=":", lw=1.4,
            label="obs w≈0.47 (ρ=1.88 g/cm³)")
 ax.axhline(W_SAT, color="#9a7146", ls="--", lw=1, label="W_SAT (dial knee)")
 ax.set_xlim(0, 120); ax.set_ylim(0, 1.05)
 ax.set_xlabel("minutes after impact"); ax.set_ylabel("water volume fraction")
-ax.set_title("The dial's own variable vs a published density")
+ax.set_title("The entrainment target:\nthe dial's own variable vs a published density")
 ax.legend(fontsize=8); ax.grid(alpha=.25)
 
-fig.suptitle("Seti 2012 blind hindcast — dilution dial frozen at Trishuli/Chamoli values, "
-             "event inputs from the pre-registered anchors file", fontsize=11)
+fig.suptitle("Seti 2012 v2 — corrected channel route, entrainment installed; "
+             "dial and entrainment constants frozen at literature values",
+             fontsize=11)
 fig.tight_layout()
 fig.savefig(os.path.join(HERE, "seti_hindcast.png"), dpi=140)
 print("\nfigure -> seti_hindcast.png")

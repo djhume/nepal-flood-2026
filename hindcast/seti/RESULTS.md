@@ -1,123 +1,195 @@
-# Seti 2012 blind hindcast — the intermediate-regime test
+# Seti 2012 hindcast — **the v1 result is withdrawn**
 
-**Run:** 3 September 2026, `run_seti.py`. **Protocol:** every dial constant
-frozen at its published Trishuli/Chamoli value; every event input taken from
-`research/seti-2012-anchors.md`, which was written before the model was run.
-Nothing in this hindcast is fitted to a Seti observation.
+**v1 run:** 3 September 2026, reported as a passed blind test.
+**v2 run:** 3 September 2026 (night), after a channel-profile bug was found.
+**Verdict: the v1 pass was an artifact of a broken profile. Both of v1's
+conclusions are withdrawn.**
 
-## Why this event
+This file replaces the earlier scorecard. The v1 text is preserved in git
+history (commit `3e4bb6e` and earlier) and the v1 profile is kept as
+`profile_v1.csv` so the withdrawn result stays reproducible.
 
-The dial spans two endmembers we had already used: Chamoli (dry winter
-granular, water made by melt) and Langtang (wet monsoon, water supplied by the
-river). Seti 2012 is the intermediate case *by construction* — a rock/ice
-avalanche fell into a gorge holding a lake that had been impounding behind a
-rockfall dam for weeks. The water is neither melted nor lying along the
-channel: it is a discrete stored volume released on impact. Two-point fits
-don't extrapolate to a third mechanism by luck.
+## What was wrong
 
-**Pre-registered expectation (from the anchors file, before running):** *"the
-front must be SLOW — ~12 m/s, four times slower than Langtang. A model tuned
-on Langtang's fast wave would fail here by running away."*
+`build_path.py` stitched the channel by walking greedily from way to way and
+**bridging in a straight line** whenever it could not find a continuation
+within 5 km. Between the Sabche Cirque and Kharapani it did this repeatedly,
+so roughly 17 km of the "river" was straight lines flown across the cirque rim
+and its ridges. The sampled elevations along those bridges oscillate by
+1,500 m — 1,020 m at km 9.6, 4,042 m at km 11.2, 3,096 m at km 24.0 — because
+they are reading ridge tops.
 
-## Path check — an unplanned consistency test
+`run_seti.py` then applied the standard monotone-descent clamp
+(`np.minimum.accumulate`) that every profile in this project uses to remove
+DEM noise. Against a 1,882 m spurious step that clamp does not clean the
+profile, it **destroys** it: everything from km 9.6 to km 41.6 was held at a
+constant 1,020 m. **31 of 54 km of channel, including the entire runout from
+the dam site past Kharapani, had exactly zero gradient.** 64% of nodes were
+clamped.
 
-The OSM stitch (waypoint-guided: Sabche Cirque → the OSM hamlet "Kharpani" at
-28.3602 N, 83.9604 E → Pokhara) puts the gorge head at path-km **11.2** and
-Kharapani at **31.2** — i.e. **20.0 km below the dam**, against the published
-"20 km downstream at Kharapani". The published distance and our independently
-built path agree to 0.1 km. (Our first attempt, a Pokhara-seeking greedy walk,
-wandered onto the Phirke Khola and put Kharapani 6 km off the line; the
-waypoint-guided version fixed it. The published "40 km north of Pokhara" is
-road distance, not river distance.)
+A flood on a flat bed is driven only by its own depth gradient. The model was
+therefore slowed by roughly the amount needed to match the observed arrival
+times, for a reason that had nothing to do with its physics.
 
-## Scorecard — nominal run (22 Mm³ avalanche + 3 Mm³ impoundment)
+The same clamp is benign on the other two paths, which is why this went
+unnoticed: Trishuli clamps 48% of nodes but by a mean of 9 m with a longest
+flat run of 6 km, and Chamoli clamps 11% with a longest run of 0.8 km. Only
+Seti had a straight-line bridge large enough to poison it. A profile-integrity
+check (longest flat run, largest raw upward step) now belongs in every path
+build.
 
-| Quantity | Model | Observed | Error | ±50% tier |
-|---|---|---|---|---|
-| **Kharapani arrival** | **21.5 min** | **28.1 min** (photo timestamp) | **−23%** | **PASS** |
-| **Pokhara arrival** | **100.2 min** | **~85 min** | **+18%** | **PASS** |
-| Dam→Kharapani mean front speed | 15.6 m/s | ~12 m/s | +30% | PASS |
-| Peak Q at Kharapani | 2,395 m³/s | ~935 m³/s | +156% | FAIL |
-| Water fraction w at passage | 0.92 | ~0.47 (ρ = 1.88 g/cm³) | +96% | FAIL |
-| Stranded solids | 11.6 of 19.8 Mm³ | not published | — | — |
+## The corrected channel
 
-The pre-registered failure mode did **not** occur: the model produced a slow
-front (15.6 m/s against Langtang's ~53) on a steeper path, because the dial
-put this flow in a different regime, not because anything was retuned.
+`build_path2.py` replaces the greedy walk with a Dijkstra shortest path over a
+graph of every mapped waterway in the bbox, healing sub-150 m gaps with
+penalised edges. OSM does carry a continuous Seti here — way 352604044 is a
+single 20.6 km line from the cirque outlet to below Kharapani — and v1 simply
+never chained onto it. Elevations are snapped to the local valley floor with a
+±60 m perpendicular stencil.
 
-## The strongest result: the model requires the impounded lake
+| | v1 | v2 |
+|---|---|---|
+| path length | 54.4 km | 49.6 km |
+| nodes clamped | 64% | 23% |
+| longest flat run | **31.2 km** | 3.2 km (cirque outlet) |
+| bed slope, dam → Kharapani | **0.000** | 0.075 |
+| Kharapani path km | 31.2 | 25.2 |
+| Kharapani offset from the line | — | 78 m |
 
-Sweeping only the stored volume, with everything else fixed:
+**The "20 km" path agreement is withdrawn too.** v1 reported dam → Kharapani as
+20.0 km against SANDRP's "20 km downstream", and called it an independent
+consistency check on the geometry. On the routed channel that distance is
+14.0 km (25.2 km from the detachment). The agreement was a coincidence of the
+straight-line bridges. Straight-line detachment → Kharapani is already 21.7 km,
+so no river path can be 20 km from the source; the published figure is either
+approximate or measured from somewhere else.
 
-| Impoundment | Kharapani arrival | Pokhara | Verdict |
+## Scorecard, v1 configuration on the corrected channel
+
+Same widths, same release, same frozen dial — only the profile is fixed.
+
+| Quantity | v1 (broken profile) | v2 (corrected) | Observed |
 |---|---|---|---|
-| **0 (avalanche alone)** | **65.2 min (+132%)** | **never reaches** | **FAIL** |
-| 1 Mm³ | 41.7 min (+48%) | never reaches | marginal / FAIL |
-| **3 Mm³ (nominal)** | **21.5 min (−23%)** | **100 min (+18%)** | **PASS** |
-| 6 Mm³ | 14.5 min (−48%) | 75 min (−12%) | marginal PASS |
+| Kharapani arrival | 21.5 min (−23%) **PASS** | **6.8 min (−76%) FAIL** | 28.1 min |
+| Pokhara arrival | 100.2 min (+18%) **PASS** | **28.2 min (−67%) FAIL** | ~85 min |
+| Dam→Kharapani front speed | 15.6 m/s | **34.9 m/s** | ~12 m/s |
+| Peak Q at Kharapani | 2,395 m³/s | **25,911 m³/s** | ~935 m³/s |
+| Water fraction w | 0.92 | 0.81 | 0.47 (ρ = 1.88) |
 
-A 22 Mm³ rock/ice avalanche falling into a pre-monsoon trickle **cannot**
-reach Kharapani on time: it strands in the gorge and the flood never arrives
-at Pokhara at all. Adding ~2–4 Mm³ of stored water — and nothing else — moves
-the arrival onto the observed clock.
+The pre-registered failure mode, written in `research/seti-2012-anchors.md`
+before v1 was run, was: *"the front must be SLOW — a model tuned on Langtang's
+fast wave would fail here by running away."* On real terrain that is exactly
+what happens. **The claim that the arrival-time physics ported to a third
+event with zero recalibration does not survive.**
 
-**This is Kargel's and Hanisch et al.'s conclusion, reproduced from dynamics
-alone.** Their reasoning was observational (no glacial lake existed, so where
-did the water come from? — a rockfall-dammed impoundment filled by weeks of
-spring melt). Ours is independent: the momentum equation says a dry-ish
-avalanche cannot deliver that arrival time, and quantifies how much stored
-water closes the gap. Two different methods, one answer, on a third event.
+## The second conclusion reverses as well
 
-It is also the H1 result in miniature. Seti's flood water was in the valley
-before the avalanche; Langtang's was in the river before the collapse. The
-mechanism differs (impoundment vs. monsoon flow); the conclusion — *the
-mountain supplies momentum, the valley supplies water* — is the same.
+v1's strongest-sounding result was that the model *independently requires* the
+impounded lake, reproducing Kargel's and Hanisch et al.'s observational
+conclusion from dynamics. On the corrected channel, with the cirque geometry
+below and entrainment on:
 
-## What fails, and why it is the same failure as Langtang
+| Impoundment | v1 Kharapani | v2 Kharapani |
+|---|---|---|
+| **0 Mm³ (avalanche alone)** | 65.2 min (+132%) FAIL | **28.5 min (+1%) PASS** |
+| 1 Mm³ | 41.7 min (+48%) | 14.0 min (−50%) |
+| 3 Mm³ | **21.5 min (−23%) PASS** | 9.2 min (−67%) |
+| 6 Mm³ | 14.5 min (−48%) | 7.7 min (−73%) |
 
-**Sediment concentration.** The model delivers w ≈ 0.92 (nearly clean water)
-at Kharapani, while the measured flow density of 1.88 g/cm³ implies w ≈ 0.47 —
-a dense slurry. The model strands 11.6 of 19.8 Mm³ of solids upstream and
-carries clean water past them.
+The sign of the inference flips: v1 said the model needs ~3 Mm³ of stored
+water to arrive on time, v2 says stored water makes it far too fast and the
+avalanche alone lands the clock. **Neither number should be cited.** What this
+actually shows is that the arrival time here is dominated by how much water is
+released at the top, and that our configuration of this event is not yet good
+enough to resolve it.
 
-This is the *same deficiency* the Langtang run showed (~100% river-derived
-water at Devghat) and the same one geopera's stereo DEM exposed from the other
-direction: the Langtang corridor was **net erosional by ~3.5×**, and our model
-has no erosion term at all. It can drop sediment; it cannot pick any up. A
-real debris flood entrains its bed — which is both how it stays dense and how
-it gouges 8–12 m out of a gorge floor.
+Kargel's and Hanisch's conclusion about the Seti's water source stands on its
+own observational evidence. It no longer has independent support from us.
 
-So: **the next structural addition is an entrainment term**, and we now have
-two independent, quantitative targets for it (Seti's ρ = 1.88; Langtang's
-measured erosion/deposition ratio). The peak-discharge overshoot (2,395 vs
-935 m³/s) is likely the same story plus my uncalibrated slot-canyon widths.
+## One geometry correction, and why it is not a rescue
 
-## Standing
+The corrected profile exposed a second error that was present in v1 too: path
+km 3.5–9.2 is the **Sabche Cirque**, a glacial amphitheatre kilometres across,
+and v1 modelled it as a 25–60 m slot. DEM transects on the routed line find
+ground within 60 m of the floor out to ±1,000–1,500 m through km 6–10, and
+walls climbing 250–1,100 m within 600 m from km 12 down. Routing a 22 Mm³
+avalanche through a 60 m channel there makes it a ~300 m deep dam-break wave.
 
-Timing — the thing this test existed to check — **passes at both anchors with
-zero recalibration**, and the model independently recovers the published
-water-source mechanism. Sediment transport fails in a now well-characterised,
-fixable way. Portability claim after three events: the arrival-time physics
-travels across regimes (granular Chamoli, impounded Seti, watery Langtang);
-the sediment physics does not travel yet because it is not there.
+Giving the cirque its mapped width (2,500 m, swept 1,500–3,500) is a map fact
+and carries no timing information — but it was made **after** seeing the
+failure, so nothing that follows is a blind result:
 
-## Bug found and fixed during this run
+| | Kharapani | Pokhara | front speed | w at Kharapani |
+|---|---|---|---|---|
+| v1 config, corrected profile | 6.8 min (−76%) | 28.2 (−67%) | 34.9 m/s | 0.81 |
+| + cirque width | 9.3 min (−67%) | 39.7 (−53%) | 25.4 m/s | 0.23 |
+| + cirque + entrainment | 9.2 min (−67%) | 41.7 (−51%) | 25.9 m/s | 0.97 |
+| + DEM-measured widths below the cirque | 19.5 min (−31%) **PASS** | never | **12.2 m/s** (obs ~12) | 0.98 |
 
-`arrival()` used `np.interp` against the cumulative front position. Once the
-front saturates at the last node the array has a long flat tail, and
-interpolating a value inside a plateau returns a point in its middle — it
-reported Pokhara at 180 min instead of 100. Fixed to a first-crossing search
-in `run_seti.py`, and the same pattern corrected in `model/unified.py` and
-`hindcast/chamoli/run_voellmy.py`. **Blast radius check:** Chamoli's scored
-anchor (Tapovan, km 23.2 of a 32.4 km path) sits on the rising part of the
-front curve, so the published Chamoli numbers are unaffected; the Trishuli
-scenario table's Devghat figures are peak-based, not front-based, so they are
-unaffected too. Only front-arrival-at-the-final-node was ever wrong.
+The last row is interesting and must not be over-read: with DEM-measured
+widths the mean front speed lands on the published ~12 m/s and Kharapani comes
+inside the ±50% band. That is a post-hoc geometry choice made after seeing the
+answer, on a 30 m DEM that reads the canyon rim rather than the slot. It is a
+hypothesis for the rebuild, not a result.
+
+## Entrainment at Seti: does not close the density gap, and says why
+
+The reason this event was re-run at all is that it carries one of the two
+quantitative targets for the new entrainment term (`model/core.py`): a
+published flow density of 1.88 g/cm³, i.e. a water volume fraction w ≈ 0.47.
+
+Both closures make it **worse**, not better: w ≈ 0.97 against v1's 0.92 and
+the observed 0.47. The Takahashi closure erodes 0.9 Mm³ and deposits 23 Mm³;
+the Frank shear closure erodes 6.9 and deposits 29.
+
+The diagnosis is clean and worth more than the score. Takahashi's equilibrium
+concentration at Kharapani's local bed slope (0.02) is **zero** — below the
+0.03 threshold where a mature debris flow can be sustained at all. A
+capacity-limited closure therefore says the flow at Kharapani should be clear
+water. The measured density says it was 53% solids by volume. **The Seti flow
+at Kharapani was not in equilibrium with its local slope; it was a surge
+carrying what it had entrained kilometres upstream and in the act of dumping
+it** — which is also why Kharapani is buried in the deposit. Neither the
+settling cap (swept ×1/5 and off) nor the erodible-layer depth (1–10 m)
+changes this: the closure strips the load in transit because it treats
+deposition as settling through quiet water.
+
+So the entrainment term does not fail at Seti for lack of an erosion law. It
+fails because an equilibrium-transport closure cannot represent a surge, and
+because the whole configuration of this event routes an avalanche that in
+reality stopped in the cirque.
+
+## What survives
+
+Nothing from this event should be cited in support of the Trishuli work. The
+portability claim after three events is now: **the arrival-time physics is
+demonstrated on Chamoli 2021 (one fitted dof, out-of-sample speeds) and has no
+second independent confirmation.** Seti has to be rebuilt before it can be
+either evidence or a counterexample.
+
+## Rebuild specification (the next task on this event)
+
+1. **Start the model at the cirque outlet, not the detachment.** The avalanche
+   fell into the cirque and stopped there; what ran the gorge was released
+   water plus entrained debris. Routing the whole 22 Mm³ down the gorge is the
+   error that drives everything above.
+2. **Make the gorge-entering fraction an explicit scenario axis**, the way
+   release volume and wetness are on the Trishuli. This is the Seti analogue
+   of the Langtang "how much liquid passed the border" inference.
+3. **Get the gorge cross-section right.** The 30 m DEM cannot see the slot;
+   the width choice moves the front speed by 2×, which is larger than every
+   other uncertainty here.
+4. **Re-register the anchors before rerunning.** The existing anchors file is
+   still untouched and still valid, but we have now seen this event's answer
+   twice, so a rebuild cannot be called blind. Say so.
 
 ## Files
 
-- `build_path.py` — waypoint-guided OSM stitch → `profile.csv` (137 pts, 400 m)
-- `run_seti.py` — the hindcast (physics copied verbatim from `model/unified.py`)
-- `seti_hindcast.png` — front trajectory, hydrographs, and the dial's water
-  fraction against the published flow density
-- Anchors (pre-registered): `research/seti-2012-anchors.md`
+- `build_path.py` — v1 greedy stitch (kept; produced the withdrawn result)
+- `build_path2.py` — v2 Dijkstra route over the waterway graph + floor-snapped
+  elevations
+- `profile_v1.csv` / `profile.csv` — the broken and corrected profiles
+- `widths.py` → `widths.csv` — DEM-measured valley widths
+- `run_seti.py` — the v2 hindcast, physics from `model/core.py`
+- `seti_hindcast.png` — front trajectories, hydrographs, water fraction
+- Anchors (pre-registered, unchanged): `research/seti-2012-anchors.md`

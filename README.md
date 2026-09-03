@@ -25,13 +25,22 @@ https://claude.ai/code/artifact/50fbb9c4-1dd2-43f6-a8c1-dbbf80e9d197
    discriminates what the falling mass was *made of*, not how big it was:
    ice-rich and wet scenarios arrive on time, dry-rock scenarios never do at any
    volume. Published imagery agrees qualitatively.
-3. **The method travels.** Run unchanged against the 2012 Seti River flood, the
-   model lands both arrival times and independently concludes that a stored body
-   of water must have been released — which is what investigators of that
-   disaster found by observation.
-4. **What is not settled:** the source volume and ice fraction are unpublished;
-   the model has **no sediment-entrainment term**, so it carries too little mud
-   downstream; distal flood peaks remain uncertain. Not peer-reviewed.
+3. **The method travels — one test stands, one is withdrawn.** Against Chamoli
+   2021 the model reproduces the Tapovan arrival once frictional melt is given a
+   thermal lag (one fitted number; the speeds are then out of sample). A second
+   test against the 2012 Seti flood was reported here as a clean pass and has
+   been **withdrawn**: the channel profile it ran on had 31 of 54 km flattened
+   to zero gradient by a path-building bug, and on a corrected channel the model
+   fails. See `hindcast/seti/RESULTS.md`.
+4. **The flood eroded about as much as the satellites measured.** With the new
+   entrainment term (`model/ENTRAINMENT.md`) and no fitted constants, the model
+   tears 3.8 Mm3 out of the corridor against 3.2 Mm3 measured by stereo DEM. The
+   same ledger says the corridor cannot have received the tens of Mm3 of rock the
+   largest source estimates imply — a contradiction with our own routing that is
+   now the sharpest open question here.
+5. **What is not settled:** the source volume and ice fraction are unpublished;
+   the model is single-phase, so proper deposition kills its distal wave;
+   distal flood peaks remain uncertain. Not peer-reviewed.
 
 Every contested number is flagged at the point of use. `PLAN.md` §6 ("Honesty
 rails") states the rules this project holds itself to; `PLAN.md` is also the
@@ -60,7 +69,9 @@ python -m venv .venv && .venv/bin/pip install numpy matplotlib
 ```bash
 .venv/bin/python hindcast/chamoli/run_hindcast.py   # kinematic law, zero recalibration
 .venv/bin/python hindcast/chamoli/run_voellmy.py    # Voellmy-Saint-Venant + thermal lag
-cd hindcast/seti && python build_path.py && python run_seti.py   # blind test
+cd hindcast/seti && python build_path2.py && python widths.py && python run_seti.py
+#   ^ Seti 2012 — WITHDRAWN result, kept reproducible; build_path.py is the
+#     superseded v1 stitch that produced the broken profile
 ```
 
 **Rebuilding the report pages** — order matters:

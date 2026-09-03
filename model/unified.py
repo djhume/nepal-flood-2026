@@ -53,14 +53,18 @@ the H1 payload from dynamics rather than bookkeeping.
 
 Outputs: scorecard to stdout, output/unified_v1.png.
 """
-import copy, csv, math, os
+import copy, csv, math, os, sys
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from core import (G, MU_WET, W_SAT, TAU_Y0, RHO_MIX, U_DEP, T_DEP, FR_MAX,
+                  mu_dry_scheidegger, mu_of_w, Reach, step, arrival_fn,
+                  entrain_opts, H_ERODE)
+
 DATA = os.path.join(HERE, "..", "data")
 OUT = os.path.join(HERE, "..", "output")
 os.makedirs(OUT, exist_ok=True)
-G = 9.81
 
 # ------------------------------------------------------------- geometry -----
 rows = list(csv.DictReader(open(os.path.join(DATA, "river_profile.csv"))))
@@ -77,8 +81,6 @@ QB_X = np.array([0.0, 10.0, 22.0, 37.6, 68.4, 120.0, 159.0, 161.0,
 QB_Q = np.array([40.0, 60.0, 150.0, 250.0, 500.0, 650.0, 700.0, 1000.0,
                  1050.0, 1450.0, 1500.0])
 Qb = np.interp(x_km, QB_X, QB_Q)
-q_lat = np.zeros(N)
-q_lat[1:] = np.diff(Qb)                              # m3/s per node
 
 w_hydr = np.clip(4.8 * np.sqrt(Qb), 40.0, 160.0)
 wn = np.where(x_km < 34.0, 50.0,
@@ -87,29 +89,9 @@ wn = np.where(x_km < 34.0, 50.0,
        np.where(x_km < 60.0, 60.0, w_hydr)))
 nn = np.interp(x_km, [0, 22, 70, 199], [0.060, 0.055, 0.040, 0.025])
 
-# --------------------------------------------------- shared dial constants --
-MU_WET, W_SAT = 0.02, 0.25
-U_DEP, T_DEP = 1.0, 120.0        # stranding: slow + granular -> to the bed
-TAU_Y0, RHO_MIX = 400.0, 1800.0  # Bingham yield stress at saturation (Pa),
-                                 # mixture density. Above W_SAT the mass is a
-                                 # slurry: yield resistance is a fixed STRESS,
-                                 # so its equivalent friction tau_y/(rho g h)
-                                 # DECREASES with depth - deep hyperconcen-
-                                 # trated waves run on gentle slopes (Pierson
-                                 # & Scott lahars) while thin sheets lock.
-                                 # A Coulomb coefficient here (the earlier
-                                 # form) wrongly parks deep waves on the
-                                 # lower river. Chamoli untouched: melt never
-                                 # pushed w past W_SAT there.
-
-def mu_dry_scheidegger(V_m3):
-    return 10 ** (0.62419 - 0.15666 * math.log10(V_m3))
-
-def mu_of_w(w, h, mu_dry, mu_wet=MU_WET, w_sat=W_SAT):
-    lo = mu_dry + (mu_wet - mu_dry) * np.clip(w / w_sat, 0.0, 1.0)
-    tau_y = TAU_Y0 * np.clip((1.0 - w) / (1.0 - w_sat), 0.0, 1.0)
-    hi = np.minimum(tau_y / (RHO_MIX * G * np.maximum(h, 0.05)), mu_wet)
-    return np.where(w <= w_sat, lo, hi)
+# The dial constants (MU_WET, W_SAT, TAU_Y0, RHO_MIX, U_DEP, T_DEP) and the
+# engine now live in model/core.py, shared with every hindcast — see that
+# module's docstring for the physics and for why the copies were merged.
 
 # ---------------------------------------------------------------- release ---
 V_REL = 10e6            # nominal initial detachment (early-Sept: 1-10 Mm3)
@@ -136,13 +118,6 @@ SIDE = [                # verbatim from ladder.py
     ("Budhi Gandaki",  160.0, 2.5e6, 120.0, 2.0),
     ("Marsyangdi",     185.0, 2.5e6, 120.0, 2.0),
 ]
-CD_WEIR = 1.6
-H_SIDE_MAX = 8.0   # m — cap on side-branch fill depth: the v0 constant-plan-
-                   # area reservoirs otherwise swallow unbounded volume under
-                   # a deep bore (plan area x any head). 8 m over the mapped
-                   # plan areas bounds each branch at a few Mm3, the scale the
-                   # ladder's calibrated runs actually exercised. Proper
-                   # stage-volume curves await Sentinel-2 mapping.
 K_JUNC_KM = {22.0: 3.0, 37.6: 1.5, 160.0: 1.0, 185.0: 1.0}
 
 # ------------------------------------------------------- observations -------
@@ -153,123 +128,11 @@ FRONT_OBS = [(22.0, 7, "border CCTV 08:44"), (37.6, 13, "Syabrubesi 08:50"),
 SPEED_OBS = [(30.0, 48.5, "geopera border reach 45-52"),
              (40.0, 11.0, "Syabrubesi opening ~11")]
 
-FR_MAX = 2.0
-
-# ------------------------------------------------------------ dynamics ------
-K_loc = np.zeros(N - 1)
-for km_j, K in K_JUNC_KM.items():
-    K_loc[min(int(np.argmin(np.abs(x_km - km_j))), N - 2)] = K
-nf = 0.5 * (nn[:-1] + nn[1:])
-wf = 0.5 * (wn[:-1] + wn[1:])
-side_node = {nm: int(np.argmin(np.abs(x_km - km))) for nm, km, *_ in SIDE}
-
-def step(st, dt, mu_dry, w_sat, mu_wet, side_valleys=True, deposit=True,
-         u_dep=U_DEP, t_dep=T_DEP):
-    """One explicit step of the unified model on state dict st."""
-    h, hw, hwr, hr, Qi, hs, bed = (st["h"], st["hw"], st["hwr"], st["hr"],
-                                   st["Qi"], st["hs"], st["bed"])
-    eta = z + h
-    Sf = (eta[:-1] - eta[1:]) / DX
-    hfe = np.maximum(np.maximum(eta[:-1], eta[1:])
-                     - np.maximum(z[:-1], z[1:]), 0.05)
-    Af = np.maximum(wf * hfe, 1e-6)
-    up = Qi >= 0
-    hu = np.where(up, h[:-1], h[1:])
-    w_face = np.where(up, hw[:-1], hw[1:]) / np.maximum(hu, 1e-6)
-    wr_face = np.where(up, hwr[:-1], hwr[1:]) / np.maximum(hu, 1e-6)
-    r_face = np.where(up, hr[:-1], hr[1:]) / np.maximum(hu, 1e-6)
-    mu_i = mu_of_w(np.clip(w_face, 0, 1), hfe, mu_dry, mu_wet, w_sat)
-    # v2: CONVECTIVE momentum d(uQ)/dx, first-order upwind. The pure
-    # local-inertia form (Bates et al. 2010) drops this term; that omission
-    # is what let a supercritical dam-break front confine into a one-cell
-    # soliton and a Coulomb-parked wall release as a coherent wall — the
-    # rarefaction that spreads a real dam-break lives in this term.
-    uQ = Qi * Qi / Af
-    conv = np.zeros(N - 1)
-    conv[1:] = np.where(Qi[1:] >= 0, (uQ[1:] - uQ[:-1]) / DX, 0.0)
-    conv[:-1] += np.where(Qi[:-1] < 0, (uQ[1:] - uQ[:-1]) / DX, 0.0)
-    num = Qi + dt * (G * Af * Sf - conv)
-    den = (1.0 + G * dt * nf ** 2 * np.abs(Qi) / (Af * hfe ** (4 / 3))
-           + K_loc * dt * np.abs(Qi) / (2.0 * Af * DX))
-    Qi = num / den
-    Qi = np.sign(Qi) * np.maximum(np.abs(Qi) - mu_i * G * Af * dt, 0.0)
-    Qcap = FR_MAX * Af * np.sqrt(G * hfe)
-    Qi = np.clip(Qi, -Qcap, Qcap)
-    # targeted shock viscosity: the local-inertia scheme drops convective
-    # momentum, so a supercritical dam-break front confines into a one-cell
-    # numerical soliton that never attenuates. Where Fr > 0.8, blend Q
-    # toward its neighbours (Lax-type dissipation) so the rarefaction can
-    # stretch the wave; subcritical reaches are untouched (ladder-identical).
-    # von Neumann-Richtmyer shock viscosity: the local-inertia scheme drops
-    # convective momentum, so a supercritical dam-break front can confine
-    # into a one-cell numerical soliton. Discriminate by SHARPNESS (second
-    # difference of Q), not Froude - smooth waves at any Fr are untouched,
-    # single-cell spikes are dissipated on the cell-crossing (CFL) timescale.
-    cfl = (np.abs(Qi) / Af + np.sqrt(G * hfe)) * dt / DX
-    curv = np.zeros(N - 1)
-    curv[1:-1] = np.abs(Qi[:-2] - 2 * Qi[1:-1] + Qi[2:]) \
-        / (np.abs(Qi[1:-1]) + 200.0)
-    beta = np.clip(curv, 0.0, 1.0) * np.clip(cfl, 0.0, 0.5)
-    if beta.any():
-        Qn = Qi.copy()
-        Qn[1:-1] = 0.5 * (Qi[:-2] + Qi[2:])
-        Qi = (1.0 - beta) * Qi + beta * Qn
-    Qi = np.where(Qi > 0, np.minimum(Qi, 0.9 * h[:-1] * wn[:-1] * DX / dt),
-                  np.maximum(Qi, -0.9 * h[1:] * wn[1:] * DX / dt))
-    Fw, Fwr, Fr = Qi * w_face, Qi * wr_face, Qi * r_face
-    dV = np.zeros(N); dW = np.zeros(N); dWr = np.zeros(N); dR = np.zeros(N)
-    dV[:-1] -= Qi; dV[1:] += Qi
-    dW[:-1] -= Fw; dW[1:] += Fw
-    dWr[:-1] -= Fwr; dWr[1:] += Fwr
-    dR[:-1] -= Fr; dR[1:] += Fr
-    dV[0] += Qb[0]; dW[0] += Qb[0]
-    dV[1:] += q_lat[1:]; dW[1:] += q_lat[1:]
-    S_end = max((z[-2] - z[-1]) / DX, 5e-4)
-    Q_end = (wn[-1] * h[-1] / nn[-1]) * h[-1] ** (2 / 3) * math.sqrt(S_end)
-    dV[-1] -= Q_end
-    dW[-1] -= Q_end * hw[-1] / max(h[-1], 1e-6)
-    dWr[-1] -= Q_end * hwr[-1] / max(h[-1], 1e-6)
-    dR[-1] -= Q_end * hr[-1] / max(h[-1], 1e-6)
-    if side_valleys:
-        for nm, km, area, ww, sill in SIDE:
-            i = side_node[nm]
-            head_main = eta[i] - (z[i] + sill)
-            dh = min(head_main, H_SIDE_MAX) - hs[nm]
-            Qs = CD_WEIR * ww * np.sign(dh) * min(abs(dh), 8.0) ** 1.5
-            Qs = np.clip(Qs, -hs[nm] * area / dt,
-                         max(head_main, 0) * wn[i] * DX / dt)
-            if (head_main <= 0 or hs[nm] >= H_SIDE_MAX) and Qs > 0:
-                Qs = 0.0
-            fw = hw[i] / max(h[i], 1e-6)
-            fwr = hwr[i] / max(h[i], 1e-6)
-            fr = hr[i] / max(h[i], 1e-6)
-            dV[i] -= Qs; dW[i] -= Qs * fw
-            dWr[i] -= Qs * fwr; dR[i] -= Qs * fr
-            hs[nm] = max(hs[nm] + Qs * dt / area, 0.0)
-    h += dV * dt / (wn * DX)
-    hw += dW * dt / (wn * DX)
-    hwr += dWr * dt / (wn * DX)
-    hr += dR * dt / (wn * DX)
-    h = np.maximum(h, 0.05)
-    hw = np.clip(hw, 0.0, h)
-    hwr = np.clip(hwr, 0.0, hw)
-    hr = np.clip(hr, 0.0, h)
-    if deposit:
-        # stranding: slow + granular -> solids to bed, water passes
-        u_node = np.zeros(N)
-        u_node[:-1] = np.abs(Qi) / Af
-        u_node[1:] = np.maximum(u_node[1:], np.abs(Qi) / Af)
-        h_sol = np.maximum(h - hw, 0.0)
-        wfrac = hw / np.maximum(h, 1e-6)
-        strand = (u_node < u_dep) & (wfrac < w_sat) & (h_sol > 0.02)
-        dep = np.where(strand, h_sol * dt / t_dep, 0.0)
-        h -= dep
-        hr = np.clip(hr - dep, 0.0, None)
-        bed += dep * wn * DX                     # m3 stored on the bed
-        h = np.maximum(h, 0.05)
-    st.update(h=h, hw=hw, hwr=hwr, hr=hr, Qi=Qi, hs=hs, bed=bed)
-    st["umax"] = np.maximum(st["umax"], np.abs(Qi) / Af)
-    return st
+# ---------------------------------------------------- the reach object ------
+# Geometry + baseflow handed to the shared engine (model/core.py). The side-
+# valley plan areas and the junction K values are unchanged from ladder.py.
+R = Reach(x_km, z, wn, nn, Qb, side=SIDE, k_junc=K_JUNC_KM)
+q_lat, wf, nf, K_loc = R.q_lat, R.wf, R.nf, R.K_loc
 
 _settled = {}
 def settled_state(dt=0.5, hours=2.0, side_valleys=True):
@@ -279,14 +142,12 @@ def settled_state(dt=0.5, hours=2.0, side_valleys=True):
         return copy.deepcopy(_settled[key])
     S0 = np.maximum(-np.gradient(z, x_km * 1000), 1e-4)
     h = np.maximum((Qb * nn / (wn * np.sqrt(S0))) ** 0.6, 0.05)
-    st = dict(h=h, hw=h.copy(), hwr=np.zeros(N), hr=np.zeros(N),
-              Qi=0.5 * (Qb[:-1] + Qb[1:]),
-              hs={nm: 0.0 for nm, *_ in SIDE}, bed=np.zeros(N),
-              umax=np.zeros(N - 1))
+    st = R.new_state(h)
     h_chk = st["h"].copy()
     for it in range(int(hours * 3600 / dt)):
-        # settle with the PURE-RIVER dial (w=1 -> mu=0) and no stranding
-        st = step(st, dt, mu_dry=0.3, w_sat=W_SAT, mu_wet=MU_WET,
+        # settle with the PURE-RIVER dial (w=1 -> mu=0), no stranding, no
+        # entrainment — the monsoon river at its own baseflow is the datum
+        st = step(st, R, dt, mu_dry=0.3, w_sat=W_SAT, mu_wet=MU_WET,
                   side_valleys=side_valleys, deposit=False)
         if it == int((hours - 0.25) * 3600 / dt):
             h_chk = st["h"].copy()
@@ -298,10 +159,12 @@ def settled_state(dt=0.5, hours=2.0, side_valleys=True):
 
 def simulate(V_rel=V_REL, w0=W0, w_sat=W_SAT, mu_wet=MU_WET, mu_dry=None,
              u_dep=U_DEP, t_dep=T_DEP, T_rel=T_REL, side_valleys=True,
-             dt=0.5, t_end=10.0 * 3600.0):
+             dt=0.5, t_end=10.0 * 3600.0, entrain=None):
     if mu_dry is None:
         mu_dry = mu_dry_scheidegger(V_rel)
     st = settled_state(dt=dt, side_valleys=side_valleys)
+    st["avail"][:] = R.h_erode      # settled_state is cached; re-arm the
+                                    # erodible layer so H_ERODE can be swept
     h0 = st["h"].copy()
     rel = x_km <= X_REL
     wsum = wn[rel].sum() * DX
@@ -326,8 +189,8 @@ def simulate(V_rel=V_REL, w0=W0, w_sat=W_SAT, mu_wet=MU_WET, mu_dry=None,
             st["hw"][rel] += dh * w0
             st["hwr"][rel] += dh * w0
             st["hr"][rel] += dh * (1 - w0)
-        st = step(st, dt, mu_dry, w_sat, mu_wet, side_valleys,
-                  deposit=True, u_dep=u_dep, t_dep=t_dep)
+        st = step(st, R, dt, mu_dry, w_sat, mu_wet, side_valleys,
+                  deposit=True, u_dep=u_dep, t_dep=t_dep, entrain=entrain)
         if it % save == 0:
             h, hw, hwr, hr, Qi = (st["h"], st["hw"], st["hwr"], st["hr"],
                                   st["Qi"])
@@ -358,26 +221,9 @@ def simulate(V_rel=V_REL, w0=W0, w_sat=W_SAT, mu_wet=MU_WET, mu_dry=None,
                 {kk: np.array(vv) for kk, vv in v.items()})
            for k2, v in rec.items()}
     front = np.maximum.accumulate(out["front"])
-    t_arr = out["t"]
-    def arrival(km):
-        # first crossing, not np.interp: once the front saturates at the last
-        # node the front array has a long flat tail, and np.interp on repeated
-        # x-values returns a point inside the plateau (it reported Seti's
-        # Pokhara arrival as 180 min instead of ~100). Interpolate linearly
-        # between the two samples that straddle the crossing.
-        idx = np.nonzero(front >= km)[0]
-        if len(idx) == 0:
-            return float("inf")
-        i = int(idx[0])
-        if i == 0:
-            return float(t_arr[0])
-        f0, f1 = front[i - 1], front[i]
-        if f1 <= f0:
-            return float(t_arr[i])
-        return float(t_arr[i - 1] + (km - f0) / (f1 - f0)
-                     * (t_arr[i] - t_arr[i - 1]))
-    out.update(arrival=arrival, front=front, umax=st["umax"],
-               bed=st["bed"], mu_dry=mu_dry, h0=h0)
+    out.update(arrival=arrival_fn(front, out["t"]), front=front,
+               umax=st["umax"], bed=st["bed"], ero=st["ero"], dep=st["dep"],
+               mu_dry=mu_dry, h0=h0)
     return out
 
 def clock(minutes):
@@ -413,10 +259,22 @@ def score_line(name, r, kw):
     qg = r["Galchhi"]["h"]
     rise30 = max(qg[j + 180] - qg[j] for j in range(len(qg) - 180))
     bed_t = r["bed"].sum() / 1e6
+    ent = ""
+    e, d = ero_dep(r)
+    if e or d:
+        ent = f" | eroded {e:4.1f} / deposited {d:4.1f} Mm3"
     print(f"  {name:28s} border {clock(ta_b)} | Syabru {clock(ta_sy)} | "
           f"Betrawati {clock(ta_be)} | Galchhi rise {rise30:4.1f} m | "
-          f"Devghat {q[i]:6,.0f} @ {clock(tt[i])} | stranded {bed_t:4.1f} Mm3")
+          f"Devghat {q[i]:6,.0f} @ {clock(tt[i])} | stranded {bed_t:4.1f} Mm3"
+          + ent)
     return r
+
+
+def ero_dep(r, lo=0.0, hi=1e9):
+    """Gross bed volumes exchanged by the entrainment closure, Mm3."""
+    m = (x_km >= lo) & (x_km <= hi)
+    return (float((r["ero"][m] * wn[m] * DX).sum() / 1e6),
+            float((r["dep"][m] * wn[m] * DX).sum() / 1e6))
 
 print("\nobserved:                        border 08:44 | Syabru 08:50 | "
       "Betrawati 09:20 |Galchhi rise ~9 m | Devghat  5,850 @ 16:00 | "
@@ -472,6 +330,104 @@ for nm2, kw in [("W_SAT=0.15", dict(w_sat=0.15)), ("W_SAT=0.35", dict(w_sat=0.35
     base = dict(V_rel=30e6, w0=0.15, mu_dry=MU_DRY_ICE)
     base.update(kw)
     score_line(nm2, simulate(**base), base)
+
+# ============================== ENTRAINMENT =================================
+# The term the model did not have. Scored against geopera's WorldView-3 stereo
+# DEM (1 Sept, after they retracted the 28 Aug "12 Mm3 wedge" as noise): in the
+# ~45% of the corridor their stereo pair covers, 3.2 Mm3 of EROSION against
+# 0.9 Mm3 of deposition — the corridor was net erosional by ~3.5x. Scaling
+# their mapped fraction to the whole corridor, if erosion is distributed like
+# their sample, gives order 7 Mm3 eroded / 2 Mm3 deposited; their calibrated
+# model puts total deposition near 5 Mm3. Take the RATIO (net erosional,
+# ~3.5:1) as the firm observable and the volumes as order-of-magnitude.
+#
+# Nothing in either closure was chosen with reference to these numbers:
+# DELTA_E/DELTA_D are Takahashi's, K_TAU is Frank et al.'s, tan(phi) and C_STAR
+# are standard bed properties, W_SETTLE is medium sand. H_ERODE (the erodible
+# layer) is the one genuinely uncertain input and is swept.
+print("\n" + "=" * 78)
+print("ENTRAINMENT — the corridor was net EROSIONAL by ~3.5x (geopera stereo:")
+print("3.2 Mm3 eroded vs 0.9 Mm3 deposited in the ~45% mapped)")
+print("=" * 78)
+ENT_BASE = {"C ice-rich V=30": dict(V_rel=30e6, w0=0.15, mu_dry=MU_DRY_ICE),
+            "F wet slurry V=60": dict(V_rel=60e6, w0=0.40,
+                                      mu_dry=MU_DRY_ICE)}
+ent_runs = {}
+for sc, kw in ENT_BASE.items():
+    for lab, eo in [("no entrainment", None),
+                    ("Takahashi capacity", entrain_opts("takahashi")),
+                    ("Frank shear", entrain_opts("shear"))]:
+        r = score_line(f"{sc} | {lab}", simulate(entrain=eo, **kw), kw)
+        ent_runs[(sc, lab)] = r
+
+print("\nwhere the bed exchange happens (Takahashi closure, scenario C):")
+r = ent_runs[("C ice-rich V=30", "Takahashi capacity")]
+for lo, hi, nm2 in [(0, 22, "scar->border"), (22, 68, "border->Betrawati"),
+                    (68, 108, "->Galchhi"), (108, 199.2, "->Devghat")]:
+    e, d = ero_dep(r, lo, hi)
+    print(f"  km {lo:5.1f}-{hi:5.1f} {nm2:18s} eroded {e:5.2f} Mm3, "
+          f"deposited {d:5.2f} Mm3")
+e_all, d_all = ero_dep(r)
+e_up, d_up = ero_dep(r, 0, 70)
+print(f"  whole corridor: {e_all:.2f} eroded / {d_all:.2f} deposited"
+      f"  -> {'net erosional' if e_all > d_all else 'net depositional'}"
+      f" {e_all/max(d_all,1e-9):.1f}:1"
+      f"   (geopera mapped 45%: 3.2 / 0.9 = 3.5:1 erosional)")
+print(f"  upper 70 km:    {e_up:.2f} eroded / {d_up:.2f} deposited")
+print(f"  LIKE FOR LIKE — what a DEM difference would see is the BULK volume\n"
+      f"  change of the valley floor, so stranded solids must be converted to\n"
+      f"  bulk at C*=0.65 and added to the closure's deposition:")
+for lab in ["no entrainment", "Takahashi capacity", "Frank shear"]:
+    rr = ent_runs[("C ice-rich V=30", lab)]
+    e2, d2 = ero_dep(rr)
+    bulk = rr["bed"].sum() / 1e6 / 0.65 + d2
+    print(f"    {lab:20s} bulk deposition {bulk:5.1f} Mm3 vs erosion "
+          f"{e2:4.1f} Mm3   (geopera: ~0.9 measured, ~5 their calibrated "
+          f"model, 3.2 eroded)")
+
+print("\nprovenance and concentration with entrainment (scenario C):")
+for lab in ["no entrainment", "Takahashi capacity", "Frank shear"]:
+    rr = ent_runs[("C ice-rich V=30", lab)]
+    tt2, qd2 = rr["t"], rr["Devghat"]["q"]
+    wd2, wrd2 = rr["Devghat"]["w"], rr["Devghat"]["wr"]
+    m2 = (tt2 > 60) & (qd2 > max(1600, 1.05 * float(np.median(qd2))))
+    if not m2.any():
+        m2 = tt2 > 60
+    vt = np.trapezoid(qd2[m2], tt2[m2] * 60)
+    friv = np.trapezoid(qd2[m2] * (wd2[m2] - wrd2[m2]), tt2[m2] * 60) / vt
+    wmin = float(np.min(wd2[m2]))
+    print(f"  {lab:20s} river water at Devghat {100*friv:5.1f}%, "
+          f"min water fraction w during passage {wmin:.2f} "
+          f"(rho ~{1000+(1-wmin)*1650:,.0f} kg/m3)")
+
+print("\nH_ERODE sweep (erodible layer depth, the one uncertain input):")
+for he in [1.0, 3.0, 10.0]:
+    R.h_erode = he
+    rr = simulate(entrain=entrain_opts("takahashi"), V_rel=30e6, w0=0.15,
+                  mu_dry=MU_DRY_ICE)
+    e, d = ero_dep(rr)
+    ta = rr["arrival"](22.0)
+    print(f"  H_ERODE={he:4.1f} m: eroded {e:5.2f} Mm3, deposited {d:5.2f} "
+          f"Mm3, border {clock(ta)}")
+R.h_erode = H_ERODE
+
+# The deposition side is settling-limited, and the settling cap uses a QUIET-
+# WATER fall velocity. A real flood keeps sand aloft: for h ~ 10 m at 6 m/s
+# the Rouse number of medium sand is ~0.2, i.e. fully suspended, so w_settle
+# is an upper bound on how fast solids can actually leave. Sweeping it is the
+# honest way to show how much of the deposition excess that explains.
+print("\nW_SETTLE sweep (deposition rate cap; 0.025 = quiet-water medium sand,")
+print("smaller = the suspension the closure does not model):")
+for ws in [0.025, 0.010, 0.005, 0.002]:
+    rr = simulate(entrain=entrain_opts("takahashi", w_settle=ws),
+                  V_rel=30e6, w0=0.15, mu_dry=MU_DRY_ICE)
+    e, d = ero_dep(rr)
+    bulk = rr["bed"].sum() / 1e6 / 0.65 + d
+    q2 = rr["Devghat"]["q"]; t2 = rr["t"]
+    i2 = int(np.argmax(np.where(t2 > 30, q2, -1)))
+    print(f"  W_SETTLE={ws:.3f} m/s: eroded {e:5.2f} / deposited {d:5.2f} Mm3"
+          f"  (bulk incl. stranding {bulk:5.1f})   Devghat {q2[i2]:6,.0f} @ "
+          f"{clock(t2[i2])}")
 
 # ---------------------------------------------------------------- plots -----
 import matplotlib

@@ -282,7 +282,106 @@ Betrawati +100% for C; wet scenarios don't); Devghat excess peak ~650 vs
 V≥60 through the border); impoundment/breach scenario still to add; τ_y,
 W_SAT, μ_dry(ice) literature pass pending.
 
-### Phase F, test 2 — SETI 2012 BLIND HINDCAST **PASSED** (3 Sept, night)
+### Phase B4 — ENTRAINMENT INSTALLED (3 Sept, night) — `model/ENTRAINMENT.md`
+
+The gap flagged as "the one big open gap" is closed as a *term*; what it
+revealed is bigger than the term. Engine refactored first: `model/core.py`
+now holds the one Voellmy–Saint-Venant step() and `arrival_fn`, shared by
+unified.py and run_seti.py (the copy-paste debt that made the arrival bug a
+three-file fix). **The published Trishuli scenario table reproduces
+bit-identically after the refactor** — regression checked, not asserted.
+
+Two closures, all constants from the literature, nothing fitted:
+Takahashi capacity (c_eq from bed slope + friction angle; δ_e = 0.0007,
+δ_d = 0.05) and Frank et al. (2015) shear (z_pot = K_τ(τ_b − τ_c)). Saturated
+bed (entrains c* solids + (1−c*) pore water), finite erodible layer H_ERODE
+(the one free input, swept 1–10 m), settling cap on deposition. Release
+tracers untouched by entrainment so H1 stays clean.
+
+1. **EROSION LANDS. 3.8 Mm³ modelled vs geopera's 3.2 Mm³ measured**, in the
+   same reaches they mapped, robust across closure (3.8/3.9), scenario
+   (C 3.8 / F 3.8), H_ERODE (3.0–4.4) and W_SETTLE (2.5–3.8). First
+   quantitative out-of-sample hit on the sediment side.
+2. **DEPOSITION IS 8–40× TOO LARGE — and that is an EVENT-SIZE result.**
+   Scenario C dumps 42.5 Mm³ of bulk fill in the corridor; the stereo DEM saw
+   0.9 (their model ~5). Since the solids demonstrably do not reach Devghat,
+   they must be in the corridor, and the DEM would have seen them.
+   ⇒ **the release delivered ≲3–5 Mm³ of SOLIDS to the channel** (V_rel ≲ 6 Mm³
+   at w0 = 0.15). That matches the EGU preliminary (0.5–10) and geopera's ~4
+   Mm³ valley change, sits 1–2 orders below the 100–200 Mm³ figures in
+   circulation, and **contradicts our own routing, which needs V = 30–60
+   through the border.** Now an arithmetic contradiction, not a qualitative
+   tension. Favoured resolutions: (a) the mass was mostly ice/water, not rock
+   (composition finding, third independent pointer); (b) the border volume is
+   impounded river water (H3); (c) the mapped 45% missed the deposit.
+3. **THE DISTAL WAVE DOES NOT SURVIVE PROPER DEPOSITION — a real regression.**
+   Galchhi 30-min rise: C 1.6 → 0.1 m; F 10.2 → 1.5 m (obs ~9). Scenario F was
+   the only run that had ever landed a distal observable and entrainment takes
+   it away. Mechanism: single-phase. You cannot deposit 25 Mm³ of solids in the
+   upper corridor and still deliver a 9 m rise at Galchhi with one phase.
+   **The single-phase assumption, not the erosion law, is now the binding
+   constraint.**
+4. Provenance UNCHANGED with entrainment on: still ~100% river water at
+   Devghat. The H1 headline survives the addition of the missing term.
+
+**NEXT BUILD (supersedes the old "entrainment" task):** split the solid load
+into a coarse fraction obeying the capacity closure and a fine/wash fraction
+that rides with the water — one physical split, addresses (3) and Seti's
+density together. Then: Rouse-modulated settling (W_SETTLE from shear velocity,
+not a constant); resolve the event-size contradiction with a FULL-corridor DEM
+difference rather than 45%.
+
+Bug found and fixed en route: the 0.05 m numerical wet-film depth floor
+manufactured volume in draining cells and, because the water tracer was not
+raised with it, counted that volume as SOLID into the stranding ledger
+(53 Mm³ stranded from a 19.8 Mm³ release on a wide basin). Now added as water.
+No published result changes.
+
+### Phase F, test 2 — SETI 2012 HINDCAST **WITHDRAWN** (3 Sept, night)
+
+**The v1 "PASSED" result below is retracted.** Building the entrainment term
+meant scrutinising bed slopes, which exposed the profile it ran on:
+`build_path.py`'s greedy stitch bridged straight lines across the Sabche
+Cirque rim, the sampled elevations oscillated by 1,500 m, and the standard
+monotone-descent clamp then held **31 of 54 km at a constant 1,020 m — the
+entire runout, at zero gradient.** The pass was bought by terrain that did not
+exist. Corrected with a Dijkstra route over the OSM waterway graph
+(`build_path2.py`; 23% clamped, longest flat 3.2 km, gorge slope 0.075).
+
+- **Timing FAILS: Kharapani 6.8 min vs 28.1 observed (−76%), Pokhara −67%,
+  front 34.9 m/s vs ~12, peak 25,911 vs ~935 m³/s.** The pre-registered
+  failure mode ("a model tuned on Langtang's fast wave would fail here by
+  running away") is exactly what happens on real terrain.
+- **The impoundment inference REVERSES:** 0 Mm³ now gives +1% (v1: +132% and
+  never reaching Pokhara); 3 Mm³ gives −67% (v1: −23% PASS). Neither number
+  should be cited. Kargel's/Hanisch's conclusion stands on its own evidence
+  and no longer has independent support from us.
+- **The "20.0 km vs published 20 km" path agreement is withdrawn** — the
+  routed distance is 14.0 km; straight-line source→Kharapani is already
+  21.7 km so no river path can be 20 km from the source.
+- Second error present in v1 too: path km 3.5–9.2 is the **Sabche Cirque**, a
+  glacial amphitheatre kilometres wide, modelled as a 25–60 m slot. Widening
+  it to its mapped width (DEM transects: ground within 60 m of the floor out
+  to ±1,000–1,500 m) is a map fact but was made after seeing the failure, so
+  it is declared post-hoc, not blind.
+- Entrainment does NOT close the density gap here (w 0.97 vs 0.47 observed)
+  and the reason is diagnostic: Takahashi's c_eq at Kharapani's slope (0.02)
+  is **zero**, so a capacity closure predicts clear water where the
+  measurement says 53% solids. The Seti surge was ~20× over local capacity —
+  which an equilibrium closure cannot express.
+
+**Portability claim after three events, restated honestly: demonstrated on
+Chamoli 2021 (one fitted dof, out-of-sample speeds); no second independent
+confirmation.** Rebuild spec in `hindcast/seti/RESULTS.md` — start at the
+cirque outlet, make the gorge-entering fraction a scenario axis, fix the slot
+width, and re-register before rerunning.
+
+**Process lesson, now a standing check:** every path build must report longest
+flat run and largest raw upward step. Trishuli (48% clamped, mean 9 m, longest
+6 km) and Chamoli (11%, longest 0.8 km) are fine; only Seti had a bridge big
+enough to poison the clamp. Both were verified after the bug was found.
+
+<details><summary>Superseded — the withdrawn v1 Seti entry (3 Sept, night)</summary>
 
 `hindcast/seti/` (anchors pre-registered in research/seti-2012-anchors.md,
 written before the run; all dial constants frozen at Trishuli/Chamoli values).
@@ -306,6 +405,8 @@ impounded behind a rockfall dam for weeks (Kargel; Hanisch et al. 2013).
   flat tail → returned mid-plateau (Pokhara 180 not 100 min). Fixed in
   run_seti.py, unified.py, run_voellmy.py. Blast radius checked: Chamoli's
   Tapovan anchor and Trishuli's peak-based figures unaffected.
+
+</details>
 
 ### IMAGERY MEMO (3 Sept) — research/imagery-composition-memo.md
 Open-evidence audit of the composition question. **Route (a) ice-rich source:
@@ -410,6 +511,11 @@ with the mass, relaxing over τ ~ d²/(π²κ) (a-priori 2–60 min for 4–20 c
 τ = the ONE fitted dof; arrival monotone in τ selects τ≈5 min ⇒ d≈6 cm.
 Result: Tapovan 37.4 vs 34–37 min (+5% PASS, robust 28–52 across all
 sensitivities), mean speed 10.3 vs ~11 m/s, km 16 flow speed passes; near-
+<!-- 3 Sept night: voellmy_curves.json was STALE — committed before the
+arrival() plateau fix, so the published report figure still says 37.4 min /
+10.3 m/s. Regenerating gives Tapovan 36.3 min (INSIDE the 34–37 window) and
+10.6 m/s; sensitivity band 27–51. The published number is the pessimistic one,
+so nothing is overclaimed, but the report needs a rebuild to sync. -->
 Tapovan local speeds still fail (~4 vs 12–16) because the real front was
 stick-slip (data prove it: mean 11 < slowest local 12) and τ-relaxation smears
 that into steady creep. Two design payloads: the water-limit U(S) is the
