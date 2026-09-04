@@ -276,216 +276,217 @@ def ero_dep(r, lo=0.0, hi=1e9):
     return (float((r["ero"][m] * wn[m] * DX).sum() / 1e6),
             float((r["dep"][m] * wn[m] * DX).sum() / 1e6))
 
-print("\nobserved:                        border 08:44 | Syabru 08:50 | "
-      "Betrawati 09:20 |Galchhi rise ~9 m | Devghat  5,850 @ 16:00 | "
-      "geopera stereo: 0.9 measured / ~5 modeled, NET EROSIONAL")
-results = {}
-for name, kw in SCENARIOS:
-    results[name] = score_line(name, simulate(**kw), kw)
-nom = results["C ice-rich V=30"]
+if __name__ == "__main__":
+    print("\nobserved:                        border 08:44 | Syabru 08:50 | "
+          "Betrawati 09:20 |Galchhi rise ~9 m | Devghat  5,850 @ 16:00 | "
+          "geopera stereo: 0.9 measured / ~5 modeled, NET EROSIONAL")
+    results = {}
+    for name, kw in SCENARIOS:
+        results[name] = score_line(name, simulate(**kw), kw)
+    nom = results["C ice-rich V=30"]
 
-print("\n=========== detail - scenario C (ice-rich V=30) ==========")
-print("front arrivals:")
-for km, obs_min, label in FRONT_OBS:
-    ta = nom["arrival"](km)
-    if np.isfinite(ta):
-        print(f"  km {km:6.1f}  model {ta:6.1f} min ({clock(ta)})   obs "
-              f"~{obs_min} ({label})   {(ta-obs_min)/obs_min*100:+.0f}%")
-    else:
-        print(f"  km {km:6.1f}  model  never              obs ~{obs_min} "
-              f"({label})")
-print("speeds:")
-for km, obs, label in SPEED_OBS:
-    v = nom[f"v@{km}"]
-    ta = nom["arrival"](km)
-    m = (nom["t"] >= ta - 1) & (nom["t"] <= ta + 10)
-    vp = v[m].max() if m.any() else 0.0
-    print(f"  km {km:5.1f}  model peak Q/A {vp:5.1f} m/s   obs {obs} ({label})")
-ta22 = nom["arrival"](22.0)
-if np.isfinite(ta22):
-    print(f"  scar->border mean front speed {22e3/(ta22*60):.0f} m/s "
-          f"(obs ~53 from the 7-min clock)")
-bed = nom["bed"]
-print(f"stranded: total {bed.sum()/1e6:.1f} Mm3 (km 0-68: "
-      f"{bed[x_km <= 68].sum()/1e6:.1f}) vs geopera stereo 0.9 Mm3 measured "
-      f"deposition / ~5 Mm3 calibrated model (12 Mm3 claim retracted 1 Sept)")
-tt = nom["t"]; qd = nom["Devghat"]["q"]
-rd, wd, wrd = nom["Devghat"]["r"], nom["Devghat"]["w"], nom["Devghat"]["wr"]
-m = (tt > 60) & (qd > 1600)
-if m.any():
-    v_tot = np.trapezoid(qd[m], tt[m] * 60)
-    f_sol = np.trapezoid(qd[m] * rd[m], tt[m] * 60) / v_tot
-    f_wrel = np.trapezoid(qd[m] * wrd[m], tt[m] * 60) / v_tot
-    f_wriv = np.trapezoid(qd[m] * (wd[m] - wrd[m]), tt[m] * 60) / v_tot
-    print(f"provenance at Devghat (Q>1,600): river water {100*f_wriv:.0f}%, "
-          f"release water {100*f_wrel:.1f}%, release solids {100*f_sol:.0f}%"
-          f"  (snowplow bookkeeping: ~74% river)")
+    print("\n=========== detail - scenario C (ice-rich V=30) ==========")
+    print("front arrivals:")
+    for km, obs_min, label in FRONT_OBS:
+        ta = nom["arrival"](km)
+        if np.isfinite(ta):
+            print(f"  km {km:6.1f}  model {ta:6.1f} min ({clock(ta)})   obs "
+                  f"~{obs_min} ({label})   {(ta-obs_min)/obs_min*100:+.0f}%")
+        else:
+            print(f"  km {km:6.1f}  model  never              obs ~{obs_min} "
+                  f"({label})")
+    print("speeds:")
+    for km, obs, label in SPEED_OBS:
+        v = nom[f"v@{km}"]
+        ta = nom["arrival"](km)
+        m = (nom["t"] >= ta - 1) & (nom["t"] <= ta + 10)
+        vp = v[m].max() if m.any() else 0.0
+        print(f"  km {km:5.1f}  model peak Q/A {vp:5.1f} m/s   obs {obs} ({label})")
+    ta22 = nom["arrival"](22.0)
+    if np.isfinite(ta22):
+        print(f"  scar->border mean front speed {22e3/(ta22*60):.0f} m/s "
+              f"(obs ~53 from the 7-min clock)")
+    bed = nom["bed"]
+    print(f"stranded: total {bed.sum()/1e6:.1f} Mm3 (km 0-68: "
+          f"{bed[x_km <= 68].sum()/1e6:.1f}) vs geopera stereo 0.9 Mm3 measured "
+          f"deposition / ~5 Mm3 calibrated model (12 Mm3 claim retracted 1 Sept)")
+    tt = nom["t"]; qd = nom["Devghat"]["q"]
+    rd, wd, wrd = nom["Devghat"]["r"], nom["Devghat"]["w"], nom["Devghat"]["wr"]
+    m = (tt > 60) & (qd > 1600)
+    if m.any():
+        v_tot = np.trapezoid(qd[m], tt[m] * 60)
+        f_sol = np.trapezoid(qd[m] * rd[m], tt[m] * 60) / v_tot
+        f_wrel = np.trapezoid(qd[m] * wrd[m], tt[m] * 60) / v_tot
+        f_wriv = np.trapezoid(qd[m] * (wd[m] - wrd[m]), tt[m] * 60) / v_tot
+        print(f"provenance at Devghat (Q>1,600): river water {100*f_wriv:.0f}%, "
+              f"release water {100*f_wrel:.1f}%, release solids {100*f_sol:.0f}%"
+              f"  (snowplow bookkeeping: ~74% river)")
 
-print("\ndial/stranding sensitivities on scenario C:")
-for nm2, kw in [("W_SAT=0.15", dict(w_sat=0.15)), ("W_SAT=0.35", dict(w_sat=0.35)),
-                ("w0=0.10", dict(w0=0.10)), ("w0=0.20", dict(w0=0.20)),
-                ("u_dep=2", dict(u_dep=2.0)), ("t_dep=300", dict(t_dep=300.0))]:
-    # (TAU_Y0 sensitivity would need a module constant override; noted in
-    # PLAN as future work with proper rheology sweep)
-    base = dict(V_rel=30e6, w0=0.15, mu_dry=MU_DRY_ICE)
-    base.update(kw)
-    score_line(nm2, simulate(**base), base)
+    print("\ndial/stranding sensitivities on scenario C:")
+    for nm2, kw in [("W_SAT=0.15", dict(w_sat=0.15)), ("W_SAT=0.35", dict(w_sat=0.35)),
+                    ("w0=0.10", dict(w0=0.10)), ("w0=0.20", dict(w0=0.20)),
+                    ("u_dep=2", dict(u_dep=2.0)), ("t_dep=300", dict(t_dep=300.0))]:
+        # (TAU_Y0 sensitivity would need a module constant override; noted in
+        # PLAN as future work with proper rheology sweep)
+        base = dict(V_rel=30e6, w0=0.15, mu_dry=MU_DRY_ICE)
+        base.update(kw)
+        score_line(nm2, simulate(**base), base)
 
-# ============================== ENTRAINMENT =================================
-# The term the model did not have. Scored against geopera's WorldView-3 stereo
-# DEM (1 Sept, after they retracted the 28 Aug "12 Mm3 wedge" as noise): in the
-# ~45% of the corridor their stereo pair covers, 3.2 Mm3 of EROSION against
-# 0.9 Mm3 of deposition — the corridor was net erosional by ~3.5x. Scaling
-# their mapped fraction to the whole corridor, if erosion is distributed like
-# their sample, gives order 7 Mm3 eroded / 2 Mm3 deposited; their calibrated
-# model puts total deposition near 5 Mm3. Take the RATIO (net erosional,
-# ~3.5:1) as the firm observable and the volumes as order-of-magnitude.
-#
-# Nothing in either closure was chosen with reference to these numbers:
-# DELTA_E/DELTA_D are Takahashi's, K_TAU is Frank et al.'s, tan(phi) and C_STAR
-# are standard bed properties, W_SETTLE is medium sand. H_ERODE (the erodible
-# layer) is the one genuinely uncertain input and is swept.
-print("\n" + "=" * 78)
-print("ENTRAINMENT — the corridor was net EROSIONAL by ~3.5x (geopera stereo:")
-print("3.2 Mm3 eroded vs 0.9 Mm3 deposited in the ~45% mapped)")
-print("=" * 78)
-ENT_BASE = {"C ice-rich V=30": dict(V_rel=30e6, w0=0.15, mu_dry=MU_DRY_ICE),
-            "F wet slurry V=60": dict(V_rel=60e6, w0=0.40,
-                                      mu_dry=MU_DRY_ICE)}
-ent_runs = {}
-for sc, kw in ENT_BASE.items():
-    for lab, eo in [("no entrainment", None),
-                    ("Takahashi capacity", entrain_opts("takahashi")),
-                    ("Frank shear", entrain_opts("shear"))]:
-        r = score_line(f"{sc} | {lab}", simulate(entrain=eo, **kw), kw)
-        ent_runs[(sc, lab)] = r
+    # ============================== ENTRAINMENT =================================
+    # The term the model did not have. Scored against geopera's WorldView-3 stereo
+    # DEM (1 Sept, after they retracted the 28 Aug "12 Mm3 wedge" as noise): in the
+    # ~45% of the corridor their stereo pair covers, 3.2 Mm3 of EROSION against
+    # 0.9 Mm3 of deposition — the corridor was net erosional by ~3.5x. Scaling
+    # their mapped fraction to the whole corridor, if erosion is distributed like
+    # their sample, gives order 7 Mm3 eroded / 2 Mm3 deposited; their calibrated
+    # model puts total deposition near 5 Mm3. Take the RATIO (net erosional,
+    # ~3.5:1) as the firm observable and the volumes as order-of-magnitude.
+    #
+    # Nothing in either closure was chosen with reference to these numbers:
+    # DELTA_E/DELTA_D are Takahashi's, K_TAU is Frank et al.'s, tan(phi) and C_STAR
+    # are standard bed properties, W_SETTLE is medium sand. H_ERODE (the erodible
+    # layer) is the one genuinely uncertain input and is swept.
+    print("\n" + "=" * 78)
+    print("ENTRAINMENT — the corridor was net EROSIONAL by ~3.5x (geopera stereo:")
+    print("3.2 Mm3 eroded vs 0.9 Mm3 deposited in the ~45% mapped)")
+    print("=" * 78)
+    ENT_BASE = {"C ice-rich V=30": dict(V_rel=30e6, w0=0.15, mu_dry=MU_DRY_ICE),
+                "F wet slurry V=60": dict(V_rel=60e6, w0=0.40,
+                                          mu_dry=MU_DRY_ICE)}
+    ent_runs = {}
+    for sc, kw in ENT_BASE.items():
+        for lab, eo in [("no entrainment", None),
+                        ("Takahashi capacity", entrain_opts("takahashi")),
+                        ("Frank shear", entrain_opts("shear"))]:
+            r = score_line(f"{sc} | {lab}", simulate(entrain=eo, **kw), kw)
+            ent_runs[(sc, lab)] = r
 
-print("\nwhere the bed exchange happens (Takahashi closure, scenario C):")
-r = ent_runs[("C ice-rich V=30", "Takahashi capacity")]
-for lo, hi, nm2 in [(0, 22, "scar->border"), (22, 68, "border->Betrawati"),
-                    (68, 108, "->Galchhi"), (108, 199.2, "->Devghat")]:
-    e, d = ero_dep(r, lo, hi)
-    print(f"  km {lo:5.1f}-{hi:5.1f} {nm2:18s} eroded {e:5.2f} Mm3, "
-          f"deposited {d:5.2f} Mm3")
-e_all, d_all = ero_dep(r)
-e_up, d_up = ero_dep(r, 0, 70)
-print(f"  whole corridor: {e_all:.2f} eroded / {d_all:.2f} deposited"
-      f"  -> {'net erosional' if e_all > d_all else 'net depositional'}"
-      f" {e_all/max(d_all,1e-9):.1f}:1"
-      f"   (geopera mapped 45%: 3.2 / 0.9 = 3.5:1 erosional)")
-print(f"  upper 70 km:    {e_up:.2f} eroded / {d_up:.2f} deposited")
-print(f"  LIKE FOR LIKE — what a DEM difference would see is the BULK volume\n"
-      f"  change of the valley floor, so stranded solids must be converted to\n"
-      f"  bulk at C*=0.65 and added to the closure's deposition:")
-for lab in ["no entrainment", "Takahashi capacity", "Frank shear"]:
-    rr = ent_runs[("C ice-rich V=30", lab)]
-    e2, d2 = ero_dep(rr)
-    bulk = rr["bed"].sum() / 1e6 / 0.65 + d2
-    print(f"    {lab:20s} bulk deposition {bulk:5.1f} Mm3 vs erosion "
-          f"{e2:4.1f} Mm3   (geopera: ~0.9 measured, ~5 their calibrated "
-          f"model, 3.2 eroded)")
+    print("\nwhere the bed exchange happens (Takahashi closure, scenario C):")
+    r = ent_runs[("C ice-rich V=30", "Takahashi capacity")]
+    for lo, hi, nm2 in [(0, 22, "scar->border"), (22, 68, "border->Betrawati"),
+                        (68, 108, "->Galchhi"), (108, 199.2, "->Devghat")]:
+        e, d = ero_dep(r, lo, hi)
+        print(f"  km {lo:5.1f}-{hi:5.1f} {nm2:18s} eroded {e:5.2f} Mm3, "
+              f"deposited {d:5.2f} Mm3")
+    e_all, d_all = ero_dep(r)
+    e_up, d_up = ero_dep(r, 0, 70)
+    print(f"  whole corridor: {e_all:.2f} eroded / {d_all:.2f} deposited"
+          f"  -> {'net erosional' if e_all > d_all else 'net depositional'}"
+          f" {e_all/max(d_all,1e-9):.1f}:1"
+          f"   (geopera mapped 45%: 3.2 / 0.9 = 3.5:1 erosional)")
+    print(f"  upper 70 km:    {e_up:.2f} eroded / {d_up:.2f} deposited")
+    print(f"  LIKE FOR LIKE — what a DEM difference would see is the BULK volume\n"
+          f"  change of the valley floor, so stranded solids must be converted to\n"
+          f"  bulk at C*=0.65 and added to the closure's deposition:")
+    for lab in ["no entrainment", "Takahashi capacity", "Frank shear"]:
+        rr = ent_runs[("C ice-rich V=30", lab)]
+        e2, d2 = ero_dep(rr)
+        bulk = rr["bed"].sum() / 1e6 / 0.65 + d2
+        print(f"    {lab:20s} bulk deposition {bulk:5.1f} Mm3 vs erosion "
+              f"{e2:4.1f} Mm3   (geopera: ~0.9 measured, ~5 their calibrated "
+              f"model, 3.2 eroded)")
 
-print("\nprovenance and concentration with entrainment (scenario C):")
-for lab in ["no entrainment", "Takahashi capacity", "Frank shear"]:
-    rr = ent_runs[("C ice-rich V=30", lab)]
-    tt2, qd2 = rr["t"], rr["Devghat"]["q"]
-    wd2, wrd2 = rr["Devghat"]["w"], rr["Devghat"]["wr"]
-    m2 = (tt2 > 60) & (qd2 > max(1600, 1.05 * float(np.median(qd2))))
-    if not m2.any():
-        m2 = tt2 > 60
-    vt = np.trapezoid(qd2[m2], tt2[m2] * 60)
-    friv = np.trapezoid(qd2[m2] * (wd2[m2] - wrd2[m2]), tt2[m2] * 60) / vt
-    wmin = float(np.min(wd2[m2]))
-    print(f"  {lab:20s} river water at Devghat {100*friv:5.1f}%, "
-          f"min water fraction w during passage {wmin:.2f} "
-          f"(rho ~{1000+(1-wmin)*1650:,.0f} kg/m3)")
+    print("\nprovenance and concentration with entrainment (scenario C):")
+    for lab in ["no entrainment", "Takahashi capacity", "Frank shear"]:
+        rr = ent_runs[("C ice-rich V=30", lab)]
+        tt2, qd2 = rr["t"], rr["Devghat"]["q"]
+        wd2, wrd2 = rr["Devghat"]["w"], rr["Devghat"]["wr"]
+        m2 = (tt2 > 60) & (qd2 > max(1600, 1.05 * float(np.median(qd2))))
+        if not m2.any():
+            m2 = tt2 > 60
+        vt = np.trapezoid(qd2[m2], tt2[m2] * 60)
+        friv = np.trapezoid(qd2[m2] * (wd2[m2] - wrd2[m2]), tt2[m2] * 60) / vt
+        wmin = float(np.min(wd2[m2]))
+        print(f"  {lab:20s} river water at Devghat {100*friv:5.1f}%, "
+              f"min water fraction w during passage {wmin:.2f} "
+              f"(rho ~{1000+(1-wmin)*1650:,.0f} kg/m3)")
 
-print("\nH_ERODE sweep (erodible layer depth, the one uncertain input):")
-for he in [1.0, 3.0, 10.0]:
-    R.h_erode = he
-    rr = simulate(entrain=entrain_opts("takahashi"), V_rel=30e6, w0=0.15,
-                  mu_dry=MU_DRY_ICE)
-    e, d = ero_dep(rr)
-    ta = rr["arrival"](22.0)
-    print(f"  H_ERODE={he:4.1f} m: eroded {e:5.2f} Mm3, deposited {d:5.2f} "
-          f"Mm3, border {clock(ta)}")
-R.h_erode = H_ERODE
+    print("\nH_ERODE sweep (erodible layer depth, the one uncertain input):")
+    for he in [1.0, 3.0, 10.0]:
+        R.h_erode = he
+        rr = simulate(entrain=entrain_opts("takahashi"), V_rel=30e6, w0=0.15,
+                      mu_dry=MU_DRY_ICE)
+        e, d = ero_dep(rr)
+        ta = rr["arrival"](22.0)
+        print(f"  H_ERODE={he:4.1f} m: eroded {e:5.2f} Mm3, deposited {d:5.2f} "
+              f"Mm3, border {clock(ta)}")
+    R.h_erode = H_ERODE
 
-# The deposition side is settling-limited, and the settling cap uses a QUIET-
-# WATER fall velocity. A real flood keeps sand aloft: for h ~ 10 m at 6 m/s
-# the Rouse number of medium sand is ~0.2, i.e. fully suspended, so w_settle
-# is an upper bound on how fast solids can actually leave. Sweeping it is the
-# honest way to show how much of the deposition excess that explains.
-print("\nW_SETTLE sweep (deposition rate cap; 0.025 = quiet-water medium sand,")
-print("smaller = the suspension the closure does not model):")
-for ws in [0.025, 0.010, 0.005, 0.002]:
-    rr = simulate(entrain=entrain_opts("takahashi", w_settle=ws),
-                  V_rel=30e6, w0=0.15, mu_dry=MU_DRY_ICE)
-    e, d = ero_dep(rr)
-    bulk = rr["bed"].sum() / 1e6 / 0.65 + d
-    q2 = rr["Devghat"]["q"]; t2 = rr["t"]
-    i2 = int(np.argmax(np.where(t2 > 30, q2, -1)))
-    print(f"  W_SETTLE={ws:.3f} m/s: eroded {e:5.2f} / deposited {d:5.2f} Mm3"
-          f"  (bulk incl. stranding {bulk:5.1f})   Devghat {q2[i2]:6,.0f} @ "
-          f"{clock(t2[i2])}")
+    # The deposition side is settling-limited, and the settling cap uses a QUIET-
+    # WATER fall velocity. A real flood keeps sand aloft: for h ~ 10 m at 6 m/s
+    # the Rouse number of medium sand is ~0.2, i.e. fully suspended, so w_settle
+    # is an upper bound on how fast solids can actually leave. Sweeping it is the
+    # honest way to show how much of the deposition excess that explains.
+    print("\nW_SETTLE sweep (deposition rate cap; 0.025 = quiet-water medium sand,")
+    print("smaller = the suspension the closure does not model):")
+    for ws in [0.025, 0.010, 0.005, 0.002]:
+        rr = simulate(entrain=entrain_opts("takahashi", w_settle=ws),
+                      V_rel=30e6, w0=0.15, mu_dry=MU_DRY_ICE)
+        e, d = ero_dep(rr)
+        bulk = rr["bed"].sum() / 1e6 / 0.65 + d
+        q2 = rr["Devghat"]["q"]; t2 = rr["t"]
+        i2 = int(np.argmax(np.where(t2 > 30, q2, -1)))
+        print(f"  W_SETTLE={ws:.3f} m/s: eroded {e:5.2f} / deposited {d:5.2f} Mm3"
+              f"  (bulk incl. stranding {bulk:5.1f})   Devghat {q2[i2]:6,.0f} @ "
+              f"{clock(t2[i2])}")
 
-# ---------------------------------------------------------------- plots -----
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
+    # ---------------------------------------------------------------- plots -----
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
 
-fig, axes = plt.subplots(2, 2, figsize=(13.5, 9.5))
+    fig, axes = plt.subplots(2, 2, figsize=(13.5, 9.5))
 
-ax = axes[0, 0]
-ax.plot(nom["t"] / 60, nom["front"], color="#164a70", lw=2)
-for km, obs_min, label in FRONT_OBS:
-    ax.plot(obs_min / 60, km, "kv", ms=7)
-ax.set_xlabel("hours after collapse (08:37)"); ax.set_ylabel("front km")
-ax.set_title("Front trajectory vs the six clocks (▼ observed)")
-ax.grid(alpha=.25)
+    ax = axes[0, 0]
+    ax.plot(nom["t"] / 60, nom["front"], color="#164a70", lw=2)
+    for km, obs_min, label in FRONT_OBS:
+        ax.plot(obs_min / 60, km, "kv", ms=7)
+    ax.set_xlabel("hours after collapse (08:37)"); ax.set_ylabel("front km")
+    ax.set_title("Front trajectory vs the six clocks (▼ observed)")
+    ax.grid(alpha=.25)
 
-ax = axes[0, 1]
-ax.plot(nom["t"] / 60, nom["w_front"], color="#2b6b9c",
-        label="water fraction w at front")
-ax.plot(nom["t"] / 60, np.array(nom["mu_front"]) / nom["mu_dry"],
-        color="#a5403a", label="mu at front / mu_dry")
-ax.axhline(W_SAT, color="#2b6b9c", ls=":", lw=1, label="W_SAT")
-ax2 = ax.twinx()
-ax2.plot(0.5 * (x_km[:-1] + x_km[1:]) * 0 + np.nan, [np.nan] * (N - 1))
-ax.set_xlabel("hours after collapse"); ax.set_ylim(0, 1.05)
-ax.set_title("The dilution dial doing its work")
-ax.legend(fontsize=8); ax.grid(alpha=.25)
+    ax = axes[0, 1]
+    ax.plot(nom["t"] / 60, nom["w_front"], color="#2b6b9c",
+            label="water fraction w at front")
+    ax.plot(nom["t"] / 60, np.array(nom["mu_front"]) / nom["mu_dry"],
+            color="#a5403a", label="mu at front / mu_dry")
+    ax.axhline(W_SAT, color="#2b6b9c", ls=":", lw=1, label="W_SAT")
+    ax2 = ax.twinx()
+    ax2.plot(0.5 * (x_km[:-1] + x_km[1:]) * 0 + np.nan, [np.nan] * (N - 1))
+    ax.set_xlabel("hours after collapse"); ax.set_ylim(0, 1.05)
+    ax.set_title("The dilution dial doing its work")
+    ax.legend(fontsize=8); ax.grid(alpha=.25)
 
-ax = axes[1, 0]
-cols = {"Betrawati": "#7fb3cf", "Galchhi": "#4a8ab5",
-        "Malekhu": "#2b6b9c", "Devghat": "#164a70"}
-for s, c in cols.items():
-    ax.plot(nom["t"] / 60, nom[s]["q"], color=c, label=s)
-ax.plot(443 / 60, 5850, "k*", ms=12, label="obs Devghat 5,850 @ 16:00")
-ax.set_xlabel("hours after collapse"); ax.set_ylabel("discharge (m3/s)")
-ax.set_title("Station hydrographs — one model, scar to Devghat")
-ax.legend(fontsize=8); ax.grid(alpha=.25)
+    ax = axes[1, 0]
+    cols = {"Betrawati": "#7fb3cf", "Galchhi": "#4a8ab5",
+            "Malekhu": "#2b6b9c", "Devghat": "#164a70"}
+    for s, c in cols.items():
+        ax.plot(nom["t"] / 60, nom[s]["q"], color=c, label=s)
+    ax.plot(443 / 60, 5850, "k*", ms=12, label="obs Devghat 5,850 @ 16:00")
+    ax.set_xlabel("hours after collapse"); ax.set_ylabel("discharge (m3/s)")
+    ax.set_title("Station hydrographs — one model, scar to Devghat")
+    ax.legend(fontsize=8); ax.grid(alpha=.25)
 
-ax = axes[1, 1]
-xf = 0.5 * (x_km[:-1] + x_km[1:])
-ax.plot(xf, nom["umax"], color="#164a70", lw=1.5,
-        label="peak flow speed envelope Q/A")
-axb = ax.twinx()
-axb.fill_between(x_km, 0, nom["bed"] / (wn * DX), color="#9a7146", alpha=.4)
-axb.set_ylabel("stranded thickness (m)", color="#9a7146")
-for km, obs, label in SPEED_OBS:
-    ax.plot(km, obs, "o", color="k", ms=6)
-    ax.annotate(label, (km, obs), textcoords="offset points", xytext=(6, 6),
-                fontsize=7)
-ax.plot(11, 53, "s", color="k", ms=6)
-ax.annotate("53 m/s avg 0-22 (clock)", (11, 53),
-            textcoords="offset points", xytext=(6, 6), fontsize=7)
-ax.set_xlabel("path km"); ax.set_ylabel("speed (m/s)")
-ax.set_title("Speed envelope + stranded deposit")
-ax.legend(fontsize=8, loc="upper right"); ax.grid(alpha=.25)
+    ax = axes[1, 1]
+    xf = 0.5 * (x_km[:-1] + x_km[1:])
+    ax.plot(xf, nom["umax"], color="#164a70", lw=1.5,
+            label="peak flow speed envelope Q/A")
+    axb = ax.twinx()
+    axb.fill_between(x_km, 0, nom["bed"] / (wn * DX), color="#9a7146", alpha=.4)
+    axb.set_ylabel("stranded thickness (m)", color="#9a7146")
+    for km, obs, label in SPEED_OBS:
+        ax.plot(km, obs, "o", color="k", ms=6)
+        ax.annotate(label, (km, obs), textcoords="offset points", xytext=(6, 6),
+                    fontsize=7)
+    ax.plot(11, 53, "s", color="k", ms=6)
+    ax.annotate("53 m/s avg 0-22 (clock)", (11, 53),
+                textcoords="offset points", xytext=(6, 6), fontsize=7)
+    ax.set_xlabel("path km"); ax.set_ylabel("speed (m/s)")
+    ax.set_title("Speed envelope + stranded deposit")
+    ax.legend(fontsize=8, loc="upper right"); ax.grid(alpha=.25)
 
-fig.suptitle("Unified Voellmy-Saint-Venant with dilution dial + stranding — "
-             "scar to Devghat, nothing fitted to the Trishuli clocks", y=0.995)
-fig.tight_layout()
-fig.savefig(os.path.join(OUT, "unified_v1.png"), dpi=130)
-print("\nplot -> output/unified_v1.png")
+    fig.suptitle("Unified Voellmy-Saint-Venant with dilution dial + stranding — "
+                 "scar to Devghat, nothing fitted to the Trishuli clocks", y=0.995)
+    fig.tight_layout()
+    fig.savefig(os.path.join(OUT, "unified_v1.png"), dpi=130)
+    print("\nplot -> output/unified_v1.png")

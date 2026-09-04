@@ -422,6 +422,45 @@ impounded behind a rockfall dam for weeks (Kargel; Hanisch et al. 2013).
 
 </details>
 
+### ENERGY AUDIT (4 Sept) — Dave's challenge, and what it found
+
+Dave asked whether reaching for an exotic water source meant something was
+genuinely unexplained — an energy mismatch, "a meteor or something else".
+**Answer: no energy deficit, decisively.** Even the smallest defensible
+release (5 Mm³) falling 1,200 m delivers 1.2e14 J against ~2.5e13 J of kinetic
+energy in a 20 Mm³ wave at 50 m/s — ~5× more than needed. And the sliding-
+block energy line v = √(2g(drop − μL)), which contains **no volume term**,
+permits 84–96 m/s in the upper gorge at literature μ, against an observed
+53 m/s mean. Gravity supplies the speed at any release size.
+
+**But the challenge was still right, and here is the real soft spot.** The
+model's border arrival is strongly volume-dependent (V=5 → 13.3 min, 10 →
+10.3, 30 → 6.8, 60 → 5.5) which the energy line says should not happen.
+Three candidate artifacts tested (`calcs/front_speed_closure.py`), **all
+eliminated**:
+- Manning drag on a granular flow: n × 0.35 moves V=5 only 13.3 → 12.7 min.
+- The Froude cap: FR_MAX 2 → 8 gives 13.3 → 12.2, though peak material speed
+  rises 33 → 53.6 m/s. **Material speed ≠ front speed.**
+- The +0.5 m front threshold: probing km 22 directly, +0.1 m arrives at
+  12.9 min and +5 m never (V=5). The front is sharp; no thin fast precursor.
+
+So it is genuine structure: **depth-averaged shallow water ties front speed to
+√(gh), so the only way our model reaches 53 m/s is by being deep, which means
+being big. A sliding granular block has no such coupling.** The inference
+"the border must pass V ≥ 30–60 Mm³" is therefore CONDITIONAL on
+spreading-fluid behaviour over the whole 22 km, and must be labelled as such.
+Treating it as a hard constraint is what sent me looking for an impoundment.
+
+**AND THE CONTRADICTION LARGELY DISSOLVES when stated as a volume budget
+instead.** geopera's trimlines (40–134 m, median ~70, gorge ~50 m wide) are an
+observation independent of our model: a 70 m wave over a 2–5 km surge is
+7–20 Mm³ *in the gorge at any instant*. That is release + swept channel water
+(0.53 Mm³ above the border) + entrained bed (2.57 Mm³) ⇒ **the release need
+only supply 4–17 Mm³**, against the entrainment ledger's ≲6 Mm³ cap at
+w0 = 0.15. The gap goes from an order of magnitude to about 2×, and a modest
+ice fraction closes the rest. **Next: re-derive the routing's V requirement as
+a gorge volume budget rather than a free parameter.**
+
 ### MAP FIGURES (4 Sept) — overview + upper-corridor detail
 
 `report/report.src.html`'s map code is now ONE `drawCorridorMap(sel, opt)`
