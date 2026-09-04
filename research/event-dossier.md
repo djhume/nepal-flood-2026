@@ -417,6 +417,105 @@ suggests the difference is large. **This is a high-value, low-cost task:
 pick paired trimline heights (straight reach vs adjacent side valley) at 5–10
 gorge stations.**
 
+## 6d. GEOPERA'S FULL SERIES — read properly on 5 Sept, and it changes things
+
+We had been working from their first post plus the retraction. They have
+published **five**, and three we had not read carry directly on our results.
+All at https://geopera.com/blog.
+
+### (i) Half-metre stereo, 1 Sept — *the deposit is not where we put it*
+
+WorldView-3 stereo (Vantor released the raw strips), 27 Aug post-flood, ~1.5 m
+agreement on stable ground, **45% of the valley floor visible**.
+
+| | |
+|---|---|
+| erosion | **3.2 Mm³ — a LOWER BOUND** |
+| deposition | **0.9 Mm³ — a LOWER BOUND** |
+| floor lowering | **2–12 m from the border gorge downstream** |
+| **deposit location** | **km 40–43, 12–18 m thick, 3 km long, where the valley opens below Syabrubesi** |
+| incision through it | 13–21 m trench |
+| boulders | 4,329 clasts >1 m over 37 ha; largest **26 m**; 84th pct ~7 m |
+| buildings | 27 destroyed, ~1,470 intact, 1,135 cloud-obscured |
+
+**OUR MODEL PUTS THE DEPOSIT IN THE WRONG PLACE.** Ours deposits in km 0–36 and
+leaves 0.14–0.31 Mm³ at km 40–43; geopera measured the deposit *there*, and
+their own morphodynamic model predicted km 40–42.5 before the stereo confirmed
+it. This is a clean spatial failure of our stranding/capacity closure and it
+should be scored as one.
+
+**AND THE ≤5 Mm³ DEPOSITION CAP WE HAVE BEEN USING IS TOO TIGHT.** 0.9 Mm³ is a
+lower bound over 45% coverage, and the deposit as *described* — 12–18 m thick,
+3 km long — is 3.6 Mm³ at 100 m width, 7.2–10.8 at 200 m, up to 16.2 at 300 m.
+The honest cap is **~5–15 Mm³**, not ≤5.
+
+That matters because it relaxes our uncomfortable two-phase result:
+
+| deposition cap | f_fine needed | ⇒ coarse rock in a 30 Mm³ release |
+|---|---|---|
+| ≤5 Mm³ | 0.92–0.95 | 0.9–1.4 Mm³ (implausibly rock-free) |
+| ≤7.5 Mm³ | ~0.80 | 3.6 Mm³ |
+| **≤10 Mm³** | **~0.70** | **5.4 Mm³ — comfortable for a bedrock failure** |
+
+### (ii) Differentiable calibration, 1 Sept — *independent confirmation*
+
+A 2D shallow-water + morphodynamics solver in PyTorch, six parameters
+calibrated by gradient descent against the stereo terrain change (km 42.5–46.5)
+and trimline heights. **Their fit drove settling velocity DOWN from 0.15 to
+0.054 m/s and cut simulated deposition from 21 to ~5 Mm³**, concluding the
+sediment "behaves finer than assumed, remaining in suspension longer".
+
+**That is our two-phase result reached by a completely different route** — they
+by gradient-based calibration of a 2D morphodynamic model, we by finding that
+no single-phase parameter set can satisfy the clocks and the mass balance
+together. Two methods, one conclusion: *the load is finer and stays up longer
+than a bed-material closure assumes.* This is the strongest external support
+any of our findings has, and it should be cited as convergence, not as ours.
+
+### (iii) Predictability, 31 Aug — *all four precursor channels null*
+
+InSAR/optical: <2 m of motion in 100 days, ~2 cm/day, **constant, no
+acceleration in the final 48 h** — against tens of metres of creep before Aru
+2016 and Chamoli 2021. NISAR coherence saturated at zero. ICESat-2: 1.3 m
+thinning over two years, "ordinary glacier ablation". Thermal: 44 thaw days
+above 5,800 m in 2026 — and **2024 and 2025 were nearly identical without a
+collapse**. Their conclusion, which is also ours: *"Those hours existed
+physically. They were lost institutionally."*
+
+### (iv) Boulder competence — A FOURTH VELOCITY, and it supports our reading
+
+geopera derive **19–26 m/s** from clast competence. That is a MATERIAL
+velocity, and it sits with our run-up-derived **29.7–32.8 m/s** — both well
+below the 45–52 m/s superelevation figure. Four independent estimates now
+separate cleanly into two families:
+
+| quantity | estimates |
+|---|---|
+| **material velocity** | boulder competence 19–26; our stagnation run-up 30–33 |
+| **front / surface speed** | superelevation 45–52; the seismic-to-CCTV clock 52 |
+
+The gap between the families is the bore celerity √(gh) ≈ 24 m/s at 60 m depth.
+**The material/front distinction is now supported from both sides.**
+
+### ⚠ (v) A CONFLICT THAT MATTERS MORE THAN ANY OF THE ABOVE
+
+geopera's predictability post states **"wave travel to border: 17 minutes"**.
+Our hardest datum is the 08:44 Gyirong CCTV, **7 minutes** after the 08:37:10
+seismic origin, and the whole composition finding rests on it — dry-rock
+scenarios arrive at 08:54, i.e. **17 minutes**, and are excluded *only* because
+7 is the target.
+
+**If 17 minutes is right, the composition finding does not survive.** Scenario D
+(dry rock, V = 30) lands on 17 minutes exactly.
+
+Notes before anyone acts on this: their own gorge velocities (37–52 m/s) imply
+~7 min over 22 km, so the 17 may be internally inconsistent or measured to a
+different point; their first post also put the surge at Rasuwagadhi customs at
+~09:00 (23 min) against the CCTV's 08:44; and our 7-minute figure traces to a
+Wikipedia timeline, not to a frame-timestamped source we have inspected.
+**This is now the single most consequential open question in the project. It
+must be resolved before the composition finding is published anywhere.**
+
 ## 7. Landslide dams
 
 1. **In-event temporary blockage (minutes-scale, hypothesized):** ICIMOD's mechanism; Geology Page reports satellite evidence of "a blockage approximately 20 km upstream of the Miteri Bridge" with impounded water and subsequent release. Duration unconstrained; Sinclair objects on timing. **The central contested claim the model can test.**

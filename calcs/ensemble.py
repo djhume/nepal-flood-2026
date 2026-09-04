@@ -77,6 +77,12 @@ PRIORS = {
     "mu_dry":  ("lin",  0.10, 0.35),
     "n_scale": ("lin",  0.70, 1.40),
     "h_erode": ("lin",  1.0,  10.0),
+    "f_fine":  ("lin",  0.0,  0.98),   # added 4 Sept with the two-phase split:
+                                       # share of RELEASE solids that never
+                                       # reach a DEM-visible deposit (wash load
+                                       # + ice). Hand-fitted at 0.95 in the
+                                       # first two-phase runs; sampling it
+                                       # replaces that with a posterior.
 }
 
 # ---- observables: (value, tolerance as a fraction, label) -----------------
@@ -123,7 +129,8 @@ def run(p, t_end=2.5 * 3600.0):
     U._settled.clear()
     try:
         r = U.simulate(V_rel=p["V_rel"], w0=p["w0"], mu_dry=p["mu_dry"],
-                       t_end=t_end, entrain=core.entrain_opts("takahashi"))
+                       t_end=t_end, f_fine_rel=p.get("f_fine", 0.0),
+                       entrain=core.entrain_opts("takahashi", f_fine=0.30))
         m = U.x_km <= 68.0
         ero = float((r["ero"][m] * U.wn[m] * U.DX).sum() / 1e6)
         j22 = int(np.argmin(np.abs(U.x_km - 22.0)))
@@ -205,11 +212,13 @@ if __name__ == "__main__":
         V = np.array([r[0]["V_rel"] for r in full]) / 1e6
         w = np.array([r[0]["w0"] for r in full])
         mu = np.array([r[0]["mu_dry"] for r in full])
+        ffn = np.array([r[0].get("f_fine", 0.0) for r in full])
         print("\nPOSTERIOR over the contested inputs (samples that fit "
               "everything):")
         for nm, arr, unit in [("release volume", V, "Mm3"),
                               ("liquid fraction w0", w, ""),
-                              ("mu_dry", mu, "")]:
+                              ("mu_dry", mu, ""),
+                              ("f_fine (non-depositing)", ffn, "")]:
             print(f"  {nm:20s} median {np.median(arr):7.2f} {unit}   "
                   f"range {arr.min():.2f} - {arr.max():.2f}")
         print(f"\n  -> against published claims: Kargel 50-200, ICIMOD 100-200,")
