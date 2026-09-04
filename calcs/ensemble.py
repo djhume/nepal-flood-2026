@@ -29,7 +29,9 @@ parameters — and that is a result, not a failure.
 
 PRIORS (from research/event-dossier.md §2 and §11; deliberately wide)
     V_rel     log-uniform 1 - 200 Mm3   spans every published estimate
-    w0        uniform 0.02 - 0.50       liquid fraction; ice:rock unpublished
+    w0        uniform 0.02 - 0.85       liquid fraction; ice:rock unpublished
+                                        (run 1 used 0.02-0.50 and PINNED
+                                         against the ceiling -- widened)
     mu_dry    uniform 0.10 - 0.35       Schneider ice-avalanche to Scheidegger rock
     n_scale   uniform 0.70 - 1.40       Manning roughness class-value uncertainty
     h_erode   uniform 1 - 10 m          erodible layer, the entrainment free input
@@ -42,6 +44,10 @@ OBSERVABLES (upper corridor only in stage 1 — it is where the hard data is)
                                            stagnation run-up gives 51.3 m/s
                                            by an independent route
     erosion km 0-68           3.2 Mm3      geopera stereo DEM, +-60%
+    bulk deposition           <= 5 Mm3     geopera: 0.9 measured, ~5 in their
+                                           own calibrated model. An INEQUALITY:
+                                           a DEM difference bounds deposition
+                                           from above, it does not target it.
 
 Survivors are then re-run to 10 h and scored on the distal observables
 (Galchhi 30-min rise ~9 m, Devghat peak timing) — out of sample relative to
@@ -63,7 +69,11 @@ RNG = np.random.default_rng(20260904)
 # ---- priors ---------------------------------------------------------------
 PRIORS = {
     "V_rel":   ("log",  1e6,  200e6),
-    "w0":      ("lin",  0.02, 0.50),
+    "w0":      ("lin",  0.02, 0.85),   # widened 4 Sept: run 1 pinned this
+                                       # against its 0.50 ceiling (median
+                                       # 0.49, range 0.38-0.50), i.e. the
+                                       # prior was truncating the answer, not
+                                       # the data constraining it
     "mu_dry":  ("lin",  0.10, 0.35),
     "n_scale": ("lin",  0.70, 1.40),
     "h_erode": ("lin",  1.0,  10.0),
@@ -75,6 +85,15 @@ OBS = {
     "syabru_min":  (13.0, 0.50, "Syabrubesi arrival, min"),
     "v_border":    (48.5, 0.35, "peak speed near km 22, m/s"),
     "erosion_Mm3": (3.2,  0.60, "erosion km 0-68, Mm3"),
+}
+
+# Inequality observables — a DEM difference bounds deposition from above; it
+# does not measure a target value. Run 1 omitted this entirely, which is why
+# its V_rel ~ 31 Mm3 answer sat happily at 15 Mm3 of solids against a corridor
+# that can only account for ~5. Adding it is the real test.
+OBS_MAX = {
+    "deposit_Mm3": (5.0, "bulk deposition km 0-199, Mm3 (geopera ~0.9 "
+                         "measured, ~5 their calibrated model)"),
 }
 
 
@@ -108,7 +127,10 @@ def run(p, t_end=2.5 * 3600.0):
         m = U.x_km <= 68.0
         ero = float((r["ero"][m] * U.wn[m] * U.DX).sum() / 1e6)
         j22 = int(np.argmin(np.abs(U.x_km - 22.0)))
+        dep = float((r["dep"] * U.wn * U.DX).sum() / 1e6)
+        bulk = float(r["bed"].sum() / 1e6 / 0.65 + dep)
         return {
+            "deposit_Mm3": bulk,
             "border_min": r["arrival"](22.0),
             "syabru_min": r["arrival"](37.6),
             "v_border":   float(np.max(r["umax"][:j22])),
@@ -131,6 +153,9 @@ def score(o):
     for k, (val, tol, _) in OBS.items():
         v = o[k]
         ok[k] = bool(np.isfinite(v) and abs(v - val) <= tol * val)
+    for k, (cap, _) in OBS_MAX.items():
+        v = o[k]
+        ok[k] = bool(np.isfinite(v) and v <= cap)
     return ok
 
 
@@ -151,14 +176,20 @@ if __name__ == "__main__":
             el = time.time() - t0
             print(f"  {i+1}/{N}  ({el/(i+1):.1f} s/run, "
                   f"{el/60:.1f} min elapsed, "
-                  f"{sum(1 for r in rows if r[3] == len(OBS))} full matches)")
+                  f"{sum(1 for r in rows if r[3] == len(OBS)+len(OBS_MAX))}"
+                  f" full matches)")
 
-    full = [r for r in rows if r[3] == len(OBS)]
-    print(f"\n{'='*70}\n{len(rows)} runs, {len(full)} satisfy ALL "
-          f"{len(OBS)} observables\n{'='*70}")
+    NOBS = len(OBS) + len(OBS_MAX)
+    full = [r for r in rows if r[3] == NOBS]
+    print(f"\n{'='*74}\n{len(rows)} runs, {len(full)} satisfy ALL "
+          f"{NOBS} observables\n{'='*74}")
     for k, (val, tol, lab) in OBS.items():
         hits = sum(1 for r in rows if r[2][k])
-        print(f"  {lab:34s} target {val:7.1f} +-{100*tol:3.0f}%  "
+        print(f"  {lab:44s} {val:7.1f} +-{100*tol:3.0f}%  "
+              f"met by {hits:4d}/{len(rows)}")
+    for k, (cap, lab) in OBS_MAX.items():
+        hits = sum(1 for r in rows if r[2][k])
+        print(f"  {lab:44s} <= {cap:6.1f}       "
               f"met by {hits:4d}/{len(rows)}")
 
     if not full:
@@ -167,7 +198,7 @@ if __name__ == "__main__":
         print("model form, no combination of the contested inputs reproduces")
         print("the upper-corridor record. Report which pairs conflict:")
         import itertools
-        for a, b in itertools.combinations(OBS, 2):
+        for a, b in itertools.combinations(list(OBS) + list(OBS_MAX), 2):
             both = sum(1 for r in rows if r[2][a] and r[2][b])
             print(f"    {a:12s} + {b:12s}: {both:4d} runs")
     else:
@@ -186,5 +217,6 @@ if __name__ == "__main__":
 
     np.save(os.path.join(HERE, "ensemble_samples.npy"),
             np.array([[r[0][k] for k in PRIORS] +
-                      [r[1][k] for k in OBS] + [r[3]] for r in rows]))
+                      [r[1][k] for k in list(OBS) + list(OBS_MAX)]
+                      + [r[3]] for r in rows]))
     print(f"\nsaved {len(rows)} samples -> calcs/ensemble_samples.npy")

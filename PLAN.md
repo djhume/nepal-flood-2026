@@ -422,6 +422,59 @@ impounded behind a rockfall dam for weeks (Kargel; Hanisch et al. 2013).
 
 </details>
 
+### ENSEMBLE FALSIFICATION (4 Sept) — `calcs/ensemble.py`
+
+Rejection sampling over the five contested inputs (V_rel log-uniform
+**1–200 Mm³**, w0, mu_dry, Manning scale, erodible depth), Latin hypercube,
+scored against the upper-corridor observables. Two runs:
+
+**Run 1 (100 samples, 4 observables — NO deposition constraint): 4 matches.**
+V_rel median **31.3 Mm³** (range 25.9–33.2), w0 median 0.49, mu_dry 0.20.
+Tight, and against Kargel 50–200 / ICIMOD 100–200 / EGU 0.5–10 that looked
+like a real envelope. **Two flaws:** w0 was PINNED against its 0.50 prior
+ceiling (0.38–0.50) — a truncated prior, not a converged posterior — and the
+deposition constraint that started the whole event-size argument was simply
+absent.
+
+**Run 2 (150 samples, w0 prior widened to 0.85, bulk deposition ≤ 5 Mm³ added
+as an INEQUALITY — a DEM difference bounds deposition from above, it does not
+target it): ZERO matches.**
+
+| observable | met by |
+|---|---|
+| border arrival 7.0 min ±30% | 45/150 |
+| Syabrubesi 13 min ±50% | 54/150 |
+| peak speed at border 48.5 m/s ±35% | 60/150 |
+| erosion km 0–68 3.2 Mm³ ±60% | 87/150 |
+| bulk deposition ≤ 5 Mm³ | 50/150 |
+
+Each observable is individually reachable. **The conflict is one specific
+pair, and it is total:**
+
+| pair | runs satisfying both |
+|---|---|
+| border arrival + deposition | **0** |
+| Syabrubesi arrival + deposition | **0** |
+| border speed + deposition | 10 |
+| erosion + deposition | 30 |
+| every other pair | 16–41 |
+
+**No combination of the contested inputs can make the upper-corridor CLOCKS
+and keep deposition inside what the corridor can hold.** Note it is arrival
+TIME that conflicts, not arrival SPEED — you can have 50 m/s at the border
+with low deposition; you cannot have it *on time*. To arrive on time the
+single-phase model needs a deep wave, a deep wave needs volume, and volume
+deposits.
+
+**This is a falsification of the MODEL FORM, not a failure to tune**, and it
+is the strongest statement the project has made: the single-phase assumption
+is refuted by a 150-sample search of a 5-D space, not merely suspected. It
+also retires the run-1 "V ≈ 31 Mm³" number — do not cite it.
+
+**The two-phase split is therefore no longer optional.** A coarse fraction
+that carries momentum and strands, plus a fine/wash fraction that rides
+through, can in principle satisfy both; one phase provably cannot.
+
 ### ENERGY AUDIT (4 Sept) — Dave's challenge, and what it found
 
 Dave asked whether reaching for an exotic water source meant something was
