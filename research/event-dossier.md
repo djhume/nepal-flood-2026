@@ -564,9 +564,52 @@ chain is not: it constrains arrival TIMES, and still forbids 17–23 min.
 3. Kargel's method for the 6 min 50 s: if it derives from the same camera, the
    two "fast" sources are one source and the tie breaks the other way.
 
-**Until then the composition finding must carry this caveat explicitly, and it
-should NOT be published as settled.** Dry-rock scenarios in our model arrive at
-17 minutes; they are excluded only if the border clock is 7.
+### ✅ (vii) RESOLVED, 5 Sept — the 08:44 is CORRECT and the timezone was handled
+
+Chinese-language reporting carries the camera overlay explicitly:
+
+> **八月二十六日，尼泊尔时间上午八点四十四分，北京时间十点五十九分**
+> *"26 August, Nepal time 8:44 a.m., Beijing time 10:59 a.m."*
+> ([Epoch Times, 3 Sept](https://www.epochtimes.com/gb/26/9/3/n14842312.htm))
+
+**10:59 Beijing (UTC+8) − 2 h 15 min = 08:44 Nepal (UTC+5:45).** The conversion
+is right, and it was done at the source. Snopes' *"around 9 o'clock in Nepal"*
+is a loose paraphrase of 08:44, not a contradiction of it — we over-read it.
+
+Elapsed from the 08:37:10 seismic origin: **6 min 50 s** — which is **exactly**
+Kargel's published "6 minutes and 50 seconds". So Kargel and the camera agree
+to the second, and the Syabrubesi gauge (3.8 m at 08:50, km 37.6) sits
+consistently on the same line.
+
+**The composition finding survives.** The border clock is 7 minutes, dry-rock
+scenarios arriving at 17 remain excluded, and finding 02 can stand.
+
+**Why geopera never had this.** The footage was actively suppressed: two clips
+showing the border gate going down were blocked on Chinese platforms
+*including in one-to-one WeChat messages*, apparently by image-level matching
+rather than keyword filtering ([China Digital Times, 30 Aug](https://chinadigitaltimes.net/chinese/731100.html)).
+Working "only from openly licensed satellite data" — their stated method — the
+camera was simply not available to them. That is not an error on their part;
+it is a consequence of the censorship.
+
+**Caveat on provenance, stated plainly:** the decisive quote is from a
+partisan outlet. It is trusted here because the claim is numerical, internally
+consistent (10:59 − 2:15 = 08:44), and independently matches Kargel's 6 min
+50 s and the Syabrubesi gauge. Mainstream Chinese-language reporting is looser
+— Wen Wei Po gives "26日10時30分許" (~10:30 Beijing = 08:15 Nepal, i.e. *before*
+the collapse), which is simply an imprecise news time. **Get the raw file if it
+can be had.**
+
+**A BONUS THE FOOTAGE GIVES US.** The same description:
+
+> **一道黑色的水墙裹着冰块、泥浆和巨石涌进国门**
+> *"a black wall of water carrying ICE, mud and massive rocks surged through
+> the border gate"*
+
+**Ice, visible in the flow at the border, 22 km from the source.** That is
+direct observational support for the ice-rich composition our dial requires,
+at exactly the station where the timing argument is made, and it is the kind of
+evidence `research/imagery-composition-memo.md` was set up to look for.
 
 ## 7. Landslide dams
 
