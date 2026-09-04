@@ -159,9 +159,9 @@ ul.src li{break-inside:avoid;margin-bottom:4px}
 
 <div class="lungta" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
 <div class="wrap">
-<nav class="hubnav"><a href="https://claude.ai/code/artifact/50fbb9c4-1dd2-43f6-a8c1-dbbf80e9d197">◀ Project home</a><span class="here">Technical report</span><a href="https://claude.ai/code/artifact/39288bec-8708-4d94-8366-7a4966692543">Plain English</a><a href="https://claude.ai/code/artifact/d2d2daa8-4ea2-4570-b7ec-515fdb7bd239">नेपाली</a></nav>
+<nav class="hubnav"><a href="https://claude.ai/code/artifact/50fbb9c4-1dd2-43f6-a8c1-dbbf80e9d197">◀ Project home</a><span class="here">Technical report</span><a href="https://claude.ai/code/artifact/39288bec-8708-4d94-8366-7a4966692543">Plain English</a></nav>
 <header>
-  <p class="eyebrow">Preliminary analysis · v1 · 2 September 2026 ·
+  <p class="eyebrow">Preliminary analysis · v3 · 5 September 2026 ·
   <a href="https://claude.ai/code/artifact/39288bec-8708-4d94-8366-7a4966692543">plain-English version</a></p>
   <h1>The Trishuli Water Ledger</h1>
   <p class="dek">On 26 August 2026 a collapsing mountainside in Langtang sent a wall of
@@ -202,6 +202,78 @@ ul.src li{break-inside:avoid;margin-bottom:4px}
 </header>
 
 <div class="prose">
+<h2><span class="no">00</span>What changed since v1 — read this first</h2>
+<div class="prose">
+<p>This report was first published on 2 September. Sections 01–14 below are
+substantially as written then. Three days of further work has added two
+findings, <strong>withdrawn one</strong>, and corrected several numbers. The
+authoritative running record is <code>PLAN.md</code> in the repository; the
+entrainment build is written up in <code>model/ENTRAINMENT.md</code>. In
+summary:</p>
+<p><strong>Entrainment was built, and the erosion volume lands.</strong> The
+model could deposit sediment but never entrain any. Two closures were added
+(Takahashi capacity, Frank et&nbsp;al. shear) with every coefficient taken from
+the literature and nothing fitted to this event. Result: <strong>3.8&nbsp;Mm³
+of erosion against geopera's 3.2&nbsp;Mm³ measured</strong> by WorldView-3
+stereo, in the reaches they mapped, robust across closure, scenario,
+erodible-layer depth and settling cap.</p>
+<p><strong>The single-phase model was then falsified.</strong> Rejection
+sampling over five contested inputs (release volume log-uniform 1–200&nbsp;Mm³,
+liquid fraction, μ<sub>dry</sub>, Manning scale, erodible depth) found
+<strong>0 of 150 samples</strong> able to satisfy the upper-corridor clocks and
+the corridor mass balance simultaneously. Border arrival and deposition were
+satisfied together by <em>zero</em> runs; every other pair by 16–41. That
+falsifies the model form, not the parameters.</p>
+<p><strong>The fix is two-phase solids.</strong> Coarse load obeys the capacity
+closure, strands, and carries the granular friction; fine load and ice are
+advected with the water, are rheologically part of the fluid (the dial sees
+w<sub>eff</sub> = (h<sub>w</sub>+h<sub>f</sub>)/h), and do not deposit in this
+domain. With f<sub>fine</sub> = 0 the published tables reproduce
+bit-identically. geopera reached the same conclusion the same week by
+gradient-based calibration of a 2D morphodynamic model, which drove their
+settling velocity down by a factor of three.</p>
+<p><strong>An envelope on event size.</strong> 220 Latin-hypercube samples over
+six inputs, scored against five observables: <strong>26 fit</strong>, giving a
+release of <strong>14–34&nbsp;Mm³</strong> (median 21) against Kargel 50–200,
+Azam/ICIMOD 100–200, geopera 60–140 and EGU 0.5–10. Relaxing the deposition cap
+by 2.4× moved the envelope ~30% and the ranges overlap, so it is not an artefact
+of that constraint. <strong>Only the volume is constrained</strong> — liquid
+fraction, μ<sub>dry</sub> and f<sub>fine</sub> each span &gt;90% of their
+priors, and earlier tighter values for them are retracted.</p>
+<p><strong>An out-of-sample test, half passed.</strong> Galchhi and Devghat were
+held out of the scoring. The 26 survivors give a Devghat peak of 1,752–2,889
+against ~2,900 observed (<strong>100% within a factor of 2</strong>) but a
+Galchhi 30-minute rise of 1.8–6.1&nbsp;m against ~9 (<strong>23%</strong>). The
+model routes the right discharge and converts it to the wrong stage, which
+implicates lower-reach channel geometry — below km&nbsp;60 our widths come from
+hydraulic geometry, not measurement.</p>
+<p><strong>The Seti 2012 hindcast is WITHDRAWN.</strong> Its channel profile was
+built by a greedy stitch that bridged straight lines across the Sabche Cirque
+rim; the monotone-descent clamp then held <strong>31 of 54&nbsp;km at constant
+elevation</strong>. On a correctly routed channel the timing fails −76% and the
+"model requires the impoundment" inference reverses. Both conclusions are off
+the table. See <code>hindcast/seti/RESULTS.md</code>.</p>
+<p><strong>The border clock was challenged and held.</strong> geopera put the
+border arrival at 17 minutes (and 23 in another post), which would have
+falsified the composition finding — our dry-rock scenarios arrive at exactly
+17. They never engage with the CCTV because it was censored off Chinese
+platforms. Chinese-language reporting carries the overlay verbatim:
+<em>"Nepal time 8:44&nbsp;a.m., Beijing time 10:59&nbsp;a.m."</em> — a correct
+UTC+8 → UTC+5:45 conversion giving <strong>6&nbsp;min 50&nbsp;s</strong>,
+matching Kargel's independent figure to the second, and consistent with the
+Syabrubesi gauge. The same source describes the wave as <em>"a black wall of
+water carrying ice, mud and massive rocks"</em>.</p>
+<p><strong>Also corrected:</strong> our own report previously said the collapse
+fell into a headwater "in Tibet" — it is <strong>~4&nbsp;km inside Nepal</strong>,
+and from km 8–22 the Lhende <em>is</em> the international boundary. Three mud
+lines at the border junction (bed 1,815&nbsp;m, leeward 1,875&nbsp;m, impact
+cliff 1,920–1,930&nbsp;m) separate depth from run-up and give flow depth
+~60&nbsp;m, material velocity 30–33&nbsp;m/s and a bore front of 54–57&nbsp;m/s
+against a 52&nbsp;m/s clock the derivation never used. geopera's boulder-
+competence velocity of 19–26&nbsp;m/s independently supports the
+material/front distinction.</p>
+</div>
+
 <h2><span class="no">01</span>The question</h2>
 <p>When part of Langtang Lirung's north face let go — bedrock plus a hanging
 glacier; published guesses now span ~1–10 million&nbsp;m³ for the initial

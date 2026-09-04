@@ -78,8 +78,9 @@ kind of ask, and it should not be bundled with a gift.
       should not oversell past it
 - [ ] Plain-English and technical pages updated with the entrainment result and
       the corrected (retracted) geopera deposition figures
-- [ ] Nepali page checked by a native speaker, or the note flags it as
-      machine-translated
+- [x] Nepali page — WITHDRAWN 5 Sept rather than shipped unreviewed. The
+      artifact now carries a bilingual notice explaining why and inviting any
+      Nepali speaker to translate the openly-licensed material themselves.
 - [ ] Prince video title + publication date recorded for the source table
 - [ ] Repo pushed public; `[REPO URL]` filled in above
 - [ ] `data/198_discharge.csv` redistribution terms verified with DHM, and a
