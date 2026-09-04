@@ -318,6 +318,50 @@ essentially at the lee trimline, yet multi-storey buildings on it were erased.
 Consistent only if the impact side ran much higher than the lee side — which is
 what the 134 m mark says — but worth confirming the terrace elevation.
 
+**THE UP-VALLEY WEDGE — a falsifiable hypothesis (Dave, 4 Sept).** Tracing the
+1,920–1,930 m stagnation elevation up the arm opposite the Lhende mouth, it
+stays above the valley floor for **~3.5 km**. No post-event imagery zoomed out
+far enough to check this has been found.
+
+*The trap, named first:* a **contour** at 1,925 m extends up a valley as far as
+the floor stays below it — pure topography, true whether or not a flood
+happened. A **backwater wedge** also ends where the bed climbs to the
+stagnation elevation, so the two predict the *same endpoint*. They are told
+apart by what lies between: a wedge leaves scour and a vegetation trimline the
+whole way; a contour leaves green valley.
+
+*But 3.5 km is not an arbitrary number.* A wedge runs until the bed reaches
+the head, L = H/S, with H = 110 m:
+
+| bed slope | predicted wedge |
+|---|---|
+| 0.020 | 5.5 km |
+| 0.025 | 4.4 km |
+| **0.031** | **3.5 km** ← Dave's measurement |
+| 0.040 | 2.8 km |
+
+S = 0.031 is an ordinary gradient for that river. The measurement is
+*self-consistent* with a wedge; it does not prove one.
+
+*If real, the stored volume is large.* Triangular wedge, ½·L·h·W:
+**9.6 Mm³ at 50 m width, 19 Mm³ at 100 m, 29 Mm³ at 150 m.** For comparison
+`model/unified.py` already carries a "Kyirong upstream arm" storage branch at
+km 22 — plan area 1.5×10⁶ m², capped at 8 m fill = 12 Mm³. **The model element
+is the right idea and is probably undersized by 1.5–2.5×.**
+
+*Why it matters.* This is a volume **sink** at the border: filled during
+passage, drained afterwards. It removes volume from the downstream wave exactly
+when the wave is passing, and returns it late — which is the shape of the
+problem we have (the routing wants a lot of volume at the border, the distal
+record and the deposition budget say the corridor never carried it).
+
+*THE TEST, and it is cheap.* Sentinel-2 post-event, already item 4 on the §5
+data list. **If scour and a vegetation trimline run ~3.5 km up that arm and
+stop where the bed reaches ~1,925 m, the wedge is real. If the valley is green
+to within a few hundred metres of the junction, this is a contour and nothing
+more.** Either answer is worth having, and it is a morning's work for anyone
+with EO Browser access.
+
 **A free measurement nobody has made.** If debris on upstream-facing side
 valleys is systematically higher than on the adjacent straight reach, the
 difference *is* the velocity head, giving **v = √(2gΔ/α)** — an independent
