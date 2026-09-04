@@ -70,6 +70,8 @@ Reference docs: `research/event-dossier.md` (event evidence), `research/science-
 | Devghat (168 km) | peak 5,850 m³/s / 6.57 m at 16:00 | official (FFD) |
 | Total "excess" water | ~20 Mm³ (FFD; method unpublished) | single-source |
 | Flow heights in gorge | ~70 m median, trimlines 40–134 m | geopera, provisional |
+| Flow DEPTH at the border | ≥ ~18–20 m (a 6-storey building was erased) | hard-ish, 4 Sept, from before/after imagery |
+| **Peak discharge at the border** | **~70,000 m³/s at 20 m stage; ~210,000 at 40 m** | NEW 4 Sept — A(η) from DEM transects × the 47 m/s three-method velocity. Model-independent, but stage-sensitive |
 | Velocity at Syabrubesi opening | collapse to ~11 m/s | geopera |
 | Pre-event flows | border ~100–250 m³/s; Betrawati monsoon to ~1,000 m³/s | inferred/gauged |
 | Source | 10–200 Mm³, ice fraction UNKNOWN, fall ~1,200 m (to channel ~2,400 m) | contested |
@@ -421,6 +423,41 @@ impounded behind a rockfall dam for weeks (Kargel; Hanisch et al. 2013).
   Tapovan anchor and Trishuli's peak-based figures unaffected.
 
 </details>
+
+### GORGE VOLUME BUDGET (4 Sept) — and why it cannot be closed from imagery
+
+Redone in the confined reach (km 8–20) with DEM-measured cross-sections
+(`data/transects.json`) instead of a guessed 50 m width, and with flow depth
+separated from run-up using the Gyirong building floor. **Result: peak
+discharge yes, volume no.**
+
+- **Peak discharge IS recoverable from imagery + DEM + velocity.** Q = A(η)·v
+  with A from the transects and v = 47 m/s (the three-method consensus) gives
+  **~69,000 m³/s at 20 m stage, ~135,000 at 30 m, ~210,000 at 40 m.** That is
+  12–36× the observed Devghat peak of 5,850 — consistent with 177 km of
+  attenuating a dam-break surge, and it is a NEW model-independent observable
+  now in the §3 table. The model's own peak Q/A at km 22 is 42 m/s at V=10,
+  62 at V=30, 78 at V=60, so the *speed* constraint alone points at V ≈ 10–20.
+- **Volume is NOT recoverable from a still image, and the way I was trying to
+  get it was wrong.** Every "wave volume" estimate today used
+  volume = A × surge length, with surge length guessed at 2–5 km. But surge
+  length is only meaningful for a wave that translates rigidly, and **our own
+  H2 result says this one does not** — the front runs at ~47 m/s while the
+  body lags and the pulse stretches. Test: 20 Mm³ through a 69,000 m³/s
+  triangular peak implies a 9.6 min duration and a 27 km surge; 100 Mm³
+  implies 136 km. Neither fits in a 22 km reach. The arithmetic fails because
+  the premise is wrong, not because the numbers are.
+- **⇒ Volume needs a hydrograph, and a photograph has no time axis.** This is
+  the sharpest argument yet for the DHM Galchhi/Devghat telemetry request:
+  it is not a nice-to-have, it is the only route to the volume everyone is
+  arguing about.
+
+**Retired today, in order:** "impounded river water" as a volume source
+(arithmetic, 37 h of blockage needed); "trimlines are flow depths" (run-up);
+"trimlines are all run-up" (the building floor); and now "wave volume =
+A × surge length" (rigid translation). The surviving imagery-derived numbers
+are flow depth ≥ 18–20 m at the border, peak discharge, and the 47 m/s
+velocity supported three ways.
 
 ### ENSEMBLE FALSIFICATION (4 Sept) — `calcs/ensemble.py`
 
