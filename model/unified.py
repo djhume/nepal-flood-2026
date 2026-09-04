@@ -159,7 +159,7 @@ def settled_state(dt=0.5, hours=2.0, side_valleys=True):
 
 def simulate(V_rel=V_REL, w0=W0, w_sat=W_SAT, mu_wet=MU_WET, mu_dry=None,
              u_dep=U_DEP, t_dep=T_DEP, T_rel=T_REL, side_valleys=True,
-             dt=0.5, t_end=10.0 * 3600.0, entrain=None):
+             dt=0.5, t_end=10.0 * 3600.0, entrain=None, f_fine_rel=0.0):
     if mu_dry is None:
         mu_dry = mu_dry_scheidegger(V_rel)
     st = settled_state(dt=dt, side_valleys=side_valleys)
@@ -188,7 +188,12 @@ def simulate(V_rel=V_REL, w0=W0, w_sat=W_SAT, mu_wet=MU_WET, mu_dry=None,
             st["h"][rel] += dh
             st["hw"][rel] += dh * w0
             st["hwr"][rel] += dh * w0
-            st["hr"][rel] += dh * (1 - w0)
+            st["hr"][rel] += dh * (1 - w0)      # provenance tag: ALL release
+            # f_fine_rel: the share of release SOLIDS that never ends up in a
+            # DEM-visible deposit — wash load, and ice, which is dynamically a
+            # solid but geomorphically temporary. hr stays the provenance tag;
+            # hf is the rheology/deposition class.
+            st["hf"][rel] += dh * (1 - w0) * f_fine_rel
         st = step(st, R, dt, mu_dry, w_sat, mu_wet, side_valleys,
                   deposit=True, u_dep=u_dep, t_dep=t_dep, entrain=entrain)
         if it % save == 0:

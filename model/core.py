@@ -63,10 +63,34 @@ carries its pore water back to the bed with it. Entrained material is
 tracked separately from release material: the hwr/hr tracers are untouched
 by entrainment, so the provenance answer (H1) stays honest.
 
-WHAT IS NOT REPRESENTED: wash load. Takahashi's closure transports bed
-material. Real fine sediment rode the Trishuli to India and is outside this
-model; "the distal water was the river's own" is a statement about water
-provenance, not about clarity.
+TWO-PHASE SOLIDS (added 4 Sept, and no longer optional). A 150-sample search
+over five contested inputs found ZERO combinations that make the upper-corridor
+clocks while keeping deposition inside what the corridor can hold
+(calcs/ensemble.py): border-arrival and deposition were satisfied by 0 runs
+together, every other pair by 16-41. That falsifies the single-phase form, not
+the parameters. To arrive on time one phase needs a deep wave; a deep wave
+needs volume; volume deposits.
+
+The fix is to stop treating "solids" as one thing:
+
+  COARSE load  - obeys the Takahashi capacity closure, deposits and erodes,
+                 and carries the granular friction. This is the rocky core
+                 that strands in the gorge.
+  FINE / WASH  - advected with the water, settling ~50x slower, and
+                 rheologically part of the FLUID: a silt suspension is a
+                 denser liquid, not a granular assembly. This is what rode
+                 the Trishuli to India.
+
+So the dilution dial is driven by an EFFECTIVE water fraction that counts the
+fine load as fluid, w_eff = (hw + hf)/h, while the entrainment closure sees
+only the coarse fraction. One release can then be dense enough to run fast and
+clean enough not to bury the valley.
+
+Backward compatibility: hf stays identically zero unless a run supplies fine
+material, in which case w_eff == w and every published result is unchanged.
+
+WHAT IS STILL NOT REPRESENTED: any exchange between the two fractions
+(comminution, aggregation), and grain-size distribution within either.
 """
 import math
 import numpy as np
@@ -117,7 +141,12 @@ T_ERO = 60.0            # s, time to reach the potential erosion depth
 H_ERODE = 3.0           # m of erodible bed available (see note in the event
                         # scripts; swept, not fitted)
 W_SETTLE = 0.025        # m/s, fall velocity of medium sand (~0.25 mm) — the
-                        # deposition rate cap
+                        # deposition rate cap for the COARSE load
+W_SETTLE_FINE = 5.0e-4  # m/s, ~0.02 mm silt — 50x slower, which is why wash
+                        # load crosses a country and bed material does not
+F_FINE_BED = 0.30       # fraction of entrained bed material that is wash load.
+                        # A class value for a glacial-alluvial bed; swept, not
+                        # fitted.
 
 
 def c_eq_takahashi(S, tan_phi=TAN_PHI_BED, c_star=C_STAR):
@@ -161,7 +190,7 @@ class Reach:
     def new_state(self, h, Qi=None, hs0=0.0):
         h = np.asarray(h, float).copy()
         return dict(h=h, hw=h.copy(), hwr=np.zeros(self.N),
-                    hr=np.zeros(self.N),
+                    hr=np.zeros(self.N), hf=np.zeros(self.N),
                     Qi=(0.5 * (self.Qb[:-1] + self.Qb[1:]) if Qi is None
                         else np.asarray(Qi, float).copy()),
                     hs={nm: hs0 for nm, *_ in self.side},
@@ -199,6 +228,9 @@ def step(st, R, dt, mu_dry, w_sat=W_SAT, mu_wet=MU_WET, side_valleys=True,
     z, wn, nn, wf, nf, DX, N = R.z, R.wn, R.nn, R.wf, R.nf, R.DX, R.N
     Qb, q_lat, K_loc = R.Qb, R.q_lat, R.K_loc
     h, hw, hwr, hr, Qi = st["h"], st["hw"], st["hwr"], st["hr"], st["Qi"]
+    hf = st.get("hf")
+    if hf is None:
+        hf = np.zeros_like(h); st["hf"] = hf
     hs, bed = st["hs"], st["bed"]
 
     eta = z + h
@@ -211,7 +243,10 @@ def step(st, R, dt, mu_dry, w_sat=W_SAT, mu_wet=MU_WET, side_valleys=True,
     w_face = np.where(up, hw[:-1], hw[1:]) / np.maximum(hu, 1e-6)
     wr_face = np.where(up, hwr[:-1], hwr[1:]) / np.maximum(hu, 1e-6)
     r_face = np.where(up, hr[:-1], hr[1:]) / np.maximum(hu, 1e-6)
-    mu_i = mu_of_w(np.clip(w_face, 0, 1), hfe, mu_dry, mu_wet, w_sat)
+    f_face = np.where(up, hf[:-1], hf[1:]) / np.maximum(hu, 1e-6)
+    # THE TWO-PHASE POINT: fine load is rheologically fluid, so the dial sees
+    # w_eff = (water + fines)/total. With no fines this is identical to w.
+    mu_i = mu_of_w(np.clip(w_face + f_face, 0, 1), hfe, mu_dry, mu_wet, w_sat)
     # convective momentum d(uQ)/dx, first-order upwind — the term whose
     # omission (pure Bates local inertia) confines a dam-break front into a
     # one-cell soliton and releases a Coulomb-parked mass as a coherent wall.
@@ -242,11 +277,14 @@ def step(st, R, dt, mu_dry, w_sat=W_SAT, mu_wet=MU_WET, side_valleys=True,
                   np.maximum(Qi, -0.9 * h[1:] * wn[1:] * DX / dt))
 
     Fw, Fwr, Fr = Qi * w_face, Qi * wr_face, Qi * r_face
+    Ff = Qi * f_face
     dV = np.zeros(N); dW = np.zeros(N); dWr = np.zeros(N); dR = np.zeros(N)
+    dF = np.zeros(N)
     dV[:-1] -= Qi; dV[1:] += Qi
     dW[:-1] -= Fw; dW[1:] += Fw
     dWr[:-1] -= Fwr; dWr[1:] += Fwr
     dR[:-1] -= Fr; dR[1:] += Fr
+    dF[:-1] -= Ff; dF[1:] += Ff
     dV[0] += Qb[0]; dW[0] += Qb[0]
     dV[1:] += q_lat[1:]; dW[1:] += q_lat[1:]
     S_end = max((z[-2] - z[-1]) / DX, 5e-4)
@@ -255,6 +293,7 @@ def step(st, R, dt, mu_dry, w_sat=W_SAT, mu_wet=MU_WET, side_valleys=True,
     dW[-1] -= Q_end * hw[-1] / max(h[-1], 1e-6)
     dWr[-1] -= Q_end * hwr[-1] / max(h[-1], 1e-6)
     dR[-1] -= Q_end * hr[-1] / max(h[-1], 1e-6)
+    dF[-1] -= Q_end * hf[-1] / max(h[-1], 1e-6)
 
     if side_valleys:
         for entry in R.side:
@@ -287,18 +326,21 @@ def step(st, R, dt, mu_dry, w_sat=W_SAT, mu_wet=MU_WET, side_valleys=True,
             fw = hw[i] / max(h[i], 1e-6)
             fwr = hwr[i] / max(h[i], 1e-6)
             fr = hr[i] / max(h[i], 1e-6)
+            ff = hf[i] / max(h[i], 1e-6)
             dV[i] -= Qs; dW[i] -= Qs * fw
-            dWr[i] -= Qs * fwr; dR[i] -= Qs * fr
+            dWr[i] -= Qs * fwr; dR[i] -= Qs * fr; dF[i] -= Qs * ff
             hs[nm] = max(hs[nm] + Qs * dt / area_eff, 0.0)
 
     h = h + dV * dt / (wn * DX)
     hw = hw + dW * dt / (wn * DX)
     hwr = hwr + dWr * dt / (wn * DX)
     hr = hr + dR * dt / (wn * DX)
+    hf = hf + dF * dt / (wn * DX)
     h, hw = _floor(h, hw)
     hw = np.clip(hw, 0.0, h)
     hwr = np.clip(hwr, 0.0, hw)
     hr = np.clip(hr, 0.0, h)
+    hf = np.clip(hf, 0.0, np.maximum(h - hw, 0.0))
 
     u_node = np.zeros(N)
     u_node[:-1] = np.abs(Qi) / Af
@@ -306,8 +348,9 @@ def step(st, R, dt, mu_dry, w_sat=W_SAT, mu_wet=MU_WET, side_valleys=True,
 
     if deposit:
         # stranding: slow + granular -> solids to bed, water passes
-        h_sol = np.maximum(h - hw, 0.0)
-        wfrac = hw / np.maximum(h, 1e-6)
+        # only the COARSE fraction strands; wash load stays with the water
+        h_sol = np.maximum(h - hw - hf, 0.0)
+        wfrac = (hw + hf) / np.maximum(h, 1e-6)
         strand = (u_node < u_dep) & (wfrac < w_sat) & (h_sol > 0.02)
         dep = np.where(strand, h_sol * dt / t_dep, 0.0)
         h = h - dep
@@ -319,29 +362,35 @@ def step(st, R, dt, mu_dry, w_sat=W_SAT, mu_wet=MU_WET, side_valleys=True,
         # NOTE `bed` stays the STRANDING ledger only; entrained/re-deposited
         # bed material is tracked separately in st["ero"]/st["dep"] so the two
         # mechanisms can never be confused in a scorecard.
-        h, hw, hwr, hr = _entrain(st, R, dt, h, hw, hwr, hr, u_node, entrain)
+        h, hw, hwr, hr, hf = _entrain(st, R, dt, h, hw, hwr, hr, hf,
+                                      u_node, entrain)
 
-    st.update(h=h, hw=hw, hwr=hwr, hr=hr, Qi=Qi, hs=hs, bed=bed)
+    st.update(h=h, hw=hw, hwr=hwr, hr=hr, hf=hf, Qi=Qi, hs=hs, bed=bed)
     st["umax"] = np.maximum(st["umax"], np.abs(Qi) / Af)
     return st
 
 
 def entrain_opts(law="takahashi", k_tau=K_TAU, tau_c=TAU_C, t_ero=T_ERO,
                  delta_e=DELTA_E, delta_d=DELTA_D, w_settle=W_SETTLE,
-                 deposition=True):
+                 deposition=True, f_fine=0.0, w_settle_fine=W_SETTLE_FINE):
+    """f_fine: fraction of ENTRAINED bed material that is wash load. 0.0
+    reproduces the single-phase behaviour exactly."""
     return dict(law=law, k_tau=k_tau, tau_c=tau_c, t_ero=t_ero,
                 delta_e=delta_e, delta_d=delta_d, w_settle=w_settle,
-                deposition=deposition)
+                deposition=deposition, f_fine=f_fine,
+                w_settle_fine=w_settle_fine)
 
 
-def _entrain(st, R, dt, h, hw, hwr, hr, u_node, opt):
+def _entrain(st, R, dt, h, hw, hwr, hr, hf, u_node, opt):
     """Bed exchange. Positive dE = erosion (bed -> flow), negative = deposition
     (flow -> bed). The bed is saturated: a bulk volume dE carries C_STAR solids
     and (1 - C_STAR) pore water."""
     N = R.N
     avail = st["avail"]
-    h_sol = np.maximum(h - hw, 0.0)
-    c = h_sol / np.maximum(h, 1e-6)                 # solid volume fraction
+    ff = float(opt.get("f_fine", 0.0))
+    # the capacity closure sees only the COARSE load; fines are fluid to it
+    h_sol = np.maximum(h - hw - hf, 0.0)
+    c = h_sol / np.maximum(h, 1e-6)                 # coarse volume fraction
     moving = (h > 0.10) & (u_node > 0.2)
 
     if opt["law"] == "takahashi":
@@ -378,9 +427,11 @@ def _entrain(st, R, dt, h, hw, hwr, hr, u_node, opt):
     dD = np.minimum(dD, 0.25 * h)
     net = dE - dD                                    # + = bed lowering
 
-    # apply to the flow
+    # apply to the flow. Entrained bed splits ff fine / (1-ff) coarse; the
+    # coarse part joins h_sol, the fine part joins hf and behaves as fluid.
     h = h + net
     hw = hw + net * (1.0 - C_STAR)
+    hf = hf + dE * C_STAR * ff
     # release tracers ride along with their share of what leaves
     sol_share = np.where(h_sol > 1e-9, hr / np.maximum(h_sol, 1e-9), 0.0)
     wat_share = np.where(hw > 1e-9, hwr / np.maximum(hw, 1e-9), 0.0)
@@ -392,10 +443,23 @@ def _entrain(st, R, dt, h, hw, hwr, hr, u_node, opt):
     hwr = np.clip(hwr, 0.0, hw)
     hr = np.clip(hr, 0.0, np.maximum(h - hw, 0.0))
 
+    # WASH LOAD DOES NOT SETTLE IN THIS MODEL, and that is deliberate.
+    # A first attempt removed fines from hf at a silt fall velocity but left
+    # h unchanged, so the settled material was silently RECLASSIFIED as coarse
+    # (coarse = h - hw - hf) and then deposited again by the capacity closure -
+    # double counting that pushed the deposition ledger to 14 Mm3 while only
+    # 0.5 Mm3 of coarse existed. Rather than patch the bookkeeping, the honest
+    # closure is: for a flow this energetic the Rouse number of silt is far
+    # below 1, wash load stays in suspension over the whole 199 km, and its
+    # fate is downstream of Devghat and outside this model. So fines are
+    # advected and leave through the open boundary. Their eventual deposition
+    # in the Gangetic plain is real but is not what a corridor DEM measures.
+    hf = np.clip(hf, 0.0, np.maximum(h - hw, 0.0))
+
     st["avail"] = np.maximum(avail - net, 0.0)
     st["ero"] = st["ero"] + dE
     st["dep"] = st["dep"] + dD
-    return h, hw, hwr, hr
+    return h, hw, hwr, hr, hf
 
 
 def arrival_fn(front, t):

@@ -424,6 +424,65 @@ impounded behind a rockfall dam for weeks (Kargel; Hanisch et al. 2013).
 
 </details>
 
+### TWO-PHASE SOLIDS (4 Sept) — the falsification is answered
+
+The ensemble falsified the single-phase form: 0 of 150 samples made the
+upper-corridor clocks while keeping deposition inside what the corridor holds.
+`model/core.py` now carries a second solid tracer `hf`:
+
+- **coarse load** — obeys the Takahashi capacity closure, strands, carries the
+  granular friction. The rocky core that stops in the gorge.
+- **fine / wash + ice** — advected with the water, rheologically part of the
+  FLUID (the dial sees w_eff = (hw + hf)/h), and **it does not deposit in this
+  model at all**. For a flow this energetic the Rouse number of silt is far
+  below 1; wash load crosses the whole 199 km and its fate is downstream of
+  Devghat. Ice belongs in this class too: dynamically solid, geomorphically
+  temporary.
+
+`f_fine = 0` reproduces the published table **bit-identically** (checked).
+
+**RESULT: the previously impossible set is satisfied.**
+
+| | single-phase | two-phase, V=30, w0=0.40, f_fine=0.95 |
+|---|---|---|
+| border arrival 7.0 min ±30% | ✓ (but never with deposition) | **6.5 min ✓** |
+| Syabrubesi 13 min ±50% | | **12.8 min ✓** |
+| border speed 48.5 ±35% | | **62.2 m/s ✓** |
+| erosion 3.2 Mm³ ±60% | | **4.29 Mm³ ✓** |
+| **bulk deposition ≤ 5 Mm³** | **0/150 with the clocks** | **4.24 Mm³ ✓** |
+| **all five** | **0 of 150** | **5/5** |
+
+**Held out of the scored set, so still out of sample:** Devghat peak
+**2,661** against an observed excess of ~2,900 (**−8%**), and Galchhi rise
+5.7 m against ~9 (−37%). Both are transformed from the single-phase
+entrainment runs, which gave 0.1–1.5 m at Galchhi and baseflow at Devghat.
+
+**WHAT IT COSTS, stated plainly.** `f_fine` is a NEW FREE PARAMETER and the
+0.95 above was FITTED, by hand, over six trials. Under §6 that must be declared,
+not buried: **one fitted dof, five observables scored, two held out** — the same
+structure as Chamoli's thermal-lag τ. The held-out pair improving sharply is
+the evidence that the dof is doing physics rather than absorbing error.
+
+**AND THE VALUE IS UNCOMFORTABLE.** f_fine = 0.95 with w0 = 0.40 makes the
+release 12 Mm³ water, 17 Mm³ ice/wash, and **0.9 Mm³ of persistent rock**. That
+is an almost rock-free event, which sits badly against every description of a
+*bedrock* failure carrying a hanging glacier. Three readings are open and we
+should not pick one yet:
+1. the release really was overwhelmingly ice — consistent with the composition
+   finding, the border clock and the imagery, but 3% rock is extreme;
+2. the ≤5 Mm³ deposition cap is too tight — geopera mapped 45% of the corridor
+   and their own calibrated model said ~5 Mm³, so the true cap may be 2–3×
+   larger, which would pull f_fine down to ~0.85;
+3. some of the missing volume went up the Kyirong wedge and is not deposit at
+   all.
+
+**Bug found and fixed en route:** the first fine-settling implementation removed
+material from `hf` but not from `h`, so settled fines were silently
+reclassified as coarse (coarse = h − hw − hf) and deposited a second time —
+the ledger read 14 Mm³ while only 0.5 Mm³ of coarse existed. Rather than patch
+the bookkeeping the closure was changed to the physically honest one: wash load
+does not settle inside this domain.
+
 ### THE KYIRONG WEDGE INSTALLED (4 Sept) — and it does the OPPOSITE
 
 `model/core.py` side branches now accept optional wedge geometry
