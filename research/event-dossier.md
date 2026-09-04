@@ -237,6 +237,44 @@ the 08:44 CCTV recorded the *junction impact and up-valley surge*, not a
 down-valley front arrival. It also explains how a Chinese port on one bank and a
 Nepali customs post on the other were destroyed by the same wave.
 
+**BEFORE/AFTER AT GYIRONG PORT — a hard lower bound on flow depth (4 Sept).**
+Paired satellite images of the port, credited to **@vantortech** and relayed by
+**Republic Digital** — media-relayed imagery, not a primary scientific product,
+so treat the processing as unverified. Before: the long causeway terrace with
+vehicles in rows, warehouses, and the multi-storey border building. After:
+featureless grey, captioned "from bustling border port to barren wasteland".
+The structures are not damaged, they are **gone**, and the terrace surface is
+itself scoured and re-covered.
+
+A six-storey building is ~18–20 m. Erasing it puts a floor under the flow depth
+at the junction, and **that retires our own earlier extreme case** — the
+suggestion that at 50 m/s a 70 m mud line could be entirely run-up with no flow
+depth at all. There was real depth here.
+
+Decomposing the trimline as T = h_flow + α·v²/2g with h ≈ 20 m:
+
+| trimline | run-up left | v (α = 1) |
+|---|---|---|
+| 70 m | 50 m | 31 m/s |
+| 100 m | 80 m | 40 m/s |
+| **134 m (geopera max)** | **114 m** | **47.3 m/s** |
+
+against geopera's independent superelevation figure of **45–52 m/s** — agreement
+to about 5%, once a *measured* depth is used to separate the two terms. The
+building height is what makes the decomposition possible; without it the
+trimline is one equation in two unknowns.
+
+**Do NOT do a volume budget at this junction.** The before image shows the
+terrace gave the flow 150–300 m to spread across, against ~50 m in the gorge
+upstream, so the junction is an anomalously wide station: the same 20 m depth
+gives 2 Mm³ over a 2 km surge at gorge width and 10 Mm³ at terrace width. The
+budget belongs in the confined reach.
+
+**Also visible in the after image: a sharp vegetation trimline**, green
+surviving above a clean line on the upper (Chinese) slope. That is mappable
+against a DEM by anyone with the georeferenced scene, and it is the single
+cheapest constraint left on this event.
+
 **A free measurement nobody has made.** If debris on upstream-facing side
 valleys is systematically higher than on the adjacent straight reach, the
 difference *is* the velocity head, giving **v = √(2gΔ/α)** — an independent
