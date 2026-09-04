@@ -516,6 +516,58 @@ Wikipedia timeline, not to a frame-timestamped source we have inspected.
 **This is now the single most consequential open question in the project. It
 must be resolved before the composition finding is published anywhere.**
 
+### ⚠⚠ (vi) THE BORDER CLOCK, RUN TO GROUND — 5 Sept
+
+**geopera say nothing about the discrepancy because they never mention the
+CCTV.** Neither post references video, a camera, or an 08:44 timestamp; their
+timing is built from satellite reconstruction and reports. So this is not a
+dispute — it is two chains that have never been compared.
+
+| source | border arrival | exact basis |
+|---|---|---|
+| Kargel (PSI) | **6 min 50 s** | "22 km at 193 km/h"; precise, named, method unstated |
+| our dossier | 7 min | Wikipedia timeline, "08:44 CCTV Gyirong Port" |
+| geopera, predictability | **17 min** | *"The wave reached the border in 17 minutes"* |
+| geopera, satellite post | **23 min** | *"Twenty-three minutes, start to finish, from the seismic signal to the destruction of the customs complex"* |
+| **Snopes / AFP, on the footage** | **~23 min** | *"the time shown in the footage is **Chinese time**… it was around **9 o'clock in Nepal**"* |
+
+**The fact-checkers looked at the actual footage and read it as ~09:00 NPT.**
+China is UTC+8, Nepal UTC+5:45 — a 2 h 15 min offset, and a documented
+mechanism by which a timezone error could have entered the chain. geopera's own
+two posts also disagree with each other (17 vs 23), so their border timing is
+soft, but both are in the slow family.
+
+Implied mean speed over the first 22 km: 6.8 min → 54 m/s; 17 min → 22 m/s;
+23 min → 16 m/s.
+
+**THE GAUGE CHAIN BREAKS THE TIE — and it favours FAST.** The Syabrubesi DHM
+gauge read 3.8 m at **08:50**, i.e. 13 min, at path km 37.6. That is a Nepali
+instrument on Nepal time, wholly independent of any camera or timezone. It
+implies 48 m/s mean over 37.6 km, and **you cannot take 17–23 minutes to reach
+km 22 and 13 minutes to reach km 37.6.** So Kargel and the Syabrubesi gauge are
+mutually consistent; geopera and the fact-checked footage are mutually
+consistent; the two sets cannot both be right.
+
+**A partial reconciliation exists for the SPEED evidence but not the TIMES.**
+Our three-mud-line reconstruction (54 m/s) and geopera's superelevation
+(45–52) are both *local* at the junction. A wave that starts slowly and
+accelerates can be doing 54 m/s at km 22 while averaging 22 m/s over the whole
+22 km — so the velocity evidence is compatible with a slow *mean*. The gauge
+chain is not: it constrains arrival TIMES, and still forbids 17–23 min.
+
+**WHAT WOULD SETTLE IT, in order of decisiveness:**
+1. The raw CCTV file with its overlay timestamp and the camera's timezone
+   setting — Annapurna Post published it; AFP verified it by satellite and
+   street view and will have the original.
+2. DHM's Syabrubesi telemetry log with timestamps (already item 2 on the §5
+   data list — this is now its most important use).
+3. Kargel's method for the 6 min 50 s: if it derives from the same camera, the
+   two "fast" sources are one source and the tie breaks the other way.
+
+**Until then the composition finding must carry this caveat explicitly, and it
+should NOT be published as settled.** Dry-rock scenarios in our model arrive at
+17 minutes; they are excluded only if the border clock is 7.
+
 ## 7. Landslide dams
 
 1. **In-event temporary blockage (minutes-scale, hypothesized):** ICIMOD's mechanism; Geology Page reports satellite evidence of "a blockage approximately 20 km upstream of the Miteri Bridge" with impounded water and subsequent release. Duration unconstrained; Sinclair objects on timing. **The central contested claim the model can test.**
