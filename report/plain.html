@@ -437,6 +437,66 @@ do not have to predict the collapse to save the people two hours downstream —
 you only have to notice it and route it. Their phrase for it is exact:
 <em>"Those hours existed physically. They were lost institutionally."</em></p>
 
+<h2>How this was made</h2>
+<p>This analysis was done by one person in the evenings, working with an AI
+assistant, over ten days. That is unusual enough that it should be on the page
+rather than in a footnote — partly so you can judge it, and partly because the
+division of labour turned out to be the interesting part.</p>
+<div class="honesty"><span class="lbl">The method, plainly</span>
+<p><strong>Who and what.</strong> Dave Hume, an engineer in New Zealand,
+working with <strong>Claude Opus 5</strong> (Anthropic) running in
+<em>Claude Code</em> — a terminal tool where the model can write and run
+programs, read and edit files, search the web and publish pages, rather than
+just answer questions. Every model run, every satellite download, every chart
+on this page was produced that way.</p>
+<p><strong>How the work actually split.</strong> The AI wrote the physics code,
+ran the simulations, fetched and processed the satellite imagery, did the
+literature searches and drafted the prose. The human set the direction, brought
+the original hypothesis, and — this is the part that matters —
+<strong>did most of the catching</strong>.</p>
+<p><strong>Five of the errors corrected this week were found because the human
+pushed back</strong>, not because the model checked itself:</p>
+<ul>
+<li>"I don't follow the briefly-impounded logic" — it was wrong; damming that
+river for the volume claimed would have taken 37 hours, not minutes.</li>
+<li>"Is there an energy mismatch?" — there wasn't, but chasing it found a real
+soft spot in how the model ties speed to size.</li>
+<li>"Won't that depend on the angle of the side valleys?" — it does, and the
+run-up formula had been stated too loosely.</li>
+<li>"What do they say about the 10-minute difference?" — they said nothing,
+and going to find out uncovered the timestamp that saved the finding.</li>
+<li>"Rerun it with the relaxed limit" — which exposed three numbers we had
+been quoting as artefacts of a constraint that was too strict.</li>
+</ul>
+<p>The human also made two measurements the model could not: reading the mud
+lines off the satellite terrain, and spotting from a flood animation that
+another group's model was missing the flow that went <em>backwards</em> up the
+Chinese valley.</p>
+<p><strong>What the AI was good for.</strong> Speed of checking. A hypothesis
+could be tested in minutes rather than an evening, which meant bad ideas were
+killed quickly instead of being defended. The satellite work — finding the
+scenes, compositing five cloudy passes into one usable image, measuring channel
+widening — took an hour rather than a week. And it never minded being told it
+was wrong, which is the trait this particular job most needed.</p>
+<p><strong>What it was bad at.</strong> Confident errors in its own fresh work.
+Two bugs on the last day were entirely self-inflicted: sediment being counted
+twice in the ledger, and a chart whose bars were drawn to the wrong axis. Both
+were in things written minutes earlier and believed. Neither would have been
+caught by asking the model whether it was sure.</p>
+<p><strong>Rules we worked under.</strong> The project has written rules, kept
+in the repository since day one: state conclusions as ranges over disputed
+inputs rather than single numbers; never tune a parameter to fit the very
+observation you are scoring against, and if you must, declare it and hold
+other measurements back as a check; report failures with their diagnostic
+shape rather than hiding them; credit the researchers who got there first —
+the contribution here is arithmetic, not correction. Where those rules were
+broken, it is noted above.</p>
+<p><strong>Checkable.</strong> Every number here comes from code in a public
+repository that runs on open data in seconds. The full development history,
+including every retraction and the reasoning behind it, is in the commit log.
+Nothing rests on trusting either of us.</p>
+</div>
+
 <h2>What we're not sure of</h2>
 <div class="honesty"><span class="lbl">The honesty box</span>
 <p><strong>Retracted or reversed this week, in order:</strong> the Seti River
