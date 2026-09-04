@@ -424,6 +424,49 @@ impounded behind a rockfall dam for weeks (Kargel; Hanisch et al. 2013).
 
 </details>
 
+### ENSEMBLE v4 (5 Sept) — the honest cap, and what actually survives it
+
+Rerun with the deposition cap corrected to **≤12 Mm³** (from geopera's
+described 12–18 m × 3 km deposit at our ~200 m modelled width) and the w0 prior
+widened to 0.95. 220 samples.
+
+| run | cap | fits | V median | V range |
+|---|---|---|---|---|
+| v2 single-phase | ≤5 | **0/150** | — | — |
+| v3 two-phase, tight cap | ≤5 | 10/200 | 16.4 | 13.3–28.3 |
+| **v4 two-phase, honest cap** | **≤12** | **26/220** | **21.3** | **13.8–34.2** |
+
+**THE STABILITY CHECK PASSES, and it was the thing to check.** The cap moved by
+2.4×; the volume envelope moved ~30% and the two ranges **overlap over
+13.8–28.3 Mm³**. The event-size answer is not an artifact of the constraint we
+got wrong.
+
+**BUT ONLY THE VOLUME IS ACTUALLY CONSTRAINED.** Measuring each posterior
+against the prior it was drawn from:
+
+| input | posterior spans | verdict |
+|---|---|---|
+| **release volume** | **10.3% of prior** | **CONSTRAINED** |
+| liquid fraction w0 | 95.7% | not constrained |
+| mu_dry | 92.0% | not constrained |
+| f_fine | 96.9% | not constrained |
+
+**Run v3's tidy w0 = 0.72 and f_fine = 0.81 were artifacts of the too-tight
+cap** — with an honest cap the data do not determine either, and the hand-fitted
+f_fine = 0.95 of 4 Sept still less so. Retract those three numbers; keep the
+volume.
+
+**And one more admission.** Erosion at ±60% was met by **211 of 220** runs, so
+as an ensemble constraint it barely discriminates. The 3.8-vs-3.2 Mm³ match
+remains a genuine out-of-sample result for the entrainment closure; it is just
+not what is doing the work in this posterior. The discriminating constraints
+are the border clock (76/220), the border speed (88/220) and Syabrubesi
+(103/220).
+
+**HEADLINE, stated at the confidence it has earned: the release was
+≈14–34 Mm³**, against Kargel 50–200, Azam/ICIMOD 100–200, geopera 60–140 and
+EGU 0.5–10. Its composition is **not** resolved by our observables.
+
 ### ENSEMBLE v3 (5 Sept) — the first real envelope on event size
 
 200 Latin-hypercube samples over SIX contested inputs (V_rel log-uniform
