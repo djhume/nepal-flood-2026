@@ -424,6 +424,55 @@ impounded behind a rockfall dam for weeks (Kargel; Hanisch et al. 2013).
 
 </details>
 
+### THE KYIRONG WEDGE INSTALLED (4 Sept) — and it does the OPPOSITE
+
+`model/core.py` side branches now accept optional wedge geometry
+(`entry[5]` = arm bed slope, `entry[6]` = max fill). A constant-plan-area store
+is a LINEAR capacitor, V = A·h. A backwater wedge is not: it runs h/S up its own
+valley, so plan area grows with fill and **volume goes as the square of the
+head**, V = w·h²/(2S). Plain 5-tuples keep the old behaviour — **the published
+Trishuli table reproduces bit-identically** (regression checked).
+
+Kyirong arm at w = 100 m, S = 0.031, head 110 m ⇒ **19.5 Mm³ at full head**
+against 12.0 Mm³ for the old element.
+
+**Dave's prediction — bigger store ⇒ smaller downstream, so the source must be
+bigger than we thought — is NOT supported. The sign comes out the other way.**
+
+| scenario C, V = 30 | border | Galchhi rise | Devghat peak |
+|---|---|---|---|
+| linear 12 Mm³ store | 6.8 min | 1.6 m | 1,671 @ 17:53 |
+| **WEDGE 19.5 Mm³** | 6.8 min | **2.9 m (+80%)** | **1,706 (+2%) @ 17:31** |
+
+The wedge makes everything downstream *larger* and *earlier*. The reason is the
+quadratic geometry, and it is worth stating because it is genuinely
+counter-intuitive:
+
+| | plan area at 1 m fill | actually stored (V=30 run) |
+|---|---|---|
+| old linear element | 1,500,000 m² | **9.5 Mm³** (fills to 6.35 m) |
+| wedge | **3,226 m²** | **3.7 Mm³** (fills to 47.8 m) |
+
+A wedge is ~460× *smaller* at low stage and only overtakes a 1.5×10⁶ m² store
+above 465 m of fill. **It barely engages until the junction stagnates to tens
+of metres**, so for any wave short of that it is the *smaller* absorber despite
+holding more at full head. The old element was over-absorbing precisely because
+it engaged immediately.
+
+So the nonlinearity Dave identified is real and large — it just has the
+opposite sign to the intuition. And the consequence runs the other way too:
+**the wedge slightly REDUCES the release volume needed**, it does not raise it.
+V = 60, w0 = 0.40 gives Galchhi 10.6 m (was 10.2) and Devghat 2,186 (was
+2,138). Sweep with the wedge in: V=30 → 2.9 m / 1,706; V=45 → 4.5 / 1,782;
+V=60 → 10.6 / 2,186; V=90 → 16.9 / 2,817 (observed ~9 m and ~2,900 excess).
+
+**One caveat that matters:** the wedge only delivers its 19.5 Mm³ if the
+junction stagnates to its full 110 m head. Our model reaches 47.8 m of fill,
+so it stores 3.7 Mm³ — under a fifth of capacity. Either the model
+under-predicts junction stage, or the observed 110 m stagnation was momentary
+rather than sustained. The three mud lines say the stagnation was real; the
+model not reproducing it is a model problem.
+
 ### THE BORDER FLOW, SOLVED FROM THREE MUD LINES (4 Sept) — Dave's measurements
 
 Dave measured three elevations in Google Earth at the border junction. Because

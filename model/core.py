@@ -147,8 +147,8 @@ class Reach:
         self.wf = 0.5 * (self.wn[:-1] + self.wn[1:])
         self.nf = 0.5 * (self.nn[:-1] + self.nn[1:])
         self.side = list(side)
-        self.side_node = {nm: int(np.argmin(np.abs(self.x_km - km)))
-                          for nm, km, *_ in self.side}
+        self.side_node = {e[0]: int(np.argmin(np.abs(self.x_km - e[1])))
+                          for e in self.side}
         self.K_loc = np.zeros(N - 1)
         for km_j, K in (k_junc or {}).items():
             j = min(int(np.argmin(np.abs(self.x_km - km_j))), N - 2)
@@ -257,21 +257,39 @@ def step(st, R, dt, mu_dry, w_sat=W_SAT, mu_wet=MU_WET, side_valleys=True,
     dR[-1] -= Q_end * hr[-1] / max(h[-1], 1e-6)
 
     if side_valleys:
-        for nm, km, area, ww, sill in R.side:
+        for entry in R.side:
+            nm, km, area, ww, sill = entry[:5]
+            # OPTIONAL WEDGE GEOMETRY (entry[5] = bed slope of the side arm,
+            # entry[6] = max fill). A constant-plan-area store is a LINEAR
+            # capacitor, V = A h. A backwater wedge is not: it runs a distance
+            # h/S up its own valley, so its plan area GROWS with fill,
+            # A(h) = ww h / S, and its volume goes as h^2:
+            #     V = ww h^2 / (2 S)
+            # That is a quadratic capacitor - it barely engages at low stage
+            # and then swallows volume fast once the junction stagnates. The
+            # Kyirong arm above the border is one: Dave traced the 1,920-1,930 m
+            # stagnation elevation ~3.5 km up it, which needs S ~ 0.031, and
+            # Sentinel-2 channel widening tapers away over the same distance.
+            # Branches given as plain 5-tuples keep the old linear behaviour,
+            # so every published result is untouched.
+            wedge_S = entry[5] if len(entry) > 5 else None
+            h_max = entry[6] if len(entry) > 6 else H_SIDE_MAX
             i = R.side_node[nm]
             head_main = eta[i] - (z[i] + sill)
-            dh = min(head_main, H_SIDE_MAX) - hs[nm]
+            dh = min(head_main, h_max) - hs[nm]
             Qs = CD_WEIR * ww * np.sign(dh) * min(abs(dh), 8.0) ** 1.5
-            Qs = np.clip(Qs, -hs[nm] * area / dt,
+            area_eff = (max(ww * hs[nm] / wedge_S, ww * 20.0)
+                        if wedge_S else area)
+            Qs = np.clip(Qs, -hs[nm] * area_eff / dt,
                          max(head_main, 0) * wn[i] * DX / dt)
-            if (head_main <= 0 or hs[nm] >= H_SIDE_MAX) and Qs > 0:
+            if (head_main <= 0 or hs[nm] >= h_max) and Qs > 0:
                 Qs = 0.0
             fw = hw[i] / max(h[i], 1e-6)
             fwr = hwr[i] / max(h[i], 1e-6)
             fr = hr[i] / max(h[i], 1e-6)
             dV[i] -= Qs; dW[i] -= Qs * fw
             dWr[i] -= Qs * fwr; dR[i] -= Qs * fr
-            hs[nm] = max(hs[nm] + Qs * dt / area, 0.0)
+            hs[nm] = max(hs[nm] + Qs * dt / area_eff, 0.0)
 
     h = h + dV * dt / (wn * DX)
     hw = hw + dW * dt / (wn * DX)
