@@ -424,6 +424,51 @@ impounded behind a rockfall dam for weeks (Kargel; Hanisch et al. 2013).
 
 </details>
 
+### THE BORDER FLOW, SOLVED FROM THREE MUD LINES (4 Sept) — Dave's measurements
+
+Dave measured three elevations in Google Earth at the border junction. Because
+they sit in three *different flow situations*, they separate quantities that
+have been tangled together all week.
+
+| mark | elevation | what it is |
+|---|---|---|
+| river bed | 1,815 m | datum |
+| **leeward** side | 1,875 m | sheltered — no velocity head to add, and the surface is depressed on the inside of the bend ⇒ **flow depth h = 60 m, a FLOOR** |
+| **impact cliff**, head-on | 1,920–1,930 m | vertical wall square-on to the jet ⇒ **depth + FULL velocity head** |
+
+A vertical cliff square-on to the jet is as close to full stagnation as this
+event provides (α ≈ 1, sinθ ≈ 1), so the height *above the leeward water
+surface* is the velocity head:
+
+```
+run-up            45 – 55 m
+MATERIAL velocity u = sqrt(2 g R)      = 29.7 – 32.8 m/s
+bore celerity     c = sqrt(g h)        = 24.3 m/s   at h = 60 m
+FRONT speed       u + c                = 54.0 – 57.1 m/s
+Froude            u / sqrt(g h)        = 1.22 – 1.35
+```
+
+**Observed front speed, from the seismic clock and the CCTV: 22 km / 7 min =
+52.4 m/s.** The front speed *constructed from two mud lines and a depth* lands
+within 3–9% of it, **without using the clock anywhere in the derivation.**
+Froude 1.2–1.35 is physically sensible for a flood bore in a steep gorge and
+sits well inside the model's FR_MAX = 2 cap.
+
+**This resolves the material-vs-front puzzle from the energy audit.** A bore
+front outruns its own material by exactly the celerity. We had material at
+53.6 m/s with a 12-minute front and could not reconcile them; the answer is
+that those are different quantities. Material 30, celerity 24, front 54.
+
+**It also puts a number on a caveat PLAN §B2 already carried** — "superelevation
+speeds are biased high by splash/runup and bend-radius uncertainty". geopera's
+45–52 m/s agrees well with the FRONT speed. If it is meant as material
+velocity it is ~60% high. Which of the two they intend is now worth asking.
+
+**And it halves the discharge estimate.** Discharge needs *material* velocity,
+not front speed: Q = A·u = 7,890 × 24–30 = **190,000–237,000 m³/s**, against the
+386,000 I computed an hour earlier by wrongly using 49 m/s. A 2× correction,
+and the error was mine, not the data's.
+
 ### GORGE VOLUME BUDGET (4 Sept) — and why it cannot be closed from imagery
 
 Redone in the confined reach (km 8–20) with DEM-measured cross-sections
