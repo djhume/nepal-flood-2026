@@ -368,8 +368,42 @@ the only public figure for up-valley extent. Their comparison imagery is
 **23 vs 27 August**; source unattributed, one road photo credited China Daily
 via Reuters.
 
-*THE TEST, and it is cheap.* Sentinel-2 post-event, already item 4 on the §5
-data list. **If scour and a vegetation trimline run ~3.5 km up that arm and
+*THE TEST WAS RUN, 4 Sept — `calcs/sentinel_wedge.py`.* Sentinel-2 L2A off the
+AWS public COG mirror via Element84's Earth Search STAC (no credentials
+needed), windowed reads. **Monsoon nearly defeated it:** the pre-event scene of
+12 Aug is clean (4.9% of the AOI masked) but *every* post-event pass is 70–100%
+clouded, so the post epoch is a 5-scene median composite (27, 29, 31 Aug,
+1, 3 Sept) giving **42.6% usable overlap**.
+
+NDVI differencing alone was too crude — it averages hillsides in with the
+valley floor, and the corridor was largely bare before the flood so there was
+little vegetation there to lose. The statistic that works is **channel
+widening**: bare ground (NDVI < 0.20) after ÷ before, in 0.5 km bands, with
+the *downstream* reach as a control because we know the flood went that way.
+
+| distance from junction | **up-valley (NW)** | Lhende (NE, inflow) | downstream (SSW, control) |
+|---|---|---|---|
+| 0.0–0.5 km | **×2.5** | ×1.8 | ×1.6 |
+| 0.5–1.0 | **×2.2** | ×3.4 | ×1.8 |
+| 1.0–1.5 | **×2.1** | ×3.8 | ×2.6 |
+| 1.5–2.0 | **×1.8** | ×3.5 | ×2.4 |
+| 2.0–2.5 | **×1.5** | ×4.3 | ×1.5 |
+| 3.0–3.5 | ×1.7 | ×3.9 | ×2.7 |
+| 3.5–4.0 | **×1.1** | ×2.9 | ×2.7 |
+| 4.0–5.0 | **×1.2** | ×3.2 | ×2.4 |
+
+**The two known through-flow corridors sustain their widening to 5–7 km. The
+up-valley arm does not: it starts at ×2.5, tapers steadily, and is gone by
+3.5 km.** A through-flow keeps its width; a backwater wedge tapers to nothing
+at its head. That is the shape of the difference, and the taper ends where
+Dave's contour trace and Xinhua's "about 3 km of the G216" both put it.
+
+**Verdict: suggestive support, not proof.** Caveats that must travel with it —
+only 42.6% cloud-free overlap; the ×7.8 in the 2.5–3.0 km band comes off a
+0.004 km² pre-event denominator and means nothing; and the up-valley sector
+shows ×2.1 again at 5–7 km, which is unexplained and may be other drainage
+inside a 70° sector. A cleaner test needs a centreline-following corridor
+rather than angular sectors, and one genuinely clear post-event scene. **If scour and a vegetation trimline run ~3.5 km up that arm and
 stop where the bed reaches ~1,925 m, the wedge is real. If the valley is green
 to within a few hundred metres of the junction, this is a contour and nothing
 more.** Either answer is worth having, and it is a morning's work for anyone
