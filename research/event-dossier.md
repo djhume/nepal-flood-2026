@@ -275,6 +275,49 @@ surviving above a clean line on the upper (Chinese) slope. That is mappable
 against a DEM by anyone with the georeferenced scene, and it is the single
 cheapest constraint left on this event.
 
+**THE DECOMPOSITION CLOSES — Dave's leeward trimline, 4 Sept.** Measured in
+Google Earth at the border: **river bed 1,815 m, green/grey vegetation boundary
+1,875 m at the small hut** (possibly the webcam mount) — **60 m of flow above
+the bed.** Two things make this the most useful single measurement we have.
+
+*It is a FLOOR, not a ceiling.* The mark is on the sheltered side, so the flow
+is not driving into the wall and there is little velocity head to add; and in
+the lee / on the inside of a bend the water surface is *depressed* relative to
+the mean, because superelevation tilts it up on the outside. A lee-side mark
+therefore under-reads the flow. That is the exact opposite character to
+geopera's 134 m maximum, which is a windward/impact reading.
+
+*Two marks of opposite character give both unknowns.* T = h + α·v²/2g had been
+one equation in two unknowns all day. With h = 60 m from the lee side and
+T = 134 m from the impact side:
+
+| lee depth | geopera max | run-up | v at α=1 | v at α=0.6 |
+|---|---|---|---|---|
+| 50 m | 134 m | 84 m | 40.6 m/s | 52.4 m/s |
+| **60 m** | **134 m** | **74 m** | 38.1 m/s | **49.2 m/s** |
+
+against geopera's **45–52 m/s** derived independently by superelevation.
+**h = 60 m with α = 0.6 gives 49 m/s.** The geometry, the two mud lines and
+their velocity method are now mutually consistent for the first time.
+
+*Bed-elevation cross-check, and it fails in the predicted direction.* Our
+Mapzen profile puts the bed at km 22 at **1,832 m** against Dave's **1,815 m** —
+17 m high, which is the known 30 m DEM over-reading of an incised channel
+floor (the `LADDER_SECTIONS=dem` lesson). Worth propagating: our gorge bed
+elevations are probably ~15–20 m too high throughout.
+
+*Consequence for discharge.* At 60 m stage the DEM transects give A ≈ 7,890 m²
+in the confined reach, so **Q ≈ 270,000–390,000 m³/s** (section-mean to surface
+velocity). Enormous, but it makes geopera's ~100 Mm³ of debris-laden water land
+at a **12–16 minute** pulse — and PLAN §2 already records "pulse duration:
+minutes at the border". **That is the first time their volume estimate and our
+geometry have agreed on anything.**
+
+*Open tension to check:* the dossier lists Gyirong Port terrace at ~1,879 m,
+essentially at the lee trimline, yet multi-storey buildings on it were erased.
+Consistent only if the impact side ran much higher than the lee side — which is
+what the 134 m mark says — but worth confirming the terrace elevation.
+
 **A free measurement nobody has made.** If debris on upstream-facing side
 valleys is systematically higher than on the adjacent straight reach, the
 difference *is* the velocity head, giving **v = √(2gΔ/α)** — an independent
