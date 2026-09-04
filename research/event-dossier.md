@@ -25,7 +25,7 @@ Numbers marked **[soft]** are single-source or contested — see §11.
 | 31 Aug | Controlled explosion at Upper Trishuli 3A; warnings for second high-elevation pond | Wikipedia |
 | — | Bodies/debris recovered 200–240 km downstream (Nawalparasi; into India via Narayani/Gandak) | Wikipedia, [Nepali Times](https://nepalitimes.com/central-nepal-flood-the-day-after) |
 
-Casualties (date-stamp everything; still rising): as of ~1 Sept, Nepal 1,114 dead / 1,473 injured / 3,916 missing; Tibet 16 dead / 546 missing. Missing include ~900–1,000 hydropower workers across 11–12 projects.
+Casualties (date-stamp everything; still rising): as of ~1 Sept, Nepal 1,114 dead / 1,473 injured / 3,916 missing; Tibet 16 dead / 546 missing. **Updated 4 Sept ([Britannica](https://www.britannica.com/event/Nepal-floods-of-2026)): Nepal 1,259 dead / 5,083 missing; Tibet 21 dead / 541 missing** — the missing count has risen by ~1,200 in three days, so treat any total as provisional. Missing include ~900–1,000 hydropower workers across 11–12 projects.
 
 ## 2. Source mass — volume, composition, elevation
 
@@ -156,6 +156,53 @@ an earthquake and amplified by anomalous snow; 2026 had no trigger event and
 is being attributed to thaw of ice-cemented rock. A mountain that fails
 coseismically is not evidence that the same mountain fails thermally, and vice
 versa. The shared lesson is exposure, not mechanism.
+
+## 6c. TRIMLINES ARE NOT FLOW DEPTHS — a caveat added 4 Sept
+
+**Prompted by Dave watching helicopter footage** and noting debris plastered on
+side valleys "well above 70 m". That is consistent with the published numbers
+— and it is exactly why they cannot be read as flow depth.
+
+A mud line on a straight, channel-**parallel** wall records roughly the flow
+depth. A mud line where the flow drives head-on into a side valley, or into
+the outside of a bend, records depth **plus the velocity head it converts**:
+
+> run-up  R ≈ α · v² / 2g,  α ≈ 0.5–1 (1 = full stagnation)
+
+| flow velocity | v²/2g | run-up at α = 0.6 |
+|---|---|---|
+| 11 m/s (Syabrubesi opening) | 6 m | 4 m |
+| 30 m/s | 46 m | 28 m |
+| 45 m/s | 103 m | 62 m |
+| 50 m/s (geopera, at the border) | **127 m** | **76 m** |
+
+**At the border speeds geopera themselves derived, a 70 m mud line is entirely
+accounted for by run-up, with no flow depth required at all.** Inverting: a
+70 m trimline implies ~42 m of flow at 30 m/s, ~21 m at 40 m/s, and nothing
+at all at 50 m/s.
+
+**Why this matters to us.** On 4 Sept we used the ~70 m median trimline as a
+flow depth to bound the gorge wave at 7–20 Mm³, and hence the release at
+4–17 Mm³. Redone with depth inferred from run-up, the wave is 0.8–10.6 Mm³ and
+the release needed falls to **0–7.5 Mm³** — which sits inside the entrainment
+ledger's ≲6 Mm³ cap rather than fighting it. The event-size contradiction may
+be an artifact of reading run-up as depth.
+
+**Why this matters to geopera's numbers, stated fairly.** Their 45–52 m/s comes
+from *superelevation at bends*, which is a standard and reasonable method, and
+their trimlines are a separate product. But both are picked from mud lines, so
+if some trimlines sit at bends or side-valley mouths the two quantities are not
+independent and both would move together. This is a **question to ask them**,
+not an error to assert: *were the trimline heights measured on channel-parallel
+reaches, or wherever the mud line was clearest?*
+
+**A free measurement nobody has made.** If debris on upstream-facing side
+valleys is systematically higher than on the adjacent straight reach, the
+difference *is* the velocity head, giving **v = √(2gΔ/α)** — an independent
+velocity, from the same imagery, with no model in it. Dave's helicopter footage
+suggests the difference is large. **This is a high-value, low-cost task:
+pick paired trimline heights (straight reach vs adjacent side valley) at 5–10
+gorge stations.**
 
 ## 7. Landslide dams
 
