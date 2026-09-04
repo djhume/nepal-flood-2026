@@ -424,6 +424,31 @@ impounded behind a rockfall dam for weeks (Kargel; Hanisch et al. 2013).
 
 </details>
 
+### OUT-OF-SAMPLE TEST (5 Sept) — one pass, one fail
+
+The 26 surviving samples were re-run to 10 h and scored on the two observables
+**deliberately excluded** from the ensemble: Galchhi's 30-minute stage rise and
+the Devghat peak. Neither influenced the posterior, so this is a real test.
+
+| observable | model (26 survivors) | observed | verdict |
+|---|---|---|---|
+| **Devghat peak** | median **2,204**, range 1,752–2,889 | ~2,900 excess | **100% within ×2 — PASS** |
+| **Galchhi 30-min rise** | median **3.6 m**, range 1.8–6.1 | ~9 m | **23% within ×2 — FAIL** |
+
+**The split is diagnostic, not random.** Devghat is a *discharge* — a
+volume-per-time measure — and the model gets it right for every survivor, with
+the top of the range landing on 2,889 against ~2,900. Galchhi is a *stage
+rise* — a height, which depends on the channel's cross-section as much as on
+the flow. So the model routes the right amount of water and converts it to the
+wrong height, which points at **lower-reach channel geometry**, not at the
+flood physics. That has been an open item since the ladder days: below
+km 60 the widths come from hydraulic geometry (4.8·√Q), not from measurement.
+
+**This is the honest closing position:** the volume envelope and the flow
+physics survive an out-of-sample test they were not tuned for; the stage
+prediction does not. Fixing it needs measured cross-sections in the lower
+river, which is a data job rather than a physics one.
+
 ### ENSEMBLE v4 (5 Sept) — the honest cap, and what actually survives it
 
 Rerun with the deposition cap corrected to **≤12 Mm³** (from geopera's
