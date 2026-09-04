@@ -69,7 +69,9 @@ RNG = np.random.default_rng(20260904)
 # ---- priors ---------------------------------------------------------------
 PRIORS = {
     "V_rel":   ("log",  1e6,  200e6),
-    "w0":      ("lin",  0.02, 0.85),   # widened 4 Sept: run 1 pinned this
+    "w0":      ("lin",  0.02, 0.95),   # widened again 5 Sept: run 3's survivors
+                                       # reached 0.84 against a 0.85 ceiling.
+                                       # Originally 0.50 and severely pinned
                                        # against its 0.50 ceiling (median
                                        # 0.49, range 0.38-0.50), i.e. the
                                        # prior was truncating the answer, not
@@ -98,8 +100,16 @@ OBS = {
 # its V_rel ~ 31 Mm3 answer sat happily at 15 Mm3 of solids against a corridor
 # that can only account for ~5. Adding it is the real test.
 OBS_MAX = {
-    "deposit_Mm3": (5.0, "bulk deposition km 0-199, Mm3 (geopera ~0.9 "
-                         "measured, ~5 their calibrated model)"),
+    # RELAXED 5 Sept. The <=5 Mm3 cap came from geopera's 0.9 Mm3 measured
+    # plus the ~5 Mm3 in their calibrated model - but their 0.9 is a LOWER
+    # BOUND over 45% cloud-free coverage, and the deposit they describe is
+    # "12 to 18 metres thick and three kilometres long where the valley opens
+    # below Syabrubesi". At our modelled width there (~200 m) that is
+    # 7.2-10.8 Mm3 on its own, before anything deposited elsewhere. 12 Mm3 is
+    # the honest cap; 5 was too tight and conditioned run 3's posterior on a
+    # constraint we now know to be wrong.
+    "deposit_Mm3": (12.0, "bulk deposition km 0-199, Mm3 (deposit described "
+                          "as 12-18 m thick x 3 km => 7-11 Mm3 at 200 m width)"),
 }
 
 

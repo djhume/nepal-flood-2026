@@ -611,6 +611,41 @@ direct observational support for the ice-rich composition our dial requires,
 at exactly the station where the timing argument is made, and it is the kind of
 evidence `research/imagery-composition-memo.md` was set up to look for.
 
+## 6e. WHO ELSE IS MODELLING THIS (5 Sept) — and a domain gap Dave spotted
+
+| group | what they have done | method |
+|---|---|---|
+| **geopera** | five posts in a week: satellite reconstruction, predictability audit, half-metre stereo DEM, seismology, differentiable calibration | 1D routing down **611 measured cross-sections** + a 2D model of the Syabrubesi gorge; PyTorch morphodynamics with gradient-fitted parameters; openly licensed data only |
+| **CLaSH** (Center for Land Surface Hazards) | ArcGIS StoryMap compiling resources and initial findings; event-response page | NSF-funded five-year centre (NSF-EAR 2425607), started Oct 2025, U. Michigan, dir. Marin Clark. Contact contact@geoclash.org |
+| **ICIMOD** | living coordination hub; SERVIR-HKH flash-flood prediction tool | regional mandate; the natural institutional home |
+| **academic runout modelling** | **nothing published as of 5 Sept** — no r.avaflow or RAMMS run of this event found | — |
+
+**⚠ THE DOMAIN GAP (Dave's observation, 5 Sept).** Watching geopera's animation
+of the upper-reach flood pulse, Dave noticed **it does not push enough flow up
+the Chinese side arm**. Checking their method confirms why: their reconstruction
+routes *downstream* from the source through Rasuwagadhi to Galchhi, and there
+is **no mention anywhere of upstream flow, backwater, the Kyirong valley, or
+the G216 road**. The Chinese arm is not modelled because **it is outside their
+domain**.
+
+That is a domain choice rather than an error, but it has consequences. Three
+independent lines now suggest real up-valley inundation:
+1. Dave's contour trace of the 1,920–1,930 m stagnation elevation — **~3.5 km**;
+2. Xinhua's **"about 3 km of the G216 highway leading to Kyirong Port"**;
+3. our Sentinel-2 channel-widening taper, ×2.5 at the junction falling to ×1.1
+   by 3.5 km, unlike the two known through-flow corridors which sustain
+   (`calcs/sentinel_wedge.py`).
+
+If 10–29 Mm³ was parked up that arm during passage and released late, a
+downstream-only domain will mis-handle both the volume and the hydrograph shape
+at the border. **This is worth raising with them**, and it is the one place our
+work has something they lack rather than the other way round — they have better
+imagery, better cross-sections and a 2D solver; we have the Chinese side, the
+censored camera, and the junction physics.
+
+**Caveat:** we have not viewed their animation ourselves; this rests on Dave's
+reading of it plus their own description of the method.
+
 ## 7. Landslide dams
 
 1. **In-event temporary blockage (minutes-scale, hypothesized):** ICIMOD's mechanism; Geology Page reports satellite evidence of "a blockage approximately 20 km upstream of the Miteri Bridge" with impounded water and subsequent release. Duration unconstrained; Sinclair objects on timing. **The central contested claim the model can test.**
