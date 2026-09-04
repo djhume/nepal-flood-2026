@@ -355,6 +355,19 @@ when the wave is passing, and returns it late — which is the shape of the
 problem we have (the routing wants a lot of volume at the border, the distal
 record and the deposition budget say the corridor never carried it).
 
+*A SUGGESTIVE INDEPENDENT NUMBER, found 4 Sept.* Xinhua, relayed by
+[RFA](https://www.rfa.org/english/tibet/2026/08/27/tibet-nepal-flood-landslide-blackout/):
+**"about 3 kilometres of the G216 highway leading to Kyirong Port were
+damaged"**, plus five telecom base stations off air. The G216 approaches the
+port from **up-valley**, so 3 km of damaged approach road is what a ~3.5 km
+backwater wedge would produce. **This is consistent with, not proof of, the
+wedge** — road damage in this terrain has other causes (landslides, bank
+collapse, the debris flow tracking along the river without ponding). RFA also
+notes information from the Chinese side is "severely lacking", so this may be
+the only public figure for up-valley extent. Their comparison imagery is
+**23 vs 27 August**; source unattributed, one road photo credited China Daily
+via Reuters.
+
 *THE TEST, and it is cheap.* Sentinel-2 post-event, already item 4 on the §5
 data list. **If scour and a vegetation trimline run ~3.5 km up that arm and
 stop where the bed reaches ~1,925 m, the wedge is real. If the valley is green
