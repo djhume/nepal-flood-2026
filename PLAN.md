@@ -424,6 +424,55 @@ impounded behind a rockfall dam for weeks (Kargel; Hanisch et al. 2013).
 
 </details>
 
+### ENSEMBLE v3 (5 Sept) — the first real envelope on event size
+
+200 Latin-hypercube samples over SIX contested inputs (V_rel log-uniform
+**1–200 Mm³**, w0, mu_dry, Manning scale, erodible depth, and now f_fine),
+scored against the five observables the single-phase model could not satisfy.
+
+**10 of 200 satisfy all five** — against **0 of 150** single-phase. The
+structural fix is what made the problem solvable, and that is the cleanest
+before/after this project has.
+
+| input | posterior median | range |
+|---|---|---|
+| **release volume** | **16.4 Mm³** | **13.3 – 28.3** |
+| liquid fraction w0 | 0.72 | 0.39 – 0.84 |
+| mu_dry | 0.18 | 0.11 – 0.32 |
+| f_fine (non-depositing) | 0.81 | 0.49 – 0.97 |
+
+**What the median describes:** 11.8 Mm³ of water, 4.6 Mm³ of solids, of which
+3.7 Mm³ is fine/ice that never reaches a DEM-visible deposit and **0.87 Mm³ is
+persistent coarse rock**.
+
+**Four cross-checks it lands on, none of them scored:**
+- coarse rock **0.87 Mm³** vs geopera's measured deposition **0.90 Mm³**
+- mu_dry **0.18** vs Schneider's ice-avalanche calibration **0.17**
+- release solids **4.6 Mm³** vs the entrainment ledger's independent cap
+  **≤3–5 Mm³**
+- and the CCTV description of the flow at the border: *"a black wall of water
+  carrying **ice**, mud and massive rocks"*
+
+**Against the published claims:** Kargel 50–200, Azam/ICIMOD 100–200, geopera
+60–140, EGU preliminary 0.5–10. **This posterior, 13–28 Mm³, sits an order of
+magnitude below the three large estimates and just above the small one** — and
+it is the only one of the five derived by requiring consistency with the timing,
+the speed, the erosion AND the mass balance simultaneously.
+
+**CAVEATS THAT MUST TRAVEL WITH IT.**
+1. **The deposition cap used (≤5 Mm³) is now known to be too tight.** Today's
+   reading of geopera's stereo post puts the deposit at 12–18 m thick over 3 km,
+   i.e. 3.6–16 Mm³ depending on width, so the honest cap is ~5–15. This
+   posterior is conditioned on a constraint we have since learned is too
+   strict; relaxing it will admit larger V and lower f_fine. **Rerun needed.**
+2. 10 survivors is a small sample; the ranges are indicative, not credible
+   intervals.
+3. w0's upper range (0.84) sits against its 0.85 prior ceiling — mild
+   truncation, unlike run 1's severe pinning, but worth widening.
+4. f_fine 0.49–0.97 is weakly constrained.
+5. **Galchhi and Devghat were deliberately NOT scored**, so they remain out of
+   sample and have not yet been reported for the surviving set. Do that.
+
 ### TWO-PHASE SOLIDS (4 Sept) — the falsification is answered
 
 The ensemble falsified the single-phase form: 0 of 150 samples made the
