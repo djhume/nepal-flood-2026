@@ -167,7 +167,22 @@ A mud line on a straight, channel-**parallel** wall records roughly the flow
 depth. A mud line where the flow drives head-on into a side valley, or into
 the outside of a bend, records depth **plus the velocity head it converts**:
 
-> run-up  R ≈ α · v² / 2g,  α ≈ 0.5–1 (1 = full stagnation)
+> run-up  R ≈ α · (v·sinθ)² / 2g,  θ = angle between flow and obstacle
+
+**Corrected 4 Sept after Dave pointed out the obvious omission:** only the
+velocity component NORMAL to the obstacle converts to height, so α is a
+*geometry* term, not a constant. A side valley opening at a shallow angle
+records almost nothing; one the flow drives straight into records the lot:
+
+| θ | sin²θ | run-up at v = 50 m/s |
+|---|---|---|
+| 15° | 0.07 | 9 m |
+| 30° | 0.25 | 32 m |
+| 45° | 0.50 | 64 m |
+| 90° | 1.00 | 127 m |
+
+So "trimlines overestimate depth" is only true **where the geometry says so**,
+and each trimline needs its own incidence angle before it can be read.
 
 | flow velocity | v²/2g | run-up at α = 0.6 |
 |---|---|---|
@@ -175,6 +190,14 @@ the outside of a bend, records depth **plus the velocity head it converts**:
 | 30 m/s | 46 m | 28 m |
 | 45 m/s | 103 m | 62 m |
 | 50 m/s (geopera, at the border) | **127 m** | **76 m** |
+
+**THE BORDER IS THE ONE PLACE θ ≈ 90° IS PHYSICALLY GUARANTEED.** Measured off
+the OSM path geometry (`data/river_path.csv`, not off any image): the Lhende
+arrives on bearing 221° and the Kyirong Tsangpo on 125° — **the two arms meet
+at 96°, essentially head-on**, which is why the model already carries its
+largest junction loss (K = 3) there. sin²(96°) ≈ 0.99, so the full velocity
+head applies at this junction and nowhere else on the corridor is it so clearly
+justified.
 
 **At the border speeds geopera themselves derived, a 70 m mud line is entirely
 accounted for by run-up, with no flow depth required at all.** Inverting: a
@@ -195,6 +218,24 @@ if some trimlines sit at bends or side-valley mouths the two quantities are not
 independent and both would move together. This is a **question to ask them**,
 not an error to assert: *were the trimline heights measured on channel-parallel
 reaches, or wherever the mud line was clearest?*
+
+**AN INDEPENDENT SPEED CHECK THAT WORKS OUT.** If geopera's *maximum* trimline
+(134 m) sits at this junction, reading it as stagnation run-up gives
+v = √(2gR) = **51.3 m/s** — against their 45–52 m/s derived independently by
+superelevation at bends. Two different mud lines, two different methods, the
+same answer. That is a real corroboration of the border speed, and it is the
+strongest single argument that the wave was moving at ~50 m/s when it hit the
+junction. Caveat: we do not know where their 134 m was picked; if it was itself
+at a bend the two readings are not independent. **Worth asking them.**
+
+**Dave's eyewitness reading of the footage (4 Sept):** at the border station the
+debris arrived from the Lhende and destroyed vehicles and the causeway at
+"over 90 degrees" from the main flow direction — material thrown sideways and
+backward relative to the incoming jet. That is the T-junction impact signature,
+and it is the observational support for **the camera hypothesis** (PLAN.md v3):
+the 08:44 CCTV recorded the *junction impact and up-valley surge*, not a
+down-valley front arrival. It also explains how a Chinese port on one bank and a
+Nepali customs post on the other were destroyed by the same wave.
 
 **A free measurement nobody has made.** If debris on upstream-facing side
 valleys is systematically higher than on the adjacent straight reach, the
