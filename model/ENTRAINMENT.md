@@ -112,8 +112,15 @@ current preference:
    with a large liquid one leaves little to deposit and still delivers the
    momentum and the water (this is the composition finding pointing the same
    way a third time);
-2. the flood's volume at the border is dominated by **impounded river water**
-   released at the junction, not by the release mass at all (H3);
+2. ~~the flood's volume at the border is dominated by impounded river water
+   released at the junction (H3)~~ — **WITHDRAWN 4 Sept, arithmetic fails.**
+   Blocking the Lhende (~60 m³/s) or even the main stem (~150 m³/s) stores
+   0.02–0.6 Mm³ over any duration the 08:44 border clock allows; reaching
+   20 Mm³ by impoundment needs the river blocked for **37 hours**. An
+   in-event impoundment can re-time and sharpen a pulse, which is a real and
+   testable effect, but it cannot be a volume source. H1's water comes from
+   the **46.9 Mm³ standing in the channel** at any instant, which needs no
+   dam at all;
 3. geopera's mapped 45% missed the deposition, which their own retraction
    history makes worth checking before leaning on the number.
 

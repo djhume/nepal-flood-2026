@@ -311,9 +311,23 @@ tracers untouched by entrainment so H1 stays clean.
    Mm³ valley change, sits 1–2 orders below the 100–200 Mm³ figures in
    circulation, and **contradicts our own routing, which needs V = 30–60
    through the border.** Now an arithmetic contradiction, not a qualitative
-   tension. Favoured resolutions: (a) the mass was mostly ice/water, not rock
-   (composition finding, third independent pointer); (b) the border volume is
-   impounded river water (H3); (c) the mapped 45% missed the deposit.
+   tension. **LEADING RESOLUTION (4 Sept): THE MASS WAS MOSTLY ICE.** Ice is
+   dynamically a SOLID — it supplies the depth and momentum the front speed
+   needs — but geomorphically TEMPORARY, so it never appears in a DEM
+   difference taken days later. V_rel = 30 Mm³ at ~85% ice leaves ~4.5 Mm³ of
+   persistent rock, which is geopera's number. Third independent arrival at
+   the composition finding. **NEW FALSIFIABLE PREDICTION: an ice-rich deposit
+   must go on LOSING volume for weeks as buried ice melts out** — checkable
+   against repeat stereo/DEM archives, and it discriminates ice deposit from
+   rock deposit directly. Remaining alternative: geopera's mapped 45% missed
+   the deposit.
+   **WITHDRAWN 4 Sept — "(b) the border volume is impounded river water".**
+   The arithmetic fails: blocking the Lhende (~60 m³/s) or the whole main stem
+   (~150 m³/s) stores 0.02–0.6 Mm³ over any duration the 08:44 clock allows;
+   20 Mm³ would need the river blocked for **37 hours**. An in-event
+   impoundment RE-TIMES a pulse, it cannot supply one. H1's water is the
+   **46.9 Mm³ standing in the channel** at any instant — no dam required, and
+   that was always the snowplow's claim.
 3. **THE DISTAL WAVE DOES NOT SURVIVE PROPER DEPOSITION — a real regression.**
    Galchhi 30-min rise: C 1.6 → 0.1 m; F 10.2 → 1.5 m (obs ~9). Scenario F was
    the only run that had ever landed a distal observable and entrainment takes
