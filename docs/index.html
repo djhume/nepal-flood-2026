@@ -1,0 +1,302 @@
+<title>The Trishuli Investigation</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+Devanagari:wght@500&display=swap">
+<style>
+:root{
+  --ground:#f2f5f4; --panel:#ffffff; --ink:#22303a; --ink-soft:#54646f;
+  --river:#1e5f8e; --river-deep:#164a70; --ice:#7fb3cf; --silt:#9a7146;
+  --line:#d3dcda; --plant:#a5403a; --good:#3f7d55;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --display:"Newsreader",Georgia,serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+  --dev:"Noto Serif Devanagari",var(--serif);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#131b21; --panel:#1b262e; --ink:#e2e9ec; --ink-soft:#9fb0ba;
+    --river:#6aa8d8; --river-deep:#8dbfe6; --ice:#4f7d99; --silt:#c49a6c;
+    --line:#2c3a44; --plant:#d98079; --good:#7fb894;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#131b21; --panel:#1b262e; --ink:#e2e9ec; --ink-soft:#9fb0ba;
+  --river:#6aa8d8; --river-deep:#8dbfe6; --ice:#4f7d99; --silt:#c49a6c;
+  --line:#2c3a44; --plant:#d98079; --good:#7fb894;
+}
+body{background:var(--ground);color:var(--ink);font-family:var(--serif);
+  font-size:17px;line-height:1.65;margin:0}
+.wrap{max-width:780px;margin:0 auto;padding:0 22px 88px}
+header{padding:60px 0 4px}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-soft)}
+h1{font-family:var(--display);font-weight:600;font-size:46px;line-height:1.1;
+  margin:.3em 0 .28em;text-wrap:balance}
+.lede{font-size:20px;line-height:1.55;color:var(--ink-soft);margin:0 0 6px;
+  max-width:64ch}
+h2{font-family:var(--display);font-weight:600;font-size:23px;
+  margin:2.4em 0 .7em;text-wrap:balance}
+p{margin:0 0 1em;max-width:66ch}
+a{color:var(--river)}
+
+/* findings — the spine of the page */
+.finding{display:grid;grid-template-columns:auto 1fr;gap:0 16px;
+  padding:18px 0;border-top:1px solid var(--line)}
+.finding:last-of-type{border-bottom:1px solid var(--line)}
+.fnum{font-family:var(--mono);font-size:12px;color:var(--ink-soft);
+  padding-top:5px}
+.fclaim{font-family:var(--display);font-size:20px;font-weight:600;
+  line-height:1.3;margin:0 0 5px;text-wrap:balance}
+.fbody{margin:0;font-size:16px;color:var(--ink-soft);line-height:1.6}
+.chip{display:inline-block;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;
+  border-radius:99px;vertical-align:2px;margin-left:8px;white-space:nowrap}
+.c-strong{background:color-mix(in srgb,var(--good) 16%,transparent);
+  color:var(--good)}
+.c-robust{background:color-mix(in srgb,var(--river) 15%,transparent);
+  color:var(--river)}
+.c-open{background:color-mix(in srgb,var(--silt) 18%,transparent);
+  color:var(--silt)}
+
+/* routing cards */
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:6px 0}
+@media (max-width:620px){.cards{grid-template-columns:1fr}}
+.card{display:block;background:var(--panel);border:1px solid var(--line);
+  border-radius:9px;padding:16px 18px;text-decoration:none;color:inherit}
+.card:hover{border-color:var(--river)}
+.card .who{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--river);display:block;margin-bottom:6px}
+.card .t{font-family:var(--display);font-size:18.5px;font-weight:600;
+  display:block;line-height:1.25;margin-bottom:5px}
+.card .d{font-size:14.5px;color:var(--ink-soft);line-height:1.5;display:block}
+.card.ne .t{font-family:var(--dev)}
+
+/* changelog + asks */
+.log{border-left:2px solid var(--line);padding-left:18px;margin:4px 0}
+.log div{margin-bottom:13px}
+.log .d{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);
+  display:block}
+.asks{background:var(--panel);border:1px solid var(--line);border-radius:9px;
+  padding:18px 22px}
+.asks ul{margin:0;padding-left:19px}
+.asks li{margin-bottom:9px;max-width:62ch}
+.caveat{border-left:3px solid var(--silt);padding:2px 0 2px 16px;
+  color:var(--ink-soft);font-size:16px;margin:1.4em 0;max-width:64ch}
+footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
+  font-size:14.5px;color:var(--ink-soft)}
+</style>
+
+<div style="max-width:780px;margin:0 auto;padding:10px 22px 0;
+ font:12px/1.5 'IBM Plex Mono',monospace;color:#54646f">
+ Static copy on GitHub Pages ·
+ <a href="https://github.com/djhume/nepal-flood-2026" style="color:#1e5f8e">source,
+ data and full revision history</a></div>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Independent analysis · Langtang Lirung → Trishuli, 26 August 2026 · updated 5 September 2026</div>
+  <h1>The Trishuli Investigation</h1>
+  <p class="lede">A mountainside fell into a Nepali river valley and, seven
+  minutes later, a flood crossed the Chinese border 22&nbsp;km downstream. This
+  project asks a narrow question with physics: <strong>where did all that water
+  actually come from</strong> — and what the answer means for warning people
+  next time.</p>
+</header>
+
+<h2>What we found</h2>
+
+<div class="finding">
+  <div class="fnum">01</div>
+  <div>
+    <p class="fclaim">The water was already in the river<span class="chip c-strong">well supported</span></p>
+    <p class="fbody">A 1,200-metre fall cannot melt enough ice to make this
+    flood — the energy ceiling sits far below the ~20&nbsp;million cubic metres
+    of "extra" water officially estimated. The wave was mostly the
+    monsoon-swollen Trishuli itself, swept up like snow before a plough and
+    delivered all at once. Three independent routes agree: an energy budget, a
+    source-by-source ledger, and the routing model's own dynamics.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <div class="fnum">02</div>
+  <div>
+    <p class="fclaim">It fell like slush, not gravel<span class="chip c-robust">robust, one week old</span></p>
+    <p class="fbody">The border camera's seven-minute clock turns out to
+    discriminate what the falling mass was <em>made of</em>, not how big it
+    was. Dry-rock versions of the collapse arrive late no matter how large we
+    make them; icy and wet versions arrive on time. Published imagery agrees
+    qualitatively — several groups describe bedrock failure that carried a
+    hanging glacier, and drone footage shows a white stream leading the brown
+    dust cloud. That seven-minute clock was itself challenged this week —
+    another group put the arrival at seventeen minutes, which would have killed
+    the finding — and it survived: the border camera's overlay reads 10:59
+    Beijing time, which is 08:44 in Nepal, matching Kargel's independently
+    published figure to the second. The same footage was described as "a black
+    wall of water carrying <strong>ice</strong>, mud and massive rocks". Still
+    open: whether the lubricant came from ice in the falling mass, from the
+    glacier beneath it, or from monsoon water in the valley.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <div class="fnum">03</div>
+  <div>
+    <p class="fclaim">The method travels — one test stands, one is withdrawn<span class="chip c-open">revised 3 Sept</span></p>
+    <p class="fbody">Against Chamoli 2021 the model reproduces the arrival
+    time at Tapovan once frictional melting is given a thermal lag, with a
+    single fitted number and the rest out of sample. A second test, against
+    the 2012 Seti River flood, was reported here as a clean pass; it has been
+    <strong>withdrawn</strong>. The channel profile that test ran on was
+    built by a routine that filled gaps in the map data with straight lines
+    across a mountain rim, and the repair applied to those bad elevations
+    flattened 31 of the 54 km to zero gradient. On a channel that really has a
+    slope, the same model arrives four times too early. Both of that test's
+    conclusions — the timing pass and the inference that a stored lake was
+    required — are off the table until the event is rebuilt.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <div class="fnum">04</div>
+  <div>
+    <p class="fclaim">The collapse was far smaller than the headline figures<span class="chip c-robust">new, 5 Sept</span></p>
+    <p class="fbody">Published estimates of the fallen mass span a factor of
+    four hundred, from half a million cubic metres to two hundred million. Rather
+    than argue one estimate at a time, we asked which <em>combinations</em> of
+    size and composition are consistent with everything measurable at once — the
+    clock, the border speed, the valley floor the flood scoured out, the debris
+    it left — and ran the model across the whole disputed range, keeping only
+    what passed every test. The survivors put it at
+    <strong>14–34 million cubic metres</strong>, an order of magnitude below the
+    largest published figures. Changing our shakiest input by a factor of 2.5
+    moved that answer by a third, so it is the measurements driving it. Size is
+    the <em>only</em> thing the survivors agree on; how wet or icy it was is not
+    resolved.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <div class="fnum">05</div>
+  <div>
+    <p class="fclaim">We proved our own model wrong, then fixed it<span class="chip c-robust">new, 5 Sept</span></p>
+    <p class="fbody">The model could drop sediment but never pick any up. Adding
+    erosion — using formulas published for other rivers on other continents, with
+    nothing tuned to this event — produced 3.8 million cubic metres of scour
+    against 3.2 measured by satellite stereo. But it also broke the model: with
+    deposition working properly, the flood died before reaching the towns. So we
+    tested it to destruction — 150 runs across every plausible combination —
+    and <strong>none could arrive on time and leave the right debris</strong>.
+    That falsified the shape of the model, not its numbers. The fix was to stop
+    treating "sediment" as one substance: boulders settle and grind, silt and
+    ice ride with the water and leave no measurable deposit. Another group
+    reached the same conclusion the same week by a completely different method.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <div class="fnum">06</div>
+  <div>
+    <p class="fclaim">What is <em>not</em> settled<span class="chip c-open">open</span></p>
+    <p class="fbody">What the mass was <em>made of</em> is not resolved — wetness
+    and ice content span nearly the whole range we allowed, and an earlier
+    version of this analysis appeared to settle them, which turned out to be an
+    artefact of a constraint that was too strict. Our model also puts the main
+    debris deposit in the wrong place: satellite stereo shows it 40–43&nbsp;km
+    downstream and ours drops it too early. A final out-of-sample test half
+    failed — the flood <em>volume</em> at Devghat came out right for every
+    surviving version, but the river <em>height</em> at Galchhi came out at
+    about 3.6&nbsp;m against roughly 9 observed, which points at our estimate of
+    the lower river's shape. And this is fast, independent, AI-assisted analysis
+    published days after the event: it is not peer-reviewed.</p>
+  </div>
+</div>
+
+<h2>Start here</h2>
+<div class="cards">
+  <a class="card" href="plain.html">
+    <span class="who">General reader</span>
+    <span class="t">The Water Was Already in the River</span>
+    <span class="d">The whole argument in plain English, no equations — the
+    melting limit, the snowplow, and the seven-minute warning problem.</span>
+  </a>
+  <a class="card" href="report.html">
+    <span class="who">Scientist / engineer</span>
+    <span class="t">The Trishuli Water Ledger</span>
+    <span class="d">The full technical report: corridor map, water budget,
+    routing models, the Chamoli stress test, and what would change our
+    mind — with interactive charts.</span>
+  </a>
+  <a class="card" href="workings.html">
+    <span class="who">Reviewer / sceptic</span>
+    <span class="t">Trishuli Model Workings</span>
+    <span class="d">Every equation, fit and figure executed end-to-end from
+    the data files, so the arithmetic can be checked rather than trusted.</span>
+  </a>
+</div>
+
+<p class="caveat">Our contribution is quantification, not correction. The
+scientists working on this event — Kargel, Shugar, Petley, ICIMOD and others —
+have consistently described river water and entrained sediment in their
+accounts of the flood. What nobody had published was the arithmetic: the
+relative sizes of the terms. That is the gap this project set out to fill, and
+where our numbers disagree with an agency's, both are shown.</p>
+
+<h2>What changed recently</h2>
+<div class="log">
+  <div><span class="d">5 September 2026</span>
+  Two new findings. The collapse was probably 14–34 million cubic metres, an
+  order of magnitude below the largest published estimates. And the model was
+  proved structurally wrong before it was fixed — no combination of inputs could
+  satisfy the timing and the debris budget together until sediment was split
+  into coarse and fine. A challenge to the seven-minute border clock was chased
+  down and resolved in the camera's favour. The Nepali translation was withdrawn
+  pending review by a Nepali speaker.</div>
+  <div><span class="d">3 September 2026 — night</span>
+  <strong>The Seti 2012 result is withdrawn.</strong> Building the missing
+  erosion physics meant looking hard at channel gradients, and that exposed a
+  bad channel profile underneath the Seti test: straight lines flown across a
+  mountain rim, then flattened to zero slope by the routine meant to clean
+  them. Rerun on a corrected channel, the test fails, and its second
+  conclusion reverses. Nothing about the Trishuli findings depends on it.
+  Meanwhile the erosion term now exists, and it puts the amount of material
+  the flood tore out of the Langtang corridor within range of what satellite
+  stereo actually measured — while saying the corridor cannot have received
+  anything like the amount of rock the largest source estimates imply.</div>
+  <div><span class="d">3 September 2026 — evening</span>
+  A retracted deposition figure from another group was corrected in our
+  scoring, which resolved a tension between the timing and deposit evidence —
+  both now point the same way.</div>
+  <div><span class="d">3 September 2026</span>
+  The Chamoli 2021 timing gap closed by adding thermal lag to the melt physics.
+  The corridor map was redrawn with automatic label placement.</div>
+  <div><span class="d">2 September 2026</span>
+  First public version: the water budget, the snowplow model and the
+  river-as-circuit routing model.</div>
+</div>
+
+<h2>What would help most</h2>
+<div class="asks">
+<ul>
+<li><strong>The full Galchhi and Devghat gauge records</strong> (Nepal DHM) —
+including which station and rating curve the Devghat figures come from. This is
+the single dataset that would most sharpen every number here.</li>
+<li><strong>Hydropower plant records</strong> — headworks stage sensors, gate
+logs and SCADA historians across the thirteen affected projects, including
+plants that were damaged but whose servers or off-site replicas survived. These
+plausibly hold the only high-frequency measurements of the flood's upper reach,
+where the public gauges were destroyed.</li>
+<li><strong>Clear-sky stereo imagery or drone photogrammetry of the glacier
+below the collapse scar.</strong> No such measurement has been published, and
+it would directly test where the falling mass got its mobility.</li>
+<li><strong>India's CWC hourly archive for the Gandak stations</strong>, to
+extend the flood's routing beyond the border.</li>
+</ul>
+</div>
+
+<footer>
+Independent analysis by <strong>Dave Hume</strong>, carried out with Claude
+(Anthropic) as a research assistant. Version 3, 5 September 2026 — findings and
+casualty figures are as reported at that date and will change. Code, data and
+the full evidence dossier, with every contested number flagged at the point of
+use, are kept in the project repository. Corrections are welcome and will be
+recorded here.
+</footer>
+</div>

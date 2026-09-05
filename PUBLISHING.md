@@ -34,11 +34,17 @@ Status: **pushed to a PRIVATE GitHub repo. Not public. No DOI. No preprint.**
 ## Then, in order
 
 1. Public repo
-2. Zenodo DOI via the GitHub release integration (tag a version; the retraction
+2. **Enable GitHub Pages** — Settings → Pages → Source: `main`, folder `/docs`.
+   Gives https://djhume.github.io/nepal-flood-2026/ . Regenerate the folder with
+   `python report/build_site.py` whenever the pages change. This is what makes
+   the work readable *and indexable* — GitHub renders .html as source code, and
+   Claude artifacts are not crawled at all, so Pages is the only version a
+   search engine or an AI with web search can find.
+3. Zenodo DOI via the GitHub release integration (tag a version; the retraction
    history must be visible IN the archived snapshot, not just in the git log)
-3. EarthArXiv preprint, citing the Zenodo DOI
-4. Four emails, no reply expected — ICIMOD, Kargel, Petley, Willsey
-5. Nothing else. No press, no media, no amplification.
+4. EarthArXiv preprint, citing the Zenodo DOI
+5. Four emails, no reply expected — ICIMOD, Kargel, Petley, Willsey
+6. Nothing else. No press, no media, no amplification.
 
 ## Still open scientifically (none of it blocks publication)
 
