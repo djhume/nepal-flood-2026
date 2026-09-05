@@ -37,6 +37,10 @@ COLLAPSE = 8*3600 + 37*60 + 10
 PAD = 132                                    # black band height, in pixels
 
 
+def _hms(s):
+    return f"{int(s)//3600:02d}:{int(s)%3600//60:02d}:{s%60:06.3f}"
+
+
 def _clock(base, label):
     e = lambda x: x.replace(",", "\\,")
     h  = e(f"floor(mod(({base}+t)/3600,24))")
@@ -47,8 +51,8 @@ def _clock(base, label):
             f"\\:%{{eif\\:{s}\\:d\\:2}}.%{{eif\\:{ms}\\:d\\:3}}")
 
 
-def _elapsed(label):
-    base = BJ0 - OFFSET_NPT - COLLAPSE
+def _elapsed(label, shift=0.0):
+    base = BJ0 - OFFSET_NPT - COLLAPSE + shift
     e = lambda x: x.replace(",", "\\,")
     m  = e(f"floor(({base}+t)/60)")
     s  = e(f"floor(mod({base}+t,60))")
@@ -58,6 +62,15 @@ def _elapsed(label):
 
 
 def build(src, out, t0=None, t1=None, verify=False):
+    # WINDOWING BUG, fixed 6 Sept. With -ss, ffmpeg resets the output's
+    # timestamps to zero, so drawtext's `t` is CLIP-relative. The clock bases
+    # below are SOURCE-relative, so every windowed clip came out slow by
+    # exactly the window start (a 24 s window read 10:59:26.6 where the CCTV's
+    # own overlay read 10:59:50). Caught by comparing the burnt-in clock
+    # against the station clock in the same frame - which is the check that
+    # should have been in here from the start, and now is (see the self-test
+    # printed at the end).
+    shift = t0 or 0.0
     probe = subprocess.run(
         ["ffprobe","-v","error","-select_streams","v:0","-show_entries",
          "stream=width,height","-of","csv=p=0", src],
@@ -65,10 +78,13 @@ def build(src, out, t0=None, t1=None, verify=False):
     w, h = (int(v) for v in probe.split(","))
 
     F = "fontcolor=yellow:fontsize=26:x=14"
-    rows = [(f"frame %{{n}}    video %{{pts\\:hms}}", h + 8),
-            (_clock(BJ0, "Beijing"), h + 40),
-            (_clock(BJ0 - OFFSET_NPT, "Nepal  "), h + 72),
-            (_elapsed("T+     "), h + 104)]
+    fps = _fps(src)
+    f0 = int(round(shift * fps))
+    rows = [(f"src frame %{{eif\\:n+{f0}\\:d}}    src t %{{eif\\:t+{shift}\\:d\\:2}}."
+             f"%{{eif\\:mod((t+{shift})*1000\\,1000)\\:d\\:3}} s", h + 8),
+            (_clock(BJ0 + shift, "Beijing"), h + 40),
+            (_clock(BJ0 - OFFSET_NPT + shift, "Nepal  "), h + 72),
+            (_elapsed("T+     ", shift), h + 104)]
     vf = (f"pad={w}:{h+PAD}:0:0:black,"
           + ",".join(f"drawtext=text='{txt}':{F}:y={y}" for txt, y in rows))
 
@@ -87,12 +103,26 @@ def build(src, out, t0=None, t1=None, verify=False):
           + ("  (windowed)" if t0 is not None else
              ("  OK, none lost" if n_in == n_out else "  !! MISMATCH")))
     print(f"  picture {w}x{h} untouched; text sits in a {PAD}px band below it")
+    if shift:
+        print(f"  windowed from {shift:g} s: clocks shifted by +{shift:g} s and "
+              f"frames numbered from {f0} so they stay SOURCE-relative")
+    print(f"  SELF-CHECK: at clip t=0 the burnt-in Beijing clock should read "
+          f"{_hms(BJ0 + shift)}")
+    print(f"              compare it against the station's own overlay in the "
+          f"same frame; they must agree to the second")
 
     if verify:
         a, b = _md5(src, w, h), _md5(out, w, h)
         same = a == b
         print(f"  framemd5 of the picture area: "
               f"{'IDENTICAL - bit-for-bit lossless' if same else 'DIFFER'}")
+
+
+def _fps(p):
+    r = subprocess.run(["ffprobe","-v","error","-select_streams","v:0",
+                        "-show_entries","stream=r_frame_rate","-of","csv=p=0",p],
+                       capture_output=True, text=True).stdout.strip()
+    a, b = r.split("/"); return float(a)/float(b)
 
 
 def _count(p):
