@@ -3,3 +3,14 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .ipynb_checkpoints/
+
+# Derived arrays — regenerable by rerunning calcs/sentinel_wedge.py in ~10 min.
+# 18 MB each; they were bloating every clone for no benefit.
+output/*.npy
+
+# Third-party screenshots used for measurement during the analysis:
+# Google Earth / Google Maps imagery, and news-media stills credited to
+# @vantortech via Republic Digital. NOT ours to redistribute. Kept locally,
+# never committed. The measurements taken from them are in the dossier with
+# their provenance.
+screenshot-*.png
