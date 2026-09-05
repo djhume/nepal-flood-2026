@@ -14,3 +14,12 @@ output/*.npy
 # never committed. The measurements taken from them are in the dossier with
 # their provenance.
 screenshot-*.png
+
+# Video forensics: keep the METHOD, never the third-party footage. Downloaded
+# clips and extracted frames are not ours to redistribute — the same rule
+# PUBLISHING.md applies to the @vantortech stills. The measurements taken from
+# them, with provenance, live in research/event-dossier.md.
+research/video/*
+!research/video/*.sh
+!research/video/*.py
+!research/video/*.md
