@@ -23,10 +23,14 @@ code = lambda s: cells.append(nbf.v4.new_code_cell(s.strip()))
 md(r"""
 # Trishuli 2026 — Model Workings
 
+[Project home](index.html) · [Plain English](plain.html) ·
+[Technical report](report.html) · **Model workings** ·
+[source and revision history on GitHub](https://github.com/djhume/nepal-flood-2026)
+
 **What this is.** The executable workings behind our analysis of the 26 August 2026
-Langtang Lirung ice-rock avalanche → Lende Khola / Trishuli flood: where the water
-came from, and how the flood pulse evolved over ~200 km of channel. Three model
-stages run top to bottom, in the order they were built:
+Langtang Lirung ice-rock avalanche → Lhende Khola / Bhote Koshi / Trishuli flood:
+where the water came from, and how the flood pulse evolved over ~200 km of
+channel. Five model stages run top to bottom, in the order they were built:
 
 1. **Energy & water budget** — independent bounds on each candidate water source
    (frictional ice melt vs river-derived water), validated against Chamoli 2021.
@@ -36,9 +40,19 @@ stages run top to bottom, in the order they were built:
    transmission line (diffusive-wave v0, upgraded to the local-inertia RLC form)
    for pulse structure: attenuation, side-valley charging, and the signature a
    temporary dam breach would leave.
+4. **Entrainment, and the falsification of the single-phase model** — the erosion
+   term the first three stages lacked, the rejection sampling that then proved
+   the model form wrong, and the two-phase fix.
+5. **The consistency envelope** — which combinations of release volume and
+   composition are simultaneously consistent with everything measurable, giving
+   14–34 Mm³.
 
-**Date:** 2 September 2026 (event + 7 days; all inputs date-stamped to what was
-public then).
+**Dates.** Sections 1–3 are dated 2 September 2026 (event + 7 days), with all
+inputs stamped to what was public then. Sections 4 and 5 were built on 3–5
+September and added to this notebook on 5 September. Until then this page was
+published three days behind the findings it was supposed to make checkable —
+the summary pages announced results whose workings were not here. That was the
+wrong way round, and the fix is this notebook rather than a footnote about it.
 
 **Data files** (in `data/`):
 
@@ -166,10 +180,22 @@ River-derived share is ~8%. That freak 80:20 melt-dominated outcome is what made
 ### Langtang 26 Aug 2026 scenarios
 
 Now the same arithmetic under monsoon flow + a much smaller initial fall + a
-100–168 km runout, over a range of contested source volumes and ice fractions.
-Scenario 5 is our best-evidence case (source ~100 Mm³ per Kargel 50–200 / Azam
-100–200, ice fraction unknown → 30%, scar-to-channel drop ~2,400 m, full 168+ km
-to Devghat). Scenario 4 deliberately steel-mans the melt view.
+100–199 km runout, over a range of contested source volumes and ice fractions.
+
+**Scenarios 1–5 are as written on 2 September**, when the published source
+volumes were the only guide and scenario 5 (~100 Mm³, per Kargel 50–200 and
+Azam/ICIMOD 100–200) was the best evidence available. **Scenarios 6–8 were added
+on 5 September**, carrying Section 5's consistency envelope — 14–34 Mm³, median
+21 — back into the energy budget. That should have happened the day the envelope
+existed: until it did, the summary pages were quoting a melt ceiling of 15 Mm³
+computed for a collapse five times larger than our own evidence supports, and
+describing it as "far below" the FFD's 20 Mm³, which it is not. Both rows are
+kept so the correction is visible rather than tidied away.
+
+Scenario 8 is the one that matters for the argument. It is the melt narrative
+steel-manned to destruction: the largest published volume, four-fifths ice, the
+longest drop, *and* a heat-to-ice partition at the top of the literature's
+0.3–0.7 range, all at once.
 """)
 
 code(r'''
@@ -215,15 +241,50 @@ scenario("4. Melt-maximal (200 Mm3, 80% ice, generous heat partition)",
          heat_to_ice_frac=0.50,
          channel_km=100, Q_river=300, v_river=3.0, event_hours=1.5,
          sed_entrain_Mm3=10, sed_porosity=0.3, sed_saturation=0.8)
+
+# ---- added 5 Sept: the same budget at the Section-5 consistency envelope ----
+
+# Scenario 6: our envelope, best evidence (median of the 14-34 Mm3 posterior)
+scenario("6. Envelope best-evidence (21 Mm3 median, 30% ice, 168 km)",
+         V_total_Mm3=21, ice_frac=0.30, drop_total_m=2400,
+         heat_to_ice_frac=0.35,
+         channel_km=168, Q_river=400, v_river=3.0, event_hours=7.0,
+         sed_entrain_Mm3=30, sed_porosity=0.3, sed_saturation=1.0)
+
+# Scenario 7: our envelope, steel-manned - top of the range, every dial for melt
+scenario("7. Envelope steel-man (34 Mm3 top, 80% ice, full drop, 50% heat)",
+         V_total_Mm3=34, ice_frac=0.80, drop_total_m=4000,
+         heat_to_ice_frac=0.50,
+         channel_km=168, Q_river=400, v_river=3.0, event_hours=7.0,
+         sed_entrain_Mm3=30, sed_porosity=0.3, sed_saturation=1.0)
+
+# Scenario 8: the absolute ceiling - every published input at its limit at once.
+# This is the case the melt narrative needs. If melt reaches 20 Mm3 anywhere in
+# the parameter space, it is here.
+scenario("8. Absolute ceiling (200 Mm3, 80% ice, 4000 m, heat partition 0.70)",
+         V_total_Mm3=200, ice_frac=0.80, drop_total_m=4000,
+         heat_to_ice_frac=0.70,
+         channel_km=100, Q_river=300, v_river=3.0, event_hours=1.5,
+         sed_entrain_Mm3=10, sed_porosity=0.3, sed_saturation=0.8)
 ''')
 
 md(r"""
-**Budget verdict.** Across every defensible scenario, melt lands at **1.5–15 Mm³**
-while river-derived water (swept channel + inflow) is **12–33 Mm³** — the balance
-of terms *flips* relative to Chamoli under monsoon + short fall + long runout.
-Even the melt-maximal steel-man (200 Mm³ at 80% ice, generous heat partition)
-yields under 15 Mm³ of melt against FFD's ~20 Mm³ "excess". The budget bounds the
-sources; only routing can test the arrival clocks and the Devghat peak. On to
+**Budget verdict.** Read scenarios 6 and 7 first: at the collapse size our own
+evidence supports, frictional melt is **1.1 Mm³**, or **2.5 Mm³** with every
+assumption turned in melting's favour — short of the FFD's ~20 Mm³ of "excess"
+water by a factor of eight. River-derived water (swept channel + inflow) is
+**32 Mm³** in the same run, three-quarters of the total.
+
+Melt reaches the official figure at exactly one point in the whole parameter
+space, scenario 8: **20.7 Mm³**, and only by taking the largest published volume
+— five times our envelope — with four-fifths ice, a 4,000 m drop and a 0.70 heat
+partition simultaneously. Relax any single one of those and it falls away fast;
+scenario 4, identical but for a 0.50 partition, gives 14.8.
+
+So the balance of terms *flips* relative to Chamoli under monsoon + short fall +
+long runout, and the size envelope makes the flip decisive rather than marginal.
+The budget bounds the sources; only routing can test the arrival clocks and the
+Devghat peak. On to
 Phase B.
 """)
 
@@ -240,7 +301,7 @@ reach. The wave body travels slower than the front, so the pulse stretches; the
 peak travels slower still and attenuates.
 
 First, the channel itself: 499 points along the OSM-stitched river path
-(scar → Lende Khola → Trishuli → Devghat), elevations from Mapzen terrain tiles.
+(scar → Lhende Khola → Bhote Koshi → Trishuli → Devghat), elevations from Mapzen terrain tiles.
 DEM samples in a gorge sometimes catch canyon walls, so we enforce monotone
 descent and lightly smooth before taking slopes.
 """)
@@ -905,6 +966,283 @@ explicitly, is the volumetric workhorse; the ladder is the pulse-structure
 instrument.
 """)
 
+# ---------------------------------------------------------------- section 4 --
+md(r"""
+---
+
+# 4. Entrainment, and the falsification of the single-phase model
+
+*Built 3–4 September, three days after the sections above. This is finding 05 on
+the project home page, and until 5 September it was not in this notebook at all —
+the workings were published while lagging the findings by three days, which was
+wrong and is the reason this section exists.*
+
+**The bug.** Sections 1–3 model a flood that can put sediment *down* and never
+pick any *up*. A flood that visibly scoured a valley floor was, in our equations,
+incapable of scouring anything. Three observations said so, two of them
+quantitative, so the term could be built against literature constants and
+**scored** rather than fitted:
+
+| Target | Value | Source |
+|---|---|---|
+| Langtang corridor erosion | 3.2 Mm³ eroded vs 0.9 Mm³ deposited over the ~45% mapped — net erosional ~3.5:1 | geopera WorldView-3 stereo DEM, 1 Sept |
+| Seti 2012 flow density | 1.88 g/cm³ ⇒ w ≈ 0.47 | SANDRP compilation, measured |
+
+**Two closures**, both with constants taken from the literature and nothing
+chosen with reference to those numbers. `law="takahashi"` is capacity-limited:
+an equilibrium sediment concentration for a mature debris flow on a bed of
+internal friction angle φ, eroding where the flow is under capacity and
+depositing where it is over. `law="shear"` is shear-driven (Frank et al. 2015),
+not capacity-limited. Full derivation in `model/ENTRAINMENT.md`.
+
+The three cells below run the real model — `model/unified.py`, the same code the
+report uses, not a re-implementation. Each `simulate()` takes about 20 seconds.
+""")
+
+code(r'''
+import sys, os
+sys.path.insert(0, os.path.abspath("../model") if os.path.isdir("../model")
+                else os.path.abspath("model"))
+import unified as U
+from core import entrain_opts
+
+# Scenario C, the ice-rich V=30 Mm3 case the report scores. Nothing here is
+# fitted to the erosion measurement: the closure constants come from Takahashi
+# and the release parameters from the dossier.
+r_single = U.simulate(V_rel=30e6, w0=0.15, entrain=entrain_opts("takahashi"))
+
+ero, dep = U.ero_dep(r_single, 0.0, 68.0)
+arrival  = float(r_single["arrival"](22.0))
+
+print(f"EROSION, km 0-68     {ero:6.2f} Mm3   (geopera stereo: 3.2 Mm3)")
+print(f"DEPOSITION, km 0-68  {dep:6.2f} Mm3   (honest cap from the described")
+print(f"                                       deposit geometry: <= 12 Mm3)")
+print(f"BORDER ARRIVAL       {arrival:6.1f} min  (observed: 7.0 min)")
+''')
+
+md(r"""
+**The erosion volume lands, and the model breaks.** 3.8 Mm³ of scour against
+3.2 Mm³ measured, in the reaches they mapped, with nothing tuned — that is the
+term working. But with deposition now operating properly the same run buries
+18 Mm³ in a corridor that can account for at most 12, and the front never
+reaches the border at all: `inf` means the flood died before kilometre 22.
+
+That is not a parameter being slightly off. Before concluding anything, the
+honest move is to ask whether *any* combination of the contested inputs can
+satisfy both constraints at once. Rejection sampling over five inputs said no:
+
+    0 of 150 samples satisfied the upper-corridor clocks and the corridor
+    mass balance simultaneously. Border arrival and deposition were satisfied
+    together by ZERO runs; every other pair by 16-41.
+
+**Zero is a structural result, not a tuning failure.** It falsifies the model
+*form* — the assumption that "sediment" is one substance with one settling
+behaviour — rather than the numbers in it. The fix separates the load in two:
+
+- **Coarse** obeys the capacity closure, strands, and carries the granular
+  friction. This is what builds a DEM-visible debris fan.
+- **Fine** — silt and ice — is advected with the water and is rheologically part
+  of the fluid (the friction dial sees `w_eff = (h_w + h_f)/h`). It does not
+  deposit in this domain: wash load stays in suspension for hundreds of
+  kilometres, and ice melts.
+
+With `f_fine = 0` the published tables of Sections 1–3 reproduce bit-identically,
+so this is an extension rather than a rewrite. The next cell runs both.
+""")
+
+code(r'''
+rows = []
+for f_fine in (0.00, 0.95):
+    r = U.simulate(V_rel=30e6, w0=0.15, entrain=entrain_opts("takahashi"),
+                   f_fine_rel=f_fine)
+    e, d = U.ero_dep(r, 0.0, 68.0)
+    rows.append((f_fine, float(r["arrival"](22.0)), e, d))
+
+print(f"{'f_fine':>7} {'border arrival':>16} {'erosion':>9} {'deposition':>12}")
+print(f"{'':>7} {'(obs 7.0 min)':>16} {'(obs 3.2)':>9} {'(cap 12)':>12}")
+for f, a, e, d in rows:
+    verdict = "PASSES BOTH" if (a < 9 and d <= 12) else "FAILS"
+    print(f"{f:7.2f} {a:14.1f} m {e:9.2f} {d:12.2f}   {verdict}")
+''')
+
+md(r"""
+**Read the second row against the first.** Splitting the solids changes the
+erosion barely at all (3.80 → 3.75 Mm³, still against 3.2 measured) while the
+deposition falls from 18 to 5.4 Mm³ and the front arrives at 6.5 minutes against
+an observed 7.0. One release can now be dense enough to run fast *and* clean
+enough not to bury the valley, which is precisely the combination the
+single-phase sampling proved impossible.
+
+**The declared degree of freedom.** `f_fine` is fitted, not derived. It is one
+number, it is declared here and on every summary page, and Section 5 replaces
+the hand-fitted 0.95 with a sampled posterior. The check that it is physics
+rather than curve-fitting is that two downstream measurements — Galchhi and
+Devghat — were held out of the fitting entirely; see Section 5.
+
+**Independent corroboration, weighted honestly.** Darcy Weedman, writing at
+[geopera](https://geopera.com/blog), reached the same conclusion the same week
+by gradient-descent calibration of a 2D morphodynamic model against stereo
+imagery, which drove his settling velocity down by a factor of three and told
+him the material "behaves finer than assumed, remaining in suspension longer".
+Two unreviewed analyses agreeing is corroboration, not replication. geopera is
+Geopera Pty Ltd, a company blog, not an institution, and this notebook is not
+peer-reviewed either.
+""")
+
+# ---------------------------------------------------------------- section 5 --
+md(r"""
+---
+
+# 5. How big was it? The consistency envelope
+
+*Finding 04. Also built after Sections 1–3 and also missing from this notebook
+until 5 September.*
+
+Every public number for the release volume is a point claim from a different
+method, and they span a factor of four hundred: Kargel 50–200 Mm³, Azam/ICIMOD
+100–200, geopera 60–140, the EGU hydrology blog 0.5–10. They cannot all be
+right, and arguing them one at a time has got nowhere.
+
+So ask a different question. Not *which number is correct* but **which
+combinations of inputs are simultaneously consistent with everything we can
+actually measure** — which is a search over parameter space rather than a
+debate. This is approximate Bayesian computation in its simplest form: sample
+the contested inputs from stated priors, run the full model, keep the samples
+that reproduce every observable inside its stated tolerance.
+
+**Priors** (deliberately wide, from `research/event-dossier.md`):
+
+| Input | Prior | Note |
+|---|---|---|
+| `V_rel` | log-uniform 1–200 Mm³ | spans every published estimate |
+| `w0` | uniform 0.02–0.95 | liquid fraction; widened twice after survivors pinned against the ceiling |
+| `mu_dry` | uniform 0.10–0.35 | Schneider ice-avalanche to Scheidegger rock |
+| `n_scale` | uniform 0.70–1.40 | Manning roughness class-value uncertainty |
+| `h_erode` | uniform 1–10 m | erodible layer depth |
+| `f_fine` | uniform 0.0–0.98 | the Section-4 split, sampled rather than hand-fitted |
+
+**Observables** — the upper corridor, where the hard data is:
+
+| Observable | Target | Tolerance |
+|---|---|---|
+| border arrival, km 22 | 7.0 min | ±30% |
+| Syabrubesi arrival, km 37.6 | 13 min | ±50% |
+| peak speed near km 22 | 48.5 m/s | ±35% |
+| erosion km 0–68 | 3.2 Mm³ | ±60% |
+| bulk deposition | ≤ 12 Mm³ | inequality, not a target |
+
+**Two things to flag before the result.** The deposition constraint is an
+*inequality*: a DEM difference bounds deposition from above, it does not measure
+it. And the border-speed observable is the 45–52 m/s superelevation estimate;
+the first peer-reviewed study of the event (CAS, 1 September) measures 19 m/s at
+the same location, which is outside this tolerance. That re-scoring has not been
+done, and it is the largest single exposure in this section.
+
+Regenerating the samples takes about 75 minutes:
+
+    python calcs/ensemble.py 220
+
+so this notebook loads the saved output rather than re-running it. The array is
+committed to the repository, and the code that produced it is
+`calcs/ensemble.py` — read it alongside this.
+""")
+
+code(r'''
+CALCS = Path("../calcs") if (Path("..") / "calcs").is_dir() else Path("calcs")
+S = np.load(CALCS / "ensemble_samples.npy")
+
+PRIOR_NAMES = ["V_rel", "w0", "mu_dry", "n_scale", "h_erode", "f_fine"]
+OBS_NAMES   = ["border_min", "syabru_min", "v_border", "erosion_Mm3",
+               "deposit_Mm3"]
+NOBS  = len(OBS_NAMES)
+score = S[:, -1]                       # observables met, out of 5
+full  = S[score == NOBS]               # samples that satisfy everything
+
+print(f"{len(S)} samples run, {len(full)} satisfy all {NOBS} observables\n")
+
+V = full[:, 0] / 1e6
+print(f"release volume    median {np.median(V):6.1f} Mm3   "
+      f"range {V.min():.1f} - {V.max():.1f} Mm3")
+for j, name in enumerate(PRIOR_NAMES[1:], start=1):
+    a = full[:, j]
+    print(f"{name:16s}  median {np.median(a):6.2f}      "
+          f"range {a.min():.2f} - {a.max():.2f}")
+''')
+
+code(r'''
+fig, ax = plt.subplots(1, 2, figsize=(11, 3.8))
+
+# left: what survives, against what has been published
+ax[0].hist(np.log10(S[:, 0] / 1e6), bins=28, color="#c9d4d8",
+           label=f"all {len(S)} sampled")
+ax[0].hist(np.log10(V), bins=28, color="#1e5f8e",
+           label=f"{len(full)} consistent")
+for lo, hi, lab, y in [(50, 200, "Kargel", 0.86), (100, 200, "Azam/ICIMOD", 0.72),
+                       (60, 140, "geopera", 0.58), (0.5, 10, "EGU", 0.44)]:
+    ax[0].plot([np.log10(lo), np.log10(hi)],
+               [y * ax[0].get_ylim()[1]] * 2, lw=2.5, color="#a5403a")
+    ax[0].text(np.log10(hi) + 0.05, y * ax[0].get_ylim()[1], lab,
+               fontsize=8, va="center", color="#a5403a")
+ax[0].set_xlabel("log10 release volume (Mm3)")
+ax[0].set_ylabel("samples")
+ax[0].set_title("Release volume: prior, posterior, published claims", fontsize=10)
+ax[0].legend(fontsize=8, loc="upper left")
+
+# right: the composition inputs are NOT constrained, and saying so is the point
+for j, name in [(1, "w0 (liquid fraction)"), (2, "mu_dry"), (5, "f_fine")]:
+    lo, hi = S[:, j].min(), S[:, j].max()
+    span = (full[:, j] - lo) / (hi - lo)
+    ax[1].scatter(span, [name] * len(span), s=14, alpha=0.55, color="#9a7146")
+ax[1].set_xlim(-0.03, 1.03)
+ax[1].set_xlabel("position within the sampled prior (0 = min, 1 = max)")
+ax[1].set_title("Composition: survivors span almost the whole prior", fontsize=10)
+
+plt.tight_layout()
+plt.show()
+
+for j, name in [(1, "w0"), (2, "mu_dry"), (5, "f_fine")]:
+    lo, hi = S[:, j].min(), S[:, j].max()
+    frac = (full[:, j].max() - full[:, j].min()) / (hi - lo)
+    print(f"{name:8s} survivors span {frac:5.1%} of the prior range")
+''')
+
+md(r"""
+**The result, and its shape.** 26 of 220 samples satisfy all five observables,
+and they put the release at **14–34 Mm³, median 21** — an order of magnitude
+below the largest published figures, and far narrower than the range we started
+from. This is an *envelope from consistency*, not a measurement of the mountain:
+nobody has surveyed the scar, and if someone does, this number is the one that
+should yield.
+
+**Only the volume is constrained.** Liquid fraction, `mu_dry` and `f_fine` each
+span more than 90% of their priors among the survivors — the right panel above.
+An earlier run appeared to pin all three, which turned out to be an artefact of a
+deposition cap of 5 Mm³ that was too tight; relaxing it to the honest 12 Mm³
+released them, and those earlier tighter values are retracted. So we can say
+roughly how big, and we cannot say what it was made of, except that Section 3's
+clock excludes dry rock at any size.
+
+**Sensitivity to the shakiest input.** The deposition cap is the weakest number
+in the scoring. Relaxing it by 2.4× moved the envelope about 30% and the two
+ranges overlap, so the answer is being driven by the measurements rather than by
+that constraint.
+
+**The out-of-sample half-failure.** Galchhi and Devghat were held out of the
+scoring entirely so they could act as an honest check on the survivors:
+
+- **Devghat peak discharge**: 1,752–2,889 m³/s against ~2,900 observed. All 26
+  meet the stated factor-of-two criterion — but all 26 also land *below* the
+  observation, so the correct reading is "not contradicted", not "reproduced",
+  and the residual is one-sided.
+- **Galchhi 30-minute stage rise**: 1.8–6.1 m against ~9 observed. 23% pass.
+  The model routes about the right discharge and converts it to the wrong stage,
+  which implicates lower-reach channel geometry — below km 60 our widths come
+  from hydraulic geometry, not measurement.
+
+We publish the half that failed rather than the half that worked. The full
+Galchhi hydrograph from DHM is the single dataset that would most sharpen this.
+""")
+
 # ------------------------------------------------------------------ closing --
 md(r"""
 ## Findings, limitations, pointers
@@ -952,14 +1290,42 @@ profile is Mapzen terrain in a gorge — monotone
 enforcement and smoothing are load-bearing. geopera velocity/height figures are
 provisional.
 
-**Pointers.** Full write-up: `report/report.html`. Plan and honesty rails:
-`PLAN.md`. Models: `calcs/energy_water_budget.py`, `model/snowplow.py`,
-`model/ladder.py` (this notebook reproduces their outputs verbatim). Profile
-construction: `model/build_profile.py`, `model/fetch_elevations.py`. Evidence
-base: `research/event-dossier.md`, `research/science-review.md`. Data:
-`data/river_profile.csv`, `data/valmikinagar_barrage.csv`, `data/ffd_report.pdf`.
+**Also unresolved, added 5 September.** The border speed that Section 5 scores
+against (48.5 ± 35% m/s) is contradicted by the first peer-reviewed study of the
+event, a CAS frame-by-frame video analysis measuring 19 m/s at the same place.
+The envelope has not been re-scored against it. And the modelled debris deposit
+sits at km 0–36 where stereo measurement puts it at 40–43 — geopera's model gets
+that right and ours does not.
 
-*Dave Hume, with Claude as research and modelling assistant — 2 September 2026.*
+**Pointers.** All links go to the live site or the repository, so they work from
+wherever you are reading this.
+
+- Write-ups: [technical report](report.html) · [plain English](plain.html) ·
+  [project home](index.html)
+- Plan and honesty rails:
+  [`PLAN.md`](https://github.com/djhume/nepal-flood-2026/blob/main/PLAN.md)
+- Models:
+  [`calcs/energy_water_budget.py`](https://github.com/djhume/nepal-flood-2026/blob/main/calcs/energy_water_budget.py) ·
+  [`model/snowplow.py`](https://github.com/djhume/nepal-flood-2026/blob/main/model/snowplow.py) ·
+  [`model/ladder.py`](https://github.com/djhume/nepal-flood-2026/blob/main/model/ladder.py) ·
+  [`model/unified.py`](https://github.com/djhume/nepal-flood-2026/blob/main/model/unified.py) ·
+  [`model/core.py`](https://github.com/djhume/nepal-flood-2026/blob/main/model/core.py) ·
+  [`calcs/ensemble.py`](https://github.com/djhume/nepal-flood-2026/blob/main/calcs/ensemble.py)
+  (this notebook reproduces their outputs verbatim)
+- Entrainment build:
+  [`model/ENTRAINMENT.md`](https://github.com/djhume/nepal-flood-2026/blob/main/model/ENTRAINMENT.md)
+- Profile construction:
+  [`model/build_profile.py`](https://github.com/djhume/nepal-flood-2026/blob/main/model/build_profile.py) ·
+  [`model/fetch_elevations.py`](https://github.com/djhume/nepal-flood-2026/blob/main/model/fetch_elevations.py)
+- Evidence base:
+  [`research/event-dossier.md`](https://github.com/djhume/nepal-flood-2026/blob/main/research/event-dossier.md) ·
+  [`research/science-review.md`](https://github.com/djhume/nepal-flood-2026/blob/main/research/science-review.md)
+- Corrections:
+  [open an issue](https://github.com/djhume/nepal-flood-2026/issues) — they are
+  recorded on the project home page with the date and the reason.
+
+*Dave Hume, with Claude as research and modelling assistant. Sections 1–3
+2 September 2026; Sections 4–5 added 5 September 2026.*
 """)
 
 nb = nbf.v4.new_notebook()
