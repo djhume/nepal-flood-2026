@@ -67,7 +67,13 @@ a{color:var(--river)}
 .card .t{font-family:var(--display);font-size:18.5px;font-weight:600;
   display:block;line-height:1.25;margin-bottom:5px}
 .card .d{font-size:14.5px;color:var(--ink-soft);line-height:1.5;display:block}
-.card.ne .t{font-family:var(--dev)}
+
+/* the human toll — this sits above the findings for a reason */
+.toll{background:var(--panel);border:1px solid var(--line);border-radius:9px;
+  padding:18px 22px;margin:22px 0 6px}
+.toll p{margin:0 0 .7em;font-size:16px;max-width:64ch}
+.toll p:last-child{margin:0}
+.dev{font-family:var(--dev);color:var(--ink-soft)}
 
 /* changelog + asks */
 .log{border-left:2px solid var(--line);padding-left:18px;margin:4px 0}
@@ -86,58 +92,97 @@ footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
 
 <div class="wrap">
 <header>
-  <div class="eyebrow">Independent analysis · Langtang Lirung → Trishuli, 26 August 2026 · updated 5 September 2026</div>
+  <div class="eyebrow">Independent analysis · Langtang Lirung → Lhende Khola → Bhote Koshi → Trishuli · 26 August 2026 · updated 5 September 2026</div>
   <h1>The Trishuli Investigation</h1>
-  <p class="lede">A mountainside fell into a Nepali river valley and, seven
-  minutes later, a flood crossed the Chinese border 22&nbsp;km downstream. This
-  project asks a narrow question with physics: <strong>where did all that water
-  actually come from</strong> — and what the answer means for warning people
-  next time.</p>
+  <p class="lede">On the morning of 26 August 2026 a mountainside above the
+  Lhende Khola, in Rasuwa, fell into a monsoon-swollen river. Seven minutes
+  later the flood destroyed the border crossing at Rasuwagadhi, 22&nbsp;km
+  downstream, and then ran the length of the Bhote Koshi and the Trishuli. This
+  project asks one narrow question with physics: <strong>where did all that
+  water come from</strong> — because the answer decides what a warning system
+  has to watch for.</p>
 </header>
+
+<div class="toll">
+  <p>As of 4 September, <strong>1,259 people are confirmed dead in Nepal and
+  5,083 missing</strong>, with 21 dead and 541 missing on the Chinese side. The
+  missing count rose by roughly 1,200 in the three days before this update, so
+  every figure on this site is provisional. Many of the dead were hydropower
+  workers, from the plant at the border to the tunnels at Upper Trishuli-1.</p>
+  <p>The "entrained mass" in this analysis included bridges, vehicles, homes —
+  and people. Every term in the ledger below has a human cost.</p>
+  <p class="dev">दिवंगतहरूको स्मृतिमा — in memory of those lost.</p>
+</div>
 
 <h2>What we found</h2>
 
 <div class="finding">
   <div class="fnum">01</div>
   <div>
-    <p class="fclaim">The water was already in the river<span class="chip c-strong">well supported</span></p>
-    <p class="fbody">A 1,200-metre fall cannot melt enough ice to make this
-    flood — the energy ceiling sits far below the ~20&nbsp;million cubic metres
-    of "extra" water officially estimated. The wave was mostly the
-    monsoon-swollen Trishuli itself, swept up like snow before a plough and
-    delivered all at once. Three independent routes agree: an energy budget, a
-    source-by-source ledger, and the routing model's own dynamics.</p>
+    <p class="fclaim">The water was already in the river<span class="chip c-strong">holds across the range</span></p>
+    <p class="fbody">Melting ice is expensive and falling is cheap: a kilogram
+    falling 1,200&nbsp;metres releases about a twenty-eighth of the heat needed
+    to melt a kilogram of ice. At the collapse size our own evidence supports
+    (finding 04) that caps frictional melt at
+    <strong>1.1&nbsp;million cubic metres</strong> on best evidence and
+    <strong>2.5&nbsp;million</strong> if every dial is turned in melt's favour
+    at once — against the ~20&nbsp;million cubic metres of "extra" water
+    officially estimated. Melt reaches that official figure only under the
+    largest published volume (200&nbsp;Mm³, five times our envelope), 80% ice,
+    the full 4,000-metre drop <em>and</em> a heat-to-ice partition at the very
+    top of the published range; that combination yields 20.7&nbsp;Mm³, and every
+    step down from it falls away fast. So the wave was mostly the monsoon-swollen
+    river itself, swept up like snow before a plough and delivered all at once.
+    Three routes agree — an energy budget, a source-by-source ledger and the
+    routing model's own dynamics — though they share a channel profile, so treat
+    them as three checks, not three independent measurements.</p>
   </div>
 </div>
 
 <div class="finding">
   <div class="fnum">02</div>
   <div>
-    <p class="fclaim">It fell like slush, not gravel<span class="chip c-robust">robust, one week old</span></p>
+    <p class="fclaim">It did not fall like dry rock<span class="chip c-robust">dry rock excluded</span></p>
     <p class="fbody">The border camera's seven-minute clock turns out to
     discriminate what the falling mass was <em>made of</em>, not how big it
-    was. Dry-rock versions of the collapse arrive late no matter how large we
-    make them; icy and wet versions arrive on time. Published imagery agrees
-    qualitatively — several groups describe bedrock failure that carried a
-    hanging glacier, and drone footage shows a white stream leading the brown
-    dust cloud. That seven-minute clock was itself challenged this week —
-    another group put the arrival at seventeen minutes, which would have killed
-    the finding — and it survived: the border camera's overlay reads 10:59
-    Beijing time, which is 08:44 in Nepal, matching Kargel's independently
-    published figure to the second. The same footage was described as "a black
-    wall of water carrying <strong>ice</strong>, mud and massive rocks". Still
-    open: whether the lubricant came from ice in the falling mass, from the
-    glacier beneath it, or from monsoon water in the valley.</p>
+    was. Dry-rock versions of the collapse arrive at 17 to 30 minutes no matter
+    how large we make them; icy and wet versions arrive on time. Note which way
+    that result points: it <em>excludes</em> dry rock, it does not establish
+    slush. What supplied the mobility — ice in the falling mass, the glacier
+    beneath it, or monsoon water in the valley — is unresolved (finding 06).
+    Published imagery agrees qualitatively: several groups describe bedrock
+    failure that carried a hanging glacier, drone footage shows a white stream
+    leading the brown dust cloud, and the border footage was described as "a
+    black wall of water carrying <strong>ice</strong>, mud and massive rocks".
+    <br><br>The clock itself was challenged this week. Another group put the
+    border arrival at seventeen minutes — which is exactly what our dry-rock
+    runs give, and would have falsified the finding. Three things settled it,
+    and two of them come with a caveat we would rather state than have you
+    find. The camera overlay reads 10:59 Beijing, 08:44 Nepal; the source
+    carrying that overlay verbatim is a <em>partisan outlet</em>, trusted here
+    only because the conversion is arithmetically self-consistent. Jeffrey
+    Kargel published the same 6&nbsp;min 50&nbsp;s independently of us, but does
+    not state his method — if he read it off the same camera, he corroborates
+    our arithmetic and not the camera. What owes nothing to any camera is a
+    Nepali gauge: Syabrubesi, km 37.6, on Nepali time, read 3.8&nbsp;m and
+    rising at 08:50. You cannot take 17 minutes to reach km 22 and 13 minutes to
+    reach km 37.6. That gauge is the load-bearing evidence, and we would still
+    like the raw video file.</p>
   </div>
 </div>
 
 <div class="finding">
   <div class="fnum">03</div>
   <div>
-    <p class="fclaim">The method travels — one test stands, one is withdrawn<span class="chip c-open">revised 3 Sept</span></p>
+    <p class="fclaim">The method travels — one test stands, one is withdrawn<span class="chip c-open">one of two stands</span></p>
     <p class="fbody">Against Chamoli 2021 the model reproduces the arrival
     time at Tapovan once frictional melting is given a thermal lag, with a
-    single fitted number and the rest out of sample. A second test, against
+    single fitted number and the rest out of sample. It is a partial pass, not a
+    clean one: inside the same run the Raini basin transit comes out at 13
+    minutes against the ~27 an independent analysis published for that reach,
+    and that gap <em>widened</em> when we fixed a bug in the arrival
+    calculation — the arrival improved and the basin got worse. Both are in the
+    report. A second test, against
     the 2012 Seti River flood, was reported here as a clean pass; it has been
     <strong>withdrawn</strong>. The channel profile that test ran on was
     built by a routine that filled gaps in the map data with straight lines
@@ -152,7 +197,7 @@ footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
 <div class="finding">
   <div class="fnum">04</div>
   <div>
-    <p class="fclaim">The collapse was far smaller than the headline figures<span class="chip c-robust">new, 5 Sept</span></p>
+    <p class="fclaim">The collapse was far smaller than the headline figures<span class="chip c-robust">envelope only</span></p>
     <p class="fbody">Published estimates of the fallen mass span a factor of
     four hundred, from half a million cubic metres to two hundred million. Rather
     than argue one estimate at a time, we asked which <em>combinations</em> of
@@ -160,18 +205,22 @@ footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
     clock, the border speed, the valley floor the flood scoured out, the debris
     it left — and ran the model across the whole disputed range, keeping only
     what passed every test. The survivors put it at
-    <strong>14–34 million cubic metres</strong>, an order of magnitude below the
-    largest published figures. Changing our shakiest input by a factor of 2.5
-    moved that answer by a third, so it is the measurements driving it. Size is
-    the <em>only</em> thing the survivors agree on; how wet or icy it was is not
-    resolved.</p>
+    <strong>14–34 million cubic metres</strong> (median 21), an order of
+    magnitude below the largest published figures. Changing our shakiest input by
+    a factor of 2.5 moved that answer by a third, so it is the measurements
+    driving it. Size is the <em>only</em> thing the survivors agree on; how wet
+    or icy it was is not resolved. One input needs flagging: the border speed we
+    scored against is the 45–52&nbsp;m/s superelevation estimate, and the first
+    peer-reviewed study of the event — a frame-by-frame video analysis published
+    1 September — measures 19&nbsp;m/s at the same place. We have not yet
+    re-scored against it. If that number is the right one, this envelope moves.</p>
   </div>
 </div>
 
 <div class="finding">
   <div class="fnum">05</div>
   <div>
-    <p class="fclaim">We proved our own model wrong, then fixed it<span class="chip c-robust">new, 5 Sept</span></p>
+    <p class="fclaim">We proved our own model wrong, then fixed it<span class="chip c-robust">falsified, then fixed</span></p>
     <p class="fbody">The model could drop sediment but never pick any up. Adding
     erosion — using formulas published for other rivers on other continents, with
     nothing tuned to this event — produced 3.8 million cubic metres of scour
@@ -181,8 +230,13 @@ footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
     and <strong>none could arrive on time and leave the right debris</strong>.
     That falsified the shape of the model, not its numbers. The fix was to stop
     treating "sediment" as one substance: boulders settle and grind, silt and
-    ice ride with the water and leave no measurable deposit. Another group
-    reached the same conclusion the same week by a completely different method.</p>
+    ice ride with the water and leave no measurable deposit. An independent
+    analyst — Darcy Weedman, writing at <a href="https://geopera.com/blog">geopera</a> —
+    was driven to the same conclusion the same week by a completely different
+    method, machine-learning calibration of a 2D morphodynamic model against
+    stereo satellite imagery, which pulled his settling velocity down by a
+    factor of three. Two unreviewed analyses agreeing is weaker evidence than
+    two peer-reviewed ones, and we would rather name the weight than borrow it.</p>
   </div>
 </div>
 
@@ -195,12 +249,16 @@ footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
     version of this analysis appeared to settle them, which turned out to be an
     artefact of a constraint that was too strict. Our model also puts the main
     debris deposit in the wrong place: satellite stereo shows it 40–43&nbsp;km
-    downstream and ours drops it too early. A final out-of-sample test half
-    failed — the flood <em>volume</em> at Devghat came out right for every
-    surviving version, but the river <em>height</em> at Galchhi came out at
-    about 3.6&nbsp;m against roughly 9 observed, which points at our estimate of
-    the lower river's shape. And this is fast, independent, AI-assisted analysis
-    published days after the event: it is not peer-reviewed.</p>
+    downstream and ours drops it too early — geopera's model got that right and
+    ours did not. A final out-of-sample test half failed. The <em>peak
+    discharge</em> at Devghat met its pass criterion — within a factor of two —
+    for every surviving version, but all 26 land below the observation
+    (1,752–2,889&nbsp;m³/s against ~2,900), so "passed" there means "not
+    contradicted", not "reproduced". The river <em>height</em> at Galchhi came
+    out at about 3.6&nbsp;m against roughly 9 observed, which points at our
+    estimate of the lower river's shape. And this is fast, independent,
+    AI-assisted analysis published days after the event: it is not
+    peer-reviewed, and no Nepali scientist has yet read it.</p>
   </div>
 </div>
 
@@ -223,7 +281,9 @@ footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
     <span class="who">Reviewer / sceptic</span>
     <span class="t">Trishuli Model Workings</span>
     <span class="d">Every equation, fit and figure executed end-to-end from
-    the data files, so the arithmetic can be checked rather than trusted.</span>
+    the data files, so the arithmetic can be checked rather than trusted —
+    all five model stages, including the size envelope and the falsification
+    run behind findings 04 and 05.</span>
   </a>
 </div>
 
@@ -232,10 +292,34 @@ scientists working on this event — Kargel, Shugar, Petley, ICIMOD and others �
 have consistently described river water and entrained sediment in their
 accounts of the flood. What nobody had published was the arithmetic: the
 relative sizes of the terms. That is the gap this project set out to fill, and
-where our numbers disagree with an agency's, both are shown.</p>
+where our numbers disagree with an agency's, both are shown. Nothing here is a
+finding about how well anyone else has done their job, and the warning-system
+section of the plain-English page is about a gap in the design of national
+systems generally, not about the people who were operating one that morning
+while four of its gauges were being destroyed.</p>
 
 <h2>What changed recently</h2>
 <div class="log">
+  <div><span class="d">5 September 2026 — evening</span>
+  <strong>A cold read of the whole site, and the corrections it produced.</strong>
+  Three of them matter. The melt ceiling was quoted as sitting "far below" the
+  official 20&nbsp;Mm³ while this site's own chart showed 15 against 20; carrying
+  finding 04's size envelope into the energy budget — which should have happened
+  the moment that envelope existed — puts the real ceiling at 1.1–2.5&nbsp;Mm³ and
+  makes the claim both true and much stronger. A bar on the plain-English chart
+  labelled "river already lying in the channel, 47&nbsp;Mm³" was the
+  <em>total</em> wave at Devghat; the standing channel water is 22.4. And the
+  border-clock resolution was presented with more confidence than its sources
+  carry: the decisive overlay quote comes from a partisan outlet and Kargel's
+  matching figure has no stated method, both of which are now on the page. Also:
+  the published workings had fallen three days behind the findings and have been
+  rebuilt; every page now says who geopera is; and the human toll is at the top
+  of this page, where it should have been from the first version.
+  <br><br><em>A rule, adopted here rather than just intended:</em> nothing
+  reaches this findings list on the day it is computed. New results go in this
+  changelog first and move up only after they have survived a night and one
+  out-of-sample check. Findings 04 and 05 were promoted the same day they were
+  produced, which is how finding 03 got promoted and then withdrawn.</div>
   <div><span class="d">5 September 2026</span>
   Two new findings. The collapse was probably 14–34 million cubic metres, an
   order of magnitude below the largest published estimates. And the model was
@@ -256,9 +340,9 @@ where our numbers disagree with an agency's, both are shown.</p>
   stereo actually measured — while saying the corridor cannot have received
   anything like the amount of rock the largest source estimates imply.</div>
   <div><span class="d">3 September 2026 — evening</span>
-  A retracted deposition figure from another group was corrected in our
-  scoring, which resolved a tension between the timing and deposit evidence —
-  both now point the same way.</div>
+  A deposition figure that geopera had themselves retracted was corrected in
+  our scoring, which resolved a tension between the timing and deposit
+  evidence — both now point the same way.</div>
   <div><span class="d">3 September 2026</span>
   The Chamoli 2021 timing gap closed by adding thermal lag to the melt physics.
   The corridor map was redrawn with automatic label placement.</div>
@@ -286,12 +370,41 @@ extend the flood's routing beyond the border.</li>
 </ul>
 </div>
 
+<h2>Corrections, and what is offered back</h2>
+<div class="asks">
+<ul>
+<li><strong>Send a correction</strong> by opening an issue at
+<a href="https://github.com/djhume/nepal-flood-2026/issues">github.com/djhume/nepal-flood-2026/issues</a>.
+Corrections are recorded on this page with the date and the reason, including
+the ones that cost us a finding. Five results have been withdrawn so far and
+all five are still readable.</li>
+<li><strong>No Nepali scientist has reviewed this.</strong> That is the most
+conspicuous gap in the work and it is not one we can close alone. The Nepali
+translation is withdrawn until a Nepali speaker has checked it, rather than
+published on machine translation. If you are that reader, the offer above
+stands and so does this one.</li>
+<li><strong>Everything here is yours to use.</strong> The code is MIT, the prose
+and figures CC-BY-4.0, and the channel profile, the routing models and the
+corridor map are free for DHM, ICIMOD, NDRRMA or anyone else to take, with or
+without us. Two honest strings, both in the
+<a href="https://github.com/djhume/nepal-flood-2026/blob/main/LICENSE">licence</a>:
+map geometry is OpenStreetMap-derived and carries its attribution, and none of
+this is validated enough to sit under an operational warning system, an
+evacuation decision or a hazard zoning without independent expert review. If it
+is useful and something in it is wrong, we would rather be told than cited.</li>
+</ul>
+</div>
+
 <footer>
 Independent analysis by <strong>Dave Hume</strong>, carried out with Claude
-(Anthropic) as a research assistant. Version 3, 5 September 2026 — findings and
+(Anthropic) as a research assistant. Version 4, 5 September 2026 — findings and
 casualty figures are as reported at that date and will change. Code, data and
 the full evidence dossier, with every contested number flagged at the point of
 use, are kept in the project repository. Corrections are welcome and will be
 recorded here.
+<br><br>This event is also reported as the <strong>Bhote Koshi flood</strong>,
+the Rasuwa flood and the Lhende Khola flood; the river is the Lhende at the
+collapse, the Bhote Koshi below the border and the Trishuli below Betrawati.
+The site is named for the reach where most of the deaths were.
 </footer>
 </div>

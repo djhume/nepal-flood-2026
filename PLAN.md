@@ -1070,6 +1070,48 @@ Preprint on EarthArXiv if it holds up — none exists yet on this event (checked
 - geopera numbers are provisional (they self-corrected once already, 1 Sept).
 - Casualty and event numbers are evolving; date-stamp everything.
 
+### 6a. Four rails added 5 Sept, each because it was breached
+
+A cold read of the four published pages, by a reader given no access to this
+repo, found that the rails above were being kept in the repository and dropped
+on the way to the site. Every one of these is a generalisation of an actual
+error, not a precaution:
+
+- **Carry a result into every place it changes a number, on the day you get
+  it.** The 14–34 Mm³ envelope (finding 04) was published while `calcs/
+  energy_water_budget.py` and the report's §04 still led with 100 Mm³, and while
+  the summary pages claimed a melt ceiling "far below" 20 Mm³ that the site's own
+  chart showed at 15. Propagating the envelope gives 1.1–2.5 Mm³ and makes the
+  claim both true and eight times stronger. **The generalisation:** a finding
+  that constrains an input is not finished until every downstream number has
+  been recomputed. Grep the repo for the old value before publishing.
+- **A caveat that exists in the dossier must exist on the page.** The dossier
+  recorded that Kargel's 6 min 50 s has no stated method and may derive from the
+  same camera (§ "3. Kargel's method"), and that the decisive overlay quote is
+  from a partisan outlet. The site said "matching Kargel's independently
+  published figure to the second" and "Chinese-language reporting". **The
+  generalisation:** when a summary compresses a dossier entry, the hedge is the
+  part that must survive compression, not the part that gets cut for length.
+- **Name the strength of corroborating evidence, not just its direction.**
+  geopera was cited eleven times across the site as "another group", implying an
+  institution. It is Geopera Pty Ltd, a company blog by its founder Darcy
+  Weedman, unreviewed — as this is. "Two groups, two methods, one answer" was
+  claiming replication for what is corroboration. It also under-credited a named
+  individual while every other researcher on the site is named.
+- **Publish the workings with the finding, not after it.** `report/workings.html`
+  sat at the 2 September notebook while the hub advertised it as the page where
+  "the arithmetic can be checked rather than trusted" — and it contained neither
+  finding 04 nor finding 05. The rebuild is now a script
+  (`notebooks/build_workings_html.py`) precisely so that this cannot recur as a
+  forgotten hand step.
+
+**A promotion rule, also adopted:** nothing enters the site's numbered findings
+on the day it is computed. New results go in the changelog and move up after a
+night and one out-of-sample check. The retraction record is defensible — each of
+the five is attached to a named mechanism, which is what separates diligence
+from churn — but findings 04 and 05 were promoted the same day they were
+produced, and finding 03 was promoted and then withdrawn.
+
 ## 7. Effort estimate
 
 Phase A sensitivity: an evening. Phase B model: 2–3 evenings (DEM profile + routing + calib).

@@ -28,19 +28,25 @@ SITE = "https://djhume.github.io/nepal-flood-2026/"
 
 # One description per page: the search-result snippet and the link preview.
 PAGES = {
+    # Each mentions "Bhote Koshi" as well as "Trishuli": the reach where the
+    # collapse and the border arrival happened is the Lhende and the Bhote
+    # Koshi, that is what Nepali reporting and the other analyses of the event
+    # call it, and a reader searching that name has to be able to find this.
     "index.html": "Independent physics analysis of the 26 August 2026 Langtang "
-                  "Lirung collapse and the Trishuli flood, Nepal. Where the "
-                  "flood water came from, how big the collapse was, and every "
-                  "retraction along the way.",
+                  "Lirung collapse and the Bhote Koshi / Trishuli flood, Nepal. "
+                  "Where the flood water came from, how big the collapse was, "
+                  "and every retraction along the way.",
     "plain.html": "The whole argument in plain English, no equations: why a "
-                  "1,200-metre fall cannot melt enough ice to make this flood, "
-                  "and what actually carried the water.",
-    "report.html": "Technical report: corridor map, water budget, routing "
-                   "model, entrainment closure, the Chamoli stress test, and "
-                   "what would change our mind.",
+                  "1,200-metre fall cannot melt enough ice to make the Bhote "
+                  "Koshi / Trishuli flood, and what actually carried the water.",
+    "report.html": "Technical report on the 26 August 2026 Bhote Koshi / "
+                   "Trishuli flood: corridor map, water budget, routing model, "
+                   "entrainment closure, the size envelope, the Chamoli stress "
+                   "test, and what would change our mind.",
     "workings.html": "Every equation, fit and figure executed end-to-end from "
-                     "the data files, so the arithmetic can be checked rather "
-                     "than trusted.",
+                     "the data files — all five model stages, including the "
+                     "size envelope and the falsification run — so the "
+                     "arithmetic can be checked rather than trusted.",
 }
 
 # WHY A SKELETON. These pages were first written as Claude artifacts, where the

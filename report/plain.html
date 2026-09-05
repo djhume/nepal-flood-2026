@@ -51,8 +51,25 @@ strong{font-weight:600}
 figure{margin:2em -10px}
 figcaption{font-size:14.5px;color:var(--ink-soft);line-height:1.55;
   padding:8px 10px 0}
-svg{display:block;width:100%;height:auto}
-svg text{font-family:var(--mono);fill:var(--ink)}
+/* Set the default text colour on the <svg>, NOT in an `svg text{fill:...}`
+   rule: a CSS declaration beats a presentation attribute, so that rule was
+   silently flattening every fill="var(--plant)" annotation on these charts to
+   one colour. Inheriting from the root lets each element's own fill win. */
+svg{display:block;width:100%;height:auto;fill:var(--ink)}
+svg text{font-family:var(--mono)}
+
+/* NARROW SCREENS. These figures are ~900 user units wide with labels set at
+   13-14 units. Scaled to fit a 320px phone that is a factor of ~0.35, which
+   renders the labels at about 4px — present, and unreadable. Below 640px stop
+   scaling them: give the SVG a fixed legible width and let the figure scroll
+   sideways instead, the same treatment the tables get in the technical report.
+   A chart you can pan is worth more than one you can only see the shape of. */
+@media (max-width:640px){
+  figure{overflow-x:auto;margin-left:0;margin-right:0;
+    -webkit-overflow-scrolling:touch}
+  figure svg{width:700px;max-width:none}
+  figcaption{padding-left:0;padding-right:0}
+}
 .footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);
   font-size:15px;color:var(--ink-soft)}
 
@@ -64,41 +81,87 @@ svg text{font-family:var(--mono);fill:var(--ink)}
 .hubnav .here{color:var(--river);border-bottom:1px solid var(--river)}
 </style>
 
-<nav class="hubnav"><a href="index.html">◀ Project home</a><span class="here">Plain English</span><a href="report.html">Technical report</a></nav>
+<nav class="hubnav"><a href="index.html">◀ Project home</a><span class="here">Plain English</span><a href="report.html">Technical report</a><a href="workings.html">Model workings</a></nav>
 <div class="wrap">
 <header>
-  <div class="eyebrow">Plain-English companion · 5 September 2026 · v2 — not peer-reviewed</div>
+  <div class="eyebrow">Plain-English companion · 5 September 2026 · v3 — not peer-reviewed</div>
   <h1>The Water Was Already in the River</h1>
   <p class="standfirst">On 26 August 2026 a piece of a Himalayan mountain fell
-  into a river valley in Nepal. Seven minutes later a wall of water and debris
-  taller than a ten-storey building crossed the Chinese border, 22 kilometres
-  away. This is a plain-English account of where all that water came from, how
-  we tested the idea, what we got wrong along the way, and what it means for
-  keeping people alive next time. The full technical version, with every number
-  and every assumption on display, is
+  into a river valley in Rasuwa, Nepal. Seven minutes later a wall of water and
+  debris taller than a ten-storey building destroyed the border crossing at
+  Rasuwagadhi, 22 kilometres away, and crossed into China. More than 1,250
+  people are dead and more than 5,000 missing. This is a plain-English account
+  of where all that water came from, how we tested the idea, what we got wrong
+  along the way, and what it means for keeping people alive next time. The full
+  technical version, with every number and every assumption on display, is
   <a href="report.html">here</a>.</p>
 </header>
 
 <h2>What happened</h2>
 <p>At 8:37 on a clear monsoon morning, seismometers felt a mountainside let
 go: part of Langtang Lirung, a 7,200-metre peak about 60 kilometres north of
-Kathmandu, collapsed into the gorge of a small river called the Lende Khola.
+Kathmandu, collapsed into the gorge of a small river called the Lhende Khola.
 At 8:44 — seven minutes later — a border security camera 22 kilometres
 downstream filmed the flood arriving. That is an average speed of about
 190&nbsp;km/h down a mountain gorge.</p>
-<p>The wave then ran the length of the Trishuli River, one of the most densely
-developed hydropower corridors in the Himalaya. Thirteen power stations were
-damaged. As of 4 September the reported toll stood at <strong>1,259 dead and
-5,083 missing</strong> in Nepal, with 21 dead and 541 missing on the Chinese
-side — and the missing count had risen by roughly 1,200 in three days, so
-every figure here should be read as provisional. Many of the dead were
-hydropower workers. The first SMS warnings went out 38 minutes after the
-collapse. For everyone in the upper valley, the flood had already come and
-gone.</p>
-<p>By four in the afternoon, at Devghat 168 river-kilometres away, the river
-crested at roughly four times its normal monsoon flow. Nepal's flood authority
-estimated the event pushed about 20 million cubic metres of "extra" water down
-the river — around 8,000 Olympic swimming pools — in a single afternoon.</p>
+<p>The wave then ran the length of the Bhote Koshi and the Trishuli — the same
+river under two names, and one of the most densely developed hydropower
+corridors in the Himalaya. Thirteen power stations were damaged. As of
+4 September the reported toll stood at <strong>1,259 dead and 5,083
+missing</strong> in Nepal, with 21 dead and 541 missing on the Chinese side —
+and the missing count had risen by roughly 1,200 in three days, so every figure
+here should be read as provisional. Many of the dead were hydropower workers.
+The first SMS warnings went out 38 minutes after the collapse. For everyone in
+the upper valley, the flood had already come and gone.</p>
+<figure>
+<svg viewBox="0 0 900 250" role="img" aria-label="Schematic long section of the flood path from the Langtang Lirung collapse scar through Rasuwagadhi, Syabrubesi, Betrawati, Galchhi and Malekhu to Devghat">
+<text x="20" y="24" font-size="15" fill="var(--ink)">Where these places are</text>
+<line x1="40" y1="150" x2="860" y2="150" stroke="var(--river)" stroke-width="3"/>
+<circle cx="40" cy="150" r="6" fill="var(--plant)"/>
+<text x="40" y="132" font-size="14" text-anchor="middle" fill="var(--ink)">collapse</text>
+<text x="40" y="174" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">08:37</text>
+<text x="40" y="192" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">km 0</text>
+<circle cx="130" cy="150" r="6" fill="var(--river-deep)"/>
+<text x="130" y="132" font-size="14" text-anchor="middle" fill="var(--ink)">Rasuwagadhi</text>
+<text x="130" y="174" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">08:44</text>
+<text x="130" y="192" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">km 22</text>
+<circle cx="195" cy="150" r="6" fill="var(--river-deep)"/>
+<text x="195" y="112" font-size="14" text-anchor="middle" fill="var(--ink)">Syabrubesi</text>
+<text x="195" y="174" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">08:50</text>
+<text x="195" y="192" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">km 38</text>
+<circle cx="320" cy="150" r="6" fill="var(--river-deep)"/>
+<text x="320" y="132" font-size="14" text-anchor="middle" fill="var(--ink)">Betrawati</text>
+<text x="320" y="174" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">09:20</text>
+<text x="320" y="192" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">km 68</text>
+<circle cx="485" cy="150" r="6" fill="var(--river-deep)"/>
+<text x="485" y="132" font-size="14" text-anchor="middle" fill="var(--ink)">Galchhi</text>
+<text x="485" y="174" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">~11:00</text>
+<text x="485" y="192" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">km 108</text>
+<circle cx="522" cy="150" r="6" fill="var(--river-deep)"/>
+<text x="560" y="112" font-size="14" text-anchor="middle" fill="var(--ink)">Malekhu</text>
+<text x="560" y="192" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">km 117</text>
+<circle cx="860" cy="150" r="6" fill="var(--river-deep)"/>
+<text x="860" y="132" font-size="14" text-anchor="end" fill="var(--ink)">Devghat</text>
+<text x="860" y="174" font-size="12.5" text-anchor="end" fill="var(--ink-soft)">16:00 peak</text>
+<text x="860" y="192" font-size="12.5" text-anchor="end" fill="var(--ink-soft)">km 199</text>
+<line x1="40" y1="214" x2="130" y2="214" stroke="var(--plant)" stroke-width="2"/>
+<text x="140" y="219" font-size="13" fill="var(--plant)">7 minutes — no warning chain can work here</text>
+<line x1="320" y1="234" x2="860" y2="234" stroke="var(--river)" stroke-width="2"/>
+<text x="316" y="239" font-size="13" text-anchor="end" fill="var(--river)">hours</text>
+</svg>
+<figcaption>The corridor, straightened out. Distances are along the river
+channel from the collapse scar; the times are observations, not model output.
+The mountain is in Rasuwa district, about 60&nbsp;km north of Kathmandu, and the
+river runs south to meet the Kali Gandaki at Devghat. A map of the real
+geography, with the tributaries and the hydropower cascade, is in the
+<a href="report.html">technical report</a>.</figcaption>
+</figure>
+<p>By four in the afternoon, at Devghat — 199 river-kilometres away by the
+channel we traced, 168 on the shorter reckoning the official report uses — the
+river crested at roughly four times its normal monsoon flow. Nepal's Flood
+Forecasting Division estimated the event pushed about 20 million cubic metres
+of "extra" water down the river — around 8,000 Olympic swimming pools — in a
+single afternoon.</p>
 
 <h2>The puzzle</h2>
 <p>A falling mountain is rock and ice. Rock doesn't flood. So where did 8,000
@@ -112,9 +175,21 @@ it, and it melts into flood water.</p>
 1,200 metres — roughly what this mass fell before it hit the river — gives
 each kilogram of material only enough heat to melt about <strong>40 grams of
 ice</strong>, and that's if every scrap of the heat goes into melting, which
-it never does. Even under generous assumptions, melted ice can account for
-only a few million cubic metres here. The official estimate of extra water is
-several times bigger than any defensible melting budget.</p>
+it never does.</p>
+<p>How much water that adds up to depends on how much fell, and that is the
+number nobody agrees on. So we did it twice. At the collapse size our own
+evidence supports — 14 to 34 million cubic metres, which is a later section of
+this page — melting supplies about <strong>1 million cubic metres</strong> of
+water, or <strong>2.5 million</strong> if you turn every dial in melting's
+favour at once: the top of that size range, four-fifths ice, the longest
+plausible drop, and the most generous heat-sharing anyone has published.
+Against 20 million of "extra" water, that is short by a factor of eight.</p>
+<p>Melting only reaches the official figure if you take the very largest
+published collapse — 200 million cubic metres, five times our own range — and
+also assume four-fifths ice, a 4,000-metre drop and the most generous
+heat-sharing. Do all four at once and you get 20.7 million: it arrives exactly,
+and only, at the end of a chain where every link is set to its most favourable
+value. Relax any one of them and it falls away fast.</p>
 <p>So most of the flood's water was not made by the mountain.
 <strong>It was already in the valley.</strong></p>
 
@@ -132,42 +207,55 @@ Release the pressure and it freezes straight back. Pressure moves the phase
 boundary; it doesn't pay the bill.</div>
 
 <figure>
-<svg viewBox="0 0 900 330" role="img" aria-label="Bar chart comparing how much water melting could supply against the water already lying in the river channel">
-<text x="24" y="26" font-size="14" fill="var(--ink)">Melt — realistic</text>
-<rect x="24" y="34" width="62" height="24" fill="var(--ice)" rx="3"/>
-<text x="94" y="51" font-size="13" fill="var(--ink-soft)">4</text>
-<text x="24" y="92" font-size="14" fill="var(--ink)">Melt — the most generous physics allows</text>
-<rect x="24" y="100" width="233" height="24" fill="var(--ice)" rx="3"/>
-<text x="265" y="117" font-size="13" fill="var(--ink-soft)">15</text>
-<text x="24" y="158" font-size="14" fill="var(--ink)">Official &#8216;extra water&#8217; estimate</text>
-<rect x="24" y="166" width="310" height="24" fill="var(--river)" rx="3"/>
-<text x="342" y="183" font-size="13" fill="var(--ink-soft)">20</text>
-<text x="24" y="224" font-size="14" fill="var(--ink)">River already lying in the channel</text>
-<rect x="24" y="232" width="729" height="24" fill="var(--river-deep)" rx="3"/>
-<text x="761" y="249" font-size="13" fill="var(--ink-soft)">47</text>
-<line x1="24" y1="278" x2="830" y2="278" stroke="var(--line)" stroke-width="1.5"/>
-<line x1="24" y1="278" x2="24" y2="284" stroke="var(--line)" stroke-width="1.5"/>
-<text x="24" y="300" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">0</text>
-<line x1="179" y1="278" x2="179" y2="284" stroke="var(--line)" stroke-width="1.5"/>
-<text x="179" y="300" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">10</text>
-<line x1="334" y1="278" x2="334" y2="284" stroke="var(--line)" stroke-width="1.5"/>
-<text x="334" y="300" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">20</text>
-<line x1="490" y1="278" x2="490" y2="284" stroke="var(--line)" stroke-width="1.5"/>
-<text x="490" y="300" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">30</text>
-<line x1="645" y1="278" x2="645" y2="284" stroke="var(--line)" stroke-width="1.5"/>
-<text x="645" y="300" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">40</text>
-<line x1="800" y1="278" x2="800" y2="284" stroke="var(--line)" stroke-width="1.5"/>
-<text x="800" y="300" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">50</text>
-<text x="24" y="322" font-size="13" fill="var(--ink-soft)">million cubic metres of water</text>
-<line x1="257" y1="176" x2="334" y2="176" stroke="var(--plant)" stroke-width="2.5"/>
-<text x="344" y="181" font-size="12.5" fill="var(--plant)">the gap is river water</text>
+<svg viewBox="0 0 900 480" role="img" aria-label="Bar chart comparing how much water frictional melting could supply, under our size envelope and under the largest published collapse, against the officially estimated extra water and against the river water already in the channel">
+<text x="24" y="26" font-size="14" fill="var(--ink)">Melt — our size envelope, best evidence</text>
+<rect x="24" y="34" width="17" height="24" fill="var(--ice)" rx="3"/>
+<text x="49" y="51" font-size="13" fill="var(--ink-soft)">1.1</text>
+<text x="24" y="92" font-size="14" fill="var(--ink)">Melt — our envelope, every dial turned in melting&#8217;s favour</text>
+<rect x="24" y="100" width="39" height="24" fill="var(--ice)" rx="3"/>
+<text x="71" y="117" font-size="13" fill="var(--ink-soft)">2.5</text>
+<text x="24" y="158" font-size="14" fill="var(--ink)">Melt — largest published collapse, every dial maxed</text>
+<rect x="24" y="166" width="321" height="24" fill="var(--ice)" rx="3"/>
+<text x="353" y="183" font-size="13" fill="var(--ink-soft)">20.7</text>
+<text x="24" y="224" font-size="14" fill="var(--ink)">Official &#8216;extra water&#8217; estimate</text>
+<rect x="24" y="232" width="310" height="24" fill="var(--river)" rx="3"/>
+<text x="342" y="249" font-size="13" fill="var(--ink-soft)">20</text>
+<text x="24" y="290" font-size="14" fill="var(--ink)">River standing in the channel at any instant</text>
+<rect x="24" y="298" width="347" height="24" fill="var(--river-deep)" rx="3"/>
+<text x="379" y="315" font-size="13" fill="var(--ink-soft)">22.4</text>
+<text x="24" y="356" font-size="14" fill="var(--ink)">The whole wave, by the time it reached Devghat</text>
+<rect x="24" y="364" width="729" height="24" fill="var(--river-deep)" rx="3"/>
+<text x="761" y="381" font-size="13" fill="var(--ink-soft)">47</text>
+<line x1="24" y1="410" x2="830" y2="410" stroke="var(--line)" stroke-width="1.5"/>
+<line x1="24" y1="410" x2="24" y2="416" stroke="var(--line)" stroke-width="1.5"/>
+<text x="24" y="432" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">0</text>
+<line x1="179" y1="410" x2="179" y2="416" stroke="var(--line)" stroke-width="1.5"/>
+<text x="179" y="432" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">10</text>
+<line x1="334" y1="410" x2="334" y2="416" stroke="var(--line)" stroke-width="1.5"/>
+<text x="334" y="432" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">20</text>
+<line x1="490" y1="410" x2="490" y2="416" stroke="var(--line)" stroke-width="1.5"/>
+<text x="490" y="432" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">30</text>
+<line x1="645" y1="410" x2="645" y2="416" stroke="var(--line)" stroke-width="1.5"/>
+<text x="645" y="432" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">40</text>
+<line x1="800" y1="410" x2="800" y2="416" stroke="var(--line)" stroke-width="1.5"/>
+<text x="800" y="432" font-size="12.5" text-anchor="middle" fill="var(--ink-soft)">50</text>
+<text x="24" y="454" font-size="13" fill="var(--ink-soft)">million cubic metres of water</text>
+<line x1="63" y1="110" x2="334" y2="110" stroke="var(--plant)" stroke-width="2.5"/>
+<text x="344" y="115" font-size="12.5" fill="var(--plant)">the gap is river water</text>
 </svg>
-<figcaption>Why the water cannot mostly be melted ice. A 1,200-metre fall
-releases enough heat to melt only so much: even granting every generous
-assumption, melting tops out far below the flood's officially estimated extra
-water. Meanwhile the corridor holds 47 million cubic metres of river at any
-instant — the wave never needed to <em>make</em> water, only to collect it.
-Model figures; the official estimate is Nepal's flood authority.</figcaption>
+<figcaption>Why the water cannot mostly be melted ice — and where the argument
+is actually tight. At the collapse size our own evidence supports, melting
+supplies 1.1 million cubic metres, or 2.5 million with every assumption maxed
+in its favour. It reaches the official "extra water" figure only under the
+largest published collapse with every other dial also maxed (third bar), which
+is the case the melt narrative needs and the one we think is wrong. Meanwhile
+the corridor holds 22.4 million cubic metres of river standing in the channel
+at any instant, and the wave that reached Devghat carried 47 million once
+baseflow arriving during the seven-hour passage and water squeezed from
+sediment are counted. The wave never needed to <em>make</em> water, only to
+collect it. Melt and wave figures are our model
+(<a href="workings.html">workings</a>, stage 1); the 20 is Nepal's Flood
+Forecasting Division, whose method is unpublished.</figcaption>
 </figure>
 
 <h2>The snowplow</h2>
@@ -176,7 +264,7 @@ valley, already flowing. Now send a fast, heavy wave down it. The wave acts
 like a <strong>snowplow</strong>: its front overruns the slower river water
 ahead of it, sweeps it up, and pushes it along. Kilometre after kilometre, the
 wave grows by collecting river that was already there.</p>
-<p>When we do the arithmetic along the whole 168&nbsp;km, roughly
+<p>When we do the arithmetic along the whole 199&nbsp;km, roughly
 <strong>three-quarters of the water</strong> that passed the downstream gauge
 was ordinary river water, gathered up and delivered all at once. The mountain
 provided the push; the monsoon provided the water. Other Himalayan and Andean
@@ -186,7 +274,7 @@ valley's own river, then <em>the size of a future flood depends on the
 season</em> — the same collapse in February and in August produce utterly
 different disasters. Warning systems should know that.</p>
 
-<h2>It fell like slush, not gravel</h2>
+<h2>It did not fall like dry rock</h2>
 <p>Remember the border camera: 22&nbsp;km in seven minutes. We simulated the
 collapse many different ways — small and large, dry rock, icy, wet — and asked
 which versions could reach that camera on time. The result was stark.
@@ -198,6 +286,14 @@ fall — like a truckload of gravel dumped down a slope, violent but
 self-braking. Ice and water lubricate. A wet or icy mass keeps the fall's
 energy as speed. Only something running like slush covers that gorge in seven
 minutes.</p>
+<p>Be careful which way that arrow points. The test <em>excludes</em> dry rock;
+it does not establish slush. "Not dry" is a wide category, and our own
+size-and-composition search later on this page cannot narrow it: how wet the
+mass was, and how much of it was ice rather than rock, come out spanning almost
+the entire range we allowed. So the honest claim is the negative one, and the
+heading above says so. What we can add to it is circumstantial and consistent —
+ice is visible in the border footage, and several groups describe a bedrock
+failure that carried a hanging glacier with it.</p>
 <p>There is a second reason ice is slippery, and it is not melting. Where two
 ice grains touch, the contact stress is enormous — of order 10,000
 atmospheres — and there the melting point really does collapse, by perhaps
@@ -242,25 +338,48 @@ time. All positions are model output, scored against one hard observation.</figc
 
 <h2>The seven minutes nearly came apart</h2>
 <p>That whole finding rests on one number: seven minutes. So when another
-group — <a href="https://geopera.com/blog">geopera</a>, doing careful satellite
-work and publishing openly — put the border arrival at <em>seventeen</em>
-minutes, it was serious. Our dry-rock simulations arrive at seventeen minutes
-exactly. If they were right, our finding was dead.</p>
+analysis — <a href="https://geopera.com/blog">geopera</a>, doing careful
+satellite work and publishing openly — put the border arrival at
+<em>seventeen</em> minutes, it was serious. Say the uncomfortable version out
+loud: our dry-rock simulations arrive at seventeen minutes exactly. If
+seventeen is right, then the simplest reading of the whole event is a dry rock
+avalanche, and our finding is not just wrong, it is backwards.</p>
 <p>Chasing it down took a day and turned into a small detective story. They
 never mention the camera at all: their method is openly licensed satellite
 data, and <strong>the camera footage had been actively censored</strong> —
 two clips of the border gate going down were blocked on Chinese platforms,
-even inside private one-to-one messages. It wasn't available to them. Then a
-fact-check muddied it further by noting the video's on-screen clock runs on
-Chinese time, two and a quarter hours ahead of Nepal's.</p>
+even inside private one-to-one messages. It wasn't available to them. Worse,
+the fact-checkers who <em>did</em> see the footage read its on-screen clock as
+Chinese time and concluded the flood arrived "around 9 o'clock in Nepal" —
+which would be about twenty-three minutes. That is a second independent vote
+for the slow answer, and it is the version we had to break.</p>
 <p>The resolution was sitting in Chinese-language reporting: the footage is
-stamped <strong>10:59 Beijing time, which is 8:44 in Nepal</strong>. The
-conversion had already been done correctly. And 8:44 minus the 8:37:10
-collapse is <strong>6 minutes 50 seconds</strong> — which is, to the second,
-the figure the glaciologist Jeffrey Kargel published independently. A Nepali
-river gauge 37&nbsp;km downstream, running on Nepali time and owing nothing to
-any camera, agrees: it cannot have taken seventeen minutes to reach a point
-the flood had already passed.</p>
+stamped <strong>10:59 Beijing time, which is 8:44 in Nepal</strong> — the
+conversion had already been done correctly at the source, and the
+fact-checkers' "around 9 o'clock" is a loose paraphrase of 8:44 rather than a
+different reading. And 8:44 minus the 8:37:10 collapse is <strong>6 minutes
+50 seconds</strong>.</p>
+<div class="honesty"><span class="lbl">Two caveats on that, before you find them yourself</span>
+<p><strong>The outlet is partisan.</strong> The report carrying the camera
+overlay verbatim is Epoch Times. We use it because the claim is numerical and
+internally consistent — 10:59 Beijing minus 2 h 15 min really is 8:44 Nepal —
+and not because we trust the source. Mainstream Chinese-language reporting is
+looser: one outlet gives a time that would put the flood at the border
+<em>before</em> the mountain fell. We would still like the raw video file.</p>
+<p><strong>Kargel's matching figure may not be independent.</strong> The
+glaciologist Jeffrey Kargel published the same 6 minutes 50 seconds, and we
+originally presented that as independent confirmation. It may not be: his
+stated basis is "22 km at 193 km/h" and he does not say where the speed came
+from. If he read it off the same camera, he confirms our arithmetic and not
+the camera, and we would be counting one piece of evidence twice.</p>
+<p><strong>What actually carries the argument</strong> is neither of those.
+It is a Nepali gauge at Syabrubesi, 37.6 kilometres down the river, running on
+Nepali time and owing nothing to any camera, timezone or outlet. It read
+3.8 metres and rising at <strong>08:50</strong> — thirteen minutes after the
+collapse. You cannot take seventeen minutes to reach kilometre 22 and thirteen
+minutes to reach kilometre 37.6. That single instrument is why the seven
+minutes stands.</p>
+</div>
 <p>The same Chinese description of the footage gave us something we had been
 hunting for weeks. The wave that hit the border was
 <em>"a black wall of water carrying <strong>ice</strong>, mud and massive
@@ -276,8 +395,12 @@ into a cliff, it stops dead and converts all its speed into height — the same
 way water climbs the far bank of a hairpin bend. At 50&nbsp;metres per second
 that climb is over 100 metres. So a mud line on a facing cliff is not a depth.
 It's a speedometer.</p>
-<p>At this border the two arms of the river meet almost exactly head-on, at
-96&nbsp;degrees. Three elevations read off the satellite terrain — the river
+<p>At this border the flood's valley runs into the main river valley at
+<strong>96&nbsp;degrees</strong> — very nearly a right angle, which means the
+flow cannot turn the corner and instead strikes the cliff on the far side of
+the junction almost square-on. That is the head-on case, and it is why this
+particular junction can be read as a speedometer. Three elevations read off
+the satellite terrain — the river
 bed at 1,815&nbsp;m, a sheltered mud line at 1,875&nbsp;m, and the facing cliff
 at 1,920–1,930&nbsp;m — separate the two effects and give both numbers at
 once:</p>
@@ -291,10 +414,22 @@ water is 24&nbsp;m/s — so the front should have been advancing at about
 of it.</div>
 <p>That also settled an argument we'd been having with ourselves. The
 <em>water</em> moves at 30&nbsp;m/s; the <em>front</em> moves at 54. Those are
-different things, and we had spent a day confusing them. Independently,
-geopera worked out from the size of boulders the flood could carry that the
-water was moving at 19–26&nbsp;m/s. Two completely unrelated methods, both
-saying the water was far slower than the wave.</p>
+different things, and we had spent a day confusing them. Independently, geopera
+worked out from the size of boulders the flood could carry that the water was
+moving at 19–26&nbsp;m/s. Two unrelated methods, both saying the water was far
+slower than the wave — though note that our 30 sits just <em>above</em> their
+range rather than inside it.</p>
+<p>And the speed at this junction is the number we reproduce worst of anything
+on this page. There are now three measurements of it and they do not agree: the
+mud lines say the front was doing 54&nbsp;m/s, geopera's superelevation work
+says 45–52, our routing model fits 31, and the first peer-reviewed study of the
+event — a frame-by-frame analysis of the video by the Chinese Academy of
+Sciences, published 1 September — measures the surface moving at just
+<strong>19&nbsp;m/s</strong>. Some of that spread is real physics, because a
+descent speed, a splash-line speed and a post-turn speed are three different
+quantities at a junction like this one. Some of it is us being wrong. We have
+not yet re-run the size envelope against the 19, and if that is the right
+number, the collapse-size answer below moves.</p>
 
 <h2>How big was the collapse, really?</h2>
 <p>This is the number everyone disagrees about, and the disagreement is
@@ -360,12 +495,20 @@ the kind of deposit a satellite can measure.<br><br>
 One release can then be dense enough to run fast <em>and</em> clean enough not
 to bury the valley. With that single change, the previously impossible
 combination becomes possible.</div>
-<p>And here is the part that made us trust it: geopera reached the same
-conclusion the same week, by a completely different route. They fitted their
-own model to their satellite measurements using machine-learning optimisation,
-and it pulled their sediment settling rate down by a factor of three, telling
-them the material "behaves finer than assumed, remaining in suspension
-longer". Two groups, two methods, one answer.</p>
+<p>And here is the part that made us trust it. <a href="https://geopera.com/blog">geopera</a>
+reached the same conclusion the same week by a completely different route:
+fitting their own model to their satellite measurements with machine-learning
+optimisation, which pulled their sediment settling rate down by a factor of
+three and told them the material "behaves finer than assumed, remaining in
+suspension longer". Two methods, one answer — but be clear about how much
+weight that carries. geopera is not an institution: it is Geopera Pty Ltd, and
+the analysis is by its founder, <strong>Darcy Weedman</strong>, published on a
+company blog and not peer-reviewed, exactly like this one. Two unreviewed
+analyses agreeing is real evidence and it is not the same as replication. Their
+two posts also give different border arrival times, 17 minutes in one and 23 in
+another, which is worth knowing when we lean on them elsewhere. Their satellite
+work is better than ours and we lean on it a lot; we would rather name the
+weight than borrow it.</p>
 
 <h2>A river is a kind of electrical circuit</h2>
 <p>One more idea from the technical work, because it explains something
@@ -395,7 +538,14 @@ at first, in a useful way, and chasing the failure taught us the missing
 physics: how wet a moving mass is controls how much it grinds against itself,
 and heat takes minutes to soak into ice before it melts. With those pieces
 added, one set of equations explains both events. <strong>That test
-stands.</strong></p>
+stands</strong> — but as a partial pass, not a clean one. The model now
+delivers the front to Tapovan in 36.3 minutes against an observed 34–37, which
+is the headline number; inside the same run it crosses the Raini basin in 13
+minutes against the roughly 27 an independent analysis published for that
+reach. When we fixed a bug in the arrival calculation, the arrival got better
+and the basin got worse. Both halves are in the
+<a href="report.html">technical report</a>, because reporting only the half
+that worked is how a stress test stops being one.</p>
 <p>A second test, against the 2012 Seti River flood in Nepal, we reported as a
 clean pass. <strong>We have withdrawn it.</strong> The river channel that test
 ran on was built by a routine that fills gaps in the map data with straight
@@ -420,82 +570,37 @@ run. For the border crossing, only a machine deciding on its own — a
 seismometer wired directly to a siren — would have worked.</p>
 <p>But that is not true of the rest of the river. Betrawati had
 <strong>43 minutes</strong>. Galchhi had over <strong>two hours</strong>.
-Devghat had <strong>seven</strong>. Those are ordinary warning timescales,
-comfortably enough for phone trees, sirens and evacuation — and most of the
-people who died were in that stretch, not the first 22 kilometres.</p>
-<p>The seismic network detected the collapse within minutes. It logged it as
-an earthquake. The instrument worked; the interpretation didn't, and the
-warning went out 38 minutes later. That is a software and institutional
-problem, not a sensor problem, and it is much cheaper to fix than new
-monitoring hardware.</p>
+Devghat had <strong>seven hours</strong>. Those are ordinary warning
+timescales, comfortably enough for phone trees, sirens and evacuation, and the
+towns and hydropower sites along that stretch held far more people than the
+first 22 kilometres did. Where the dead actually were is not something we can
+say from a model, and the district-by-district breakdown was not published at
+the time of writing; the point here is about the time available, not about
+apportioning a toll.</p>
+<p>The seismic network detected the collapse within minutes. It was logged as
+an earthquake, and the SMS warning went out 38 minutes later. It is worth being
+careful about what that does and does not mean. Automatically classifying a
+landslide seismic signature in real time and routing it to a downstream flood
+warning is something the research literature says is feasible — GFZ's Niels
+Hovius has put the achievable delay at minutes — but it is not, as far as we
+can find, running operationally in any national warning system, and the signal
+looks like a small earthquake because that is very nearly what it is. Nepal's
+forecasters were also losing their instruments while it happened: four gauges
+on this river were destroyed by the flood, two of them inside the first hour.
+So this is a gap in how these systems are designed generally rather than
+something that went wrong in one control room, and it is a much cheaper gap to
+close than new monitoring hardware — the sensors it would need are already in
+the ground.</p>
 <p>An independent audit by geopera of whether this collapse could have been
 <em>predicted</em> came back null on all four satellite channels: under two
 metres of creep in a hundred days, steady, with no acceleration in the final
 48 hours; ordinary glacier thinning; and a warm summer nearly identical to the
 two before it that produced no collapse. You cannot watch every peak. But you
-do not have to predict the collapse to save the people two hours downstream —
-you only have to notice it and route it. Their phrase for it is exact:
-<em>"Those hours existed physically. They were lost institutionally."</em></p>
-
-<h2>How this was made</h2>
-<p>This analysis was done by one person in the evenings, working with an AI
-assistant, over ten days. That is unusual enough that it should be on the page
-rather than in a footnote — partly so you can judge it, and partly because the
-division of labour turned out to be the interesting part.</p>
-<div class="honesty"><span class="lbl">The method, plainly</span>
-<p><strong>Who and what.</strong> Dave Hume, an engineer in New Zealand,
-working with <strong>Claude Opus 5</strong> (Anthropic) running in
-<em>Claude Code</em> — a terminal tool where the model can write and run
-programs, read and edit files, search the web and publish pages, rather than
-just answer questions. Every model run, every satellite download, every chart
-on this page was produced that way.</p>
-<p><strong>How the work actually split.</strong> The AI wrote the physics code,
-ran the simulations, fetched and processed the satellite imagery, did the
-literature searches and drafted the prose. The human set the direction, brought
-the original hypothesis, and — this is the part that matters —
-<strong>did most of the catching</strong>.</p>
-<p><strong>Five of the errors corrected this week were found because the human
-pushed back</strong>, not because the model checked itself:</p>
-<ul>
-<li>"I don't follow the briefly-impounded logic" — it was wrong; damming that
-river for the volume claimed would have taken 37 hours, not minutes.</li>
-<li>"Is there an energy mismatch?" — there wasn't, but chasing it found a real
-soft spot in how the model ties speed to size.</li>
-<li>"Won't that depend on the angle of the side valleys?" — it does, and the
-run-up formula had been stated too loosely.</li>
-<li>"What do they say about the 10-minute difference?" — they said nothing,
-and going to find out uncovered the timestamp that saved the finding.</li>
-<li>"Rerun it with the relaxed limit" — which exposed three numbers we had
-been quoting as artefacts of a constraint that was too strict.</li>
-</ul>
-<p>The human also made two measurements the model could not: reading the mud
-lines off the satellite terrain, and spotting from a flood animation that
-another group's model was missing the flow that went <em>backwards</em> up the
-Chinese valley.</p>
-<p><strong>What the AI was good for.</strong> Speed of checking. A hypothesis
-could be tested in minutes rather than an evening, which meant bad ideas were
-killed quickly instead of being defended. The satellite work — finding the
-scenes, compositing five cloudy passes into one usable image, measuring channel
-widening — took an hour rather than a week. And it never minded being told it
-was wrong, which is the trait this particular job most needed.</p>
-<p><strong>What it was bad at.</strong> Confident errors in its own fresh work.
-Two bugs on the last day were entirely self-inflicted: sediment being counted
-twice in the ledger, and a chart whose bars were drawn to the wrong axis. Both
-were in things written minutes earlier and believed. Neither would have been
-caught by asking the model whether it was sure.</p>
-<p><strong>Rules we worked under.</strong> The project has written rules, kept
-in the repository since day one: state conclusions as ranges over disputed
-inputs rather than single numbers; never tune a parameter to fit the very
-observation you are scoring against, and if you must, declare it and hold
-other measurements back as a check; report failures with their diagnostic
-shape rather than hiding them; credit the researchers who got there first —
-the contribution here is arithmetic, not correction. Where those rules were
-broken, it is noted above.</p>
-<p><strong>Checkable.</strong> Every number here comes from code in a public
-repository that runs on open data in seconds. The full development history,
-including every retraction and the reasoning behind it, is in the commit log.
-Nothing rests on trusting either of us.</p>
-</div>
+do not have to predict the collapse to reach the people two hours downstream —
+you only have to notice it and route it. Their phrase for it is exact, and we
+quote it as a statement about system design rather than about anyone's conduct
+on the day: <em>"Those hours existed physically. They were lost
+institutionally."</em></p>
 
 <h2>What we're not sure of</h2>
 <div class="honesty"><span class="lbl">The honesty box</span>
@@ -506,6 +611,16 @@ minutes); reading the 70-metre mud lines as flow depth; then over-correcting
 and reading them as pure run-up; and a rule-of-thumb for wave volume that
 assumed the wave travelled as a rigid block, which our own earlier work had
 already disproved.</p>
+<p><strong>Corrected on 5 September, after reading these pages cold:</strong>
+the melt ceiling was stated as sitting "far below" the official 20 million
+cubic metres while the chart on this page showed 15 against 20 — carrying our
+own collapse-size envelope into the energy budget, which should have happened
+the day that envelope existed, puts it at 1.1–2.5 and makes the claim true;
+a bar on that chart labelled "river already lying in the channel, 47" was
+actually the whole wave at Devghat, and the standing channel water is 22.4;
+and the border-clock resolution was written with more confidence than its
+sources carry, which is now set out above rather than left for you to
+discover.</p>
 <p><strong>The size of the collapse is genuinely unknown.</strong> Published
 estimates span a factor of four hundred. Our envelope is much narrower, but it
 comes from requiring consistency across several measurements rather than from
@@ -521,19 +636,62 @@ check. They improved sharply, which is the evidence that the fix is physics
 rather than curve-fitting.</p>
 <p><strong>We ran one last test and it half failed.</strong> Two downstream
 measurements were deliberately kept out of the fitting so they could act as an
-honest check. The flood <em>volume</em> arriving at Devghat came out right for
-every surviving version — the best of them within a per cent of the observed
-figure. But the <em>height</em> the river rose at Galchhi came out at about
-3.6 metres against roughly 9 observed. The model routes the right amount of
-water and then converts it into the wrong height, which points at our estimate
-of the river's shape in its lower reaches rather than at the flood physics.
-Below the halfway point we have no measured cross-sections, only a rule of
-thumb. We are publishing that failure rather than quietly dropping the test.</p>
+honest check. The <em>peak discharge</em> at Devghat met its pass criterion —
+within a factor of two — for every surviving version, but all 26 of them come
+out <em>below</em> the observation (1,752–2,889&nbsp;m³/s against about 2,900),
+so what that test really says is "not contradicted", not "reproduced". The
+<em>height</em> the river rose at Galchhi came out at about 3.6 metres against
+roughly 9 observed. The model routes about the right amount of water and then
+converts it into the wrong height, which points at our estimate of the river's
+shape in its lower reaches rather than at the flood physics. Below the halfway
+point we have no measured cross-sections, only a rule of thumb. We are
+publishing that failure rather than quietly dropping the test.</p>
+<p><strong>The border speed is the number we fit worst</strong>, and it is one
+of the inputs the collapse-size envelope was scored against. Four estimates
+exist — 54, 45–52, our 31, and the peer-reviewed 19 — and we scored against the
+45–52. That is a real open exposure, not a rounding error.</p>
 <p><strong>This is fast, independent, AI-assisted analysis published days
-after a disaster. It has not been peer-reviewed.</strong> Where our numbers
-disagree with an agency's, both are shown. Where other groups got somewhere
-first or got it better, we say so — geopera's satellite work is better than
-ours, and their sediment result arrived independently and confirms ours.</p>
+after a disaster. It has not been peer-reviewed, and no Nepali scientist has
+read it.</strong> Where our numbers disagree with an agency's, both are shown.
+Where others got somewhere first or got it better, we say so — geopera's
+satellite work is better than ours, and their sediment result arrived
+independently and agrees with ours, though both analyses are unreviewed.</p>
+</div>
+
+<h2>How this was made</h2>
+<div class="honesty"><span class="lbl">The method, plainly</span>
+<p>Dave Hume, an engineer in New Zealand, working in the evenings over ten days
+with <strong>Claude Opus 5</strong> (Anthropic) running in <em>Claude Code</em>,
+a terminal tool where the model can write and run programs, read files, search
+the web and publish pages. The AI wrote the physics code, ran the simulations,
+processed the satellite imagery and drafted the prose; the human set the
+direction, brought the original hypothesis and did most of the catching. It is
+on the page rather than in a footnote so that you can discount it if you think
+that changes what the work is worth.</p>
+<p><strong>What it was bad at</strong>, since that is the part worth knowing:
+confident errors in its own fresh work. Sediment counted twice in the ledger; a
+chart whose bars were drawn to the wrong axis; a bar on this page's own melt
+chart mislabelled for three days. All were in things written minutes earlier and
+believed, and none would have been caught by asking the model whether it was
+sure. Every substantive correction on this site was found by a human pushing
+back or by re-reading the pages cold, never by the model auditing itself.</p>
+<p><strong>Rules we worked under</strong>, kept in the repository since day one:
+state conclusions as ranges over disputed inputs rather than single numbers;
+never tune a parameter to fit the very observation you are scoring against, and
+if you must, declare it and hold other measurements back as a check; report
+failures with their diagnostic shape rather than hiding them; credit the
+researchers who got there first — the contribution here is arithmetic, not
+correction. Where those rules were broken, the breach is on the page. A longer
+account of the division of labour, including the specific errors and who caught
+them, is in
+<a href="https://github.com/djhume/nepal-flood-2026/blob/main/PLAN.md">PLAN.md</a>
+rather than here.</p>
+<p><strong>Checkable.</strong> Every number on this page comes from code in a
+public repository that runs on open data — seconds for the budgets, minutes for
+the routing, about half an hour for the size envelope. The executed workings are
+<a href="workings.html">here</a>, and the full development history, including
+every retraction and the reasoning behind it, is in the commit log. Nothing
+rests on trusting either of us.</p>
 </div>
 
 <h2>What would help most</h2>
@@ -555,26 +713,27 @@ two directly, with no model involved.</p>
 <h2>The one-paragraph version</h2>
 <div class="callout"><span class="lbl">In short</span>
 A mountainside fell into a monsoon-swollen river. It could not have melted
-enough ice to make the flood — the physics of melting forbids it — so the
-water was the river's own, swept up and delivered at once. The collapse
-reached a border camera 22&nbsp;km away in seven minutes, which only something
-running like slush can do; ice is visible in the footage. Mud lines on a cliff
-where the flow hit head-on give the wave's depth and speed independently, and
-they agree with the clock. The collapse was probably far smaller and far wetter
-than the largest published estimates. Our model, given the ability to scour a
-valley, matched the measured erosion — and then failed a test we designed to
-break it, which told us the flood was carrying two different kinds of sediment,
-not one. For the first 22&nbsp;km no human warning chain could have worked. For
-the next 150 there were hours, and they were lost to a system that logged a
-mountain collapse as an earthquake.</div>
+enough ice to make the flood — at any collapse size the evidence supports, the
+energy of the fall falls short by a factor of eight — so the water was the
+river's own, swept up and delivered at once. The collapse reached a border
+camera 22&nbsp;km away in seven minutes, which dry rock cannot do at any size;
+ice is visible in the footage, though what supplied the mobility is still open.
+Mud lines on a cliff where the flow hit head-on give the wave's depth and speed
+by a route that never touches the clock, and they agree with it. The collapse
+was probably far smaller than the largest published estimates. Our model, given
+the ability to scour a valley, matched the measured erosion — and then failed a
+test we designed to break it, which told us the flood was carrying two different
+kinds of sediment, not one. For the first 22&nbsp;km no human warning chain
+could have worked. For the next 177 there were hours, and no system yet exists
+anywhere that would have turned a seismic signal into a downstream warning
+inside them.</div>
 
 <footer>
 Independent analysis by <strong>Dave Hume</strong>, carried out with Claude
-(Anthropic) as a research assistant. Version 2, 5 September 2026. Findings and
+(Anthropic) as a research assistant. Version 3, 5 September 2026. Findings and
 casualty figures are as reported at that date and will change; retracted
 results are kept visible with their reasons. Code, data and the full evidence
-dossier are in the project repository.
+dossier are in the project repository. This event is also reported as the
+<strong>Bhote Koshi flood</strong> and the Rasuwa flood.
 </footer>
 </div>
-
-</body></html>

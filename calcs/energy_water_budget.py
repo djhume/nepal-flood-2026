@@ -118,3 +118,41 @@ scenario("4. Melt-maximal (200 Mm3, 80% ice, generous heat partition)",
          heat_to_ice_frac=0.50,
          channel_km=100, Q_river=300, v_river=3.0, event_hours=1.5,
          sed_entrain_Mm3=10, sed_porosity=0.3, sed_saturation=0.8)
+
+# ---------------------------------------------------------------------------
+# Scenarios 6-8, added 5 Sept 2026, propagating the ensemble result.
+#
+# WHY. Scenarios 1-5 above were written on 2 September, when the only public
+# numbers for the source volume were the published point claims (Kargel 50-200,
+# Azam/ICIMOD 100-200). calcs/ensemble.py has since put a consistency envelope
+# on the release at 14-34 Mm3 (median 21). The melt ceiling is proportional to
+# the mass that falls, so that envelope has to be carried into the energy
+# budget rather than left in the finding that produced it.
+#
+# These three bracket the claim "frictional melt cannot supply the FFD's
+# ~20 Mm3 of excess water" across the whole disputed range:
+#   6  our envelope, best evidence      -> what we actually think happened
+#   7  our envelope, steel-manned       -> top of envelope, everything maximal
+#   8  the absolute ceiling             -> largest published volume, 80% ice,
+#                                          full drop, heat partition at the TOP
+#                                          of the literature range (0.7)
+# Scenario 8 is the case the melt narrative needs, and it is the honest test of
+# the finding: if melt reaches 20 Mm3 anywhere, it is here.
+
+scenario("6. Envelope best-evidence (21 Mm3 median, 30% ice, 168 km)",
+         V_total_Mm3=21, ice_frac=0.30, drop_total_m=2400,
+         heat_to_ice_frac=0.35,
+         channel_km=168, Q_river=400, v_river=3.0, event_hours=7.0,
+         sed_entrain_Mm3=30, sed_porosity=0.3, sed_saturation=1.0)
+
+scenario("7. Envelope steel-man (34 Mm3 top, 80% ice, full drop, 50% heat)",
+         V_total_Mm3=34, ice_frac=0.80, drop_total_m=4000,
+         heat_to_ice_frac=0.50,
+         channel_km=168, Q_river=400, v_river=3.0, event_hours=7.0,
+         sed_entrain_Mm3=30, sed_porosity=0.3, sed_saturation=1.0)
+
+scenario("8. Absolute ceiling (200 Mm3, 80% ice, 4000 m, heat partition 0.70)",
+         V_total_Mm3=200, ice_frac=0.80, drop_total_m=4000,
+         heat_to_ice_frac=0.70,
+         channel_km=100, Q_river=300, v_river=3.0, event_hours=1.5,
+         sed_entrain_Mm3=10, sed_porosity=0.3, sed_saturation=0.8)
