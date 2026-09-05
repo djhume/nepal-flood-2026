@@ -5,15 +5,19 @@ the flood it sent down the Trishuli River, Nepal. It asks one narrow question �
 **where did the flood water actually come from?** — and follows the answer into
 what it implies for warning people downstream.
 
-**Project home (start here):**
-https://claude.ai/code/artifact/50fbb9c4-1dd2-43f6-a8c1-dbbf80e9d197
+**Read it here → https://djhume.github.io/nepal-flood-2026/**
 
 | Audience | Page |
 |---|---|
-| General reader | [The Water Was Already in the River](https://claude.ai/code/artifact/39288bec-8708-4d94-8366-7a4966692543) |
-| नेपालीमा (AI-translated, unreviewed) | [पानी त नदीमै थियो](https://claude.ai/code/artifact/d2d2daa8-4ea2-4570-b7ec-515fdb7bd239) |
-| Scientist / engineer | [The Trishuli Water Ledger](https://claude.ai/code/artifact/1fd064d2-fdc3-407e-b748-99b0e3cb3eb8) |
-| Reviewer / sceptic | [Model Workings](https://claude.ai/code/artifact/60a02c4d-5fd3-439b-b483-bc42bcd4abcb) |
+| General reader | [The Water Was Already in the River](https://djhume.github.io/nepal-flood-2026/plain.html) |
+| Scientist / engineer | [The Trishuli Water Ledger](https://djhume.github.io/nepal-flood-2026/report.html) |
+| Reviewer / sceptic | [Model Workings](https://djhume.github.io/nepal-flood-2026/workings.html) |
+
+There is **no Nepali translation**. One was drafted and withdrawn: it was
+machine-translated, unreviewed by any Nepali speaker, and this is a subject
+where a mistranslated hazard statement does more harm than no translation at
+all. Anyone who reads Nepali and wants to translate it is welcome to — the
+source is here and the licence permits it.
 
 ## What it found
 

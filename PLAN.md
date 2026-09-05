@@ -92,7 +92,7 @@ scar→Devghat, border at km 22.0), `model/fetch_elevations.py` (499 pts, Mapzen
 0.73; per-source water bookkeeping with pro-rata losses). Results: snowplow scenario
 peak 5,185 m³/s at Devghat vs 5,850 observed (11%), peak timing 445 vs 443 min;
 melt-only fails ×2.4 on peak and delivers 4.2 vs ~20 Mm³ FFD. Distal wave ~74%
-river-derived. Published: https://claude.ai/code/artifact/1fd064d2-fdc3-407e-b748-99b0e3cb3eb8
+river-derived. Published: https://djhume.github.io/nepal-flood-2026/report.html
 Remaining for v2: sensitivity sweep, Galchhi rate-of-rise check, real Galchhi
 hydrograph when obtainable.
 1D control-volume routing along the channel profile (Copernicus GLO-30 DEM longitudinal
@@ -1029,7 +1029,7 @@ blind test or the corrected (retracted) geopera deposition numbers yet.
 
 **Plain-English companion published (3 Sept):** "The Water Was Already in the
 River" (report/plain.html) —
-https://claude.ai/code/artifact/39288bec-8708-4d94-8366-7a4966692543 —
+https://djhume.github.io/nepal-flood-2026/plain.html —
 jargon-free telling of the whole analysis incl. the slush/composition finding
 and the seven-minute/seven-hour warning split; cross-linked both ways with the
 technical report. Keep it current as findings move; consider a Nepali

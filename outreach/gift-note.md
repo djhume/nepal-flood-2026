@@ -37,7 +37,7 @@ doesn't acquire a workload by accident.
 > anything like the rock volume the largest source estimates suggest.
 >
 > Everything is here, including what it gets wrong:
-> https://claude.ai/code/artifact/50fbb9c4-1dd2-43f6-a8c1-dbbf80e9d197
+> https://djhume.github.io/nepal-flood-2026/
 > Code and data: [REPO URL]
 >
 > **This is yours to use however is helpful — modify it, take the ideas,
