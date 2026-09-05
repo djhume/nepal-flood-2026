@@ -7,7 +7,7 @@ src = open(os.path.join(HERE, "report.src.html")).read()
 chart = open(os.path.join(HERE, "chart_data.json")).read()
 assert "</script" not in chart
 src = src.replace("{{CHART_DATA}}", chart)
-workings_url = sys.argv[1] if len(sys.argv) > 1 else ""
+workings_url = sys.argv[1] if len(sys.argv) > 1 else "workings.html"
 if workings_url:
     src = src.replace("{{WORKINGS_URL}}", workings_url)
 assert "{{CHART_DATA}}" not in src

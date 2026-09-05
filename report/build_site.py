@@ -1,40 +1,30 @@
 #!/usr/bin/env python3
 """
-Build a self-contained static site in docs/ for GitHub Pages.
+Build the static site in docs/ for GitHub Pages.
 
-WHY. The four published pages cross-link to each other by their claude.ai
-artifact URLs, which is right for the artifacts but wrong for a website: a
-visitor who lands on the GitHub Pages copy and clicks "Technical report" gets
-bounced off the site. This rewrites those links to relative paths so the site
-stands on its own, and leaves the artifact copies untouched.
+WHY THIS EXISTS. GitHub renders a committed .html file as source code, not as a
+page, and raw.githubusercontent.com serves it as text/plain. GitHub Pages is the
+only way to make these four pages readable straight from the repo. It is also
+crawled and indexed by search engines, which matters here: the whole
+dissemination plan for this work is "be findable without running a campaign".
 
-WHY BOTHER AT ALL. GitHub renders .html as source code, not as a page, and
-raw.githubusercontent.com serves it as text/plain. GitHub Pages is the only way
-to make these readable from the repo — and unlike a Claude artifact, a Pages
-site is crawled and indexed by search engines. For work whose whole
-dissemination plan is "be findable without running a campaign", that indexing
-is the point.
+The four pages are plain, self-contained static HTML — no build-time templating
+beyond report.html (see build.py), no runtime beyond d3 from a CDN and fonts.
+They cross-link to each other by relative path, so this script is a copy with a
+banner added. It used to rewrite claude.ai artifact URLs into relative paths,
+back when the pages were published as Claude artifacts; the artifacts have been
+retired and GitHub Pages is now the only published home.
 
-Pages is free on public repos; on private repos it needs a paid plan. So the
-usual order is: make the repo public, then enable Pages on the docs/ folder.
-
-    python report/build_site.py
-    # then: Settings -> Pages -> Source: main, folder /docs
-    # -> https://djhume.github.io/nepal-flood-2026/
+    python report/build.py          # report.src.html -> report.html
+    python report/build_site.py     # report/*.html   -> docs/
 """
 import os, re, shutil
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.join(HERE, "..")
-DOCS = os.path.join(ROOT, "docs")
+DOCS = os.path.join(HERE, "..", "docs")
 
-# artifact URL -> the file it becomes on the static site
-PAGES = {
-    "50fbb9c4-1dd2-43f6-a8c1-dbbf80e9d197": ("hub.html", "index.html"),
-    "39288bec-8708-4d94-8366-7a4966692543": ("plain.html", "plain.html"),
-    "1fd064d2-fdc3-407e-b748-99b0e3cb3eb8": ("report.html", "report.html"),
-    "60a02c4d-5fd3-439b-b483-bc42bcd4abcb": ("workings.html", "workings.html"),
-}
+PAGES = ["index.html", "plain.html", "report.html", "workings.html"]
+
 BANNER = """<div style="max-width:780px;margin:0 auto;padding:10px 22px 0;
  font:12px/1.5 'IBM Plex Mono',monospace;color:#54646f">
  Static copy on GitHub Pages ·
@@ -47,35 +37,40 @@ def main():
         shutil.rmtree(DOCS)
     os.makedirs(DOCS)
     built = []
-    for uid, (src, dst) in PAGES.items():
-        p = os.path.join(HERE, src)
+    for name in PAGES:
+        p = os.path.join(HERE, name)
         if not os.path.exists(p):
-            print(f"  SKIP {src} (not built — run report/build.py first?)")
+            print(f"  SKIP {name} (not built — run report/build.py first?)")
             continue
         html = open(p, encoding="utf-8").read()
-        # point every cross-link at its neighbour on this site
-        for u2, (_, d2) in PAGES.items():
-            html = html.replace(f"https://claude.ai/code/artifact/{u2}", d2)
         # a one-line banner back to the repo, after the nav if there is one
         if "</nav>" in html:
             html = html.replace("</nav>", "</nav>\n" + BANNER, 1)
         else:
             html = re.sub(r"(<div class=\"wrap\"[^>]*>)", BANNER + r"\n\1",
                           html, count=1)
-        open(os.path.join(DOCS, dst), "w", encoding="utf-8").write(html)
-        built.append((dst, len(html) // 1024))
+        open(os.path.join(DOCS, name), "w", encoding="utf-8").write(html)
+        built.append((name, len(html) // 1024))
     # GitHub Pages otherwise runs Jekyll, which silently eats files and folders
     # beginning with an underscore
     open(os.path.join(DOCS, ".nojekyll"), "w").write("")
     print(f"docs/ built — {len(built)} pages")
     for d, kb in built:
-        print(f"  {d:16s} {kb:4d} KB")
-    leftover = 0
+        print(f"  {d:16s} {kb:5d} KB")
+
+    # every internal link must resolve to a file we actually shipped
+    bad = 0
     for d, _ in built:
-        leftover += open(os.path.join(DOCS, d), encoding="utf-8").read().count(
-            "claude.ai/code/artifact")
-    print(f"remaining claude.ai artifact links: {leftover} "
-          f"({'self-contained' if leftover == 0 else 'CHECK THESE'})")
+        html = open(os.path.join(DOCS, d), encoding="utf-8").read()
+        if "claude.ai/code/artifact" in html:
+            print(f"  ! {d}: still contains a claude.ai artifact link")
+            bad += 1
+        for href in set(re.findall(r'href="([^"#:?]+\.html)[^"]*"', html)):
+            if not os.path.exists(os.path.join(DOCS, href)):
+                print(f"  ! {d}: dead internal link -> {href}")
+                bad += 1
+    print("links: all internal links resolve" if not bad
+          else f"links: {bad} PROBLEM(S) — fix before publishing")
 
 
 if __name__ == "__main__":
