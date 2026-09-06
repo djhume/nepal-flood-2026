@@ -122,6 +122,25 @@ K_JUNC_KM = {22.0: 3.0, 37.6: 1.5, 160.0: 1.0, 185.0: 1.0}
 
 EXTRA_STATIONS = {}   # {name: km} — extra record points, e.g. a trimline station
 
+
+def set_widths(new_wn):
+    """Replace the channel widths IN PLACE (module array and the Reach's copy),
+    so simulate() and every caller see the same geometry. Ensemble v6 uses this
+    to put the trimline map's measured sections in place of the 4.8*sqrt(Q)
+    rule below km 34 (PLAN §10). Default runs never call it."""
+    new_wn = np.asarray(new_wn, float)
+    wn[:] = new_wn
+    R.wn[:] = new_wn
+    R.wf[:] = 0.5 * (new_wn[:-1] + new_wn[1:])
+
+
+def set_kyirong_pond(S=0.017, h_max=60.0, width=180.0):
+    """Model the Kyirong arm as a backwater WEDGE at the level the trimline map
+    measured (lee line ~1,875 m = 60 m head; bed grade ~0.017; 180 m wide) —
+    dossier §19. Pair with core.CAP_DH lifted, or the weir throttles it."""
+    R.side[0] = ("Kyirong upstream arm", 22.0, 1.5e6, float(width), 1.0,
+                 float(S), float(h_max))
+
 # ------------------------------------------------------- observations -------
 FRONT_OBS = [(22.0, 7.68, "border CCTV 08:44:50"), (37.6, 13, "Syabrubesi 08:50"),
              (68.4, 43, "Betrawati rising 09:20"),
@@ -168,6 +187,8 @@ def simulate(V_rel=V_REL, w0=W0, w_sat=W_SAT, mu_wet=MU_WET, mu_dry=None,
     st["avail"][:] = R.h_erode      # settled_state is cached; re-arm the
                                     # erodible layer so H_ERODE can be swept
     h0 = st["h"].copy()
+    hmax = np.zeros(N)              # peak depth above the settled river, per node (v6)
+    hs_max = {}                     # peak fill of each side branch, m (v6)
     rel = x_km <= X_REL
     wsum = wn[rel].sum() * DX
     stations = {"Betrawati": 68.4, "Galchhi": 107.6, "Malekhu": 117.0,
@@ -199,6 +220,10 @@ def simulate(V_rel=V_REL, w0=W0, w_sat=W_SAT, mu_wet=MU_WET, mu_dry=None,
             st["hf"][rel] += dh * (1 - w0) * f_fine_rel
         st = step(st, R, dt, mu_dry, w_sat, mu_wet, side_valleys,
                   deposit=True, u_dep=u_dep, t_dep=t_dep, entrain=entrain)
+        np.maximum(hmax, st["h"] - h0, out=hmax)
+        for _nm, _v in st["hs"].items():         # peak fill of each side branch
+            if _v > hs_max.get(_nm, 0.0):
+                hs_max[_nm] = float(_v)
         if it % save == 0:
             h, hw, hwr, hr, Qi = (st["h"], st["hw"], st["hwr"], st["hr"],
                                   st["Qi"])
@@ -231,7 +256,7 @@ def simulate(V_rel=V_REL, w0=W0, w_sat=W_SAT, mu_wet=MU_WET, mu_dry=None,
     front = np.maximum.accumulate(out["front"])
     out.update(arrival=arrival_fn(front, out["t"]), front=front,
                umax=st["umax"], bed=st["bed"], ero=st["ero"], dep=st["dep"],
-               mu_dry=mu_dry, h0=h0)
+               mu_dry=mu_dry, h0=h0, hmax=hmax, hs_max=hs_max)
     return out
 
 def clock(minutes):

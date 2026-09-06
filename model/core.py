@@ -201,6 +201,10 @@ class Reach:
 
 
 CD_WEIR = 1.6
+CAP_DH = 8.0            # m cap on the driving head of the side-branch weir. 8 m
+                        # throttles the Kyirong arm to ~6,500 m3/s at 180 m width,
+                        # which is why no run ever filled it past ~48 m (dossier
+                        # §17); ensemble v6 lifts it (PLAN §10). Default unchanged.
 H_SIDE_MAX = 8.0        # m cap on side-branch fill (Sentinel-2 stage-volume
                         # curves would replace this)
 H_FLOOR = 0.05          # m — numerical wet-film floor on depth
@@ -316,7 +320,7 @@ def step(st, R, dt, mu_dry, w_sat=W_SAT, mu_wet=MU_WET, side_valleys=True,
             i = R.side_node[nm]
             head_main = eta[i] - (z[i] + sill)
             dh = min(head_main, h_max) - hs[nm]
-            Qs = CD_WEIR * ww * np.sign(dh) * min(abs(dh), 8.0) ** 1.5
+            Qs = CD_WEIR * ww * np.sign(dh) * min(abs(dh), CAP_DH) ** 1.5
             area_eff = (max(ww * hs[nm] / wedge_S, ww * 20.0)
                         if wedge_S else area)
             Qs = np.clip(Qs, -hs[nm] * area_eff / dt,
