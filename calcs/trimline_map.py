@@ -436,10 +436,19 @@ def stage_pelican(stations, refetch=False):
     d = os.path.join(CACHE, "pelican"); os.makedirs(d, exist_ok=True)
     res = LAYERS["pelican0827"]["res"]
     offs = np.arange(-HALF_SEC, HALF_SEC + res / 2, res)
+    all_stations = stations
     for date in PELICAN:
         p = os.path.join(d, f"sections_{date}.npz")
+        old = None
+        stations = all_stations
         if os.path.exists(p) and not refetch:
-            print("pelican cached:", p); continue
+            # incremental: sample only stations not already in the cache
+            old = np.load(p)
+            have = {(str(a), round(float(k), 3)) for a, k in zip(old["arm"], old["km"])}
+            stations = [s for s in all_stations if (s["arm"], round(s["km"], 3)) not in have]
+            if not stations:
+                print("pelican cached:", p); continue
+            print(f"pelican {date}: {len(stations)} new stations to add to the cache")
         t0 = time.time()
         N = len(stations)
         ndvi = np.full((N, offs.size), np.nan, "float32")
@@ -502,9 +511,11 @@ def stage_pelican(stations, refetch=False):
             for _, s in srcs:
                 s.close()
             env.__exit__(None, None, None)
-        np.savez_compressed(p, ndvi=ndvi, state=state, offs=offs,
-                            km=np.array([s["km"] for s in stations]),
-                            arm=np.array([s["arm"] for s in stations]))
+        km_arr = np.array([s["km"] for s in stations]); arm_arr = np.array([s["arm"] for s in stations])
+        if old is not None:
+            ndvi = np.concatenate([old["ndvi"], ndvi]); state = np.concatenate([old["state"], state])
+            km_arr = np.concatenate([old["km"], km_arr]); arm_arr = np.concatenate([old["arm"], arm_arr])
+        np.savez_compressed(p, ndvi=ndvi, state=state, offs=offs, km=km_arr, arm=arm_arr)
         print(f"pelican {date}: {100*np.mean(state==1):.1f}% of section samples valid "
               f"in {time.time()-t0:.0f} s -> {p}")
 
@@ -682,6 +693,21 @@ def walk(bare, valid, offs, side, gap_px, start_search_m=150.0):
                 d_last=abs(offs[last_bare]))
 
 
+def s2chg_mask(post, pre, offs, gap_px):
+    """Change-based stripped mask on a section: bare after AND (not bare
+    before OR inside the pre-event bare channel run from the centreline)."""
+    valid = np.isfinite(post) & np.isfinite(pre)
+    barepre = np.isfinite(pre) & (pre < LAYERS["s2"]["bare"])
+    chan = np.zeros_like(valid)
+    for side_ in (1, -1):
+        wp = walk(barepre, np.isfinite(pre), offs, side_, gap_px)
+        if wp["status"] in ("ok", "open", "truncated"):
+            dmax = wp["d_trim"] if wp["status"] == "ok" else wp.get("d_last", 0.0)
+            chan |= (np.sign(offs) == side_) & (np.abs(offs) <= (dmax if np.isfinite(dmax) else 0.0))
+    chan |= offs == 0
+    return valid & (post < LAYERS["s2"]["bare"]) & (~barepre | chan)
+
+
 # --------------------------------------------------------------------------
 # stage map
 # --------------------------------------------------------------------------
@@ -689,6 +715,11 @@ def stage_map(stations, dem, layers, junction_only=False, tag=""):
     from rasterio.warp import transform as rtransform
     sidex, sidey = side_streams()
     rows = []
+    try:
+        s2pre = S2Layer()          # the 12 Aug pre image, for the Pelican change test
+    except FileNotFoundError:
+        s2pre = None
+        print("no Sentinel-2 cache: Pelican walks are NOT change-based (they will climb bare rock)")
     # bed profile first (needs the whole path for the envelope)
     dem_offs = np.arange(-HALF_SEC, HALF_SEC + 5, 10.0)
     Z = []
@@ -745,6 +776,7 @@ def stage_map(stations, dem, layers, junction_only=False, tag=""):
                 side_flag[1 if r_ > 0 else -1] = True
         for lname, layer in layers.items():
             cfg = LAYERS[lname]
+            cap_flag = {}
             if lname in ("s2", "s2chg"):
                 offs = np.arange(-HALF_SEC, HALF_SEC + 5, 10.0)
                 xs = s["x"] + offs * s["nx"]; ys = s["y"] + offs * s["ny"]
@@ -755,14 +787,7 @@ def stage_map(stations, dem, layers, junction_only=False, tag=""):
                 barepre = np.isfinite(pre) & (pre < cfg["bare"])
                 if lname == "s2chg":
                     valid = valid & np.isfinite(pre)
-                    chan = np.zeros_like(bare)
-                    for side_ in (1, -1):        # the pre-event bare channel run
-                        wp = walk(barepre, np.isfinite(pre), offs, side_, cfg["gap"])
-                        if wp["status"] in ("ok", "open", "truncated"):
-                            dmax = wp["d_trim"] if wp["status"] == "ok" else wp.get("d_last", 0.0)
-                            chan |= (np.sign(offs) == side_) & (np.abs(offs) <= (dmax if np.isfinite(dmax) else 0.0))
-                    chan |= offs == 0
-                    bare = valid & (post < cfg["bare"]) & (~barepre | chan)
+                    bare = s2chg_mask(post, pre, offs, cfg["gap"])
             else:
                 sec = layer.section(s)
                 if sec is None:
@@ -772,6 +797,36 @@ def stage_map(stations, dem, layers, junction_only=False, tag=""):
                 bare = valid & (nd < cfg["bare"])
                 vegpre = np.zeros_like(valid); barepre = np.zeros_like(valid)
                 xs = s["x"] + offs * s["nx"]; ys = s["y"] + offs * s["ny"]
+                cap_flag = {1: "", -1: ""}
+                if s2pre is not None:
+                    # NDVI alone walks straight up bare rock above the mud
+                    # line (first junction run: 2,040-2,190 m), and a 10 m
+                    # "not bare before" test does not stop it on sparsely
+                    # vegetated rock walls (second run). So the Pelican walk
+                    # only REFINES the 10 m change-based boundary: it may end
+                    # anywhere inside d_s2chg + 15 m; if it would go further it
+                    # is stopped there and flagged capped-by-s2chg. Where the
+                    # S2 walk on that side is cloud-truncated the Pelican walk
+                    # is uncapped and flagged.
+                    post10, pre = s2pre.sample(xs, ys)
+                    vegpre = np.isfinite(pre) & (pre >= VEG_PRE)
+                    barepre = np.isfinite(pre) & (pre < LAYERS["s2"]["bare"])
+                    gap10 = int(round(10.0 / cfg["res"]))
+                    chg = s2chg_mask(post10, pre, offs, gap10)
+                    for side_ in (1, -1):
+                        wc = walk(chg, np.isfinite(post10) & np.isfinite(pre), offs, side_, gap10)
+                        this = np.sign(offs) == side_
+                        if wc["status"] == "ok":
+                            beyond = this & (np.abs(offs) > wc["d_trim"] + 15.0)
+                            if np.any(bare[beyond] & valid[beyond]):
+                                # would the Pelican run have continued past the cap?
+                                wtest = walk(bare, valid, offs, side_, cfg["gap"])
+                                if wtest["status"] != "ok" or wtest["d_trim"] > wc["d_trim"] + 15.0:
+                                    cap_flag[side_] = "capped-by-s2chg"
+                            bare = bare & ~beyond
+                            valid = valid | beyond      # the cap is a boundary, not cloud
+                        else:
+                            cap_flag[side_] = f"uncapped-s2-{wc['status']}"
             if not valid.any():
                 continue
             rec = dict(base); rec["layer"] = lname
@@ -785,6 +840,8 @@ def stage_map(stations, dem, layers, junction_only=False, tag=""):
                 fl = list(flags_both)
                 if side_flag[side]:
                     fl.append("side-valley")
+                if lname.startswith("pelican") and cap_flag.get(side):
+                    fl.append(cap_flag[side])
                 if w["status"] == "ok":
                     j = w["j_trim"]
                     xt, yt = xs[j], ys[j]
@@ -797,7 +854,7 @@ def stage_map(stations, dem, layers, junction_only=False, tag=""):
                     rec[f"sig_{lab}"] = math.hypot(sig_place, sig_dem)
                     rec[f"dem_src_{lab}"] = int(srcc[0])
                     rec[f"stage_{lab}"] = float(z[0]) - bed_loc[i]
-                    if lname in ("s2", "s2chg"):
+                    if lname in ("s2", "s2chg") or s2pre is not None:
                         run = (np.abs(offs) <= w["d_trim"]) & (np.sign(offs) == side) | (offs == 0)
                         rec[f"changed_{lab}"] = int(np.any(vegpre[run]))
                         # was the trimline pixel itself bare BEFORE the event?
@@ -822,8 +879,8 @@ def stage_map(stations, dem, layers, junction_only=False, tag=""):
             st_ = [rec[f"stage_{lab}"] for lab in ("L", "R") if clean(lab)]
             rec["stage"] = float(np.mean(st_)) if st_ else np.nan
             rec["stage_n"] = len(st_)
-            rec["v_super"] = rec["v_lo"] = rec["v_hi"] = rec["dh"] = rec["Q"] = rec["A"] = np.nan
-            rec["outer"] = ""
+            rec["v_super"] = rec["v_lo"] = rec["v_hi"] = rec["dh"] = rec["Q"] = rec["A"] = rec["Fr"] = np.nan
+            rec["outer"] = ""; rec["v_quality"] = ""
             if okL and okR and np.isfinite(s["Rc"]) and s["Rc"] < RC_MAX and s["turn_sign"] != 0 \
                     and "sharp-bend" not in flags_both and "junction" not in flags_both:
                 outer = "R" if s["turn_sign"] > 0 else "L"
@@ -837,10 +894,18 @@ def stage_map(stations, dem, layers, junction_only=False, tag=""):
                     rec["v_lo"] = math.sqrt(G * s["Rc"] * 0.7 * max(dh - sig, 0.5) / (rec["width"] * 1.3))
                     rec["v_hi"] = math.sqrt(G * s["Rc"] * 1.3 * (dh + sig) / (rec["width"] * 0.7))
                     eta = 0.5 * (rec["z_L"] + rec["z_R"])
-                    A, W = wet_area(Z[i], dem_offs, eta)
-                    rec["A"] = A; rec["Q"] = A * v * SURFACE_TO_MEAN
                     hm = eta - bed_loc[i]
                     rec["Fr"] = v / math.sqrt(G * hm) if hm > 0 else np.nan
+                    # strong = the pair means something: dh > 2 sigma, a bend at
+                    # least twice as wide as the channel, Froude in the range
+                    # the forced-vortex relation is validated for (0.5-2.5,
+                    # Aberg et al. 2024 via geopera's superelevation.py)
+                    strong = (dh > 2 * sig and s["Rc"] >= 2 * rec["width"]
+                              and np.isfinite(rec["Fr"]) and 0.5 <= rec["Fr"] <= 2.5)
+                    rec["v_quality"] = "strong" if strong else "weak"
+                    if strong:
+                        A, W = wet_area(Z[i], dem_offs, eta)
+                        rec["A"] = A; rec["Q"] = A * v * SURFACE_TO_MEAN
             rows.append(rec)
     return rows, (dem_offs, Z)
 
@@ -915,7 +980,7 @@ COLS = ["arm", "km", "layer", "x", "y", "bed_raw", "bed", "bed_env",
         "status_L", "d_L", "lon_L", "lat_L", "z_L", "slope_L", "sig_L", "stage_L", "flags_L",
         "status_R", "d_R", "lon_R", "lat_R", "z_R", "slope_R", "sig_R", "stage_R", "flags_R",
         "stage", "stage_n", "width", "Rc", "turn_deg", "outer", "dh", "dh_sig",
-        "v_super", "v_lo", "v_hi", "A", "Q", "Fr", "valid_frac",
+        "v_super", "v_lo", "v_hi", "v_quality", "A", "Q", "Fr", "valid_frac",
         "changed_L", "changed_R", "d_pre_L", "d_pre_R", "d_start_L", "d_start_R",
         "d_last_L", "d_last_R", "prebare_L", "prebare_R", "dem_src_L", "dem_src_R", "bridged"]
 
@@ -967,6 +1032,16 @@ def summarise(rows, geo, geov, dem_name, junction_only):
     P = []
     P.append(f"DEM: {dem_name}. Stations every {STEP_M:.0f} m; sections +/-{HALF_SEC:.0f} m.")
     P.append(coverage_table(rows))
+    P.append("\nStage above bed by reach, clean stations only (both banks ok, no flags), median [10-90 %] (n):")
+    P.append("| reach | " + " | ".join(LAYERS) + " |")
+    P.append("|---|" + "---|" * len(LAYERS))
+    for name, a, b in REACHES:
+        cells = []
+        for lname in LAYERS:
+            st = np.array([r["stage"] for r in rows if r["arm"] == "main" and a <= r["km"] < b
+                           and r["layer"] == lname and np.isfinite(r["stage"]) and r["stage_n"] == 2])
+            cells.append(f"{np.median(st):.0f} [{np.percentile(st, 10):.0f}-{np.percentile(st, 90):.0f}] ({st.size})" if st.size else "-")
+        P.append(f"| {name} {a:.0f}-{b:.0f} | " + " | ".join(cells) + " |")
     # junction check
     P.append("\n### Border junction km 21.5-22.8 (Dave: bed 1,815; lee 1,875; impact cliff 1,920-1,930)")
     P.append("| km | layer | bed(raw/loc) | L: z, d, status, flags | R: z, d, status, flags |")
@@ -982,6 +1057,43 @@ def summarise(rows, geo, geov, dem_name, junction_only):
                             (f" [{r[f'flags_{lab}']}]" if r[f"flags_{lab}"] else "")
             P.append(f"| {r['arm'][:3]} {r['km']:.1f} | {r['layer']} | {r['bed_raw']:.0f}/{r['bed']:.0f} | {f('L')} | {f('R')} |")
     # geopera comparison, border reach
+    # Kyirong arm: trimline level per bank every 0.5 km (dossier 17 wants
+    # "level = pond, sloping = tongue")
+    arm = [r for r in rows if r["arm"] == "kyirong"]
+    if arm:
+        P.append("\n### Kyirong arm, km up the arm from the junction (L = south-west wall facing the Lhende)")
+        P.append("| km | layer | bed raw | L: z at d [flags] | R: z at d [flags] |")
+        P.append("|---|---|---|---|---|")
+        for r in arm:
+            if abs(r["km"] * 2 - round(r["km"] * 2)) > 1e-6:
+                continue
+            f = lambda lab: (f"{r[f'z_{lab}']:.0f}±{r[f'sig_{lab}']:.0f} at {r[f'd_{lab}']:.0f}"
+                             if r[f"status_{lab}"] == "ok" else r[f"status_{lab}"]) + \
+                            (f" [{r[f'flags_{lab}']}]" if r[f"flags_{lab}"] else "")
+            P.append(f"| {r['km']:.1f} | {r['layer']} | {r['bed_raw']:.0f} | {f('L')} | {f('R')} |")
+    if not junction_only:
+        # Hakubesi and Syabrubesi checks (dossier 18; geopera 11 m/s at the opening)
+        for name, a, b, expect in (("Hakubesi km 42.5-45.5", 42.5, 45.5, "stills: ~45-70 m above the pre-event bed"),
+                                   ("Syabrubesi opening km 35.6-40.0", 35.6, 40.0, "geopera: velocity collapse to ~11 m/s at the opening")):
+            P.append(f"\n### {name} — {expect}")
+            P.append("| layer | stations | L stage min/med/max (n) | R stage min/med/max (n) | clean-station stage med | v_super (km: v) |")
+            P.append("|---|---|---|---|---|---|")
+            for lname in LAYERS:
+                rr = [r for r in rows if r["arm"] == "main" and a <= r["km"] <= b and r["layer"] == lname]
+                if not rr:
+                    continue
+                cell = {}
+                for lab in ("L", "R"):
+                    v = np.array([r[f"stage_{lab}"] for r in rr if r[f"status_{lab}"] == "ok" and not r[f"flags_{lab}"]])
+                    cell[lab] = f"{v.min():.0f}/{np.median(v):.0f}/{v.max():.0f} ({v.size})" if v.size else "-"
+                st = np.array([r["stage"] for r in rr if np.isfinite(r["stage"])])
+                vs = [f"{r['km']:.1f}: {r['v_super']:.0f}" for r in rr if np.isfinite(r["v_super"])]
+                P.append(f"| {lname} | {len(rr)} | {cell['L']} | {cell['R']} | "
+                         f"{(f'{np.median(st):.0f} ({st.size})' if st.size else '-')} | {', '.join(vs) or '-'} |")
+        if geov:
+            gv = [g for g in geov if 35.0 <= g["km"] <= 46.0]
+            P.append("geopera superelevation velocities in km 35-46 (our chainage): " +
+                     ", ".join(f"{g['km']:.1f}: {g['v']:.0f} ({g['v_lo']:.0f}-{g['v_hi']:.0f}){' *' if g['flags'] != '-' else ''}" for g in gv))
     if geo:
         P.append("\n### geopera v1.1 trimlines projected onto our chainage — ABSOLUTE elevations, same bank")
         P.append("(theirs: HMA 8 m + GLO fill, their thalweg; ours: this run's DEM. "
@@ -1073,22 +1185,25 @@ def figure(rows, geo, geov, dem_name, path):
     ax[0].set_title(f"Trimline stage profile, {dem_name}; hollow markers = head-on / side-valley / junction "
                     "(run-up, not stage); stripped-ground boundary is a FLOOR on the water surface", fontsize=9)
     for lname, c in col.items():
-        rr = [r for r in main if r["layer"] == lname and np.isfinite(r["v_super"])]
-        if rr:
-            ax[1].errorbar([r["km"] for r in rr], [r["v_super"] for r in rr],
-                           yerr=[[r["v_super"] - r["v_lo"] for r in rr], [r["v_hi"] - r["v_super"] for r in rr]],
-                           fmt="o", ms=3, color=c, elinewidth=0.5, lw=0, label=f"{lname} superelevation")
+        for q, mfc in (("strong", c), ("weak", "none")):
+            rr = [r for r in main if r["layer"] == lname and np.isfinite(r["v_super"]) and r["v_quality"] == q]
+            if rr:
+                ax[1].errorbar([r["km"] for r in rr], [r["v_super"] for r in rr],
+                               yerr=[[r["v_super"] - r["v_lo"] for r in rr], [r["v_hi"] - r["v_super"] for r in rr]],
+                               fmt="o", ms=3.5, color=c, mfc=mfc, elinewidth=0.4 if q == "strong" else 0.2,
+                               lw=0, alpha=1 if q == "strong" else 0.5,
+                               label=f"{lname} superelevation, {q}" + (" (dh>2σ, Rc≥2W, Fr 0.5-2.5)" if q == "strong" else ""))
     if geov:
         ax[1].errorbar([g["km"] for g in geov], [g["v"] for g in geov],
                        yerr=[[g["v"] - g["v_lo"] for g in geov], [g["v_hi"] - g["v"] for g in geov]],
                        fmt="x", color="#444", ms=4, elinewidth=0.4, lw=0, alpha=0.7, label="geopera v1.1")
     ax[1].axhline(11, color="#999", ls=":", lw=1); ax[1].text(66, 12, "11 m/s (geopera, Syabrubesi)", fontsize=7)
-    ax[1].set_ylabel("surface velocity (m/s)"); ax[1].set_ylim(0, 120); ax[1].legend(fontsize=7)
+    ax[1].set_ylabel("surface velocity (m/s)"); ax[1].set_ylim(0, 120); ax[1].legend(fontsize=6, ncol=3)
     for lname, c in col.items():
         rr = [r for r in main if r["layer"] == lname and np.isfinite(r["Q"])]
         if rr:
             ax[2].plot([r["km"] for r in rr], [r["Q"] / 1e3 for r in rr], "o", ms=3, color=c, label=lname)
-    ax[2].set_ylabel("Q = A x 0.85 v (10³ m³/s)"); ax[2].legend(fontsize=7)
+    ax[2].set_ylabel("Q = A x 0.85 v, strong pairs only (10³ m³/s)"); ax[2].legend(fontsize=7)
     # coverage strip
     for k, (lname, c) in enumerate(col.items()):
         rr = [r for r in main if r["layer"] == lname]
@@ -1110,6 +1225,76 @@ def figure(rows, geo, geov, dem_name, path):
     print("figure ->", path)
 
 
+def junction_figure(rows, geo, dem, stations, path):
+    """Plan view of the border junction: GLO-30/HMA contours, our trimline
+    points per layer labelled with elevation, geopera's stations, and the
+    OSM centrelines. Derived lines only - no imagery."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    jx, jy = to_utm([85.3770], [28.2781]); jx, jy = float(jx[0]), float(jy[0])
+    R = 900.0
+    gx, gy = np.meshgrid(np.arange(jx - R, jx + R, 15.0), np.arange(jy - R, jy + R, 15.0))
+    z, _, _ = dem.sample(gx.ravel(), gy.ravel()); z = z.reshape(gx.shape)
+    fig, ax = plt.subplots(figsize=(13, 12))
+    cs = ax.contour(gx, gy, z, levels=np.arange(1780, 2100, 20), colors="#bbb", linewidths=0.5)
+    ax.clabel(cs, levels=[1820, 1860, 1880, 1900, 1920, 1940, 1980], fontsize=6, fmt="%d")
+    for lv, c in ((1875, "#1baf7a"), (1925, "#d62728")):
+        ax.contour(gx, gy, z, levels=[lv], colors=c, linewidths=1.2, linestyles="--")
+    for arm, c in (("main", "#333"), ("kyirong", "#777")):
+        pts = [(s["x"], s["y"], s["km"]) for s in stations if s["arm"] == arm
+               and abs(s["x"] - jx) < R and abs(s["y"] - jy) < R]
+        ax.plot([p[0] for p in pts], [p[1] for p in pts], "-", color=c, lw=1)
+        for x, y, km in pts[::2]:
+            ax.text(x, y, f"{km:.1f}", fontsize=5, color=c)
+    col = {"s2": "#2a78d6", "s2chg": "#1f9e89", "pelican0827": "#eb6834", "pelican0901": "#8e44ad"}
+    off = {"s2": (0, 8), "s2chg": (0, -10), "pelican0827": (10, 4), "pelican0901": (10, -8)}
+    for r in rows:
+        for lab in ("L", "R"):
+            if r[f"status_{lab}"] != "ok":
+                continue
+            x, y = to_utm([r[f"lon_{lab}"]], [r[f"lat_{lab}"]])
+            if abs(x[0] - jx) > R or abs(y[0] - jy) > R:
+                continue
+            c = col.get(r["layer"], "k")
+            mk = "^" if lab == "L" else "v"
+            ax.plot(x[0], y[0], mk, color=c, ms=5, mfc="none" if r[f"flags_{lab}"] else c)
+            dx, dy = off.get(r["layer"], (0, 0))
+            ax.annotate(f"{r[f'z_{lab}']:.0f}", (x[0], y[0]), xytext=(dx, dy),
+                        textcoords="offset points", fontsize=5.5, color=c)
+    if geo:
+        gsel = [g for g in geo if 20.5 <= g["km"] <= 23.5]
+        # geopera station points sit on THEIR centreline; place them at their
+        # station and label with bank and z
+        p = os.path.join(CACHE, "geopera", "trimline_profile_v2.csv")
+        for r in csv.DictReader(open(p)):
+            x, y = float(r["x"]), float(r["y"])
+            if abs(x - jx) > R or abs(y - jy) > R:
+                continue
+            ax.plot(x, y, "x", color="#444", ms=5)
+            lab = []
+            for b in ("L", "R"):
+                v = r[f"trim_{b}_m"]
+                if v not in ("", "nan"):
+                    lab.append(f"{b}{float(v):.0f}")
+            ax.annotate(" ".join(lab), (x, y), xytext=(-2, -9), textcoords="offset points",
+                        fontsize=5.5, color="#444")
+    ax.plot(jx, jy, "*", color="k", ms=10)
+    for lname, c in col.items():
+        ax.plot([], [], "s", color=c, label=lname)
+    ax.plot([], [], "^", color="k", label="left bank (looking downstream / up the arm)")
+    ax.plot([], [], "v", color="k", label="right bank")
+    ax.plot([], [], "x", color="#444", label="geopera v1.1 station (L/R trimline z, HMA)")
+    ax.plot([], [], "--", color="#1baf7a", label="1,875 m contour (Dave: lee line)")
+    ax.plot([], [], "--", color="#d62728", label="1,925 m contour (Dave: impact cliff)")
+    ax.legend(fontsize=7, loc="lower left")
+    ax.set_aspect("equal"); ax.set_xlim(jx - R, jx + R); ax.set_ylim(jy - R, jy + R)
+    ax.set_title(f"Border junction: trimline points from imagery on {dem.name} contours "
+                 f"(hollow = flagged head-on / side-valley / junction). UTM 45N, m.", fontsize=9)
+    fig.tight_layout(); fig.savefig(path, dpi=150)
+    print("figure ->", path)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--stage", choices=["s2", "pelican", "map", "all"], default="map")
@@ -1117,7 +1302,14 @@ def main():
     ap.add_argument("--refetch", action="store_true")
     ap.add_argument("--no-hma", action="store_true")
     ap.add_argument("--layers", default="s2,s2chg,pelican0827,pelican0901")
+    ap.add_argument("--pelican-bare", type=float, default=None,
+                    help="override the Pelican NDVI(b6,b3) bare threshold (rule: 0.10; the 1 Sept "
+                         "histogram trough is at ~0.0 - use this for the sensitivity run only)")
     a = ap.parse_args()
+    if a.pelican_bare is not None:
+        for k in ("pelican0827", "pelican0901"):
+            LAYERS[k]["bare"] = a.pelican_bare
+        print(f"Pelican bare threshold overridden to {a.pelican_bare} (sensitivity run)")
     if a.stage in ("s2", "all"):
         stage_s2(a.refetch)
         if a.stage == "s2":
@@ -1128,7 +1320,7 @@ def main():
     print(f"{len(st_main)} main-path stations to km {st_main[-1]['km']:.1f}; "
           f"{len(st_arm)} Kyirong-arm stations")
     if a.stage in ("pelican", "all"):
-        sel = [s for s in stations if (s["arm"] == "kyirong") or (20.0 <= s["km"] <= 39.0)]
+        sel = [s for s in stations if (s["arm"] == "kyirong") or (20.0 <= s["km"] <= 46.5)]
         stage_pelican(sel, a.refetch)
         if a.stage == "pelican":
             return
@@ -1155,7 +1347,9 @@ def main():
     print(txt)
     with open(os.path.join(OUT, f"trimline_map{tag}_RESULTS.md"), "w") as fh:
         fh.write(f"# trimline_map.py results{tag}\n\n{txt}\n")
-    if not a.junction:
+    if a.junction:
+        junction_figure(rows, geo, dem, stations, os.path.join(OUT, "trimline_junction.png"))
+    else:
         figure(rows, geo, geov, dem.name, os.path.join(OUT, "trimline_profile.png"))
 
 
