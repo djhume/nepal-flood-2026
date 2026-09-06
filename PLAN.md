@@ -1179,3 +1179,67 @@ failure) all bear more directly on published numbers.
 reproduces bit-identically; (2) re-run Chamoli and see whether τ can be
 dropped; (3) only then look at whether the Lhende plateau is reproduced
 without tuning.
+
+## 9. Second cold read (6 Sept, evening) — what it found, what was added
+
+Read cold from the live site again, this time by a fresh session with two
+agents reading the four pages in parallel and no repo access. Prompted by Dave's
+notes: drop "survivors" for parameter sets; think about ice+rock versus rock;
+add an account of the event; write up the video triangulation; confirm the
+up-valley reach.
+
+**Residue of the 6 Sept clock correction, missed the first time (§6a rail 1,
+breached again):** report §01 still read "six minutes and fifty seconds"; the
+plain page's cliff box still compared 54 with the old 52 and said "within a few
+per cent" (against 47.8 it is ~15%); the plain lead still said 1,250 dead;
+"three measurements" where there were four; §13 said "v4" under a v5 header;
+README said Version 4. All fixed. **Lesson:** a numeric correction needs a grep
+for the *prose* forms too ("six minutes and fifty", "52", "seven minutes"), not
+only the digits that were changed.
+
+**"Survivors"** removed everywhere it meant model runs (hub, plain, report,
+README, workings notebook, calcs docstrings) → "the runs that pass" / "passing
+runs". Left where it means gauges, servers, people, or the promotion rule.
+
+**Added, not promoted (per the §6a rule):**
+- Report §00b "The event, as far as it is known" + a "What is not known" box;
+  plain page "What happened" expanded to the same account in plain words with a
+  known/not-known box.
+- Report §03a "Reading the camera": frame rate, tick-edge clock, two-route
+  calibration table, the sight-line plan diagram (to scale, generated from the
+  survey bearings), error budget, convergence table, what failed. Same on the
+  plain page.
+- Report §04b "Ice and rock together are not rock": the Lhende held ~0.5 Mm³
+  standing water (baseflow anchors 2→30→150 m³/s at 3 m/s) + ~0.07 inflow
+  during passage + ~0.9 pore water from ~2.6 Mm³ entrained bed + ≤1.1–2.5 melt
+  = 2–4 Mm³ against a 14–34 Mm³ release ⇒ what hit Gyirong Port was ≥80% the
+  mountain. Energy line: H/L = 3,113/22,000 = 0.14 ⇒ μ_eff ≈ 0.135 needed to
+  arrive at ~47 m/s; Scheidegger gives 0.30 at 21 Mm³ (stops at ~10 km).
+  Frictional melt flux at the base μσv ≈ 2.4 MW/m² at h=30 m, μ=0.1, v=40 m/s
+  ⇒ ~7 mm/s of ice — lubrication, not production; velocity-weakening (ties to
+  §8a). Kolka 2002 as the analogue (science-review §2, Huggel 2005). Reframes
+  finding 02, locates finding 01 below the junction, changes "wall of water" to
+  "ice, rock and mud" for km 0–22 on every page. Ensemble w0 to be read as
+  ice+water fraction.
+
+**Literature check landed (dossier §15a):** my draft §04b had two claims the
+papers do not support — "Schneider et al. calibrate μ 0.12–0.20 for ice-rich
+cases" (their field result is that ice content per se did NOT show as a control;
+water, volume, glacier substrate did) and "Kolka ran 19 km in about seven
+minutes" (papers give a mean 50–80 m/s over 18–20 km, no elapsed time; 4–6 min
+computed). Both rewritten. Model-in-the-loop lesson: the fluent analogue
+paragraph was the confident-error mode again; the agent with the PDFs caught it.
+Also new: MNR's own "nearly 3 km upstream" statement; the 23 m³/s upper-Lhende
+inflow; no source has a glacier under the fall path (proglacial moraine).
+
+**Up-valley reach CONFIRMED (dossier §16):** centreline-corridor Sentinel-2
+test ends the stripping at 2–3.5 km (control stays ×2 to 5.25 km); with G216,
+the contour trace and MNR, four lines converge on ~3 km.
+
+**Open from this pass:** (1) MU_DRY_ICE = 0.17's citation (Schneider 2010) not
+verified — full text paywalled; (2) up-valley: Chinese sources + sub-metre imagery landed (dossier §16a) —
+surge ~3 km on two independent legs; fresh fill visible to ~4.6 km in Pelican
+imagery, possibly pond sedimentation — the 3.5-vs-4.6 km tension is logged, not
+resolved; (3) the range at
+which the 50 m sight-line separation was read (14d "Open") is still open and is
+now on the page as such.

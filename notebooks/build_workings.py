@@ -67,11 +67,19 @@ wrong way round, and the fix is this notebook rather than a footnote about it.
 **Authorship:** Dave Hume, with Claude as research and modelling assistant.
 
 **Honesty rail.** The two most important inputs are *not published*: the source
-volume (public estimates span 10–200 Mm³) and the ice fraction of the collapsed
+volume (public estimates span 0.5–200 Mm³) and the ice fraction of the collapsed
 mass (unknown). Every conclusion below is therefore an **envelope over defensible
 inputs**, not a point claim. FFD's "~20 Mm³ excess" is single-source with an
 unpublished method; geopera velocity/height numbers are provisional. Where the
 models disagree with observation, we say so.
+
+**The border clock in this notebook.** The fits below take the border arrival as
+7.0 min and the 22-km mean speed as 52 m/s (labelled Kargel, 193 km/h), the
+values in use when they were made. On 6 September the CCTV overlay was read
+directly and gives 7 min 40 s and 47.8 m/s (report §03). Both corrected values
+lie inside the tolerances the scoring uses (±30% on arrival, ±35% on speed); the
+fits and the ensemble have not yet been repeated at them, and this page says so
+rather than silently changing the targets.
 """)
 
 # ---------------------------------------------------------------- section 1 --
@@ -193,7 +201,7 @@ describing it as "far below" the FFD's 20 Mm³, which it is not. Both rows are
 kept so the correction is visible rather than tidied away.
 
 Scenario 8 is the one that matters for the argument. It is the melt narrative
-steel-manned to destruction: the largest published volume, four-fifths ice, the
+steel-manned until it breaks: the largest published volume, four-fifths ice, the
 longest drop, *and* a heat-to-ice partition at the top of the literature's
 0.3–0.7 range, all at once.
 """)
@@ -277,7 +285,7 @@ water by a factor of eight. River-derived water (swept channel + inflow) is
 
 Melt reaches the official figure at exactly one point in the whole parameter
 space, scenario 8: **20.7 Mm³**, and only by taking the largest published volume
-— five times our envelope — with four-fifths ice, a 4,000 m drop and a 0.70 heat
+— six times the top of our envelope — with four-fifths ice, a 4,000 m drop and a 0.70 heat
 partition simultaneously. Relax any single one of those and it falls away fast;
 scenario 4, identical but for a 0.50 partition, gives 14.8.
 
@@ -936,7 +944,7 @@ plt.show()
 
 md(r"""
 **Ladder verdict.** Timing calibrates well against the clocks: inertial peaks at
-Galchhi 10:53 (observed rise ~11:00–12:00), Malekhu 11:15 (danger crossed 11:26),
+Galchhi 10:53 (observed rise ~11:00–12:00), Malekhu 11:15 (danger crossed 11:40 per the FFD release; 11:26 in early reports),
 Devghat 15:28 (observed 16:00). All three pulse-shaping signatures appear: the
 bare line attenuates and broadens; side-valley capacitors charge on the rising
 limb (clipping mid-route peaks) and discharge into the tail; the hypothetical
@@ -1025,7 +1033,7 @@ md(r"""
 3.2 Mm³ measured, in the reaches they mapped, with nothing tuned — that is the
 term working. But with deposition now operating properly the same run buries
 18 Mm³ in a corridor that can account for at most 12, and the front never
-reaches the border at all: `inf` means the flood died before kilometre 22.
+reaches the border at all: `inf` means the flood stalled before kilometre 22.
 
 That is not a parameter being slightly off. Before concluding anything, the
 honest move is to ask whether *any* combination of the contested inputs can
@@ -1082,7 +1090,7 @@ Devghat — were held out of the fitting entirely; see Section 5.
 **Independent corroboration, weighted honestly.** Darcy Weedman, writing at
 [geopera](https://geopera.com/blog), reached the same conclusion the same week
 by gradient-descent calibration of a 2D morphodynamic model against stereo
-imagery, which drove his settling velocity down by a factor of three and told
+imagery, which drove the settling velocity down by a factor of three and told
 him the material "behaves finer than assumed, remaining in suspension longer".
 Two unreviewed analyses agreeing is corroboration, not replication. geopera is
 Geopera Pty Ltd, a company blog, not an institution, and this notebook is not
@@ -1115,7 +1123,7 @@ that reproduce every observable inside its stated tolerance.
 | Input | Prior | Note |
 |---|---|---|
 | `V_rel` | log-uniform 1–200 Mm³ | spans every published estimate |
-| `w0` | uniform 0.02–0.95 | liquid fraction; widened twice after survivors pinned against the ceiling |
+| `w0` | uniform 0.02–0.95 | liquid fraction; widened twice after the passing runs pinned against the ceiling |
 | `mu_dry` | uniform 0.10–0.35 | Schneider ice-avalanche to Scheidegger rock |
 | `n_scale` | uniform 0.70–1.40 | Manning roughness class-value uncertainty |
 | `h_erode` | uniform 1–10 m | erodible layer depth |
@@ -1172,7 +1180,7 @@ for j, name in enumerate(PRIOR_NAMES[1:], start=1):
 code(r'''
 fig, ax = plt.subplots(1, 2, figsize=(11, 3.8))
 
-# left: what survives, against what has been published
+# left: what passes, against what has been published
 ax[0].hist(np.log10(S[:, 0] / 1e6), bins=28, color="#c9d4d8",
            label=f"all {len(S)} sampled")
 ax[0].hist(np.log10(V), bins=28, color="#1e5f8e",
@@ -1195,7 +1203,7 @@ for j, name in [(1, "w0 (liquid fraction)"), (2, "mu_dry"), (5, "f_fine")]:
     ax[1].scatter(span, [name] * len(span), s=14, alpha=0.55, color="#9a7146")
 ax[1].set_xlim(-0.03, 1.03)
 ax[1].set_xlabel("position within the sampled prior (0 = min, 1 = max)")
-ax[1].set_title("Composition: survivors span almost the whole prior", fontsize=10)
+ax[1].set_title("Composition: the passing runs span almost the whole prior", fontsize=10)
 
 plt.tight_layout()
 plt.show()
@@ -1203,7 +1211,7 @@ plt.show()
 for j, name in [(1, "w0"), (2, "mu_dry"), (5, "f_fine")]:
     lo, hi = S[:, j].min(), S[:, j].max()
     frac = (full[:, j].max() - full[:, j].min()) / (hi - lo)
-    print(f"{name:8s} survivors span {frac:5.1%} of the prior range")
+    print(f"{name:8s} passing runs span {frac:5.1%} of the prior range")
 ''')
 
 md(r"""
@@ -1215,7 +1223,7 @@ nobody has surveyed the scar, and if someone does, this number is the one that
 should yield.
 
 **Only the volume is constrained.** Liquid fraction, `mu_dry` and `f_fine` each
-span more than 90% of their priors among the survivors — the right panel above.
+span more than 90% of their priors among the passing runs — the right panel above.
 An earlier run appeared to pin all three, which turned out to be an artefact of a
 deposition cap of 5 Mm³ that was too tight; relaxing it to the honest 12 Mm³
 released them, and those earlier tighter values are retracted. So we can say
@@ -1228,7 +1236,7 @@ ranges overlap, so the answer is being driven by the measurements rather than by
 that constraint.
 
 **The out-of-sample half-failure.** Galchhi and Devghat were held out of the
-scoring entirely so they could act as an honest check on the survivors:
+scoring entirely so they could act as an honest check on the passing runs:
 
 - **Devghat peak discharge**: 1,752–2,889 m³/s against ~2,900 observed. All 26
   meet the stated factor-of-two criterion — but all 26 also land *below* the
@@ -1253,12 +1261,14 @@ md(r"""
 - **The distal flood wave was overwhelmingly river-derived.** In the
   best-evidence snowplow scenario, ~78% of the active water at Devghat is swept
   channel water + baseflow collected en route; frictional ice melt is ~8%
-  (~3.7 of 47 Mm³).
+  (~3.7 of 47 Mm³) in that v1 100 Mm³ run; at the 14–34 Mm³ envelope of
+  Section 5 it is 1.1–2.5 Mm³, a few per cent (scenarios 6–7 above).
 - **Melt-only fails.** Switching off sweep-up leaves 3,383 m³/s at Devghat vs
   5,850 observed — 42% low — and ~4 Mm³ of new water vs FFD's ~20 Mm³ excess.
   No defensible input set rescues it: melt is energy-limited (~12 kJ/kg from the
   initial fall against 334 kJ/kg latent heat), and even the melt-maximal
-  steel-man budget caps below 15 Mm³.
+  steel-man budget at the envelope caps at 2.5 Mm³; only the 200 Mm³
+  every-dial case (scenario 8) reaches 20.7.
 - **The snowplow scenario matches the observations it was not fitted to**:
   Devghat peak 5,913 vs 5,850 m³/s, front arrival 403 min (15:20) exact, peak
   448 vs 443 min, gross/net water bracketing FFD's windowed 20 Mm³.
@@ -1311,7 +1321,9 @@ wherever you are reading this.
   [`model/unified.py`](https://github.com/djhume/nepal-flood-2026/blob/main/model/unified.py) ·
   [`model/core.py`](https://github.com/djhume/nepal-flood-2026/blob/main/model/core.py) ·
   [`calcs/ensemble.py`](https://github.com/djhume/nepal-flood-2026/blob/main/calcs/ensemble.py)
-  (this notebook reproduces their outputs verbatim)
+  (this notebook reproduces their published tables; the ladder's v3 junction
+  step and the 75-minute ensemble are loaded from saved output rather than
+  re-run here)
 - Entrainment build:
   [`model/ENTRAINMENT.md`](https://github.com/djhume/nepal-flood-2026/blob/main/model/ENTRAINMENT.md)
 - Profile construction:

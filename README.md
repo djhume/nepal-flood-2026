@@ -52,7 +52,11 @@ source is here and the licence permits it.
    minute-rounding by another road rather than independent confirmation. The
    finding is unaffected — 17 and 23 min stay excluded — and the Syabrubesi
    gauge (3.8 m at 08:50, km 37.6, a Nepali instrument owing nothing to any
-   camera) still carries it independently.
+   camera) still carries it independently. Read alongside report §04b (added
+   6 Sept): the Lhende held ~0.5 Mm³ of water against a 14–34 Mm³ release, so
+   what reached the border was a rock–ice avalanche, not a flood, and the run
+   is what an ice-rich mass does on its own — the lubrication is the ice
+   skate's, frictional melt at the base, not bulk water.
 3. **The method travels — one test stands, one is withdrawn.** Against Chamoli
    2021 the model reproduces the Tapovan arrival once frictional melt is given a
    thermal lag (one fitted number; the speeds are then out of sample) — a
@@ -65,7 +69,7 @@ source is here and the licence permits it.
 4. **The collapse was 14–34 Mm³ (median 21).** Published estimates span a factor
    of four hundred, so rather than argue them one at a time, `calcs/ensemble.py`
    samples six contested inputs over wide priors, runs the full model, and keeps
-   only what reproduces every observable: 26 of 220 survive. Only the *volume* is
+   only what reproduces every observable: 26 of 220 pass. Only the *volume* is
    constrained — liquid fraction, μ_dry and f_fine each span >90% of their priors.
    One exposure: the border-speed observable is 48.5 ± 35% m/s, and the first
    peer-reviewed study of the event measures 19 m/s at the same place. Not yet
@@ -84,7 +88,7 @@ source is here and the licence permits it.
    and composition is unresolved; the modelled deposit sits at km 0–36 where
    stereo puts it at 40–43; the Galchhi stage rise fails out of sample (3.6 m
    modelled vs ~9 observed) on lower-reach channel widths that are a rule of
-   thumb; the Devghat peak meets its factor-of-2 criterion but every survivor
+   thumb; the Devghat peak meets its factor-of-2 criterion but every passing run
    lands below the observation. Not peer-reviewed, and no Nepali scientist has
    read it.
 
@@ -153,7 +157,7 @@ disk on first run; delete the cache files to refetch.
 | `model/` | The routing models. `unified.py` is current; `ladder.py` and `snowplow.py` are frozen references that still drive published figures |
 | `calcs/` | First-order energy and water budgets, validated against Chamoli 2021 |
 | `hindcast/chamoli/`, `hindcast/seti/` | Portability tests on other disasters, each with a `RESULTS.md` scorecard |
-| `research/` | Evidence dossier, literature review, imagery-composition memo, pre-registered Seti anchors |
+| `research/` | Evidence dossier (incl. §14 video forensics, §15 the first 22 km as a rock–ice avalanche), literature review, imagery-composition memo, pre-registered Seti anchors |
 | `data/` | River profiles, cross-sections, gauge and barrage records — see `DATA-SOURCES.md` |
 | `report/` | The published pages and their build scripts; `docs/` is the built output GitHub Pages serves |
 | `notebooks/` | The executable workings and the two scripts that build and render them |
@@ -176,7 +180,7 @@ and remains a useful explanation of storage, junctions and pulse structure.
 
 ## Status, licence, and use
 
-Version 4, 5 September 2026. Preliminary, independent, AI-assisted analysis
+Version 6, 6 September 2026. Preliminary, independent, AI-assisted analysis
 published days after the event. Five results have been withdrawn or reversed in
 that time and all five remain readable on the site with their reasons.
 **Not peer-reviewed, not read by any Nepali scientist, and not suitable as the

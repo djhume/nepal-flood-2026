@@ -1,0 +1,16 @@
+{
+ "transform": [
+  10.0,
+  0.0,
+  331250.0,
+  0.0,
+  -10.0,
+  3147150.0
+ ],
+ "crs": "EPSG:32645",
+ "shape": [
+  2242,
+  1990
+ ],
+ "note": "pre scene S2C_T45RUM_20260812T050239_L2A (2026-08-12, 18.7% cloud); window col_off 3124.73 row_off 5289.07 1990.43x2242.43 -> array 1990x2242; fractional-origin transform would be (331247.33, 3147149.25); using rounded origin (331250, 3147150)"
+}

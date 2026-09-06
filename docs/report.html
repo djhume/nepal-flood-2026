@@ -58,6 +58,7 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(38px,6vw,58px);
 .dek strong{color:var(--ink);font-weight:600}
 h2{font-family:var(--display);font-weight:600;font-size:29px;line-height:1.15;
   margin:64px 0 16px;text-wrap:balance;scroll-margin-top:18px}
+h3{font-family:var(--display);font-weight:600;font-size:20px;line-height:1.3;margin:34px 0 10px}
 h2 .no{font-family:var(--mono);font-size:13px;color:var(--river);
   vertical-align:.45em;margin-right:8px;letter-spacing:.08em}
 /* This page cross-references its own sections constantly. They used to be dead
@@ -206,12 +207,13 @@ ul.src li{break-inside:avoid;margin-bottom:4px}
  <a href="https://github.com/djhume/nepal-flood-2026" style="color:var(--river,#1e5f8e)">source, data and full
  revision history on GitHub</a></div>
 <header>
-  <p class="eyebrow">Preliminary analysis · v5 · 6 September 2026 ·
+  <p class="eyebrow">Preliminary analysis · v6 · 6 September 2026 ·
   <a href="plain.html">plain-English version</a></p>
   <h1>The Trishuli Water Ledger</h1>
   <p class="dek">On 26 August 2026 a collapsing mountainside above the Lhende
-  Khola, in Rasuwa, sent a wall of water — 70&nbsp;metres high in the gorges —
-  down 199&nbsp;km of the Bhote Koshi and the Trishuli, killing more than
+  Khola, in Rasuwa, sent a wall of ice, rock and mud — 70&nbsp;metres high in
+  the gorges — into the Bhote Koshi, and a flood down 199&nbsp;km of the Bhote
+  Koshi and the Trishuli, killing more than
   1,340 people and leaving nearly 5,000 missing. Early accounts lead with
   frictionally melted glacier ice. <strong>The arithmetic says most of the water
   was already in the river.</strong></p>
@@ -259,9 +261,34 @@ further work has added two findings, <strong>withdrawn one</strong>, and
 corrected several numbers. The authoritative running record is
 <code>PLAN.md</code> in the repository; the entrainment build is written up in
 <code>model/ENTRAINMENT.md</code>. In summary:</p>
+<p><strong>Added on 6 September, evening, after a second cold read.</strong>
+Three things are new and none is a scored result. <em>A description of the event
+itself</em> now precedes the argument (<a href="#s-event" class="xref">§00b</a>):
+what fell, from where, onto what, the path, what the border camera saw, where
+the deposits are, and what the mud lines record — with what is not known listed
+beside it. <em>The video measurement is written up</em> rather than only logged
+(<a href="#s03" class="xref">§03</a>): the clock, the two-route camera
+calibration, the two sight lines 50&nbsp;m apart that the front crossed in
+1.066&nbsp;s, the error budget and what failed. <em>And the first 22&nbsp;km are
+re-read as a rock–ice avalanche</em> (<a href="#s04b" class="xref">§04b</a>):
+the Lhende held about half a million cubic metres of water against a release of
+14–34 million, so what struck Gyirong Port was the mountain, not the river; the
+run down the Lhende is what an ice-rich avalanche does on its own — Kolka
+2002 covered a similar distance in a similar time — and the physics is the
+physics of an ice skate, not of a flood. That reframes finding 02 without
+moving it, sharpens where finding 01 applies (below the junction, where the
+22&nbsp;Mm³ of river was), and changes some words on these pages: "wall of
+water" was the wrong description of what arrived at km&nbsp;22. Also corrected
+in this pass: §01 still said "six minutes and fifty seconds"; the plain-English
+page's cliff box still compared the mud-line speed with the old 52&nbsp;m/s
+clock and called it a match "within a few per cent" (it is within ~15% of the
+corrected 47.8); the word "survivors" is no longer used for the model runs that
+pass the tests, on a site about an event with 1,342 dead; and the version
+numbers now agree across the pages.</p>
 <p><strong>Corrections made on 5 September, after a cold read of the published
 pages.</strong> Three matter. <em>The melt ceiling was misstated.</em> The
-summary pages said the energy ceiling sat "far below" the FFD's ~20&nbsp;Mm³
+summary pages said the energy ceiling sat "far below" the Flood Forecasting
+Division's (FFD) ~20&nbsp;Mm³
 while quoting a generous ceiling of 15 and, in
 <a href="#s13" class="xref">§13</a>, conceding 15–20 — which is not "far below"
 anything. The error was failing to carry the size envelope below into the
@@ -281,9 +308,12 @@ corrects our own elapsed time from <strong>6 min 50 s to 7 min 40 s</strong>,
 and the 22-km mean front speed from 53.7 to <strong>47.8 m/s</strong>. The
 6:50 is what reading the overlay to the minute and assuming :00 seconds
 produces; Kargel's identical figure appears to be the same rounding by another
-road, not independent confirmation. Nothing about the composition finding
-moves: 17 and 23 minutes remain excluded, and the Syabrubesi gauge still
-carries the argument without reference to any camera. Full working in
+road, not independent confirmation. The composition finding stands: 17 and 23
+minutes remain excluded, the corrected 7&nbsp;min 40&nbsp;s lies inside the
+±30% tolerance the scoring used, and the Syabrubesi gauge still carries the
+argument without reference to any camera. The runs have not yet been repeated
+at the corrected clock, and the charts in <a href="#s05" class="xref">§05</a>
+still show the 7.0-minute observation the front law was fitted to. Full working in
 <code>research/event-dossier.md</code> §14. Also: the published workings had fallen three days
 behind these findings and have been rebuilt, and geopera is now identified
 wherever it is cited.</p>
@@ -322,19 +352,20 @@ fraction, μ<sub>dry</sub> and f<sub>fine</sub> each span &gt;90% of their
 priors, and earlier tighter values for them are retracted. <strong>One input in
 that scoring is exposed:</strong> the border speed observable is 48.5 ± 35%
 m/s, taken from the superelevation estimate, and the first peer-reviewed study
-of the event — a CAS frame-by-frame video analysis published 1 September —
+of the event — a Chinese Academy of Sciences (CAS) frame-by-frame video analysis published
+1 September —
 measures 19&nbsp;m/s at the same location, which lies outside that tolerance.
 The envelope has not yet been re-scored against it. If 19 is the right number
 for the quantity we are scoring, this envelope moves; see
 <a href="#s08" class="xref">§08</a> for why three instruments plausibly measure
 three different things at a junction.</p>
 <p><strong>An out-of-sample test, half passed.</strong> Galchhi and Devghat were
-held out of the scoring. The 26 survivors give a Devghat peak of 1,752–2,889
+held out of the scoring. The 26 passing runs give a Devghat peak of 1,752–2,889
 against ~2,900 observed — <strong>100% within a factor of 2</strong>, which was
-the stated pass criterion, but note that <em>every</em> survivor lands below the
+the stated pass criterion, but note that <em>every</em> passing run lands below the
 observation, so this is "not contradicted" rather than "reproduced" and the
 residual is one-sided. The Galchhi 30-minute rise is 1.8–6.1&nbsp;m against ~9
-(<strong>23%</strong>). The model routes the right discharge and converts it to
+(<strong>23%</strong> of the passing runs within a factor of 2). The model routes the right discharge and converts it to
 the wrong stage, which implicates lower-reach channel geometry — below
 km&nbsp;60 our widths come from hydraulic geometry, not measurement.</p>
 <p><strong>The Seti 2012 hindcast is WITHDRAWN.</strong> Its channel profile was
@@ -382,13 +413,167 @@ competence velocity of 19–26&nbsp;m/s independently supports the
 material/front distinction.</p>
 </div>
 
+<h2 id="s-event"><span class="no">00b</span>The event, as far as it is known</h2>
+<p><em>Added 6 September. A description, not an argument — assembled from the
+evidence dossier so that a reader meets the event before the arithmetic about
+it. Every number here is sourced in <code>research/event-dossier.md</code>;
+where sources disagree the range is given.</em></p>
+
+<h3>The mountain, and what let go</h3>
+<p>Langtang Lirung is a 7,227&nbsp;m peak about 60&nbsp;km north of Kathmandu,
+in Rasuwa district. Its north face stands above the Chhochen Khola, a headwater
+of the Lhende Khola, about 4&nbsp;km inside Nepal. At 08:37:10 on the morning of
+26 August 2026 — clear, rain-free, in the last weeks of the monsoon — a section
+of that face roughly 600&nbsp;m wide and 0.2&nbsp;km² in area failed at about
+5,200&nbsp;m (reports place it between 5,000 and 5,800; the 4,928&nbsp;m at km&nbsp;0
+of the profile above is the DEM elevation at the scar coordinate where the
+modelled path starts, not the crown of the failure). The signal was large
+enough to be logged as an earthquake: USGS first reported magnitude 4.4 and
+reclassified it as a 5.2 generated by the collapse itself; GFZ recorded
+Mw&nbsp;5.7. One waveform reading (geopera) sees five pulses inside the spike —
+a staged, domino-style failure.</p>
+<p>What fell was bedrock carrying glacier ice. Every analyst who has looked at
+the imagery describes it that way — Shugar: "a big bedrock failure that took
+part of the glacier with it"; GFZ: "break-off of a hanging glacier and
+underlying bedrock"; Steiner: the lower part of a glacier tongue "sheared off
+because the rock below failed"; ICIMOD's Azam: bedrock failure with the glacier
+swept along. USGS declined to choose between a landslide and a glacial
+collapse. A drone at a Chinese radar station filmed it live: a white stream
+leading a brown dust cloud. Nobody has published the ice fraction. The volume is
+disputed by a factor of four hundred — 0.5–10&nbsp;Mm³ for the initial
+detachment (EGU preliminary), 50–200 (Kargel), 100–200 (Azam/ICIMOD); this
+report's own envelope is 14–34&nbsp;Mm³ (<a href="#s00" class="xref">§00</a>).
+Whether the face gave warning is contested: one InSAR analysis reads
+accelerating creep in the days before; another reads under two metres of
+steady motion in a hundred days with no acceleration at all.</p>
+
+<h3>The descent</h3>
+<p>The mass fell about 1,200&nbsp;m (Steiner reads ~2,100 to the damming point)
+onto the ground below the face — proglacial moraine and loose debris, according
+to the HiRISK rapid assessment and the Chinese agency reconstructions, which
+have the debris avalanche scouring moraine from ~5,200 down to ~4,000&nbsp;m;
+the often-repeated line that it "fell onto the flatter glacier below" is
+unattributed, and no post-event measurement of that ground has been published
+— then a further ~1,000&nbsp;m to the channel of the Lhende, some
+2,200–2,500&nbsp;m below the scar in total. Lower down it ran over the
+still-wet deposits of the July 2025 outburst flood. The one peer-reviewed study so far
+(Chinese Academy of Sciences, Institute of Mountain Hazards and Environment,
+frame-by-frame video) classifies the cascade as ice avalanche → debris flow →
+mudslide → flood and puts the transition to debris flow at about 4,000&nbsp;m.
+The avalanche left a barrier dam in the upper Lhende — the CAS study gives
+~60&nbsp;m high and ~1,100&nbsp;m long, impounding ~2.2&nbsp;Mm³ — which
+overtopped on 28 August and had largely drained by the 30th, plus a smaller pond
+about 2.4&nbsp;km from the source. ICIMOD proposed that the avalanche briefly
+dammed the monsoon-swollen Lhende <em>during</em> the event and that the
+impoundment burst; Sinclair objected that the border arrival is too fast for
+that to be the primary mechanism, and our own arithmetic agrees that a
+minutes-scale impoundment can re-time a pulse but cannot supply one.</p>
+
+<h3>Twenty-two kilometres to the border</h3>
+<p>From the Chhochen the flow ran down the Lhende, which from about km&nbsp;8 is
+the international boundary itself, Nepal on one bank and Tibet on the other.
+(The distance is 22.0&nbsp;km along the channel we traced; the CAS paper gives
+21.7, China's Ministry of Natural Resources "about 20", one CAS news item
+"about 15", Xinhua and Kargel "about 22".) The mean speed of the front over the 22&nbsp;km was 47.8&nbsp;m/s
+(<a href="#s03" class="xref">§03</a>). geopera's superelevation work gives
+37&nbsp;m/s in the upper Lhende and 45–52 at the border; their trimlines in the
+gorge run 40–134&nbsp;m above the river, median about 70 — mud lines that mix
+flow depth with the run-up of a fast flow driven into a wall, and have to be
+read with that in mind (<a href="#s08" class="xref">§08</a>). Satellite stereo
+shows the gorge floor was <em>lowered</em> 2–12&nbsp;m along this reach: the
+flow eroded here, it did not deposit.</p>
+<p>At 08:44:50 it reached the T-junction where the Lhende meets the main Kyirong
+Tsangpo–Trishuli stem at 96°. Gyirong Port, the Chinese crossing, sat on the far
+bank directly opposite the mouth; Rasuwagadhi customs and the 111&nbsp;MW
+Rasuwagadhi hydropower plant sat on the Nepali side, the plant's headworks
+400&nbsp;m below the junction (49 of its staff are missing). The port's own
+security camera recorded the arrival, and Chinese reporting described what it
+shows as "a black wall of water carrying ice, mud and massive rocks". Read
+directly off that footage, the front crossed two surveyed sight lines 50&nbsp;m
+apart in 1.066&nbsp;s — about 47&nbsp;m/s, with an envelope of 41–63
+(<a href="#s03" class="xref">§03</a>). A six-storey building on the port
+terrace was not damaged but erased, which puts a floor of 18–20&nbsp;m under the
+flow depth; a vegetation trimline on the sheltered side sits 60&nbsp;m above the
+1,815&nbsp;m river bed; and the cliff the flow struck square-on carries a mark
+at 1,920–1,930&nbsp;m — 45–55&nbsp;m of run-up above the sheltered surface,
+which is the velocity head of material moving at about 30&nbsp;m/s. Depth, then,
+about 60&nbsp;m; the material at ~30&nbsp;m/s; the front at ~47–54. Part of the
+flow drove up the Chinese arm of the valley: China's Ministry of Natural
+Resources said part of the flow ran "nearly 3&nbsp;km upstream in the Gyirong
+Tsangpo", Xinhua reported about 3&nbsp;km of the G216 highway approaching the
+port damaged, a contour trace of the
+stagnation elevation runs ~3.5&nbsp;km up that arm, and Sentinel-2 change
+measured along the river centreline (6 September) has the stripped ground
+fading out between 2 and 3.5&nbsp;km from the junction while the two
+through-flow arms stay stripped for the whole 5–8&nbsp;km in view — four
+lines converging on about 3&nbsp;km for the surge, with fresh sediment visible
+in sub-metre imagery to about 4.6&nbsp;km that may be ponding rather than
+run-up (<a href="#s08" class="xref">§08</a>).</p>
+
+<h3>Down the Bhote Koshi</h3>
+<p>Below the junction the river is Nepal's Bhote Koshi. Timure, the dry port at
+km&nbsp;26, and the Friendship Bridge — both rebuilt after a glacial-lake
+outburst down the same corridor on 8 July 2025 — went again. At Syabrubesi
+(km&nbsp;37.6) the DHM gauge read 3.8&nbsp;m and rising at 08:50 and then
+stopped transmitting; the town itself is reconstructed as inundated at
+09:10–09:25. Here the valley opens, the superelevation speed collapses from
+~50&nbsp;m/s to about 11, and the Langtang Khola comes in from the east (the
+Langtang Khola hydropower plant: 42 missing). Just below, at km&nbsp;40–43, is
+the main deposit the flood left: a sheet 3&nbsp;km long and 12–18&nbsp;m thick,
+carrying 4,329 boulders over a metre across in 37 hectares, the largest
+26&nbsp;m; the river has since cut a 13–21&nbsp;m trench through it. Over the
+45% of the valley floor the stereo survey could see, erosion (3.2&nbsp;Mm³)
+outweighed deposition (0.9) by more than three to one — both lower bounds. The
+Chilime plant's tunnel and powerhouse were damaged. At Betrawati (km&nbsp;68)
+the gauge read 3.55&nbsp;m at 09:20 and was lost; the peak passed about 10:30.
+Below Betrawati the river is the Trishuli, and the corridor was full of
+hydropower workers: some 300 were inside the Upper Trishuli-1 tunnels, of whom
+about 350 across UT-1 and 208 from Trishuli-III were brought out alive over the
+following days; Upper Trishuli 3A and 3B and the 220&nbsp;kV substation were
+destroyed. Four DHM telemetry stations were destroyed in all.</p>
+
+<h3>The Trishuli, Devghat, and India</h3>
+<p>Galchhi (km&nbsp;108), the gauge that survived, rose about 9&nbsp;m in
+30&nbsp;minutes around 11:00. Malekhu (km&nbsp;117) crossed its warning level
+at 11:20 and its danger level at 11:40, reached 10.48&nbsp;m, and lost its
+bridge at 11:43. Kalikhola near Muglin (km&nbsp;185) crossed danger at 14:14.
+The flood reached Devghat (km&nbsp;199), where the Trishuli meets the Kali
+Gandaki, at 15:20 and peaked at 16:00 — 6.57&nbsp;m, 5,850&nbsp;m³/s — and was
+near normal by 18:30; the ~20&nbsp;Mm³ of "excess" water the Flood Forecasting
+Division quotes is the flow above base at that station between 14:10 and 18:00.
+Across the Indian border the Valmikinagar barrage on the Gandak recorded a flat
+peak of 4,253&nbsp;m³/s at 23:00–23:30 IST. Bodies and debris were recovered
+200–240&nbsp;km downstream. A second landslide-classified seismic event
+(M&nbsp;4.2) was recorded at 11:45, three hours after the first; whether it was a
+second failure or the barrier dam is unresolved. SMS alerts went to 679,295
+riverbank residents at 09:15 — 38 minutes after the collapse, and after the
+wave had already passed everything above Syabrubesi.</p>
+
+<h3>The toll, and the corridor's history</h3>
+<p>As of 5 September: 1,342 dead and 4,886 missing in Nepal, 31 dead and 531
+missing on the Chinese side, more than 5,300 injured. Thirteen hydropower
+projects totalling 748&nbsp;MW were damaged and 431&nbsp;MW came off the grid.
+This is the same mountain whose south flank fell in the 2015 earthquake and
+buried Langtang village, 7&nbsp;km from the 2026 scar in a different valley,
+leaving a measured 6.8&nbsp;Mm³ deposit; and the same corridor that carried the
+July 2025 outburst from a supraglacial lake on the Purepu glacier.</p>
+
+<div class="callout"><span class="lbl">What is not known</span>
+The volume and ice fraction of what fell. Whether the glacier below the scar
+was excavated (no post-event measurement of it exists). The hydrographs at the
+four destroyed gauges. How far the flow went up the Chinese arm. What the flow
+consisted of, station by station, between the junction and Syabrubesi. Where,
+along the corridor, the dead were. Whether the 11:45 seismic event was a second
+collapse. Every one of these is an input this report would rather measure than
+assume, and <a href="#s13" class="xref">§13</a> says what would settle each.</div>
+
 <h2 id="s01"><span class="no">01</span>The question</h2>
 <p>When part of Langtang Lirung's north face let go — bedrock plus a hanging
 glacier; published guesses now span ~1–10 million&nbsp;m³ for the initial
 detachment to an unsourced 100–200 million&nbsp;m³ total, and nobody has yet
 published a firm volume or ice fraction — the mass fell about 1,200&nbsp;m, hit the valley
-floor, and arrived at the China–Nepal border 22&nbsp;km away six minutes and fifty
-seconds later. What followed down the Bhote Koshi and Trishuli was not a landslide
+floor, and arrived at the China–Nepal border 22&nbsp;km away seven minutes and forty
+seconds later <em>(six minutes fifty until 6 September — see <a href="#s00" class="xref">§00</a>)</em>. What followed down the Bhote Koshi and Trishuli was not a landslide
 but a flood: a sediment-charged wave that gauges tracked all the way to the
 Narayani confluence.</p>
 <p>The question this page tries to answer with arithmetic rather than adjectives:
@@ -405,15 +590,16 @@ published the <em>relative fractions</em> either — and the fractions are the w
 story. Dan Shugar put it plainly: "Figuring out where that water came from is
 actually probably the hardest thing about all this."</p>
 
-<div class="callout"><span class="lbl">The human ledger</span>
+<div class="callout"><span class="lbl">The human cost</span>
 <strong>1,342 people are confirmed dead in Nepal and 4,886 missing</strong>,
 with 31 dead and 531 missing on the Chinese side, and 5,300+ injured
 (5 September count). The missing figure has begun to fall while the death toll
 rises: that is recovery, not rescue. Of ~900 bodies recovered by 1 September,
 about 4% had been identified. Read every number here as provisional. Among them are hundreds of hydropower workers —
 though some 560 were brought out of the Upper Trishuli-1 and Trishuli-III
-tunnels alive in the days that followed. The "entrained mass" in this analysis
-included bridges, vehicles, homes — and people. We do this arithmetic because
+tunnels alive in the days that followed. The wave carried away bridges,
+vehicles, homes and people; no term in this arithmetic stands for them. We do
+this arithmetic because
 where the water comes from determines what a warning system must watch for,
 and the 38 minutes between collapse and SMS alert were not enough. Every term
 in the ledger has a human cost.
@@ -431,7 +617,7 @@ departs from the mapped border by more than 180 m, Nepal on one bank and
 Tibet on the other. The Lhende then dead-ends into the main Kyirong
 Tsangpo–Trishuli stem — a river that has itself come out of Tibet — at the
 crossing where Gyirong Port sat directly opposite the mouth, on the far
-bank from Rasuwagadhi. So the flood was transboundary within seven minutes, and
+bank from Rasuwagadhi. So the flood was transboundary within eight minutes, and
 a substantial share of the water it swept up had entered the system on the
 Chinese side of the boundary — which matters for the ledger below, because that
 water is part of the standing channel volume the wave collected. From there
@@ -474,24 +660,27 @@ border T-junction is the first and sharpest (<a href="#s08" class="xref">§08</a
   inundation there is reconstructed at 09:10–09:25, and geopera's
   superelevation speeds fall from ~50 m/s in the gorge to 11 m/s where the
   valley opens at exactly that point. A water wave arriving twenty-five minutes
-  ahead of the debris body is what the snowplow picture predicts (<a href="#s04" class="xref">§04</a>), so this
-  split is evidence rather than a discrepancy. The boundary is worth following
+  ahead of the debris body is consistent with the two-regime picture of <a href="#s05" class="xref">§05</a> — a
+  displacement wave pushed down the main river when the debris struck the
+  junction, with the debris body following — so this split is evidence rather
+  than a discrepancy. The boundary is worth following
   too: the scar is about 4 km inside Nepal, and from km 8 to km 22 the Lhende
   <em>is</em> the border — the modelled path stays within 180 m of it — which is
   why a Chinese port and a Nepali customs post were destroyed by the same
-  seven-minute wave.</figcaption>
+  wave, seven minutes forty after the collapse.</figcaption>
 </figure>
 
 <div class="prose">
 <h2 id="s03"><span class="no">03</span>The clocks</h2>
 <p>The event left a chain of timestamps — a CCTV camera, four drowned gauging
 stations, one surviving gauge, and an official peak — now anchored by the
-DHM/FFD press release of 27 August (a scanned two-page PDF we obtained via the
+Department of Hydrology and Meteorology / Flood Forecasting Division (DHM/FFD)
+press release of 27 August (a scanned two-page PDF we obtained via the
 Wayback Machine). They are the calibration targets for everything below.
 Distances are measured along the river channel we stitched from OpenStreetMap
 (199&nbsp;km scar→Devghat; the FFD quotes 168&nbsp;km on a shorter reckoning).</p>
 <div class="tablewrap"><table>
-<tr><th>NPT, 26 Aug</th><th>km</th><th>What happened</th><th>Quality</th></tr>
+<tr><th>Nepal time (NPT), 26 Aug</th><th>km</th><th>What happened</th><th>Quality</th></tr>
 <tr><td class="mono">08:37:10</td><td class="num">0</td><td>Collapse. Registered as a magnitude-5.2 landslide-generated seismic event (USGS); Mw 5.7 per GFZ.</td><td class="verdict pass">HARD</td></tr>
 <tr><td class="mono">08:44:50</td><td class="num">22</td><td>CCTV captures destruction beginning at Gyirong Port. Overlay read directly off the footage 6 Sept: <strong>10:59:50 Beijing</strong> = 08:44:50 NPT, i.e. <strong>7 min 40 s</strong>, average <strong>47.8 m/s</strong>. Published as 08:44:00 / 6 min 50 s until then — that figure came from rounding the overlay to the minute.</td><td class="verdict pass">HARD</td></tr>
 <tr><td class="mono">08:50</td><td class="num">38</td><td>Syabrubesi station's last transmission: 3.8 m and rising (warning level 5.5 m).</td><td class="verdict">MEDIUM</td></tr>
@@ -501,6 +690,158 @@ Distances are measured along the river channel we stitched from OpenStreetMap
 <tr><td class="mono">14:14</td><td class="num">185</td><td>Kalikhola, near Muglin, crosses danger (12.1 m); maximum 12.35 m — effectively peak passage.</td><td class="verdict pass">OFFICIAL</td></tr>
 <tr><td class="mono">15:20</td><td class="num">199</td><td>Flood arrives at Devghat; peak 6.57 m / <strong>5,850 m³/s</strong> at 16:00; near normal by 18:30 — a ~3.2-hour surge.</td><td class="verdict pass">OFFICIAL</td></tr>
 </table></div>
+
+<h3 id="s03a">Reading the camera: the clock, the calibration, and a direct speed</h3>
+<p><em>Added 6 September. Method and measurement, logged in the changelog rather
+than promoted to a finding. Full working: <code>research/event-dossier.md</code>
+§14; tooling in <code>research/video/</code>. The footage is third-party and not
+in the repository.</em></p>
+<p><strong>The footage.</strong> A 1280×720 upload of the Gyirong Port CCTV,
+66.9&nbsp;s long, carrying the station's own burnt-in clock. Its frame rate was
+the first thing we got wrong: a perceptual duplicate-frame filter reported
+23.85 unique frames per second, and a strict pixel-identity test gave 48–57 —
+57 of 60 during the arrival. One frame is 16.7&nbsp;ms, not the 33&nbsp;ms an
+earlier 30&nbsp;fps resample had assumed, and that resample was itself throwing
+away half the information. Everything below uses the original frames at their
+original timestamps.</p>
+<p><strong>The clock.</strong> The overlay ticks in whole seconds, but the tick
+<em>edges</em> are detectable and fall at video t&nbsp;=&nbsp;n&nbsp;+&nbsp;0.100&nbsp;s;
+the gaps between detected digit changes were 3.033, 0.967 and 2.000&nbsp;s, all
+within 35&nbsp;ms of exact integers, which is what shows the clip is real-time
+and uncut. That pins video t&nbsp;=&nbsp;0 to 10:59:25.900 Beijing, ±35&nbsp;ms.
+First dust at the left of frame at 10:59:47.5; the black plume emerges from
+behind the building at video 24.700&nbsp;s — 10:59:50.6 Beijing, 08:44:50.6
+Nepal — which is the arrival used in the table above. One caveat the footage
+cannot close: the CCTV clock's own drift is unknown.</p>
+<p><strong>The calibration, two ways.</strong> The border-post facade is
+mirror-symmetric about the national emblem, and the dentil frieze under its
+roofline is a graduated scale: Dave Hume counted 18 squares from the centre
+square to the building's end, over a 33.5&nbsp;m half-length, giving a
+1.97&nbsp;m module (a 2&nbsp;m architectural set-out; automated peak detection
+found the same 18, with the centre square within one pixel of the emblem). A
+projective fit to those graduations had an rms of 1.97&nbsp;px. Independently,
+he surveyed the two building ends from the camera position in Google Earth:
+bearing 167.82° at 117&nbsp;m and 194.00° at 145&nbsp;m.</p>
+<div class="tablewrap"><table>
+<tr><th>quantity</th><th>frieze ruler</th><th>survey</th><th>agreement</th></tr>
+<tr><td>building length</td><td class="num">67 m</td><td class="num">65.3 m</td><td class="num">2.5%</td></tr>
+<tr><td>range to building centre</td><td class="num">126 m</td><td class="num">128 m</td><td class="num">1.6%</td></tr>
+<tr><td>facade rotation off face-on</td><td class="num">22.8°</td><td class="num">26°</td><td class="num">3°</td></tr>
+</table></div>
+<p>Two unrelated routes agreeing to 2–3% is what makes the rest usable. The
+derived camera has a focal length of about 1,411&nbsp;px, a 48.8° horizontal
+field of view, ~14° of downward tilt and an optical axis on bearing 192.22°,
+which reproduces the surveyed 194.00° at the right-hand building edge exactly.
+The local image scale runs from 11.05&nbsp;px/m at the left of frame to 7.62 at
+the right — a 45% gradient — so no single pixels-per-metre factor is valid
+across this picture, and every conversion goes through the projective map.</p>
+
+<figure>
+<svg viewBox="0 0 900 500" role="img" aria-label="Plan view of the Gyirong Port camera, the border-post building, the two surveyed sight lines and the debris path, showing the 50-metre gap the front crossed in 1.066 seconds">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--plant)"/></marker></defs>
+<polygon points="450.0,22.0 539.2,435.5 197.7,361.5" fill="var(--river)" opacity="0.07"/>
+<line x1="450.0" y1="22.0" x2="539.2" y2="435.5" stroke="var(--river)" stroke-width="1" stroke-dasharray="3,4" opacity="0.7"/>
+<line x1="450.0" y1="22.0" x2="197.7" y2="361.5" stroke="var(--river)" stroke-width="1" stroke-dasharray="3,4" opacity="0.7"/>
+<line x1="450.0" y1="22.0" x2="360.5" y2="435.4" stroke="var(--river)" stroke-width="1" stroke-dasharray="6,4"/>
+<line x1="563.4" y1="247.1" x2="234.8" y2="497.1" stroke="var(--silt)" stroke-width="14" opacity="0.28" stroke-linecap="round"/>
+<line x1="563.4" y1="247.1" x2="234.8" y2="497.1" stroke="var(--silt)" stroke-width="1.5" opacity="0.9"/>
+<line x1="555.5" y1="253.1" x2="507.7" y2="289.4" stroke="var(--plant)" stroke-width="2.5" marker-end="url(#arr)"/>
+<line x1="494.4" y1="227.9" x2="386.9" y2="275.2" stroke="var(--ink)" stroke-width="9"/>
+<line x1="450.0" y1="22.0" x2="494.4" y2="227.9" stroke="var(--ink-soft)" stroke-width="0.8"/>
+<line x1="450.0" y1="22.0" x2="250.7" y2="484.9" stroke="var(--plant)" stroke-width="2"/>
+<line x1="450.0" y1="22.0" x2="281.9" y2="462.6" stroke="var(--plant)" stroke-width="2"/>
+<circle cx="354.2" cy="406.2" r="5" fill="var(--plant)"/>
+<circle cx="282.6" cy="460.7" r="5" fill="var(--plant)"/>
+<line x1="354.2" y1="406.2" x2="282.6" y2="460.7" stroke="var(--plant)" stroke-width="3"/>
+<circle cx="450.0" cy="22.0" r="6" fill="var(--river)"/>
+<line x1="850" y1="70" x2="850" y2="30" stroke="var(--ink)" stroke-width="1.5"/><polygon points="845,36 850,24 855,36" fill="var(--ink)"/>
+<text x="850" y="86" font-size="12" text-anchor="middle" fill="var(--ink)">N</text>
+<text x="462" y="26" font-size="13" fill="var(--ink)" font-weight="600">camera — Gyirong Port CCTV</text>
+<text x="462" y="42" font-size="11.5" fill="var(--ink-soft)">f ≈ 1,411 px · field of view 48.8° · axis 192.2°</text>
+<text x="506" y="226" font-size="12" fill="var(--ink)">left end · 117 m · 167.8°</text>
+<text x="375" y="291" font-size="12" text-anchor="end" fill="var(--ink)">right end · 145 m · 194.0°</text>
+<text x="471" y="282" font-size="12" fill="var(--ink)">border-post building, 65 m</text>
+<text x="354" y="453" font-size="11" text-anchor="middle" fill="var(--river)">optical axis</text>
+<text x="603" y="239" font-size="12" fill="var(--silt)">debris path — the river line, ~32° to the building</text>
+<text x="546" y="293" font-size="12" fill="var(--plant)" font-weight="600">front →</text>
+<text x="243" y="501" font-size="11.5" text-anchor="end" fill="var(--plant)">sight line 1 — right edge of the main building</text>
+<text x="274" y="479" font-size="11.5" text-anchor="end" fill="var(--plant)">sight line 2 — right edge of the lower level</text>
+<text x="304" y="435" font-size="13" text-anchor="end" fill="var(--plant)" font-weight="600">50 m in 1.066 s</text>
+<text x="304" y="451" font-size="12" text-anchor="end" fill="var(--plant)">= 46.9 m/s</text>
+<text x="20" y="44" font-size="11" fill="var(--ink-soft)">Plan view, north up, to scale (1 px = 0.56 m).</text>
+<text x="20" y="60" font-size="11" fill="var(--ink-soft)">Camera and building ends: Google Earth survey;</text>
+<text x="20" y="76" font-size="11" fill="var(--ink-soft)">the frieze ruler gives the same length to 2.5%.</text>
+<text x="20" y="92" font-size="11" fill="var(--ink-soft)">Sight line 2 is drawn to put the crossings 50 m apart;</text>
+<text x="20" y="108" font-size="11" fill="var(--ink-soft)">its landmark was picked on Google Earth, not surveyed.</text>
+</svg>
+<figcaption>The measurement, in plan. Two sight lines from the camera — one
+along the right edge of the main building, one along the right edge of a lower
+level to its right — cross the debris path 50&nbsp;m apart. The front crossed
+the first at video 24.700&nbsp;s and the second at 25.766&nbsp;s. Where the two
+lines meet the river is a judgement about which ground features they touch;
+that judgement is the whole error budget.</figcaption>
+</figure>
+
+<p><strong>The measurement.</strong> The debris front crosses sight line 1 at
+source frame 1482 (24.700&nbsp;s) and sight line 2 at about frame 1546
+(25.766&nbsp;s). The second crossing is ambiguous between two adjacent frames —
+the front is hard to separate from a shadow in the cliff behind — and the later,
+slower reading was taken deliberately; no sub-frame interpolation was done. That
+choice is worth 2.3&nbsp;m/s. Fifty metres in 1.066&nbsp;s is
+<strong>46.9&nbsp;m/s</strong> — 169&nbsp;km/h.</p>
+<div class="tablewrap"><table>
+<tr><th>case</th><th>separation</th><th>Δt</th><th>m/s</th><th>km/h</th></tr>
+<tr><td>fastest — longest defensible gap, Δt one frame short</td><td class="num">65 m</td><td class="num">1.049 s</td><td class="num"><strong>61.9</strong></td><td class="num">223</td></tr>
+<tr><td>nominal</td><td class="num">50 m</td><td class="num">1.066 s</td><td class="num"><strong>46.9</strong></td><td class="num">169</td></tr>
+<tr><td>slowest — shortest defensible gap, Δt one frame long</td><td class="num">45 m</td><td class="num">1.083 s</td><td class="num"><strong>41.6</strong></td><td class="num">150</td></tr>
+</table></div>
+<p>Timing contributes about 1.6%; the separation is everything else, and its
+range is asymmetric (−5/+15&nbsp;m) because 50 is the best reading of where the
+sight lines touch the ground rather than the midpoint of what is defensible.
+Quote it as <strong>41–63&nbsp;m/s, nominal 47</strong>. It is an instantaneous
+front speed, one sample of a quantity that fluctuates as obstacles fail. One
+item stays open: the range at which the 50&nbsp;m was read. If it was taken at
+the building (~145&nbsp;m) while the debris was passing at ~200&nbsp;m, the true
+separation is nearer 69&nbsp;m and the speed nearer 68&nbsp;m/s — the sight
+lines diverge, so the gap grows with range.</p>
+<p><strong>What it agrees with, and what it excludes.</strong></p>
+<div class="tablewrap"><table>
+<tr><th>m/s</th><th>source</th><th>quantity</th><th>inside 41–63?</th></tr>
+<tr><td class="num"><strong>46.9</strong></td><td>this measurement</td><td>debris front at the junction, instantaneous</td><td>—</td></tr>
+<tr><td class="num">47.8</td><td>seismic origin to CCTV overlay, corrected clock</td><td>mean front speed over 22 km</td><td class="verdict pass">yes</td></tr>
+<tr><td class="num">48.5</td><td>geopera, superelevation at bends</td><td>front / crest</td><td class="verdict pass">yes</td></tr>
+<tr><td class="num">54.0</td><td>three mud lines at the junction (<a href="#s08" class="xref">§08</a>)</td><td>front, from stagnation run-up</td><td class="verdict pass">yes</td></tr>
+<tr><td class="num">19.0</td><td>CAS frame-by-frame study</td><td>water surface, post-turn</td><td class="verdict fail">no</td></tr>
+</table></div>
+<p>The envelope contains every independent estimate of the <em>front</em> and
+excludes the one estimate of the post-turn <em>water</em> — which is the
+discrimination that matters for <a href="#s08" class="xref">§08</a>, and it
+survives the full distance uncertainty. A caution about the top three: 46.9,
+47.8 and 48.5 agreeing within 1.6&nbsp;m/s by three unrelated routes is tighter
+than a ±10&nbsp;m distance uncertainty can support. Read it as consistency, not
+precision; part of the three-way agreement is luck. The run-up geometry does not
+discriminate inside the envelope either — 46.9&nbsp;m/s needs a stagnation
+efficiency of 0.45 to produce the observed 45–55&nbsp;m of cliff run-up, and
+across 41–63 that efficiency runs 0.22–0.63, physical throughout — but the CAS
+19 would need 2.7, which is impossible, and that is the point: it is not the
+same quantity. Note also that the instantaneous ~47 at km&nbsp;22 equals the
+47.8 mean over the whole 22&nbsp;km: the front did not slow down the Lhende. The
+collapse to ~21&nbsp;m/s over km&nbsp;22–68 happened at and after the junction.</p>
+<p><strong>What failed, so that it is not repeated.</strong> Tracking the black
+plume laterally does not work: six frieze graduations spanning 106&nbsp;px all
+darkened within a quarter of a frame, and the sequence runs backwards at the
+end — the cloud <em>appears</em>, billowing toward the camera, it does not
+translate, and a robust line fit through those crossings returned 66–87&nbsp;m/s
+on data that violates its model. The white plume and the black plume are
+different phenomena; every edge-tracking number produced before that was
+noticed was measuring the white one. Edge tracking across every threshold,
+window and set-back spanned 12–58&nbsp;m/s, which contains every published
+estimate and is therefore not a measurement. And a wedge-geometry
+reconstruction with the river only ~23° off the line of sight amplified every
+pixel of error into metres; it returned 95–170&nbsp;m of travel for a plume
+crossing a 65&nbsp;m building, a red flag rather than a result. Three claims
+made during that work were withdrawn the same day and are listed in the
+dossier.</p>
 
 <h2 id="s04"><span class="no">04</span>The energy wedge</h2>
 <p>Melting ice is expensive: 334&nbsp;kJ per kilogram. A kilogram of anything
@@ -528,8 +869,13 @@ it; the last row is the case the melt narrative needs:</p>
 <tr><td>Largest published volume, generous partition</td><td class="num">200 Mm³</td><td class="num">80%</td><td class="num">4,000 m</td><td class="num">0.50</td><td class="num mono">14.8 Mm³</td></tr>
 <tr><td>Absolute ceiling — every input at its published limit at once</td><td class="num">200 Mm³</td><td class="num">80%</td><td class="num">4,000 m</td><td class="num">0.70</td><td class="num mono">20.7 Mm³</td></tr>
 </table></div>
+<p><em>Drop</em> in the table is the vertical fall charged to melt energy: 2,400&nbsp;m
+is scar to the Lhende channel — the ~1,200&nbsp;m initial fall plus the
+~1,000&nbsp;m below the impact zone (<a href="#s-event" class="xref">§00b</a>);
+4,000&nbsp;m is scar to the lower river, the most generous case. The
+"1,200&nbsp;m" quoted on the summary pages is the initial fall only.</p>
 <p>So melt reaches the FFD's ~20&nbsp;Mm³ of excess at exactly one point in the
-whole parameter space: the largest published volume — five times our own
+whole parameter space: the largest published volume — six times the top of our own
 envelope — with four-fifths ice, the longest drop and a heat-to-ice partition at
 the top of the literature's 0.3–0.7 range, all at once. Relax any single one and
 it falls away fast. At the size our own consistency envelope supports, melt is
@@ -544,7 +890,7 @@ it here. The conclusion is unchanged; the margin is roughly eight times larger
 than we were claiming, and now rests on a stated case rather than an adjective.</p>
 <p>Meanwhile the monsoon corridor held roughly <strong>22.4&nbsp;Mm³ of water
 standing in the channel</strong> (300–600&nbsp;m³/s flowing at ~3&nbsp;m/s over
-199&nbsp;km), delivered ~10&nbsp;Mm³ more of baseflow during the seven hours the
+168&nbsp;km, the FFD's reckoning of the distance), delivered ~10&nbsp;Mm³ more of baseflow during the seven hours the
 wave took to pass, and its saturated bed sediments carried ~9&nbsp;Mm³ of pore
 water. The wedge between those numbers is the whole argument. And the early-September
 estimates trend <em>smaller</em> still: if the initial detachment was
@@ -552,11 +898,172 @@ estimates trend <em>smaller</em> still: if the initial detachment was
 elevation-data reading, which also raises the initial fall to ~2,100&nbsp;m),
 the melt term shrinks below 1&nbsp;Mm³ and the wave's growth becomes almost
 entirely an entrainment story — the snowplow in its purest form.</p>
-<div class="callout"><span class="lbl">The precedent nobody mentions</span>
+<div class="callout"><span class="lbl">The precedent in Kargel's own work</span>
 For the 2012 Seti River disaster — also Nepal, also a rock mass off a high peak —
 Kargel's own analysis concluded the flood water was dominated by <em>river and
 snowmelt water impounded in the gorge</em>, with melt supplying perhaps a tenth.
 The monsoon version of that conclusion is our hypothesis.</div>
+
+<h2 id="s04b"><span class="no">04b</span>Ice and rock together are not rock: the first 22 kilometres</h2>
+<p><em>Added 6 September, evening. An interpretation and some arithmetic, not a
+scored result; it changes how findings 01 and 02 are worded, not what they
+say. Prompted by Dave Hume's question of whether the first 22&nbsp;km carried
+much water at all.</em></p>
+
+<h3>How much water was there to sweep up above the border?</h3>
+<p>Very little. The Lhende is a small river. The baseflow the routing model
+carries (<code>model/snowplow.py</code>) runs from 2&nbsp;m³/s at the scar to
+30 at km&nbsp;5 and 150 at the border; at a monsoon velocity of 3&nbsp;m/s that
+is a wetted section of 1–50&nbsp;m², and the water standing in the whole
+22&nbsp;km of channel comes to about <strong>0.5&nbsp;Mm³</strong>. The river's
+inflow during the 7.7 minutes the front took to pass adds 0.07. The saturated
+bed the flow tore up in the gorge — the entrainment ledger puts it near
+2.6&nbsp;Mm³ of bulk material above the border — releases perhaps 0.9&nbsp;Mm³
+of pore water. Frictional melt is capped at 1.1–2.5&nbsp;Mm³ for the whole event
+(<a href="#s04" class="xref">§04</a>), and most of that is produced late,
+because heat takes minutes to soak into ice before it melts it
+(<a href="#s10" class="xref">§10</a>). Add every term and the water available
+in the Lhende reach is <strong>2–4&nbsp;Mm³</strong>, against a release of
+14–34&nbsp;Mm³ of rock and ice. What struck Gyirong Port was, by volume, at
+least four-fifths the mountain itself. "A black wall of water carrying ice, mud
+and massive rocks" is the description of a debris flow, and that is what the
+mud lines at the junction — 60&nbsp;m deep, material at ~30&nbsp;m/s, a front at
+~47–54 (<a href="#s08" class="xref">§08</a>) — are describing: a rock–ice mass
+hitting a wall, not a flood.</p>
+<p>The water story begins at the junction. The main stem arriving from Tibet
+carries ~150&nbsp;m³/s, the corridor below holds ~22&nbsp;Mm³ standing in the
+channel at any instant (<a href="#s04" class="xref">§04</a>), and the snowplow
+of <a href="#s05" class="xref">§05</a> is a description of what happened from
+km&nbsp;22 onward. Finding 01 is unchanged in the ledger and clearer in
+geography: above the junction there was almost no river to sweep; below it
+there were 22 million cubic metres.</p>
+
+<h3>So what got 14–34 million cubic metres down 22 km in 7 min 40 s?</h3>
+<p>Ice. Not as water, as ice. The simplest way to see it uses no model at all.
+For a mass sliding from the scar to the junction floor — about 3,100&nbsp;m of
+descent over 22&nbsp;km — the ratio of drop to run is
+<strong>H/L&nbsp;=&nbsp;0.14</strong>. A sliding block arrives with speed
+v²&nbsp;=&nbsp;2g(H&nbsp;−&nbsp;μL), so it arrives at all only if its effective
+friction coefficient is below 0.14, and it arrives at 47&nbsp;m/s, still
+moving, only if μ is very close to that — about 0.135. Scheidegger's 1973
+volume–mobility law, the standard rule for dry rock avalanches, gives
+μ&nbsp;≈&nbsp;0.30 at 21&nbsp;Mm³ and 0.28 at 34: a dry rock avalanche of this
+size stops after about 10&nbsp;km. That is finding 02 restated without a
+routing model, and it is why the dry-rock scenarios in the model arrive at
+17–30 minutes only by borrowing water from the channel on the way down.</p>
+<p>Rock–ice avalanches are a different class of event, and the literature is
+more careful than a slogan. In rotating-drum experiments Schneider, Kaitna and
+colleagues (2011) found granular ice cuts the bulk friction of a gravel mass by
+up to 20% and water by about 50%, with mixtures above ~40% ice "nearly
+completely" liquefying as the ice fragments and melts; in their field set of 64
+rock–ice avalanches over a million cubic metres, the same group (Schneider,
+Huggel, Haeberli and Kaitna 2011) could <em>not</em> confirm the ice fraction as
+a control on runout — what showed up was water, volume, and travel over a
+glacier. Back-analyses of rock avalanches running on glaciers give Voellmy
+friction coefficients of 0.03–0.10 (Sosio et al. 2012), and ice-rich glacier
+detachments reach angles down to about 5°, a drop-to-run ratio of 0.09 (Kääb et
+al. 2021) — far below the 0.28–0.30 Scheidegger gives dry rock at this size.
+The model's ice-rich scenarios use μ&nbsp;=&nbsp;0.17, which the code attributes
+to Schneider et al.'s calibrations; we could not open that paper's full text
+on 6 September to confirm the figure, and say so. The closest analogue is
+<strong>Kolka–Karmadon, Caucasus, 20 September 2002</strong>: 100–130 million
+cubic metres, roughly 80–90% glacier ice with about 10% water in the mass, that
+ran 18–20&nbsp;km down the Genaldon valley at a mean 50–80&nbsp;m/s — four to
+six minutes, by that arithmetic; the papers do not quote the elapsed time —
+with a drop-to-run ratio of 0.15 from the wall to the Karmadon gates, where
+the debris stalled and the liquid fraction ran on "immediately" for another
+15&nbsp;km as a mudflow (Huggel et al. 2005; Haeberli et al. 2004; Evans et al.
+2009). The Lhende run is that class of event at a fifth of the size: a similar
+distance at a similar mean speed, a similar drop-to-run ratio, a debris body
+that stopped where the valley geometry stopped it, and a flood that continued.
+Huascarán 1970 is the other classic — 50–80 million cubic metres, 13–16&nbsp;km
+to Yungay in three to four and a half minutes, its mobility attributed to the
+glacial till, snow and meltwater it entrained (Evans et al. 2009; Mergili et
+al. 2018). Chamoli 2021, at 80% rock, is the contrast: a similar drop-to-run
+ratio but a front that had slowed to ~25&nbsp;m/s by 15&nbsp;km and 12–16 by
+25&nbsp;km, 34–37 minutes to Tapovan, which is what a mostly-rock mass with a
+thin ice budget does (<a href="#s10" class="xref">§10</a>). One more piece of
+arithmetic from that paper carries over: a 3,100&nbsp;m drop can melt at most
+about a fifth of a mass's volume if that fifth is ice, so anything ice-richer
+than Chamoli arrives at the bottom <em>still carrying ice</em> — which is what
+the border footage shows and what the 50,000&nbsp;m³ of ice debris reported in
+the barrier lake suggests.</p>
+
+<h3>Why ice does this — the physics of an ice skate</h3>
+<p>Three mechanisms, in the order that matters at avalanche speeds.</p>
+<p><strong>Premelting.</strong> An ice surface carries a disordered, liquid-like
+film with no load on it at all (Faraday noticed it in the 1850s; Dash, Rempel
+and Wettlaufer's 2006 review is the modern account). The film thickens toward
+0&nbsp;°C and is why a skate glides at −30&nbsp;°C, where pressure melting is
+impossible — the pressure effect is 0.0074&nbsp;°C per atmosphere with a hard
+floor of about 22&nbsp;°C, as the correction of 6 September on the plain-English
+page sets out. Premelting is the reason ice is slippery at rest.</p>
+<p><strong>Frictional melting at the base.</strong> This is the one that runs an
+avalanche. The power dissipated per square metre of sliding contact is the
+shear stress times the slip rate, μ&nbsp;σ&nbsp;v. Under 30&nbsp;m of debris
+(σ&nbsp;≈&nbsp;0.6&nbsp;MPa), with μ&nbsp;=&nbsp;0.1 and v&nbsp;=&nbsp;40&nbsp;m/s,
+that is about 2.4&nbsp;MW per square metre — enough to melt <strong>7&nbsp;mm
+of ice per second</strong> at the contact, whatever the bulk temperature of the
+ice. The water film renews itself faster than it can be squeezed out, and it
+does so from the moment the mass is moving fast. Over the whole run this
+consumes a few per cent of the fall's energy: it is lubrication, not water
+production, and the bulk-melt ceiling of <a href="#s04" class="xref">§04</a>
+is untouched by it. It is also velocity-weakening — faster sliding makes more
+melt, which lowers μ, which makes it faster — the same runaway that produces
+frictional melt on fault surfaces, and a standard result in the ice-friction
+literature (Kietzig, Hatzikiriakos and Englezos 2010 review it). A law like
+that predicts a front that accelerates to a plateau and holds it, which is what
+the Lhende data show: ~47&nbsp;m/s at km&nbsp;22 against a 47.8&nbsp;m/s mean
+over the 22&nbsp;km, no deceleration down the gorge. A constant-friction mass
+would have slowed steadily. That observation is already sitting in the record,
+and <code>PLAN.md</code>&nbsp;§8a logs the rate-dependent friction law as the
+next refinement of the model, deferred because it would not move the size
+envelope.</p>
+<p><strong>Fluidisation.</strong> Ice fragments melting <em>inside</em> the
+moving mass raise pore pressure and turn a grinding granular body into a slurry
+that carries its own weight on its water — the two-phase mechanics Pudasaini
+and Krautblatter (2014) built for exactly this class of event. This is the
+process the model's friction dial parameterises: μ falls with the fluid fraction
+<em>w</em>, and since the two-phase fix of 4 September ice counts on the fluid
+side of that dial (<code>model/ENTRAINMENT.md</code>). So the ensemble's
+"liquid fraction" should be read as <em>ice-plus-water</em> fraction, and the
+runs that pass are runs with enough ice or water to lubricate — not necessarily
+wet ones. The site said "wet or icy"; that was right. The plain-English page
+said "only something running like slush" could make the border in time; that
+was too strong and has been corrected.</p>
+
+<h3>What this changes, and what it does not</h3>
+<p>It changes words. "Wall of water" was the wrong description of what reached
+km&nbsp;22, and the pages now say ice, rock and mud where they mean the first
+22&nbsp;km and a flood where they mean what followed. It reframes finding 02:
+"not dry rock" means the run down the Lhende is what a rock–ice avalanche does
+on its own; it did not need the river, and the Lhende had almost no river to
+offer. It sharpens finding 01: the river water was collected below the junction,
+and that is where the ledger's 22&nbsp;Mm³ sits. It does not change the size
+envelope, which is pinned by the clock, the erosion volume and the deposition
+cap, none of which cares <em>how</em> μ got low, only that it did. It does not
+settle the ice fraction, which remains unpublished — and that is the one number
+that could overturn this reading: a measured fraction near or below Chamoli's
+20% would mean a mostly-rock mass covered 22&nbsp;km at 47.8&nbsp;m/s, which the
+Chamoli record says does not happen without a water supply nobody has yet
+identified. The Lhende's own contribution is small on every reading: the only
+measured flow in its upper reach is the 23&nbsp;m³/s inflow to the barrier lake
+on 30 August. And it adds nothing to the
+warning problem except emphasis: an ice-rich face above a monsoon river
+produces a front at 170&nbsp;km/h regardless of what the river is doing.</p>
+<div class="callout"><span class="lbl">Three checks that would test this reading</span>
+<em>The front's speed profile down the Lhende.</em> Velocity-weakening friction
+predicts a plateau; constant friction predicts steady deceleration. One point
+(km&nbsp;22) is consistent with the plateau; geopera's 37&nbsp;m/s in the upper
+Lhende and 45–52 at the border are consistent with acceleration to it. A
+speed at km&nbsp;10–15 would discriminate. <em>The deposit at km&nbsp;40–43.</em>
+If it is ice-rich it must go on losing volume for weeks as buried ice melts
+out; rock does not. Two stereo surveys a month apart would separate them
+(already in <a href="#s13" class="xref">§13</a>). <em>The ground below the
+scar.</em> Every account has the mass leaving the glacier tongue and scouring
+proglacial moraine to ~4,000&nbsp;m; a clear-sky DEM difference would show how
+much it took, and whether any ice went with it. No such measurement
+exists.</div>
 
 <h2 id="s05"><span class="no">05</span>The snowplow model</h2>
 <p>To go beyond static budgets we built a one-dimensional routing model along the
@@ -578,7 +1085,9 @@ peak decays except where re-fed.</p>
   <figcaption>Model arrival times against the observed clocks (▼ front, ▲ peak).
   Fitted vs observed: Malekhu front minute 163 vs 163; Devghat front 403 vs 403
   (15:20 NPT), peak 448 vs 443 (16:00 NPT). Larger markers are higher-confidence
-  observations.</figcaption>
+  observations. The observed front marker at km 22 is the 7.0-minute clock this
+  law was fitted to; the corrected 7 min 40 s (6 Sept) sits 40 s later and
+  closer to the fitted 8 min. The law has not been re-fitted.</figcaption>
 </figure>
 <figure>
   <div id="fig-speed" role="img" aria-label="Model front speed versus distance with observed velocity estimates"></div>
@@ -592,7 +1101,8 @@ peak decays except where re-fed.</p>
   right, the real flow carried momentum through the border and shed speed over
   distance — inertia our memoryless slope-law omits (the same missing inductor
   as <a href="#s08" class="xref">§08</a>). Superelevation also tracks the surge crest, which outruns the
-  front.</figcaption>
+  front. The 52 m/s marker labelled Kargel is the retired clock speed; the
+  corrected 22-km mean is 47.8 (<a href="#s03" class="xref">§03</a>).</figcaption>
 </figure>
 
 <div class="prose">
@@ -618,7 +1128,7 @@ comparison the section rests on.</div>
 <tr><th>Scenario</th><th style="text-align:right">Melt</th><th style="text-align:right">River-derived</th><th style="text-align:right">Net-new water</th><th style="text-align:right">Peak Q @ Devghat</th><th>Against observation</th></tr>
 <tr><td>Melt-only <span class="mono">(no sweep-up)</span></td><td class="num">4.4 Mm³</td><td class="num">15.7 Mm³</td><td class="num">4.4 Mm³</td><td class="num">3,383 m³/s</td><td class="verdict fail">42% LOW</td></tr>
 <tr><td>Melt-maximal <span class="mono">(15 Mm³ melt, weak sweep)</span></td><td class="num">9.8 Mm³</td><td class="num">20.8 Mm³</td><td class="num">12.6 Mm³</td><td class="num">4,619 m³/s</td><td class="verdict fail">21% LOW</td></tr>
-<tr class="hit"><td><strong>Snowplow</strong> <span class="mono">(best-evidence mix)</span></td><td class="num">3.7 Mm³</td><td class="num">36.7 Mm³</td><td class="num">10.3 Mm³</td><td class="num">5,913 m³/s</td><td class="verdict pass">WITHIN 1%</td></tr>
+<tr class="hit"><td><strong>Snowplow</strong> <span class="mono">(v1 mix, 100 Mm³ — see note)</span></td><td class="num">3.7 Mm³</td><td class="num">36.7 Mm³</td><td class="num">10.3 Mm³</td><td class="num">5,913 m³/s</td><td class="verdict pass">WITHIN 1%</td></tr>
 <tr><td>Snowplow + brief impoundment</td><td class="num">3.6 Mm³</td><td class="num">36.0 Mm³</td><td class="num">10.1 Mm³</td><td class="num">6,087 m³/s</td><td class="verdict pass">WITHIN 4%</td></tr>
 </table></div>
 <div class="prose"><p style="font-size:14.5px;color:var(--ink-soft)">Pulse shape
@@ -693,8 +1203,9 @@ energy budget's best estimate, the wave arrives at Devghat a fifth too small.
 The scenarios that work are the ones where <strong>close to four-fifths of the
 water in the distal wave is channel-derived</strong> — swept-up monsoon flow plus
 collected baseflow — with saturated-sediment pore water second and glacier melt
-a ~8% term. In the upper gorge, where the world's cameras pointed, melt and
-displaced river water were more evenly matched; with every kilometre downstream
+a ~8% term in that v1 run (at the 14–34&nbsp;Mm³ envelope it is a few per
+cent). In the upper gorge, where the world's cameras pointed, there was almost
+no river water to displace (<a href="#s04b" class="xref">§04b</a>); with every kilometre downstream
 the river's share compounds.</p>
 
 <h2 id="s07"><span class="no">07</span>Gross versus net — the subtlety in the 20&nbsp;Mm³</h2>
@@ -923,6 +1434,58 @@ verification needs the footage geometry: geolocating the cameras, orienting thei
 against the corridor map (<a href="#s02" class="xref">§02</a>), and feature-tracking the frames is now a
 top task (<a href="#s13" class="xref">§13</a>). It matters because the border speed is simultaneously the most-quoted
 number of the disaster and the one our model currently reproduces worst.</p>
+<p><strong>The up-valley wedge, measured (6 September).</strong> The hypothesis
+that a large volume ran up the Chinese arm rested on a contour trace
+(~3.5&nbsp;km), Xinhua's "about 3&nbsp;km" of damaged G216, and a Sentinel-2
+change test cut in angular sectors, which averaged hillsides in with the
+valley floor. Re-run along the OSM river centreline in a ±150&nbsp;m corridor,
+binned every 250&nbsp;m (<code>calcs/sentinel_wedge_corridor.py</code>, same
+12&nbsp;August scene and 27&nbsp;Aug–3&nbsp;Sept composite): the bare-ground
+area after/before is 2.1–2.4× between 0.75 and 1.5&nbsp;km up the arm, falls to
+1.2 by 2.5&nbsp;km and ≤1.1 from 3.25–3.5&nbsp;km on; the NDVI change is back
+inside the hillside noise at 2.0–2.25&nbsp;km; a straight line through the added
+bare width from the junction fan to 3&nbsp;km reaches zero at 2.8&nbsp;km. The
+ratio end-point does not move when the corridor half-width is changed to 100 or
+250&nbsp;m; the NDVI end-point does, between 1.25 and 2.5&nbsp;km, and the
+3.0–3.25&nbsp;km bin is 92% cloud, so the honest statement is that the stripping
+is full-strength to 2&nbsp;km, marginal from 2.25, and gone by 3.5. The control
+behaves as a through-flow should: the downstream Bhote
+Koshi corridor stays at 1.3–2.8× to the edge of the image at 5.25&nbsp;km, and
+the Lhende at 3–6× over 6&nbsp;km. So the stripped ground <em>is</em> there
+between the junction and the head of the contour — which is what distinguishes
+a backwater wedge from a contour that merely runs up a valley — and it ends where
+the contour trace and the road damage end. China's Ministry of Natural
+Resources' remote-sensing centre (Guo Zhaocheng, on CCTV, 28 August, from the
+Ministry's 3D imagery) says the debris flow "ran up the Gyirong Tsangpo against
+the current, affecting a distance of nearly 3&nbsp;km"; every later official
+statement repeats that one reading. Independently of it, the road evidence
+clusters at the same distance: about 3&nbsp;km of the G216 destroyed, the road
+cut about 3&nbsp;km from the port, a police vehicle bogged in fresh mud 3&nbsp;km
+from the port at about 11:00 on the day, and Resuo village, 3&nbsp;km up,
+reconnected the next day. One outlier, a container driver's "about five
+kilometres" in the Kathmandu Post, is contradicted by tourists stopped
+unharmed at 5&nbsp;km that morning. Read together, the surge went about
+3&nbsp;km up the valley toward Gyirong. A reading of the open sub-metre
+imagery (Planet's Pelican scenes of 27 August and 1 September, 0.55&nbsp;m,
+released under CC-BY-NC) adds a wrinkle worth keeping: fresh grey fill floors
+the whole valley from the junction to at least 2.5&nbsp;km, the reach from 2.5
+to 3.5&nbsp;km is cloud in every sub-metre scene, and from about 3.8&nbsp;km,
+past the bend, a fill at roughly twice the pre-event channel width runs to a
+tributary junction at about 4.6&nbsp;km along the channel, where the river
+returns to its old width. That fill is in both the 27 August and the 1
+September scenes. Whether it
+is run-up of the surge or sedimentation in the reach that ponded behind the
+sediment plug at the junction — Chinese engineers found the bed raised nearly
+5&nbsp;m and water over 15&nbsp;m deep in the last 1.7&nbsp;km during the
+repair — the imagery cannot say, and the Sentinel-2 corridor test sees only a
+weak, single-bin signal there. Distances also shift by 0.2–0.3&nbsp;km
+depending on whether they are measured from the river junction or the
+checkpoint, along the river or the road. Caveats that stay attached: both-epoch
+clear-sky coverage is 42.6% of the area and 8–100% by bin; the cloud mask does
+not remove terrain shadow; the centreline is the pre-event channel; and the
+gorge bed was already largely bare, which caps the ratio. The volume parked in
+that arm during passage — 10–29&nbsp;Mm³ by the wedge geometry — remains a
+model quantity, not a measurement.</p>
 
 <h2 id="s09"><span class="no">09</span>Downstream into India</h2>
 <p>The wave did not stop at Devghat. At the Valmikinagar barrage on the Gandak
@@ -942,7 +1505,7 @@ flood — is <em>not resolvable</em> at the barrage: fluctuations stayed within
 ~±150&nbsp;m³/s of normal. Consistent with the ladder's lesson: by 300&nbsp;km,
 the RC cascade has low-pass-filtered small pulses into the noise. The fine
 multi-pulse structure, if it existed, lived in the reaches where the gauges
-died; the Galchhi record and India's CWC hourly archive are where it would still
+were destroyed; the Galchhi record and India's CWC hourly archive are where it would still
 be written.</p>
 
 <h2 id="s10"><span class="no">10</span>Does it travel? The Chamoli stress test</h2>
@@ -965,7 +1528,7 @@ which turns the friction law into Voellmy&rsquo;s &mdash; and collapses back to 
 &mu;&nbsp;=&nbsp;0. The dissection came out clean. A constant &mu; fails in both
 directions at once: a hundred-metre-deep flow outruns Coulomb friction in the
 steep upper canyon, while the flat basin at Raini (slope ~0.015) is terminal &mdash;
-the front dies there and never reaches Tapovan. And the observations themselves
+the front stalls there and never reaches Tapovan. And the observations themselves
 contain the diagnosis: the mean speed to Tapovan (~11&nbsp;m/s) is <em>below the
 slowest of the three local speeds</em> (12&nbsp;m/s) &mdash; arithmetic that forces an
 intermittent, stop-and-go front, surging when moving and stopped in between.</p>
@@ -998,7 +1561,7 @@ this).</p>
   <div id="fig-chamoli" role="img" aria-label="Chamoli front trajectories under successive friction laws versus the observed Tapovan arrival"></div>
   <figcaption>The Chamoli dissection &mdash; each curve adds one piece of physics.
   Water-limit dynamics reach Tapovan in ~9 minutes (the kinematic law&rsquo;s
-  failure, reproduced); constant Voellmy &mu; dies in the Raini basin (grey
+  failure, reproduced); constant Voellmy &mu; stalls in the Raini basin (grey
   band); the instant melt dial crosses it too easily; the thermal-lag dial
   (&tau;&nbsp;=&nbsp;5&nbsp;min, the one fitted constant) passes through the
   observed 34&ndash;37&nbsp;minute window, and its arrival stays at 28&ndash;52&nbsp;min
@@ -1021,7 +1584,9 @@ event</em>, that framing claims more than the evidence holds — and so does its
 mirror image, "nothing to do with climate." The two claims need separating.</p>
 <p>What the record does not support: this was not a weather event (a clear,
 rain-free morning), not a glacial-lake outburst, and — per the ledger above —
-not even mostly glacial water: melt was a ~8% term. The proximate cause was a
+not even mostly glacial water: melt was a ~8% term in the v1 ledger and, at the
+14–34&nbsp;Mm³ envelope of <a href="#s00" class="xref">§00</a>, at most
+1.1–2.5&nbsp;Mm³ — a few per cent. The proximate cause was a
 bedrock wedge failure of a kind steep, tectonically active Himalayan faces have
 produced throughout the Holocene; USGS notes an earlier event on the same
 massif in 2015 — that one off the <em>south</em> flank, 7&nbsp;km away and into
@@ -1065,7 +1630,7 @@ Gandaki, is unbuilt): in circuit terms the cascade added no meaningful
 capacitance to the line — only exposure. For readers in the industry, three
 things in this analysis translate directly:</p>
 <p>— <strong>Up-valley, the wave outruns any human alert chain.</strong> The
-front covered the first 22&nbsp;km in seven minutes; SMS alerts left 38
+front covered the first 22&nbsp;km in seven minutes forty; SMS alerts left 38
 minutes after the collapse. Only automated, upstream-triggered protection —
 seismic or stage tripwires wired into plant control, tunnel egress alarms,
 intake gates that fail safe — operates on the timescale that matters in the
@@ -1086,12 +1651,16 @@ any instrument that could be deployed now.<br>
 — <strong>The trigger can extend weeks earlier.</strong> Sentinel-1 InSAR shows
 the failed mass creeping ~10&nbsp;mm/month and accelerating in the days before
 collapse (Shirzaei, Virginia Tech, via <em>Nature</em> news, 2 Sept) — a
-satellite watchlist tier above the seismic tripwire. And GFZ's Niels Hovius has
+satellite watchlist tier above the seismic tripwire. Note that a second,
+independent reading of the same satellite record (geopera, 31 Aug) finds under
+two metres of steady motion in a hundred days and no acceleration at all; the
+two disagree, neither is peer-reviewed, and precursory creep should not be
+treated as established. And GFZ's Niels Hovius has
 said seismic-signal-based downstream warning was feasible "with only minutes'
 delay" — the automated-tier case, made independently.</p>
 
 <h2 id="s13"><span class="no">13</span>What would change our mind</h2>
-<p>This is v4, built ten days after the event on contested numbers, and five
+<p>This is v6, built eleven days after the event on contested numbers, and five
 results have already been withdrawn or reversed in that time
 (<a href="#s00" class="xref">§00</a>). It moves if the facts move:</p>
 <p>— A published source volume and ice fraction. This is the input that moves
@@ -1148,7 +1717,7 @@ with Claude as research and modelling assistant.</p>
 <li><a href="https://web.archive.org/web/20260831074529if_/https://hydrology.gov.np/cm/files/report_bhotekoshi_1787808964794.pdf">DHM/FFD press release, 27 Aug 2026 (PDF)</a> — official chronology &amp; the 20 Mm³ method</li>
 <li><a href="https://www.prabhatkhabar.com/state/bihar/bettiah/gandak-barrage-water-level-fluctuation">Valmikinagar barrage hourly discharge</a> — Prabhat Khabar (Bihar WRD figures)</li>
 <li><a href="https://kathmandupost.com/national/2026/08/27/how-the-bhotekoshi-flood-unfolded-over-10-hours">How the Bhotekoshi flood unfolded over 10 hours</a> — Kathmandu Post</li>
-<li><a href="https://www.scmp.com/news/china/science/article/3366020/china-nepal-floods-first-research-shows-no-one-could-have-outrun-debris-flow">First peer-reviewed study (CAS, <em>Yangtze River</em>)</a> — via SCMP</li>
+<li><a href="https://www.scmp.com/news/china/science/article/3366020/china-nepal-floods-first-research-shows-no-one-could-have-outrun-debris-flow">First peer-reviewed study (Chinese Academy of Sciences, in the journal <em>Yangtze River</em>, 人民长江)</a> — via SCMP</li>
 <li><a href="https://www.nature.com/articles/d41586-026-02746-4">InSAR precursor creep before the collapse</a> — Nature news</li>
 <li><a href="https://english.onlinekhabar.com/technical-report-rasuwa-flood.html">FFD technical report, station by station</a> — OnlineKhabar</li>
 <li><a href="https://geopera.com/blog/bhote-koshi-flood-2026-satellite-analysis">Bhote Koshi flood satellite reconstruction</a> — Darcy Weedman, geopera (Geopera Pty Ltd company blog; not peer-reviewed)</li>
@@ -1156,6 +1725,21 @@ with Claude as research and modelling assistant.</p>
 <li><a href="https://www.science.org/doi/10.1126/science.abh4455">Shugar et al. 2021, the Chamoli disaster</a> — Science</li>
 <li><a href="https://sandrp.in/2014/01/26/explained-seti-river-floods-in-may-2012-nepal-a-chain-of-events-starting-at-25000-feet/">Seti River 2012 flood analysis (Kargel)</a> — SANDRP</li>
 <li><a href="https://www.nature.com/articles/ngeo1040">Iverson et al. 2011, wet-bed entrainment</a> — Nature Geoscience</li>
+<li><a href="https://nhess.copernicus.org/articles/5/173/2005/">Huggel et al. 2005, the 2002 Kolka–Karmadon rock–ice avalanche</a> — NHESS (the closest analogue, §04b)</li>
+<li><a href="https://www.cambridge.org/core/journals/journal-of-glaciology/article/kolkakarmadon-rockice-slide-of-20-september-2002-an-extraordinary-event-of-historical-dimensions-in-north-ossetia-russian-caucasus/7FA91EBF980A35D0235A3A32B13A4FA7">Haeberli et al. 2004, Kolka–Karmadon</a> — Journal of Glaciology</li>
+<li><a href="https://tc.copernicus.org/articles/15/1751/2021/">Kääb et al. 2021, glacier detachments and their reach angles</a> — The Cryosphere</li>
+<li><a href="https://doi.org/10.1002/esp.2218">Schneider, Huggel, Haeberli &amp; Kaitna 2011, rock–ice avalanche mobility (64 events)</a> — ESPL (abstract; full text not opened)</li>
+<li><a href="https://www.zora.uzh.ch/id/eprint/49746/">Schneider, Kaitna et al. 2011, rotating-drum experiments on gravel–ice mixtures</a> — Cold Regions Science &amp; Technology (abstract)</li>
+<li><a href="https://www.sciencedirect.com/science/article/abs/pii/S0277379112001977">Sosio et al. 2012, runout of rock avalanches in volcanic and glacial terrain</a> — Quaternary Science Reviews (abstract)</li>
+<li><a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2014JF003183">Pudasaini &amp; Krautblatter 2014, a two-phase rock–ice avalanche model</a> — JGR Earth Surface (abstract)</li>
+<li><a href="https://hirisk.org/wp-content/uploads/2026/08/RHA_NP3_RasuwaFlood-1.pdf">HiRISK rapid hazard assessment NP3, Rasuwa flood (28 Aug)</a> — Steiner, Immerzeel, Allen et al. (PDF)</li>
+<li><a href="https://www.news.cn/20260827/c78d2a601a3e4511a225c3abe86a3718/c.html">China Ministry of Natural Resources reconstruction</a> — Xinhua, 27 Aug (Chinese); the "nearly 3 km upstream" reading is Guo Zhaocheng's on <a href="https://english.cctv.com/2026/08/29/ARTIMtLTn5VunoUue932YjVW260829.shtml">CCTV, 28–29 Aug</a></li>
+<li><a href="https://www.news.cn/politics/20260828/3223c142e4c54bb8ac5251780a1b6c54/c.html">Road cut about 3 km from the port; Resuo village at 3 km reconnected</a> — Xinhua, 28 Aug (Chinese)</li>
+<li><a href="http://cn.chinadaily.com.cn/a/202609/04/WS6a9a3791e4b09a165c787ff7.html">About 3 km of the G216 destroyed; the last 1.7 km buried</a> — CCTV via China Daily, 4 Sept (Chinese)</li>
+<li><a href="https://source.coop/planet/disasterdata/nepal-flash-flood-2026-08-26">Planet disaster data for the event (PlanetScope, SkySat, Pelican; CC-BY-NC-4.0)</a> — the sub-metre scenes read in §08</li>
+<li><a href="https://vantor-opendata.s3.amazonaws.com/events/Nepal-Flooding-Aug-2026/collection.json">Vantor (Maxar) open data collection for the event (CC-BY-NC-4.0)</a></li>
+<li><a href="https://www.news.cn/local/20260830/5bf1df3baf7342ec918d3383bebd24fa/c.html">Tibet press conference transcript: barrier lake 2.2 Mm³, inflow ~23 m³/s</a> — Xinhua, 30 Aug (Chinese)</li>
+<li><a href="https://chinadigitaltimes.net/chinese/731100.html">The border-gate clips blocked on Chinese platforms</a> — China Digital Times, 30 Aug (Chinese)</li>
 <li><a href="https://www.sciencedirect.com/science/article/abs/pii/S0169555X0100037X">Cenderelli &amp; Wohl 2001, GLOF attenuation</a> — Geomorphology</li>
 <li><a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/WR021i010p01511">Pierson &amp; Scott 1985, lahar dilution</a> — Water Resources Research</li>
 <li><a href="https://www.antarcticglaciers.org/2026/08/august-2026-nepal-tibet-floods/">August 2026 Nepal–Tibet floods</a> — Bethan Davies, AntarcticGlaciers (warming &amp; retreat figures)</li>
@@ -1172,7 +1756,7 @@ Corrections are welcome at
 <a href="https://github.com/djhume/nepal-flood-2026/issues">the repository's
 issue tracker</a> and are recorded on the
 <a href="index.html">project home page</a> with the date and the reason.</p>
-<p class="mono" style="font-size:12px">v5 · 6 September 2026 · Wellington, NZ</p>
+<p class="mono" style="font-size:12px">v6 · 6 September 2026 · Wellington, NZ</p>
 </div>
 </div>
 </div>

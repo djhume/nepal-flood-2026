@@ -966,3 +966,184 @@ diverge, so if it was taken at the building (~145 m) while the debris is at
   **withdrawn** on the same data.
 - *"23.85 unique fps, 2.52× duplication"* and *"one frame = 33.3 ms"* —
   **withdrawn**, see 14e.
+
+## 15. THE FIRST 22 KM AS A ROCK–ICE AVALANCHE — arithmetic, 6 Sept (evening)
+
+Prompted by Dave: "that initial 22 km may not have been too much water and
+more ice and rock, plus the water in the river." Written up as report §04b and
+on the plain page; logged here with the numbers and their sources.
+
+**Water available above the border.** `model/snowplow.py` baseflow anchors:
+2 m³/s at km 0, 30 at km 5, 150 at km 22; V_RIVER = 3 m/s ⇒ wetted section
+A = Q/3. Standing water km 0–22 = ∫A dx ≈ **0.53 Mm³** (PLAN 4 Sept energy
+audit has the same 0.53). Inflow during the 460 s passage at ≤150 m³/s: ≤0.07.
+Entrained saturated bed above the border ≈ 2.57 Mm³ bulk (PLAN, entrainment
+ledger) ⇒ pore water ≈ 0.9 at porosity 0.35. Frictional melt for the whole
+event ≤1.1–2.5 Mm³ (dossier/report §04), most of it late (thermal lag τ ≈ 5
+min). **Total ≈ 2–4 Mm³ against a 14–34 Mm³ release ⇒ what reached the
+junction was ≥80% the mountain by volume.** The "black wall carrying ice, mud
+and massive rocks" is a debris flow; the water story starts at the junction
+(main stem 150 m³/s; 22.4 Mm³ standing below).
+
+**Energy line.** Profile datum: scar 4,928 m (DEM at km 0) to bed 1,815 m at
+the junction = 3,113 m over 22 km ⇒ H/L = 0.141 (0.154 from a 5,200 m crown).
+v² = 2g(H − μL): arrival at all needs μ_eff < 0.14; arrival at ~47 m/s needs
+μ_eff ≈ 0.135. Scheidegger 1973 (`model/core.py: mu_dry_scheidegger`): 0.30 at
+21 Mm³, 0.28 at 34 ⇒ a dry rock avalanche of this size stops at ~10 km. Model
+ice-rich scenarios use MU_DRY_ICE = 0.17 (`model/unified.py`, citing Schneider
+et al. ice-avalanche calibrations, "0.12–0.2").
+
+**Basal frictional melt flux.** Shear power μσv: h = 30 m (σ ≈ 0.6 MPa),
+μ = 0.1, v = 40 m/s ⇒ 2.35 MW/m² ⇒ 7.0 mm/s of ice at the contact (L = 334
+kJ/kg, ρ_ice ≈ 917 → used 1,000 for simplicity; ~7 mm/s either way). Over 460 s
+that is ~3 m of ice per m² of sliding contact — a few per cent of the release,
+consistent with the §04 bulk-melt ceiling. Velocity-weakening; see PLAN §8a.
+Observed signature: 46.9 m/s instantaneous at km 22 (§14d) ≈ 47.8 mean ⇒ no
+deceleration down the Lhende.
+
+### 15a. Literature check (agent, 6 Sept evening) — what the primary papers say
+
+Memo built from ~40 opened sources (PDFs of Huggel 2005, Haeberli 2004, Kääb
+2021, Shugar 2021, Fujita 2017, Lacroix 2016, Mergili 2020, HiRISK NP3; abstracts
+where paywalled). Corrections applied to the pages the same evening:
+
+- **Kolka–Karmadon 2002:** 100 Mm³ (Haeberli 2004, Huggel 2005) / 130 (Kääb
+  2021); initial failure 18.5–27 Mm³ (8.5–13 ice + 10–14 rock) then 60–75% of
+  Kolka Glacier entrained ⇒ ~80–90% ice by volume; ~10% water in the mass;
+  18–20 km to the Karmadon gates at a mean 50–80 m/s (**elapsed time not
+  quoted in the papers; 3.8–6 min computed** — the "about seven minutes" I had
+  drafted was wrong and is removed); max 65–90 m/s; H/L 0.15 wall→dam, 0.11
+  glacier→dam; a hyperconcentrated front seconds ahead of the ice mass;
+  mudflow ran 15 km more at 5–10 m/s "immediately"; ~125–140 dead. Frictional
+  melt during the first 900 m fall supplies only 0.07–0.2 Mm³ of water (Huggel
+  2005) — the water was already in/under the glacier. [Huggel 2005
+  https://nhess.copernicus.org/articles/5/173/2005/ ; Haeberli 2004 J. Glaciol.]
+- **Schneider, Huggel, Haeberli & Kaitna 2011 (ESPL, abstract only):** drum
+  experiments — granular ice cuts bulk friction ≤20%, water ~50%; **in the
+  64-event field set the ice content "could not be confirmed to be of much
+  relevance in nature"; water, volume and glacier substrate are the controls.**
+  Schneider, Kaitna et al. 2011 (CRST, snippet): >40% ice by volume ⇒ nearly
+  complete liquefaction in the drum. **The draft §04b sentence "Schneider et
+  al. calibrate Voellmy μ 0.12–0.20 for ice-rich cases" was not supported and
+  has been replaced.** `model/unified.py`'s MU_DRY_ICE = 0.17 cites "Schneider
+  et al. 2010 ice-avalanche calibrations" — full text not opened; flagged on
+  the page as unconfirmed.
+- **Sosio et al. 2012 (QSR, snippet):** Voellmy μ 0.03–0.10, ξ 1,000–2,000
+  m/s² for rock avalanches on glaciers; basal friction angle 2.75–14°,
+  inversely related to volume. **Kääb et al. 2021 (TC, PDF):** glacier
+  detachments reach angles down to ~5° (tan 0.09); Aru 2016 H/L 0.10–0.12.
+- **Huascarán 1970:** 50–70 Mm³ (Plafker & Ericksen via Huggel 2005) / 80
+  (Kääb 2021); Yungay at 13–16 km in 180–270 s (Evans 2009 snippet), 50–85 m/s;
+  μ 0.24; mobility from entrained glacial till (Mergili 2018).
+- **Chamoli 2021 (Shugar 2021, full text):** 26.9 Mm³, 80/20; front ~25 m/s at
+  15 km, ~16 at 25 km, ~12 at 26 km; H/L 0.16. Energy check: a 3,100 m drop
+  melts at most ~9% ice by mass ≈ 22% by volume at 100% conversion ⇒ an
+  ice-richer mass arrives still carrying ice.
+- **2026 event, new to us from Chinese sources:** MNR/Guo Zhaocheng (Xinhua
+  27 Aug, CCTV 29 Aug, CGS 29 Aug): source 5,140 m → ~1,800 m, "nearly 3,300 m
+  over about 20 km", ~50 m/s, 10:52→10:59 CST, **"part of the flow ran nearly
+  3 km upstream in the Gyirong Tsangpo"** — an official statement of the
+  up-valley reach (§16). Chengdu UT (The Paper 29 Aug): ice-rock collapse phase
+  ~88 s; debris avalanche scoured moraine 5,200→4,000 m → debris flow →
+  hyperconcentrated flood. IMHE (S&T Daily 28 Aug): source sub-basin 38.4 km²
+  with four glaciers (6.44 km²), the two largest >120 Mm³ of ice each; "~15 km
+  to the port in ~7 min" (distance disagrees with MNR's 20 and Xinhua's 22).
+  Tibet press conference (Xinhua 30 Aug): barrier dam ~60 m × 1,100 m × 300 m,
+  2.2 Mm³, outflow ~50 m³/s, **inflow ~23 m³/s — the only measured upper-Lhende
+  discharge**. Xinmin: ~50,000 m³ of ice debris in the barrier lake. HiRISK NP3
+  (28 Aug): glacier RGI2000-v7.0-G-15-05732 + bedrock detached over 1–1.3 km
+  width at ~5,200 m, "mobilising material in the proglacial terrain", valley
+  floor "just below 3,000 m" where it met the 2025 Purepu GLOF deposits and
+  dammed the Lhende "potentially only for a matter of minutes". **No source has
+  the mass running onto a glacier below the scar** — all have proglacial
+  moraine; the "fell onto the flatter glacier below" line is unattributed
+  (imagery memo §2 already said so). §00b and the plain page corrected.
+- **Agent's assessment (labelled):** the run is what an ice-rich rock–ice
+  avalanche does without river water; Kolka 2002 is the closest twin; the one
+  thing that would overturn it is a measured ice fraction ≤ ~20%.
+- Full memo with 68 source keys was in the session scratchpad; the URLs that
+  matter are now in report §14.
+
+**What it changes on the site:** wording ("wall of water" → "ice, rock and mud"
+for km 0–22 on hub, plain, report dek); finding 02 reframed (the Lhende run is
+what a rock–ice avalanche does on its own); finding 01 located below the
+junction; "only something running like slush" corrected; ensemble w0 to be read
+as ice+water. **Not changed:** the size envelope (pinned by clock, erosion,
+deposition cap); the ice fraction (unpublished).
+
+## 16. THE UP-VALLEY WEDGE, MEASURED ALONG THE RIVER — 6 Sept (evening)
+
+`calcs/sentinel_wedge_corridor.py` (new; figure `output/wedge_corridor.png`;
+bins in the scratch RESULTS). Same inputs as §6c's test (12 Aug scene;
+27 Aug–3 Sept median composite; both-valid coverage 42.6% of the AOI) but
+measured in a ±150 m corridor along the OSM centreline of each arm, 250 m bins,
+with a 300–600 m hillside band as the local null. Georeferencing recovered by
+re-deriving the window transform (origin 331250 E, 3147150 N, EPSG:32645, 10 m).
+
+| arm | bare-area ratio after/before | end of widening (≤1.1, 2 bins) | NDVI excess back in hillside noise |
+|---|---|---|---|
+| **up-valley (Kyirong)** | 2.06–2.38 at 0–1.5 km; 1.59 at 2.0–2.25; 1.22/1.18 at 2.25–2.75; ≤1.1 from 3.25 | **3.25–3.50 km** (same at ±100 / ±250 m) | **2.00–2.25 km** |
+| Lhende (inflow) | 2.0–6.4 over the whole 6 km | not within reach | not within reach |
+| downstream (control) | 1.3–2.8 to the array edge at 5.25 km | not within reach | 2.5–2.75 km (NDVI only; ratio stays ~2) |
+
+Linear taper of added bare width (0.75–3 km): zero crossing 2.83 km, slope
+−53 m/km, insensitive to corridor width. The ratio end-point (3.25–3.5 km) is
+width-invariant; the NDVI end-point moves 1.25–2.5 km with width, and the
+3.0–3.25 km bin is 92% cloud — so: full strength to 2 km, marginal from 2.25,
+gone by 3.5. The NDVI rule also fires on the control at 2.5–2.75 km (a two-bin
+dip), so the ratio rule is the sturdier one.
+
+**Verdict.** The stripped corridor exists between the junction and the head of
+the contour, and it ends at 2–3.5 km — which is the discriminator §6c set out
+("a wedge strips vegetation the whole way; a contour leaves the valley green").
+With Xinhua's "about 3 km of the G216", Dave's 3.5 km contour trace, and the
+MNR statement found in the 6 Sept literature check ("part of the flow ran nearly
+3 km upstream in the Gyirong Tsangpo", Xinhua 27 Aug), four lines put the flow
+~3 km up the arm. Caveats: coverage 8–100% by bin
+(post composite cloud-masked over 57% of the AOI); SCL removes cloud/shadow but
+not terrain shadow; pre-event centreline; gorge bed already largely bare. The
+stored volume (10–29 Mm³ by wedge geometry) is still a model quantity.
+
+### 16a. Chinese-language search + sub-metre imagery read (agent, 6 Sept evening)
+
+- **Root of "nearly 3 km":** Guo Zhaocheng (郭兆成), MNR aero-geophysical &
+  remote-sensing centre, on CCTV 28 Aug with the Ministry's 3D imagery:
+  "泥石流在吉隆藏布是逆流而上的，影响距离将近三公里" (from the video / 3D
+  imagery). Every later CCTV/Chinanews figure repeats it — one reading, not
+  several. https://news.sina.com.cn/c/2026-08-28/doc-inipwhrr4531030.shtml ;
+  https://english.cctv.com/2026/08/29/ARTIMtLTn5VunoUue932YjVW260829.shtml
+- **Road evidence, independent of it:** ~3 km of G216 destroyed (Xinhua/RFA
+  27 Aug; CCTV 3–4 Sept); road cut ~3 km from the port and Resuo village at
+  3 km reconnected 27 Aug (Xinhua 28 Aug
+  https://www.news.cn/politics/20260828/3223c142e4c54bb8ac5251780a1b6c54/c.html);
+  officer Xiao's car bogged 3 km from the port ~11:00 on 26 Aug, tourists
+  stopped at 5 km unharmed (Xinhua 5 Sept); "last 1.7 km completely buried"
+  (CCTV 6 Sept). Outlier: a container driver's "about 5 km" (Kathmandu Post
+  28 Aug) — contradicted by the tourists at 5 km.
+- **Post-event ponding at the junction:** bed raised "nearly 5 m", water
+  >15 m deep in the last 1.7 km during the repair (CCTV via Chinanews 6 Sept).
+- **CAS 人民长江 paper (DOI 10.16232/j.rmcj.20261227; site refused
+  connections):** abstract snippet — chain ran ~21.7 km to near the port,
+  debris-flow *surface* velocity ~19 m/s there; flood front ~11.7 m/s at the
+  Trishuli bridge near Bidur, cumulative ~74 km. **Nothing on backwater or
+  up-valley reach** in any coverage.
+- **Sub-metre imagery (agent's own read; Planet Pelican 0.55 m, 27 Aug
+  20260827_060956_98_3009 and 1 Sept 20260901_050632_98_300b, CC-BY-NC-4.0;
+  chainage traced on the 2021 WorldView-2 baseline, ±5%):** fresh grey fill
+  150–250 m wide from the junction to ≥2.5 km; 2.5–3.5 km cloud in every
+  sub-metre scene; ~3.8–4.6 km fill 110–145 m wide (May 2026 baseline 40–60 m;
+  2021 ~20 m) in both the 27 Aug and 1 Sept Pelican scenes (Vantor WorldView
+  Legion 27/28 Aug also read for the 4–6 km reach); channel back to baseline width above
+  a tributary junction at **4.6 km along the channel (3.9 km straight;
+  28.302 N 85.348 E)**. May be pond sedimentation rather than surge run-up.
+  Chainage PNGs and the traced centreline were in the session scratchpad (not
+  in the repo — third-party imagery); sent to Dave.
+- **DEM cross-check:** SRTM/ASTER lower envelope on the traced centreline
+  meets 1,920–1,930 m at ~4.5–5 km, but ±20 m vertical ⇒ ±0.7 km — cannot
+  separate 3.5 from 4.6 km.
+- **Datum note:** river junction vs checkpoint, channel vs road: 0.2–0.3 km.
+- **Net:** surge ~3 km (two independent legs); deposition/widening to ~4.6 km
+  in sub-metre imagery, nature open; Sentinel corridor test (10 m, 42%
+  coverage) has only a weak single-bin signal past 3.5 km. Tension logged,
+  not resolved: re-check 28.291–28.302 N, 85.348 E against the 12/24 Aug
+  Sentinel-2 baseline when a clear post-event pass exists.

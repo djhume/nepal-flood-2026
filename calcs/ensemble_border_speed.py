@@ -21,7 +21,7 @@ surface velocity at the junction at the moment of passage. Report section 08
 already argues these are three different things (descent speed, splash-line
 speed, post-turn speed), so substituting one for the other is a category error
 dressed up as a sensitivity test. Re-scoring the cached run confirms it is:
-0 of 220 survive, and of the 76 samples that meet the 7-minute clock, ZERO
+0 of 220 pass, and of the 76 samples that meet the 7-minute clock, ZERO
 have a reach maximum below 25.7 m/s. That is arithmetic, not evidence — 22 km
 in 7 minutes is a 52 m/s mean front speed, and a flow that never exceeds
 25.7 m/s anywhere cannot deliver a front there on time. So the naive swap does

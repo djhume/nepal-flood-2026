@@ -49,7 +49,7 @@ OBSERVABLES (upper corridor only in stage 1 — it is where the hard data is)
                                            a DEM difference bounds deposition
                                            from above, it does not target it.
 
-Survivors are then re-run to 10 h and scored on the distal observables
+The passing samples are then re-run to 10 h and scored on the distal observables
 (Galchhi 30-min rise ~9 m, Devghat peak timing) — out of sample relative to
 the stage-1 screen.
 
@@ -69,7 +69,7 @@ RNG = np.random.default_rng(20260904)
 # ---- priors ---------------------------------------------------------------
 PRIORS = {
     "V_rel":   ("log",  1e6,  200e6),
-    "w0":      ("lin",  0.02, 0.95),   # widened again 5 Sept: run 3's survivors
+    "w0":      ("lin",  0.02, 0.95),   # widened again 5 Sept: run 3's passing runs
                                        # reached 0.84 against a 0.85 ceiling.
                                        # Originally 0.50 and severely pinned
                                        # against its 0.50 ceiling (median
