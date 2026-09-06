@@ -14,6 +14,8 @@ The code is ours.
         --lat 28.2795 --lon 85.3790 --half 700 --res 0.5
     .venv/bin/python calcs/trimline_inset.py --name arm \\
         --lat 28.2885 --lon 85.3700 --half 1300 --res 1.5
+    .venv/bin/python calcs/trimline_inset.py --name hakubesi --date skysat0827 \\
+        --lat 28.122 --lon 85.291 --half 1000 --res 1.5
 """
 import argparse, csv, math, os, sys
 import numpy as np
@@ -26,8 +28,21 @@ OUTDIR = os.path.join(tm.CACHE, "insets")
 COL = {"s2": "#2a78d6", "s2chg": "#1f9e89", "pelican0827": "#eb6834", "pelican0901": "#b04cf0"}
 
 
+# every open Planet collection with a visual COG: (collection path, item ids, native visual pixel m)
+SOURCES = {
+    "pelican0901": ("pelican-2026-09-01", tm.PELICAN["20260901"][1], 0.5),
+    "pelican0827": ("pelican-2026-08-27", tm.PELICAN["20260827"][1], 0.5),
+    "skysat0827": ("skysat-2026-08-27", ["20260827_020055_ssc1_u0001", "20260827_020055_ssc1_u0002"], 0.5),
+    "skysat0831": ("skysat-2026-08-31", ["20260831_092523_ssc9_u0002", "20260831_092523_ssc9_u0003"], 0.5),
+    "planetscope0828": ("planetscope-2026-08-28", ["20260828_045742_14_2544", "20260828_045744_48_2544",
+                                                   "20260828_045746_81_2544", "20260828_045749_15_2544",
+                                                   "20260828_050143_19_2520"], 3.0),
+}
+
+
 def read_visual(date, x0, y0, x1, y1, res):
-    """RGB uint8 mosaic of the Pelican visual frames over a UTM box."""
+    """RGB uint8 mosaic of a collection's visual frames over a UTM box.
+    'date' is a SOURCES key; res must be native x 3^k (COG overviews)."""
     import rasterio
     from rasterio.windows import from_bounds, Window
     from rasterio.enums import Resampling
@@ -35,10 +50,10 @@ def read_visual(date, x0, y0, x1, y1, res):
                        CPL_VSIL_CURL_CHUNK_SIZE=4 * 1024 * 1024,
                        CPL_VSIL_CURL_CACHE_SIZE=512 * 1024 * 1024,
                        GDAL_HTTP_MULTIRANGE="YES", GDAL_HTTP_MERGE_CONSECUTIVE_RANGES="YES")
-    f = int(round(res / 0.5))
+    coll, ids, native = SOURCES[date]
+    f = int(round(res / native))
     W = int(round((x1 - x0) / res)); H = int(round((y1 - y0) / res))
     rgb = np.zeros((3, H, W), "uint8")
-    coll, ids = tm.PELICAN[date]
     with env:
         for i in ids:
             href = f"{tm.PLANET}{coll}/items/{i}/{i}_visual.tif"
@@ -82,8 +97,9 @@ def main():
     ap.add_argument("--name", required=True)
     ap.add_argument("--lat", type=float, required=True); ap.add_argument("--lon", type=float, required=True)
     ap.add_argument("--half", type=float, default=700.0, help="half box size, m")
-    ap.add_argument("--res", type=float, default=0.5, choices=[0.5, 1.5, 4.5])
-    ap.add_argument("--date", default="20260901")
+    ap.add_argument("--res", type=float, default=0.5, choices=[0.5, 1.5, 4.5, 3.0, 9.0])
+    ap.add_argument("--date", default="pelican0901", choices=list(SOURCES),
+                    help="imagery source (collection)")
     ap.add_argument("--layers", default="pelican0901,s2chg")
     ap.add_argument("--levels", default="1875,1925", help="highlighted contours")
     a = ap.parse_args()
@@ -155,7 +171,7 @@ def main():
     ax.plot([], [], "x", color="white", label="geopera v1.1 station (their L/R trimline z)")
     ax.legend(fontsize=7, loc="lower left", facecolor="black", labelcolor="white", framealpha=0.6)
     ax.set_xlim(x0, x1); ax.set_ylim(y0, y1); ax.set_aspect("equal")
-    ax.set_title(f"{a.name}: Planet Pelican visual {a.date[:4]}-{a.date[4:6]}-{a.date[6:]} at {a.res} m, "
+    ax.set_title(f"{a.name}: Planet {a.date} visual at {a.res} m, "
                  f"contours {dem.name} every 10 m; {n} trimline points. UTM 45N (m)\n"
                  "(c) Planet Labs PBC, CC-BY-NC-4.0 - ANALYSIS COPY, output/cache only, do not commit or publish",
                  fontsize=9)
