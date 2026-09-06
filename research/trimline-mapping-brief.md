@@ -7,6 +7,19 @@
 > `output/trimline_profile.png`. Junction gate passed. Next job: the ensemble
 > rerun with the fit profile as observables; SkySat / PlanetScope for the
 > lower river; the Vantor stereo for the arm. Nothing promoted.
+>
+> **First extension (Dave, 7 Sept, on seeing the check-plots): map the mud
+> lines UP the side valleys.** The mapper only walks across the main river,
+> so tributary marks appear only where a section cuts a mouth, and those are
+> flagged `side-valley` and kept out of the stage fit (run-up, not stage —
+> §6c). They are not lost (all in `output/trimlines.csv`) but they are not
+> mapped either. Job: chain each OSM tributary from its junction (as
+> `stations_kyirong` does for the arm), walk up its floor until the stripped
+> ground ends, take the end elevation against the main-stem trimline at the
+> mouth: Δh is the velocity head, v = √(2gΔh/α), the "free measurement
+> nobody has made" of §6c. Start inside the Pelican 1 Sept coverage
+> (Syabrubesi → Rasuwagadhi) and check each one on a
+> `calcs/trimline_inset.py` plot before trusting it.
 
 
 *Written 7 Sept 2026 for a fresh session. Dave's idea (6 Sept, late): overlay
