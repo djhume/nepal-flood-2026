@@ -1147,3 +1147,119 @@ stored volume (10–29 Mm³ by wedge geometry) is still a model quantity.
   coverage) has only a weak single-bin signal past 3.5 km. Tension logged,
   not resolved: re-check 28.291–28.302 N, 85.348 E against the 12/24 Aug
   Sentinel-2 baseline when a clear post-event pass exists.
+
+## 17. THE UP-VALLEY VOLUME ROUTE — a first, loose, independent estimate (6 Sept, late)
+
+**Dave's method (6 Sept):** treat the border junction as a node; measure the
+volume that ran up the Kyirong arm from the valley-floor geometry and the
+imagery; split it at the node by geometry; that gives a volume through the
+node with no clock, erosion or deposition input; subtract what the 22 km of
+Lhende contributed to get the release. Built as
+`calcs/upvalley_wedge_volume.py`; tables in `output/upvalley_wedge.md`,
+figure `output/upvalley_wedge.png`.
+
+**Geometry.** Kyirong-arm centreline chained from OSM (way 904894054), 61
+stations at 100 m to 6 km, ±600 m transects. **Mapzen 30 m is unusable here**
+(void-fill artefacts: 1,977 m at 1.0 km vs 1,866 at 2.0; 2,067 at 4.0 vs 1,913
+at 5.0). Switched to **Copernicus GLO-30** (tile downloaded by the data-hunt
+agent, URL in DATA-SOURCES.md). Bed = upstream-minimum envelope of the transect
+minima; stations whose minimum sits >10 m above it borrow the nearest sound
+cross-section. Bed at the junction 1,804 m (GE 1,815); the 1,920–1,930 m level
+is met at 5.3–5.4 km on this envelope (agent's SRTM/ASTER read: 4.5–5 km ±0.7;
+Dave's GE trace 3.5 km; imagery limit 4.6 km).
+
+**Stored volume at peak, three readings of the same 1,920–1,930 m head:**
+
+| reading | V_up (Mm³) | note |
+|---|---|---|
+| imagery widths → depth through the cross-section (150–250 m at 0–2.5 km; 110–145 m at 3.8–4.6) | **13 / 31 / 52** (low / mid / high) | the "2-D area × topo" estimate; 1 Sept width is a post-drain floor |
+| run-up tongue, 1,925 m at the junction to the bed at 3.5 km | 51–59 | linear / concave / convex |
+| run-up tongue, to 4.6 km | 62–66 | |
+| level pond at 1,915–1,930 m (to 5.3 km) | 59–74 | over-reaches the 4.6 km limit; widths 255–270 m at 0–2.5 km vs 150–250 observed |
+
+Width check: every surface gives 240–270 m at 0–2.5 km (observed 150–250 —
+slightly wide, so the peak surface at 1–2 km was probably a little below
+1,925 m) and ≤60 m at 3.8–4.6 km (observed 110–145): **no backwater surface
+below the junction level reproduces the 3.8–4.6 km width on this DEM**, so
+the fill there is either the widened pre-event bed plus drainage scour, or
+something other than the wedge. Solids left in the arm from the reported
+thicknesses (bed +5 m in the last 1.7 km; 1–2 m mud beyond): 0.9–2.8 Mm³ —
+the arm mostly drained.
+
+**Split at the node (Dave: fit curves to the valley middles, use the
+tangents).** Quadratic fits over 800 m of each OSM centreline: Lhende arrives
+heading 238°; downstream exit 164° (75° turn); up-valley exit 2° (124° turn,
+obtuse) — momentum projection f_up = 0, cosine weighting 0.26. **But the
+volumetric centrelines (GLO-30 cross-section centroids at 30–90 m depth,
+`--volumetric`) show the geometry cannot decide it:** the Lhende's last 500 m
+bends south toward the downstream exit (turns ~10–20° / 150–175°, f_up ≈ 0),
+the kilometre above runs WSW at right angles to both exits (turns 85–100° each
+way, f_up 0.35–0.57). A 60–110 m deep flow at 47 m/s does not follow a 500 m
+bend, so the truth is between. **Bracket f_up = 0.10–0.50.** What fixes it:
+peak-discharge continuity at the node from trimlines + superelevation just
+above and just below the junction (`calcs/node_discharge_continuity.py`,
+built, awaiting Dave's marks from the helicopter footage).
+
+**Lhende contribution:** 3–15 Mm³ (0.5 channel water; 2.6–13 entrained bed —
+stereo has the gorge floor lowered 2–12 m; ≤1–2.5 melt).
+
+**Result — release volume implied (V_up / f_up − Lhende 3–15 Mm³):**
+
+| V_up case | f_up 0.50 | 0.30 | 0.10 |
+|---|---|---|---|
+| imagery low, 13 Mm³ | **11–23** | 28–40 | 114–126 |
+| imagery mid, 31 | 47–59 | 89–101 | 296–308 |
+| tongues / pond, 51–74 | 96–135 | 170–230 | 540–690 |
+
+**Reading it honestly.** One corner — post-drain widths, half the flow going
+up the arm, the largest Lhende subtraction — lands inside our 14–34 envelope
+(11–23). The next corner (28–40) sits at its top. Everything else is 2–20×
+above it. The direction is "bigger" in most of the table, as Dave suspected,
+but the estimate cannot move finding 04, because (a) f_up spans 0.1–0.5 and
+the geometry cannot narrow it; (b) the stored volume assumes the mud-line head
+applied along the arm — a splash mark at the wall would not; (c) dynamics
+argue against the large stored volumes: at ~100–200k m³/s through the node and
+f_up 0.3, filling 60 Mm³ takes 15–30 min, which a surge cannot sustain — 6–25
+Mm³ is what a 5–10 min surge could park; (d) the 30 m cross-sections are
+20–40% wide against the imagery at 1 km; (e) >100 Mm³ is compatible with the
+deposition cap only if the mass was overwhelmingly ice and fines. **Status: a
+loose independent route whose corners straddle the envelope and mostly sit
+above it; logged as a caveat on the site, not promoted.**
+
+**What tightens it, in order:** (0) **the split, from peak-discharge continuity
+at the node** — trimlines and superelevation pairs at bends in the Lhende just
+above the junction and in the Bhote Koshi just below it (past the Rasuwagadhi
+headworks and the tunnel portal), read off the helicopter footage Dave can
+download and located in Google Earth; `calcs/node_discharge_continuity.py`
+takes a CSV of those marks and returns Q above, Q below and f_up; (1) trimline
+elevations at 4–5 stations up the arm (level = pond, sloping = tongue) —
+Google Earth, Dave; (2) replace the weir junction element (8 m head cap) in `model/core.py` with a momentum split
+and run the 26 passing ensemble members with the wedge volume as a sixth
+observable; (3) HMA 8 m DEM (NSIDC, Earthdata login) or a 2021-vs-2026
+stereo for the arm; (4) the Copernicus-EMS / Vantor post-event stereo, if any
+covers the arm (data-hunt agent memo pending at the time of writing).
+
+### 17a. Data hunt for the arm's elevation (agent, 6 Sept late) — what exists
+
+| Need | Result |
+|---|---|
+| Pre-event DEM better than 30 m | **HMA 8 m mosaic tile 675** (NSIDC `HMA_DEM8m_MOS`, 2015–16 strips) fully covers the reach — **Earthdata login required** (401 confirmed). GLO-30 and SRTM 1" downloaded openly (GLO-30 now in `data/`, used). AW3D30 needs JAXA registration. No public Chinese contour/DEM; MNR built a post-event 3D oblique-photogrammetry model, not released. |
+| Post-event stereo | **Vantor bucket has an unlisted `stereo/` prefix**: WV03 in-track pair B040001100881410 (19.2 GB, off-nadir 21.7°) + B040001100881610 (20.8 GB, 9.1°), 27 Aug 05:04–05:05 UTC, cloud 71–73%, RPCs supplied, CC-BY-NC, derivatives same licence. Both footprints cover the whole arm. **The only post-event stereo over the arm.** No DSM in Vantor or Planet; no SkySat stereo. |
+| geopera's processed DSM/dh | `bhotekoshi_dh_rasuwagadhi-timure_2m.tif` (v1.1 release, GitHub geo-pera/bhotekoshi-2026-reconstruction) — extent spans the arm, **but valid cells exist only in the first 0.5 km** (59% / 17% valid in the 0–0.25 / 0.25–0.5 km bins, 0% beyond: cloud). There: median dh **−8 m**, 91% of cells below −1 m — at the port terrace that is largely the erased buildings and trees in a DSM difference (pre-event DSM = HMA 2015–16), not scour alone. Their per-km budget stops at km 21–23 with 4–25% cover. **Dead end for the arm.** |
+| Copernicus EMS / Charter / ICESat-2 | EMSR927 (4 AOIs) and Charter 1052 (27 products): no DEM, nothing for Tibet. ICESat-2: no Aug–Sept granules released yet; RGT 1163 predicted pass 29 Aug, RGT 0927 14 Aug — beam-vs-arm geometry unchecked. |
+| Chinese deposition figures (quoted, translated in the agent memo) | MNR 28 Aug: flow ran "将近三公里" up the arm. Wang Yongping (water engineer), CCTV/Sina 6 Sept: bed raised "近5米" at the port end of the G216. China Anneng/CCTV ~30 Aug: "淤泥深度达到4米" on the G216 river flat (the arm). 2 Sept briefing: port core deposit "平均厚度4米，最高达16米". 30 Aug daily: 48,220 m³ excavated in one day's 285 m advance (~170 m³ per metre of road). The "edge 2.5 km from the port, 1.5 m thick" figure is the Lhende/barrier-lake side, not the arm. No arm-wide area, volume or elevation-change figure published. |
+| 2025 outburst at the same junction | Natural Hazards 122(7) 2026, Zhang, Hu et al., DOI 10.1007/s11069-026-08081-1 (paywalled): lake 0.08→0.69 km², ~45% drained, peak ~8,400 m³/s, ~sixfold downstream increase. Petley's Landslide Blog post on it (eos.org/thelandslideblog/rasuwagadhi-1): bridge destroyed, four hydropower schemes hit, 9 dead + 19 missing in Nepal, 11 missing in Tibet, origin uncertain, GLOF speculated, no discharge given. Nothing on the 2025 flow running up the Kyirong arm; Chinese-side damage then was mainly the bridge. No warning at the time found; a Chengdu UT paper three days later warned of recurrence; 55 glacial lakes (3.39 km²) above the bridge. |
+| Inundation-extent products | UNOSAT / EMSR927 / Sentinel Asia: Nepal only. Nothing public for the Chinese arm; NDRCC monitoring not released. |
+
+**Solids left in the arm, revised with the Chinese figures:** 4 m average over
+the port core and the G216 river flat for ~1.7 km at 150–250 m width =
+1.0–1.7 Mm³, plus thinner fill beyond: **1–3 Mm³**, unchanged from §17's
+0.9–2.8. A few per cent of any stored-volume reading: the arm drained.
+
+**Routes to a real post-event surface of the arm, in order of cost:** (1) HMA
+8 m pre-event tile via a free Earthdata account (Dave) — fixes the
+cross-sections, not the post-event surface; (2) process the Vantor WV03 pair
+(40 GB, RPC-ideal, cloud 71–73% scene-wide but the arm may be clearer than the
+Nepal reaches) with ASP/MicMac to a DSM, difference against HMA 8 m — a day's
+work and the only stereo there is; (3) the MNR oblique model, if it is ever
+released.

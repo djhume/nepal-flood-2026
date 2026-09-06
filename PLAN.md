@@ -1243,3 +1243,30 @@ imagery, possibly pond sedimentation — the 3.5-vs-4.6 km tension is logged, no
 resolved; (3) the range at
 which the 50 m sight-line separation was read (14d "Open") is still open and is
 now on the page as such.
+
+### The up-valley volume route (6 Sept, late) — Dave's node method, first pass
+
+Built `calcs/upvalley_wedge_volume.py` (GLO-30 tile in data/, gitignored;
+Mapzen found unusable in the gorge). Stored volume up the Kyirong arm at peak:
+13/31/52 Mm³ from the imagery widths, 51–74 from tongue/pond surfaces at the
+mud-line head; split at the node NOT fixed by geometry — OSM-centreline fits give an
+obtuse 124° up-valley turn (f_up 0–0.27) but volumetric centrelines show it
+depends on which reach of the Lhende is 'incoming' (0 to 0.57); bracket
+0.10–0.50; release implied 11–23 Mm³ at the most favourable corner (inside the
+envelope), 28–40 at the next, 50–600 otherwise. Built
+`calcs/node_discharge_continuity.py` for the fix: f_up = 1 − Q_down/Q_in from
+trimline + superelevation marks just above/below the node (helicopter footage,
+Dave to read). Leans
+"bigger" as Dave suspected; too loose to move finding 04; logged as a caveat
+on the site (hub changelog, report §13). Dossier §17 has the full working and
+the four steps that would tighten it. **The model's junction element (weir,
+8 m head cap) cannot represent this and must be replaced before the wedge can
+be an ensemble observable.**
+
+**Data for the arm (dossier §17a):** HMA 8 m tile 675 covers it but needs an
+Earthdata login (Dave); the only post-event stereo is the raw Vantor WV03 pair
+(40 GB, 71–73% cloud); geopera's dh raster has cells only in the first 0.5 km of
+the arm (−8 m there = erased buildings in a DSM difference). Chinese figures:
+deposit 4 m average / 16 m max in the port core, 4 m of mud on the G216 flat,
+bed raised ~5 m. **Helicopter-footage marks → `calcs/node_discharge_continuity.py`
+is the cheapest decisive step.**

@@ -1647,6 +1647,30 @@ the most. At our own envelope the melt ceiling is 1.1–2.5&nbsp;Mm³
 20&nbsp;Mm³ if the failed mass was predominantly ice <em>and</em> near
 200&nbsp;Mm³ <em>and</em> the heat partition was at the top of the published
 range, which is the single combination that would put finding 01 in play.<br>
+— The volume that ran up the Chinese arm, measured properly. A first pass on
+6 September (<code>calcs/upvalley_wedge_volume.py</code>, dossier §17) took
+the arm's stored volume at peak from the Copernicus 30&nbsp;m DEM and the
+imagery widths (13–70&nbsp;Mm³ depending on how the mud-line head is read),
+split it at the junction, and subtracted the Lhende's contribution. The
+split is the crux and the geometry cannot fix it: curves through the OSM
+centrelines make the up-valley exit an obtuse 124° turn (a tenth to a quarter
+of the flow at most), but centrelines through the volumetric middle of each
+valley show the answer depends on which reach of the Lhende is called
+incoming — its last 500&nbsp;m bend toward the downstream exit, the kilometre
+above runs at right angles to both — and a 100&nbsp;m deep flow at
+47&nbsp;m/s does not follow a 500&nbsp;m bend. Bracketed at a tenth to a half,
+the implied release runs from 11–23&nbsp;Mm³ (inside the envelope in
+<a href="#s00" class="xref">§00</a>) through 28–40 (at its top) to several
+hundred. It does not move the envelope; it leans larger. Three measurements
+would make it decisive: peak-discharge continuity at the node — trimlines and
+superelevation pairs at bends in the Lhende just above the junction and in the
+Bhote Koshi just below it, from helicopter footage, for which
+<code>calcs/node_discharge_continuity.py</code> is built and waiting for the
+marks; trimline elevations at four or five stations up the arm (a level line
+means the arm filled as a pond, a sloping one a run-up tongue); and a junction
+element in the model that splits momentum rather than spilling over an
+8&nbsp;m weir, with an 8&nbsp;m DEM of the arm under it.
+
 — A measured border velocity for the quantity we actually score. The CAS
 frame-by-frame value of 19&nbsp;m/s sits outside the 48.5&nbsp;±&nbsp;35% window
 the size envelope used. Re-scoring against it is a live task, not a hypothetical

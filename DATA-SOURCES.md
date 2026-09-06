@@ -36,3 +36,16 @@ reusable by ICIMOD/DHM/researchers while requiring attribution.
 Every contested or single-source number is flagged as such at the point of use
 (see `PLAN.md` §6 "Honesty rails"). Nothing here should be read as an official
 figure; where our numbers disagree with an agency's, both are shown.
+
+## Copernicus GLO-30 DEM tile (added 6 Sept 2026)
+
+`data/Copernicus_DSM_COG_10_N28_00_E085_00_DEM.tif` — Copernicus DEM GLO-30
+(TanDEM-X, 2011–2015 acquisitions; ~30 m; absolute vertical accuracy <4 m LE90),
+tile N28 E085, from the AWS open bucket:
+https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N28_00_E085_00_DEM/Copernicus_DSM_COG_10_N28_00_E085_00_DEM.tif
+Licence: Copernicus DEM licence (free use with attribution: © DLR e.V. 2010-2014
+and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the
+European Union and ESA; all rights reserved). 38 MB; gitignored; re-download
+from the URL. Used by `calcs/upvalley_wedge_volume.py` for the Kyirong-arm
+cross-sections after the Mapzen tiles were found to carry void-fill artefacts
+in the gorge.
