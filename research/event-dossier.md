@@ -1263,3 +1263,63 @@ cross-sections, not the post-event surface; (2) process the Vantor WV03 pair
 Nepal reaches) with ASP/MicMac to a DSM, difference against HMA 8 m — a day's
 work and the only stereo there is; (3) the MNR oblique model, if it is ever
 released.
+
+## 18. HAKUBESI TRIMLINE FROM HELICOPTER STILLS — a stage 21 km below the junction (6 Sept, late)
+
+**Source.** Fifteen stills Dave captured from a YouTube helicopter video
+captioned "Trying our best to reach the hydropower tunnel for rescue
+operations" (`research/video/clip2/screens/`, gitignored). **Location:** not the
+border. The altimeter in frame 13 reads ~4,120 ft = 1,256 m; the caption is the
+Upper Trishuli-1 rescue; frame 1 has Nepali terraces. Our path is at
+1,240–1,262 m at **km 43–45 (Hakubesi reach)**, ~21 km below the junction,
+6 km below Syabrubesi. Dave could not match the frames to the Rasuwagadhi
+headworks; the fit here is by elevation and caption, to be confirmed with a pin.
+
+**What the frames show.** A slot gorge with the river now a braid on a deposit
+floor; mud coating both walls to a sharp trimline; a partly buried concrete
+headworks with a hut beside it; an arched tunnel portal (~5–6 m high, cable
+hanging) on a deposit bench above the river; the Army Road ledge on the right
+bank near the trimline height.
+
+**Height, by four routes that do not use Google Earth imagery:**
+
+| route | result |
+|---|---|
+| portal as a ruler (auto-detected arch, scale lines drawn: `*_portal_scale.png`) | close-up frame 14: coating ≥5 portal heights above the invert, top cut off ⇒ **≥25–30 m**; oblique frame 6: green from 3–4 portal heights ⇒ 15–22 m (foreshortened; less trusted) |
+| deposit benches below the portal | portal invert ~10–15 m above the present river |
+| geopera per-km dh (their km 42.75 / 43.25 / 43.75 / 44.25) | **+18.1 / +10.7 / +1.8 / −5.6 m** ⇒ the present river runs 10–18 m above the pre-event bed at the deposit's downstream end |
+| Army Road (OSM way 1154995098) on GLO-30 | 1,243–1,320 m along km 43.6–46, **median 53 m above the path bed** (range 10–81); frames 8/9 have the mud line near the ledge |
+
+**Peak stage at Hakubesi: ~45–70 m above the pre-event bed; ~30–50 m above the
+present river.** Uncertainty ±40% (portal size assumed, no survey). GLO-30
+areas at +50/+70 m at km 43.25–44: 4,400–5,400 / 7,600–9,200 m².
+
+**Model comparison (out of sample — no stage in the corridor has ever been an
+ensemble observable).** `unified.py` given `EXTRA_STATIONS` (additive) and run
+2 h with entrainment for five passing members and scenario C:
+
+| run | peak depth km 43.5 (m) | Q max km 43.5 | depth km 22 | depth Syabrubesi |
+|---|---|---|---|---|
+| V 13.8, w0 0.55, f_fine 0.41 | 4.6 | 5k | 31 | 3.9 |
+| V 16.8, w0 0.77, f_fine 0.31 | 7.5 | 9k | 44 | 6.6 |
+| V 21.5, w0 0.44, f_fine 0.49 | 7.4 | 6k | 54 | 6.4 |
+| V 28.8, w0 0.43, f_fine 0.87 | 16.3 | 20k | 97 | 14.0 |
+| V 34.2, w0 0.90, f_fine 0.35 | 20.9 | 36k | 123 | 19.7 |
+| scenario C (single-phase, entrainment on) | stalls | — | 2.6 | — |
+
+Model width at km 43.5 is 60 m (narrower than the DEM's 80–200 m at +30–50 m),
+so the shortfall is not a too-wide channel: **the passing runs put 5–21 m at
+Hakubesi against an observed ~45–70 m**, i.e. they deliver 1.5–10× too little
+flow to km 43. The Galchhi stage failure (3.6 vs ~9 m) had been attributed to
+rule-of-thumb lower-reach widths; this is the same sign, 65 km further up, in
+a reach with a 60 m modelled gorge. Together with §17 (the up-valley route),
+two independent lines now say the ensemble's passing runs are too small below
+the junction. **The ensemble has never been scored on a stage.** Next
+ensemble: add stage observables (geopera trimlines 40–134 m at Rasuwagadhi,
+Syabrubesi inundation, Hakubesi ~45–70 m) — expect V to move up and/or the
+deposition cap to bind harder (only ice/fines-rich runs can be both deep and
+low-deposit). Logged; not promoted.
+
+**To sharpen:** Dave's read of frame 14 in portal heights; the UT-1 portal
+invert elevation from the drawings; a pin on the portal and the headworks; a
+bend pair in the same reach for velocity (frames 2/3/8/9 show one).

@@ -1,0 +1,5 @@
+arm,km,lat,lon,trim_m,inner_m,outer_m,radius_m,runup_m,alpha,note
+lhende,21.6,,,,,,,,,"example: straight reach above the junction — trimline on the left bank at the spur; video X at 01:23"
+lhende,21.9,,,,,,,,,"example: bend — inner-bank trimline in inner_m, outer-bank in outer_m, bend radius from Google Earth in radius_m"
+down,22.4,,,,,,,,,"example: Rasuwagadhi headworks / tunnel portal — trimline height above the portal crown; portal elevation from the project drawings if known"
+down,23.0,,,,,,,,,"example: head-on run-up on a spur or building — height in runup_m, alpha 0.6 unless square-on (1.0)"

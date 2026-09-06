@@ -120,6 +120,8 @@ SIDE = [                # verbatim from ladder.py
 ]
 K_JUNC_KM = {22.0: 3.0, 37.6: 1.5, 160.0: 1.0, 185.0: 1.0}
 
+EXTRA_STATIONS = {}   # {name: km} — extra record points, e.g. a trimline station
+
 # ------------------------------------------------------- observations -------
 FRONT_OBS = [(22.0, 7, "border CCTV 08:44"), (37.6, 13, "Syabrubesi 08:50"),
              (68.4, 43, "Betrawati rising 09:20"),
@@ -170,6 +172,7 @@ def simulate(V_rel=V_REL, w0=W0, w_sat=W_SAT, mu_wet=MU_WET, mu_dry=None,
     wsum = wn[rel].sum() * DX
     stations = {"Betrawati": 68.4, "Galchhi": 107.6, "Malekhu": 117.0,
                 "Devghat": 199.2}
+    stations.update(EXTRA_STATIONS)   # additive; empty by default
     st_j = {s: int(np.argmin(np.abs(x_km - km))) for s, km in stations.items()}
     watch = sorted(set([km for km, *_ in SPEED_OBS] + [22.0]))
     watch_j = {km: min(int(np.argmin(np.abs(x_km - km))), N - 2)

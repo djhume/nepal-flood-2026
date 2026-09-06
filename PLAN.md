@@ -1270,3 +1270,13 @@ the arm (−8 m there = erased buildings in a DSM difference). Chinese figures:
 deposit 4 m average / 16 m max in the port core, 4 m of mud on the G216 flat,
 bed raised ~5 m. **Helicopter-footage marks → `calcs/node_discharge_continuity.py`
 is the cheapest decisive step.**
+
+**Hakubesi trimline (dossier §18, 6 Sept late):** Dave's helicopter stills are
+the UT-1 reach (km 43–45, altimeter 1,256 m), not the border. Peak stage there
+~45–70 m above the pre-event bed by four routes (portal ruler, benches, geopera
+dh +11–18 m, Army Road ledge 53 m). Passing ensemble members give 5–21 m at
+km 43.5 (model width 60 m, not too wide) — 1.5–10× too little flow. Second
+independent line (with §17) saying the runs that pass are too small below the
+junction. **Action: the next ensemble must score stages** (Rasuwagadhi
+trimlines, Syabrubesi, Hakubesi) — none has ever been an observable.
+`model/unified.py` gained EXTRA_STATIONS (additive, default empty).
