@@ -7,9 +7,11 @@ flood. It asks one narrow question — **where did the flood water actually come
 from?** — and follows the answer into what it implies for warning people
 downstream.
 
-As of 4 September 2026, 1,259 people are confirmed dead in Nepal and 5,083
-missing, with 21 dead and 541 missing on the Chinese side. Those figures are
-still moving.
+As of 5 September 2026, 1,342 people are confirmed dead in Nepal and 4,886
+missing, with 31 dead and 531 missing on the Chinese side, and more than 5,300
+injured. The missing count has begun to fall while the death toll rises — that
+is bodies being recovered, not people found alive. Those figures are still
+moving.
 
 **Read it here → https://djhume.github.io/nepal-flood-2026/**
 
@@ -36,16 +38,21 @@ source is here and the licence permits it.
    published range — every dial at its limit at once (`calcs/energy_water_budget.py`,
    scenarios 5–8). The wave was dominated by monsoon river water swept up en
    route. Three routes agree, though they share a channel profile.
-2. **It did not fall like dry rock.** The 08:44 border CCTV clock discriminates
-   what the falling mass was *made of*, not how big it was: dry-rock scenarios
-   arrive at 17–30 min at any volume, ice-rich and wet ones arrive on time. Note
-   the direction — this **excludes dry rock**, it does not establish slush, and
-   finding 4 leaves composition unresolved. The clock survived a challenge, but
-   its supporting evidence is weaker than earlier versions of this repo claimed:
-   the decisive camera-overlay quote is from a partisan outlet and Kargel's
-   matching 6 min 50 s has no stated method. What carries it is the Syabrubesi
-   gauge — 3.8 m at 08:50, km 37.6, a Nepali instrument owing nothing to any
-   camera.
+2. **It did not fall like dry rock.** The border CCTV clock discriminates what
+   the falling mass was *made of*, not how big it was: dry-rock scenarios arrive
+   at 17–30 min at any volume, ice-rich and wet ones arrive on time. Note the
+   direction — this **excludes dry rock**, it does not establish slush, and
+   finding 4 leaves composition unresolved. The clock survived a challenge, and
+   on 6 Sept its evidence base was rebuilt: rather than rely on a partisan
+   outlet's account of the overlay, we obtained the footage and read the
+   station's own clock directly (`research/event-dossier.md` §14). It reads
+   **10:59:50 Beijing = 08:44:50 NPT**, so the elapsed time is **7 min 40 s**,
+   not the 6 min 50 s published until then, and the 22-km mean front speed is
+   **47.8 m/s**, not 53.7. Kargel's identical 6:50 now looks like the same
+   minute-rounding by another road rather than independent confirmation. The
+   finding is unaffected — 17 and 23 min stay excluded — and the Syabrubesi
+   gauge (3.8 m at 08:50, km 37.6, a Nepali instrument owing nothing to any
+   camera) still carries it independently.
 3. **The method travels — one test stands, one is withdrawn.** Against Chamoli
    2021 the model reproduces the Tapovan arrival once frictional melt is given a
    thermal lag (one fitted number; the speeds are then out of sample) — a
