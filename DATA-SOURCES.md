@@ -49,3 +49,13 @@ European Union and ESA; all rights reserved). 38 MB; gitignored; re-download
 from the URL. Used by `calcs/upvalley_wedge_volume.py` for the Kyirong-arm
 cross-sections after the Mapzen tiles were found to carry void-fill artefacts
 in the gorge.
+
+## Trimline mapping inputs (added 7 Sept 2026, `calcs/trimline_map.py`)
+
+| File(s) | Source | Licence / status | Notes |
+|---|---|---|---|
+| `data/Copernicus_DSM_COG_10_N27_00_E085_00_DEM.tif` | Copernicus DEM GLO-30, tile N27 E085, same AWS bucket as the N28 tile above: https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N27_00_E085_00_DEM/Copernicus_DSM_COG_10_N27_00_E085_00_DEM.tif | Copernicus DEM licence (attribution as above) | 45 MB; gitignored (`data/*.tif`). Covers the corridor below 28.0 N (Betrawati and down). |
+| `data/HMA_DEM8m_MOS_20170716_tile-675.tif` (+ `tile-676`) | NASA NSIDC High Mountain Asia 8 m DEM mosaic v1 (`HMA_DEM8m_MOS`, Shean 2017, DOI 10.5067/KXOVQ9L172S2). Granule URLs from CMR: https://data.nsidc.earthdatacloud.nasa.gov/nsidc-cumulus-prod-protected/HMA/HMA_DEM8m_MOS/1/2002/01/28/HMA_DEM8m_MOS_20170716_tile-675.tif (348 MB; tile 675 spans 84.45–85.48 E, 27.50–28.39 N: junction → below Betrawati) and `..._tile-676.tif` (337 MB; 85.48–86.5 E: the scar and the Lhende above ~km 12) | NASA open data; **Earthdata login required** (`~/.netrc` entry for `urs.earthdata.nasa.gov`) | gitignored. `trimline_map.py` uses it automatically when present and falls back to GLO-30 per point where HMA is void. |
+| Sentinel-2 L2A, tile T45RUM, 12/14/24 Aug (pre) and 27 Aug–6 Sept 2026 (post) | ESA Copernicus via the AWS open COG mirror, Element84 Earth Search STAC | Copernicus Sentinel data, free use with attribution | Windowed reads; NDVI composites cached under `output/cache/s2/` (gitignored). |
+| Planet Pelican 0.55 m, 27 Aug and 1 Sept 2026 (Syabrubesi → Rasuwagadhi) | Planet Crisis Response STAC on source.coop: https://data.source.coop/planet/disasterdata/nepal-flash-flood-2026-08-26/catalog.json | **CC-BY-NC-4.0** (© Planet Labs PBC) | **Analysis only.** Read through the COG overviews along cross-sections; only derived section samples are cached (`output/cache/pelican/`, gitignored). No scene, crop or thumbnail is stored in the repo. |
+| geopera v1.1 trimline observations, superelevation velocities, per-km budget | https://github.com/geo-pera/bhotekoshi-2026-reconstruction (code MIT; derived data CC-BY-NC-4.0 via the imagery) | CC-BY-NC-4.0 | Cross-check only; cached under `output/cache/geopera/` (gitignored), never redistributed. Geopera Pty Ltd, Darcy Weedman — a company blog, unreviewed. |

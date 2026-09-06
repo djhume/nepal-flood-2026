@@ -26,3 +26,4 @@ research/video/*
 
 # Copernicus GLO-30 tile (~25 MB), re-downloadable; URL in DATA-SOURCES.md
 data/*.tif
+output/cache/
