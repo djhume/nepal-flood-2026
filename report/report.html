@@ -184,7 +184,7 @@ ul.src li{break-inside:avoid;margin-bottom:4px}
 <div class="wrap">
 <nav class="hubnav"><a href="index.html">◀ Project home</a><span class="here">Technical report</span><a href="plain.html">Plain English</a><a href="workings.html">Model workings</a></nav>
 <header>
-  <p class="eyebrow">Preliminary analysis · v4 · 5 September 2026 ·
+  <p class="eyebrow">Preliminary analysis · v5 · 6 September 2026 ·
   <a href="plain.html">plain-English version</a></p>
   <h1>The Trishuli Water Ledger</h1>
   <p class="dek">On 26 August 2026 a collapsing mountainside above the Lhende
@@ -218,7 +218,7 @@ ul.src li{break-inside:avoid;margin-bottom:4px}
 
   <div class="numbers">
     <div><b>~1,200 m</b><span>initial fall</span></div>
-    <div><b>52 m/s</b><span>avg, first 22 km</span></div>
+    <div><b>47.8 m/s</b><span>avg, first 22 km — the CCTV overlay reads 10:59:50, so 7 min 40 s, not the 6:50 published until 6 Sept (<a href="#s03" class="xref">§03</a>)</span></div>
     <div><b>5,850 m³/s</b><span>gross peak at Devghat — likely the combined
       Narayani, so ~2,900 excess (<a href="#s07" class="xref">§07</a>)</span></div>
     <div><b>~20 Mm³</b><span>FFD "excess" water</span></div>
@@ -250,11 +250,19 @@ every dial at its limit at once. The finding is unchanged and much stronger;
 see <a href="#s04" class="xref">§04</a>. <em>A chart bar was mislabelled</em> on
 the plain-English page: 47&nbsp;Mm³ described as "river already lying in the
 channel" is the whole wave at Devghat, and the standing channel water is 22.4.
-<em>The border-clock resolution was overstated.</em> The decisive overlay quote
-comes from a partisan outlet, and Kargel's matching 6&nbsp;min 50&nbsp;s has no
-stated method and may derive from the same camera; both are now on the page,
-and the load-bearing evidence is restated as the Syabrubesi gauge, which owes
-nothing to any camera. Also: the published workings had fallen three days
+<em>The border-clock resolution was overstated</em>, and has since been
+settled properly: on 6 Sept we obtained the footage and read the station's own
+overlay directly rather than relying on a partisan outlet's account of it. It
+reads <strong>10:59:50</strong> Beijing at the onset of destruction, tracking
+real time at four checked points. That retires the provenance caveat — and
+corrects our own elapsed time from <strong>6 min 50 s to 7 min 40 s</strong>,
+and the 22-km mean front speed from 53.7 to <strong>47.8 m/s</strong>. The
+6:50 is what reading the overlay to the minute and assuming :00 seconds
+produces; Kargel's identical figure appears to be the same rounding by another
+road, not independent confirmation. Nothing about the composition finding
+moves: 17 and 23 minutes remain excluded, and the Syabrubesi gauge still
+carries the argument without reference to any camera. Full working in
+<code>research/event-dossier.md</code> §14. Also: the published workings had fallen three days
 behind these findings and have been rebuilt, and geopera is now identified
 wherever it is cited.</p>
 <p><strong>Entrainment was built, and the erosion volume lands.</strong> The
@@ -321,7 +329,10 @@ platforms; separately, AFP/Snopes fact-checkers who did see the footage read it
 as "around 9 o'clock in Nepal", i.e. ~23 min — a second vote for the slow
 family. Chinese-language reporting carries the overlay verbatim:
 <em>"Nepal time 8:44&nbsp;a.m., Beijing time 10:59&nbsp;a.m."</em> — a correct
-UTC+8 → UTC+5:45 conversion giving <strong>6&nbsp;min 50&nbsp;s</strong>, and
+UTC+8 → UTC+5:45 conversion giving <strong>6&nbsp;min 50&nbsp;s</strong>
+<em>(superseded 6 Sept — reading the overlay's seconds directly gives
+10:59:50 and <strong>7&nbsp;min 40&nbsp;s</strong>; see the correction note in
+<a href="#s00" class="xref">§00</a>)</em>, and
 the fact-checkers' "around 9" is a loose paraphrase of 8:44 rather than a rival
 reading. <strong>Two provenance caveats, stated rather than buried.</strong>
 The outlet carrying that overlay is partisan (Epoch Times, 3 Sept); it is used
@@ -344,7 +355,7 @@ and from km 8–22 the Lhende <em>is</em> the international boundary. Three mud
 lines at the border junction (bed 1,815&nbsp;m, leeward 1,875&nbsp;m, impact
 cliff 1,920–1,930&nbsp;m) separate depth from run-up and give flow depth
 ~60&nbsp;m, material velocity 30–33&nbsp;m/s and a bore front of 54–57&nbsp;m/s
-against a 52&nbsp;m/s clock the derivation never used. geopera's boulder-
+against a 47.8&nbsp;m/s clock the derivation never used. geopera's boulder-
 competence velocity of 19–26&nbsp;m/s independently supports the
 material/front distinction.</p>
 </div>
@@ -459,7 +470,7 @@ Distances are measured along the river channel we stitched from OpenStreetMap
 <div class="tablewrap"><table>
 <tr><th>NPT, 26 Aug</th><th>km</th><th>What happened</th><th>Quality</th></tr>
 <tr><td class="mono">08:37:10</td><td class="num">0</td><td>Collapse. Registered as a magnitude-5.2 landslide-generated seismic event (USGS); Mw 5.7 per GFZ.</td><td class="verdict pass">HARD</td></tr>
-<tr><td class="mono">08:44</td><td class="num">22</td><td>CCTV captures destruction beginning at Gyirong Port — 22 km in ~7 min, average ≈52 m/s.</td><td class="verdict pass">HARD</td></tr>
+<tr><td class="mono">08:44:50</td><td class="num">22</td><td>CCTV captures destruction beginning at Gyirong Port. Overlay read directly off the footage 6 Sept: <strong>10:59:50 Beijing</strong> = 08:44:50 NPT, i.e. <strong>7 min 40 s</strong>, average <strong>47.8 m/s</strong>. Published as 08:44:00 / 6 min 50 s until then — that figure came from rounding the overlay to the minute.</td><td class="verdict pass">HARD</td></tr>
 <tr><td class="mono">08:50</td><td class="num">38</td><td>Syabrubesi station's last transmission: 3.8 m and rising (warning level 5.5 m).</td><td class="verdict">MEDIUM</td></tr>
 <tr><td class="mono">09:20</td><td class="num">68</td><td>Betrawati station's last transmission on the rising limb (3.55 m); peak passage ~10:30.</td><td class="verdict">MEDIUM</td></tr>
 <tr><td class="mono">~11:00</td><td class="num">108</td><td>Galchhi — the gauge that survived — rises ~9 m in 30 minutes.</td><td class="verdict pass">GOOD</td></tr>
@@ -1130,7 +1141,7 @@ with Claude as research and modelling assistant.</p>
 
 <div class="foot">
 <p>Preliminary and unreviewed, and no Nepali scientist has read it. Source
-volume and ice fraction remain unpublished as of 5 September 2026; every
+volume and ice fraction remain unpublished as of 6 September 2026; every
 conclusion above is an envelope over the defensible range, not a point claim.
 Casualty figures are still rising. All sources were accessed between 27 August
 and 5 September 2026; several are news items that may move or disappear.
@@ -1138,7 +1149,7 @@ Corrections are welcome at
 <a href="https://github.com/djhume/nepal-flood-2026/issues">the repository's
 issue tracker</a> and are recorded on the
 <a href="index.html">project home page</a> with the date and the reason.</p>
-<p class="mono" style="font-size:12px">v4 · 5 September 2026 · Wellington, NZ</p>
+<p class="mono" style="font-size:12px">v5 · 6 September 2026 · Wellington, NZ</p>
 </div>
 </div>
 </div>

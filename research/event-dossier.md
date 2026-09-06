@@ -854,29 +854,38 @@ exactly). Local image scale runs 11.05 px/m at x=100 to 7.62 at x=660 — a 1.45
 gradient, so **a single px/m factor is wrong across this frame** and every
 conversion must go through the projective map.
 
-### 14d. FRONT SPEED AT THE JUNCTION — 49 m/s [Dave, video, NEW]
+### 14d. FRONT SPEED AT THE JUNCTION — 47 m/s [Dave, video, NEW]
 
 Method: two sight lines from the camera, along the right edge of the main
 building and the right edge of a lower level, both identifiable on Google Earth;
-separation **50 m**. Debris front crosses them at video 24.700 s and 25.717 s.
+separation **50 m**. Debris front crosses them at source video **24.700 s** and
+**25.766 s** (source frames 1482 and ~1546).
 
-> **50 m / 1.017 s = 49.2 m/s = 177 km/h = 110 mph**
-> **envelope 43–66 m/s (154–238 km/h, 96–148 mph)**
+> **50 m / 1.066 s = 46.9 m/s = 169 km/h = 105 mph**
+> **envelope 41–63 m/s (150–223 km/h, 93–139 mph)**
 
-**Error budget.** The separation is the dominant term and it is a judgement
-about which ground features the two sight lines touch: shortest defensible
-45 m, longest 65 m (Dave, from Google Earth). Timing is nearly free.
+**On the second crossing.** It is ambiguous between two adjacent frames — the
+front is hard to separate from the grotto shadow — and the **later, slower**
+reading was taken deliberately. Not an interpolation: no sub-frame estimate was
+made, the conservative frame was chosen. An earlier note in this dossier called
+it interpolated; that was wrong. Taking the earlier frame instead gives
+Δt = 1.017 s and 49.2 m/s, so the choice is worth ~2.3 m/s — an order of
+magnitude smaller than the distance uncertainty and not worth arguing about.
+
+**Error budget.** The separation dominates completely. It is a judgement about
+which ground features the sight lines touch: shortest defensible 45 m, longest
+65 m, **and Dave's own read is that it is nearer 50 m than either end**.
 
 | case | d | Δt | m/s | km/h | mph |
 |---|---|---|---|---|---|
-| fastest — 65 m, Δt short by 2 frames | 65 | 0.984 | **66.1** | 238 | 148 |
-| nominal | 50 | 1.017 | **49.2** | 177 | 110 |
-| slowest — 45 m, Δt long by 2 frames | 45 | 1.050 | **42.8** | 154 | 96 |
+| fastest — 65 m, Δt short 1 frame | 65 | 1.049 | **61.9** | 223 | 139 |
+| nominal | 50 | 1.066 | **46.9** | 169 | 105 |
+| slowest — 45 m, Δt long 1 frame | 45 | 1.083 | **41.6** | 150 | 93 |
 
-Distance alone gives 44.2–63.9; adding ±1 frame at each end widens it only to
-42.8–66.1, i.e. timing contributes ~3%. **Quote it as 43–66 m/s.** Note the
-range is asymmetric about the nominal (−5/+15 m on the distance), so 49 is not
-the centre of the envelope — the mid-range is nearer 54.
+Timing contributes ~1.6%; everything else is the 45–65 m. **Quote it as
+41–63 m/s, nominal 47.** The range is asymmetric about the nominal (−5/+15 m on
+the distance), so 47 is not its centre — but it is the best estimate, because
+the 50 m is the best estimate of the separation, not its midpoint.
 
 An *instantaneous* front speed, and the head speed will fluctuate as obstacles
 fail, so treat it as one sample of a varying quantity rather than a stable
@@ -884,21 +893,27 @@ value.
 
 **Convergence at this junction:**
 
-| m/s | source | quantity | in 43–66? |
+| m/s | source | quantity | in 41–63? |
 |---|---|---|---|
-| **49.2 (43–66)** | **this measurement** | debris front, instantaneous | — |
-| 48.5 | geopera superelevation | front/crest, mud lines | yes |
+| **46.9 (41–63)** | **this measurement** | debris front, instantaneous | — |
 | 47.8 | mean over 22 km, corrected clock (14b) | front | yes |
+| 48.5 | geopera superelevation | front/crest, mud lines | yes |
 | 54.0 | our three mud lines | front, stagnation | yes |
 | 19.0 | CAS frame-by-frame | **water surface, post-turn** | **no** |
 
 The envelope contains every independent estimate of the *front* and excludes
-the one estimate of the post-turn *water* — which is the discrimination that
-matters, and it survives the full 45–65 m distance uncertainty.
+the one estimate of the post-turn *water* — the discrimination that matters,
+and it survives the full 45–65 m distance uncertainty.
 
-Run-up cross-check: 49.2 m/s needs α = 0.41 to produce the observed 45–55 m
-cliff run-up, against 0.42 for geopera's 48.5. Across the whole 43–66 m/s
-envelope α runs 0.20–0.59, physical throughout — so the run-up geometry does
+**A caution about the top three.** 46.9, 47.8 and 48.5 sit within 1.6 m/s of
+each other by three unrelated routes, which is tighter than a ±10 m distance
+uncertainty can support. Read it as consistency, not as precision: the honest
+statement is 41–63 m/s, and the apparent three-way agreement to 3% is partly
+luck.
+
+Run-up cross-check: 46.9 m/s needs α = 0.45 to produce the observed 45–55 m
+cliff run-up, against 0.42 for geopera's 48.5. Across the whole 41–63 m/s
+envelope α runs 0.22–0.63, physical throughout — so the run-up geometry does
 not discriminate within the envelope, but it does not contradict it either.
 The nominal and geopera's figure imply the same stagnation efficiency, which is
 its own small corroboration. CAS's 19 would need α = 2.72, impossible — **which
