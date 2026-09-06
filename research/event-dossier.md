@@ -1566,3 +1566,71 @@ geopera's upper-Lhende 37 was a single point. Reverse at Syabrubesi: spread,
 11 m/s, deposit at km 40–43. Interpretation, not a scored result; feeds the
 μ_dry prior of a future ensemble (currently 0.10–0.35 — the bracket sits
 below it, which is worth noting when v6 reports its posterior on μ).
+
+## 20. ENSEMBLE v6 — stages as observables: 0 of 200, and why (7 Sept, midday)
+
+`calcs/ensemble_v6.py` (PLAN §10 design): the six reach stages from the
+trimline fit (§19a) scored inside their p10–p90; velocity re-specified as the
+gorge's section-mean peak speed (km 24–34) vs the bend pairs ×0.85 = 34 ±35%;
+widths on km 22.8–108 from the mapped sections (1.5–3× WIDER than the rule of
+thumb: gorge 120 m vs 50, above Betrawati 171 vs 60, below 271 vs 114); the
+Kyirong arm as a wedge at the lee level (60 m head, S 0.017, 180 m) with the
+junction weir cap lifted 8 → 60 m; clock 7.68 ±30%, Syabrubesi 13 ±50%,
+erosion 3.2 ±60%, deposition ≤12 unchanged; Devghat and the lower clocks held
+out. 200 LHS samples over the unchanged priors; 3.25 h simulated; 35 min.
+Full tables: `output/ensemble_v6_RESULTS.md`; samples
+`calcs/ensemble_samples_v6.npy`.
+
+**Result: 0 of 200 satisfy all eleven observables.** Met singly: border clock
+64, Syabrubesi 77, v_gorge 37, erosion 197, gorge stage 20, Syabrubesi stage
+10, Hakubesi 25, to-Betrawati 22, Betrawati–Galchhi 18, Galchhi 37, deposition
+140. **Every corridor stage + the border clock: 0 runs. Every corridor stage
++ v_gorge: 0–1 runs.** Betrawati–Galchhi + Galchhi: 0 (the fit's 15 → 7.4 m
+drop is steeper than the model's; the Galchhi window has 12 stations).
+
+**The diagnosis, from the samples:**
+
+| V (Mm³) | n | gorge stage (m) | border (min) | v_gorge (m/s) | deposit (Mm³) |
+|---|---|---|---|---|---|
+| 1–5 | 60 | 1.5 | 19.2 | 5 | 2 |
+| 5–15 | 42 | 4.6 | 10.3 | 9 | 4 |
+| 15–30 | 26 | 10.9 | 7.7 | 15 | 7 |
+| 30–60 | 26 | 22.3 | 5.9 | 25 | 15 |
+| 60–100 | 20 | 49.1 | 4.9 | 42 | 24 |
+| 100–200 | 26 | 97.8 | 4.2 | 60 | 32 |
+
+Observed: gorge 73 [59–99]; border 7.68 [5.4–10.0]; v_gorge ~34 [22–46].
+
+- The runs that reach the mapped stages are **V = 86–142 Mm³ (median 111)**,
+  3–5× the old envelope — and every one of them reaches the border in
+  **4.2–4.8 min** and runs the gorge at **45–62 m/s** section-mean. The runs
+  that make the clock (V 9–57) never exceed 31 m in the gorge or 19 at
+  Hakubesi.
+- Roughness is not the lever: among V ≥ 60, n_scale 0.7 → 1.4 moves the
+  border arrival 4.4 → 4.3 min and v_gorge 55 → 51. Manning's resistance
+  (∝ n²v²/h^{4/3}) vanishes at 70 m depth; the deep runs sit at the Froude cap
+  (Fr = 2). The observed flow at 73 m and ~34 m/s mean is Fr ≈ 1.3.
+- So the structure is falsified, not the parameters: **with the composition
+  dial as built, a release deep enough to leave the mapped mud lines is a
+  near-frictionless water bore — 1.6× too fast to the border and 1.5× too
+  fast in the gorge.** The real flow was as deep as those runs and as slow as
+  the small ones. What is missing is a resistance that does not vanish with
+  depth: a debris-flow rheology (Voellmy turbulent term v²/ξh with ξ of order
+  100–500, or a collisional/Bagnold term), not a wetter dial.
+- Composition and deposition: of the 20 gorge-stage runs, 6 keep deposition
+  ≤12 Mm³ — those with f_fine ≳ 0.8. A 90–140 Mm³ release passes the cap only
+  as ice and fines, as every earlier line said.
+- Nearest misses (8 of 11): V 100–116 Mm³, failing only the clock (too early),
+  v_gorge (too fast) and Galchhi (too high).
+
+**What it does NOT say:** that the release was 110 Mm³. It says the mapped
+stages need that order of volume *in this model*, and that this model runs
+such a volume too fast. A model with more resistance at depth would need less
+volume for the same stage (a slower flow is deeper for the same discharge),
+so the volume answer is coupled to the rheology answer and the two must be
+found together. **v7 = sample a Voellmy turbulent coefficient ξ (100–2,000
+m/s²) as a seventh input**, keep everything else, and re-score; then the
+posterior on (V, ξ, μ, f_fine) is the number. Logged; nothing promoted;
+finding 04 stays "under revision, moving up".
+
+**Held-out check:** not run (nothing passed).

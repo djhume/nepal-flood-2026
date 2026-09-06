@@ -1348,3 +1348,13 @@ velocity-weakening friction (§8a); the classification note for §04b
 (rock–ice avalanche → channelised debris flow at avalanche speed; terminal
 velocity fixes μ_eff ≈ 0.04–0.08 at h 40–70 m, S 0.12 — 6 Sept night, not
 yet on the page).
+
+**v6 RAN (7 Sept midday) — 0 of 200 (dossier §20).** Corridor stage + border
+clock: 0 runs at any size; stage + gorge speed: 0–1. The runs that reach the
+mapped stages are V 86–142 Mm³ and arrive at 4.2–4.8 min at 45–62 m/s;
+roughness is not a lever at 70 m depth (Manning vanishes; runs sit at Fr = 2;
+observed Fr ≈ 1.3). Structural: the wet dial is a water bore; a deep debris
+flow needs resistance that survives depth. **v7 = add a sampled Voellmy ξ
+(100–2,000) to the friction law and re-score.** Volume and rheology come out
+together or not at all. Widths from the map are 1.5–3× WIDER than the rule —
+the width suspect for the stage failures is dead.
