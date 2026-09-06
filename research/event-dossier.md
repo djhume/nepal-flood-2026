@@ -1467,3 +1467,83 @@ Pelican resolution (Vantor 2021 WV2) so the Pelican walks need no cap.
 *Credit: cross-checked against geopera v1.1 (Geopera Pty Ltd, Darcy Weedman;
 company blog, unreviewed — as this is), whose trimline and superelevation
 vectors were read from their GitHub release and are not redistributed here.*
+
+### 19a. The whole corridor to Devghat, the fit, and the check-plots (7 Sept, late morning)
+
+**Dave's two additions, after seeing the junction plan view.** (i) The
+questioned 2,027–2,036 m points on the Nepal-side wall above the junction sit
+under cloud and cloud shadow in the 1 Sept Pelican scene; they are now a
+manual override with his name and date on it (`data/trimline_overrides.csv`,
+flag `manual:cloud-shadow`, km 21.3–21.7 left bank), excluded from every
+average. (ii) The satellite image with the contours drawn on it is the better
+measurement than Google Earth, whose imagery is old and loosely registered:
+`calcs/trimline_inset.py` renders the Pelican visual for any box with the HMA
+contours (1,875 and 1,925 m highlighted), the mapped points and geopera's
+stations. The images go to `output/cache/insets/` and are not committed
+(CC-BY-NC). On the arm view the grey fill's upper edge follows the 1,875 m
+contour on both banks for 2.5 km and the 1,925 m contour runs through forest.
+
+**Extended to km 200 (Devghat 199.2).** Second Sentinel-2 box for the lower
+river (T45RTL/RUL/RTM/RUM mosaicked on one 10 m grid; pre composite 80 %
+valid, post 44 %, nearly all from 27 Aug), HMA tile 674 and GLO-30 E084 for
+the last kilometres, cross-sections ±1,500 m below Betrawati (the flood edge
+on the floodplain is far from the river). 1,994 main-path stations, 4,346
+rows. Reach coverage (change layer, both banks / stations): Betrawati–Galchhi
+343/380; Galchhi–Mugling 62/243 (cloud); Mugling–Devghat 317/494.
+
+**But below Mugling the method mostly returns the pre-event channel edge,
+not a mud line.** Of 665 valid bank points there, 606 carry
+`no-change-in-run` and 556 `prebare-at-trim`: the walk ended on gravel that
+was bare before the flood, with no pixel in the run that had been vegetated.
+On a wide braided river at 10 m the flood's mark on the fields either is not
+a vegetation loss or is below the pixel. Only 56 bank points are clean.
+Galchhi–Mugling is mixed (49 clean of 148); Betrawati–Galchhi is real
+(493 clean of 707).
+
+**The robust running fit** (Dave: "run a fit through the points so as to
+remove the ones that are artefacts of where the image becomes too hard to
+determine"). Pool the clean bank points of the best layer at each station
+(Pelican 1 Sept where it has both banks, else the Sentinel-2 change layer);
+running median over ±1 km; a point further than max(2.5 MAD, 10 m) from its
+window median is an outlier, marked on its row (`outlier_L/R`) and never
+averaged in; three passes. 1,228 points, 80 outliers (7 %), fit at 1,098 of
+1,994 stations, written to `output/trimline_fit.csv` (km, median, window
+p10, p90, n). Outliers fall mostly at km 60–80 (30 of 80), the reach where
+the gorge opens and the masks meet terraces and roads.
+
+| reach | fit stage, m, median of stations [window p10–p90] | stations with a fit |
+|---|---|---|
+| Lhende gorge 8–21.5 (avalanche trimlines) | 136 [96–176] | 102 / 135 |
+| border junction 21.5–22.8 (run-up) | 95 [81–110] | 9 / 13 |
+| Bhote Koshi gorge 22.8–35.6 | **73 [59–99]** | 123 / 128 |
+| Syabrubesi opening 35.6–40 | **71 [59–82]** | 44 / 44 |
+| Hakubesi 40–46 | **68 [42–85]** (90 [63–105] at km 43.5) | 53 / 60 |
+| to Betrawati 46–70 | **29 [20–41]** | 213 / 240 |
+| Betrawati–Galchhi 70–108 | **15 [9–21]** | 370 / 380 |
+| Galchhi–Mugling 108–150 | 7 [3–13] | 81 / 420 |
+| Mugling–Devghat 150–200 | 11 [9–12] (56 clean points only) | 90 / 500 |
+
+At the landmarks: Betrawati (km 68.4) 24.5 [16–30]; km 80 20.7; Bidur /
+Trishuli Bazaar (~km 90) 11.7 [4–14]; **Galchhi (107.6) 7.4 [4.7–9.9] against
+the gauge's +9 m in 30 minutes** — the same number, from a different
+observable, remembering that the stripped-ground line is a floor and the
+gauge rise is measured from a monsoon pre-flood level while the DEM bed is a
+2015 dry-season surface. No fit within 0.5 km of Devghat (cloud); the gauge's
+6.57 m sits below the 9–12 m of the thin Mugling–Devghat set.
+
+**Velocities below Betrawati.** Strong bend pairs: Betrawati–Galchhi 19 m/s
+[15–27] (n=8), Q 32 ×10³ m³/s [11–148]; one pair each in the two lower
+reaches (22 and 44 m/s, Q 31 and 16 ×10³). Against the dossier's celerities
+(~15 m/s to Betrawati, 5–7 m/s over the final 80 km) the bend velocities are
+front-of-wave surface speeds at the peak, not celerities; against the FFD's
+5,850 m³/s at Devghat the 30 ×10³ at km 70–108 is the attenuation the
+routing has always had to explain. Observable set, not findings.
+
+**Caveats that travel with the lower river.** The stage is a floor on the
+water surface (vegetation survives immersion; mud on fields may not read as
+bare at 10 m); the DEM bed on a wide river is the 2015 water surface, not the
+channel bottom, so "stage above bed" there is closer to "rise above low
+flow"; sections of ±1,500 m still stop short of the flood edge in places
+(`open`); cloud removed 60–80 % of the stations below Galchhi. SkySat 31 Aug
+(0.64 m, Betrawati → Trishuli Bazaar) and PlanetScope 28 Aug (3.9 m, to
+27.71 N) are the next imagery to add there; neither is read yet.

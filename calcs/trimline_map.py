@@ -89,8 +89,13 @@ TURN_HEADON = 60.0             # degrees over +/-CURV_HALF
 SIDEVALLEY_M = 200.0
 JUNCTION_KM = (21.5, 22.8)
 SURFACE_TO_MEAN = 0.85
-KM_END = 70.0                  # Betrawati is at km 68.4 on data/river_path.csv
-BBOX = [85.10, 27.94, 85.56, 28.42]   # scar -> Betrawati, inside tile T45RUM
+KM_END = 200.0                 # Devghat is at km 199.2 on data/river_path.csv
+BBOX = [85.10, 27.94, 85.56, 28.42]   # upper box: scar -> Betrawati (68.4), tile T45RUM
+BBOX_LOWER = [84.40, 27.70, 85.22, 28.00]   # lower box: Betrawati -> Devghat (T45RTL/RUL + RTM/RUM slivers)
+S2_BOXES = {"upper": BBOX, "lower": BBOX_LOWER}
+DEM_BBOX = [84.40, 27.68, 85.56, 28.42]
+OVERRIDES = os.path.join(DATA, "trimline_overrides.csv")   # manual flags with provenance
+FIT_HALF_KM = 1.0              # robust running fit window, +/- km
 STAC = "https://earth-search.aws.element84.com/v1/search"
 PLANET = ("https://data.source.coop/planet/disasterdata/"
           "nepal-flash-flood-2026-08-26/post-event/")
@@ -114,9 +119,17 @@ LAYERS = {   # name -> (bare threshold, gap px, placement px, native res m)
 VEG_PRE = 0.30
 SCL_BAD = [0, 1, 3, 8, 9, 10]   # nodata, saturated, shadow, cloud med/high, cirrus
 GLO30 = [os.path.join(DATA, "Copernicus_DSM_COG_10_N28_00_E085_00_DEM.tif"),
-         os.path.join(DATA, "Copernicus_DSM_COG_10_N27_00_E085_00_DEM.tif")]
+         os.path.join(DATA, "Copernicus_DSM_COG_10_N27_00_E085_00_DEM.tif"),
+         os.path.join(DATA, "Copernicus_DSM_COG_10_N27_00_E084_00_DEM.tif")]
 HMA = [os.path.join(DATA, "HMA_DEM8m_MOS_20170716_tile-675.tif"),
-       os.path.join(DATA, "HMA_DEM8m_MOS_20170716_tile-676.tif")]
+       os.path.join(DATA, "HMA_DEM8m_MOS_20170716_tile-676.tif"),
+       os.path.join(DATA, "HMA_DEM8m_MOS_20170716_tile-674.tif")]
+
+
+def half_sec(s):
+    """Cross-section half-length: 600 m in the gorges, 1,500 m on the
+    floodplain below Betrawati (the flood edge there is far from the river)."""
+    return HALF_SEC if (s["arm"] != "main" or s["km"] <= 70.0) else 1500.0
 
 # Dave's marks and the published cross-checks (dossier 6c, 18; geopera v1.1)
 CHECKS = {
@@ -126,7 +139,11 @@ CHECKS = {
     "Syabrubesi opening velocity (geopera)": 11.0,
 }
 # dossier 18 passing-run peak depths (m): km 22, Syabrubesi 37.6, Hakubesi 43.5
-MODEL_DEPTHS = {22.0: (31, 123), 37.6: (3.9, 19.7), 43.5: (4.6, 20.9)}
+MODEL_DEPTHS = {22.0: (31, 123), 37.6: (3.9, 19.7), 43.5: (4.6, 20.9), 107.6: (3.1, 4.1)}
+# lower-river gauge observations (dossier 1, 4): stage RISE, so a floor on stage
+GAUGE_STAGE = {107.6: ("Galchhi +9 m / 30 min", 9.0), 199.2: ("Devghat 6.57 m", 6.57)}
+LANDMARKS = ((22.0, "junction"), (37.6, "Syabrubesi"), (43.5, "Hakubesi"), (68.4, "Betrawati"),
+             (107.6, "Galchhi"), (199.2, "Devghat"))
 
 
 # --------------------------------------------------------------------------
@@ -304,112 +321,141 @@ def side_streams():
 # --------------------------------------------------------------------------
 def stac_search(dt, bbox=BBOX):
     q = {"collections": ["sentinel-2-c1-l2a"], "bbox": bbox, "datetime": dt,
-         "limit": 100}
+         "limit": 200}
     req = urllib.request.Request(STAC, data=json.dumps(q).encode(),
                                  headers={"Content-Type": "application/json"})
     with urllib.request.urlopen(req, timeout=120) as r:
         feats = json.loads(r.read())["features"]
-    return [f for f in feats if f["properties"].get("grid:code") == "MGRS-45RUM"]
+    return [f for f in feats if str(f["properties"].get("grid:code", "")).startswith("MGRS-45R")]
 
 
-def s2_window(href):
-    """Integer-aligned window of BBOX on a 10 m band; returns (Window, Affine)."""
-    import rasterio
+def s2_grid(bbox):
+    """Common 10 m EPSG:32645 grid over a lon/lat bbox: (x0, y0, x1, y1, W, H).
+    Every Sentinel-2 tile in the zone sits on this grid (origins are multiples
+    of 10 m), so tiles paste at integer offsets without resampling."""
     from rasterio.warp import transform_bounds
-    from rasterio.windows import Window
-    with rasterio.open(href) as src:
-        l, b, r, t = transform_bounds("EPSG:4326", src.crs, *BBOX)
-        c0 = int(math.floor((l - src.transform.c) / src.transform.a))
-        r0 = int(math.floor((src.transform.f - t) / -src.transform.e))
-        c1 = int(math.ceil((r - src.transform.c) / src.transform.a))
-        r1 = int(math.ceil((src.transform.f - b) / -src.transform.e))
-        c0, r0 = max(c0, 0), max(r0, 0)
-        c1, r1 = min(c1, src.width), min(r1, src.height)
-        win = Window(c0, r0, c1 - c0, r1 - r0)
-        return win, src.window_transform(win), str(src.crs)
+    l, b, r, t = transform_bounds("EPSG:4326", UTM, *bbox)
+    x0 = math.floor(l / 10) * 10; x1 = math.ceil(r / 10) * 10
+    y0 = math.floor(b / 10) * 10; y1 = math.ceil(t / 10) * 10
+    return x0, y0, x1, y1, int((x1 - x0) / 10), int((y1 - y0) / 10)
 
 
-def s2_ndvi(feat, win, shape):
+def s2_paste(feat, grid, mosaic):
+    """Read the part of one scene inside the grid, compute NDVI, mask with
+    SCL, paste where the mosaic is still empty. Returns the masked fraction."""
     import rasterio
     from rasterio.windows import Window
+    x0, y0, x1, y1, W, H = grid
     a = feat["assets"]
-    with rasterio.open(a["red"]["href"]) as s:
-        red = s.read(1, window=win).astype("float32")
-    with rasterio.open(a["nir"]["href"]) as s:
-        nir = s.read(1, window=win).astype("float32")
-    with rasterio.open(a["scl"]["href"]) as s:
-        w2 = Window(win.col_off / 2, win.row_off / 2, win.width / 2, win.height / 2)
-        scl = s.read(1, window=w2, out_shape=shape)
+    with rasterio.open(a["red"]["href"]) as s_:
+        b = s_.bounds
+        l, r_ = max(x0, b.left), min(x1, b.right); bo, t = max(y0, b.bottom), min(y1, b.top)
+        if r_ - l < 20 or t - bo < 20:
+            return None
+        c0 = int(round((l - s_.transform.c) / 10)); r0 = int(round((s_.transform.f - t) / 10))
+        w = Window(c0, r0, int(round((r_ - l) / 10)), int(round((t - bo) / 10)))
+        red = s_.read(1, window=w).astype("float32")
+    with rasterio.open(a["nir"]["href"]) as s_:
+        nir = s_.read(1, window=w).astype("float32")
+    with rasterio.open(a["scl"]["href"]) as s_:
+        scl = s_.read(1, window=Window(w.col_off / 2, w.row_off / 2, w.width / 2, w.height / 2),
+                      out_shape=red.shape)
     bad = np.isin(scl, SCL_BAD) | (red + nir <= 0)
-    v = (nir - red) / np.maximum(nir + red, 1.0)
-    v[bad] = np.nan
-    return v.astype("float16"), float(bad.mean())
+    v = (nir - red) / np.maximum(nir + red, 1.0); v[bad] = np.nan
+    gc = int(round((l - x0) / 10)); gr = int(round((y1 - t) / 10))
+    sub = mosaic[gr:gr + v.shape[0], gc:gc + v.shape[1]]
+    v = v[:sub.shape[0], :sub.shape[1]]
+    take = np.isnan(sub) & np.isfinite(v)
+    sub[take] = v[take]
+    return float(bad.mean())
 
 
-def stage_s2(refetch=False):
+def stage_s2(refetch=False, boxes=("upper", "lower")):
+    """Pre/post NDVI composites per box, cached under output/cache/s2/.
+    'upper' keeps the original file names (pre.npy, post.npy, meta.json)."""
     d = os.path.join(CACHE, "s2"); os.makedirs(d, exist_ok=True)
-    meta_p = os.path.join(d, "meta.json")
-    if os.path.exists(meta_p) and not refetch:
-        print("s2 composites cached:", meta_p); return
-    t0 = time.time()
-    pre = stac_search("2026-08-01T00:00:00Z/2026-08-26T00:00:00Z")
-    post = stac_search("2026-08-26T12:00:00Z/2026-09-07T00:00:00Z")
-    pre = sorted(pre, key=lambda f: f["properties"]["eo:cloud_cover"])[:3]
-    post = sorted(post, key=lambda f: f["properties"]["datetime"])
-    win, tr, crs = s2_window(pre[0]["assets"]["red"]["href"])
-    shape = (int(win.height), int(win.width))
-    print(f"window {shape[1]}x{shape[0]} px at 10 m, {crs}, origin ({tr.c:.0f}, {tr.f:.0f})")
-    meta = {"transform": list(tr)[:6], "crs": crs, "shape": list(shape),
-            "bbox": BBOX, "pre": [], "post": []}
-    for lab, feats in (("pre", pre), ("post", post)):
-        layers = []
-        for f in feats:
-            try:
-                v, bad = s2_ndvi(f, win, shape)
-            except Exception as e:
-                print(f"  {lab} {f['id']}: read failed ({e})"); continue
-            print(f"  {lab} {f['properties']['datetime'][:10]} {f['id']}: "
-                  f"{100*bad:.1f}% masked  [{time.time()-t0:.0f} s]", flush=True)
-            layers.append(v)
-            meta[lab].append({"id": f["id"], "date": f["properties"]["datetime"][:10],
-                              "scene_cloud": f["properties"]["eo:cloud_cover"],
-                              "aoi_masked": bad})
-        stack = np.stack(layers).astype("float32")
-        with np.errstate(all="ignore"):
-            comp = np.nanmedian(stack, axis=0)
-        nval = np.sum(np.isfinite(stack), axis=0).astype("uint8")
-        np.save(os.path.join(d, f"{lab}.npy"), comp.astype("float16"))
-        np.save(os.path.join(d, f"{lab}_nvalid.npy"), nval)
-        meta[f"{lab}_valid_frac"] = float(np.isfinite(comp).mean())
-        print(f"  -> {lab} composite from {len(layers)} scenes: "
-              f"{100*meta[f'{lab}_valid_frac']:.1f}% of AOI valid", flush=True)
-        del stack, layers
-    json.dump(meta, open(meta_p, "w"), indent=1)
-    print(f"s2 stage done in {time.time()-t0:.0f} s -> {d}")
+    for name in boxes:
+        bbox = S2_BOXES[name]
+        pfx = "" if name == "upper" else name + "_"
+        meta_p = os.path.join(d, pfx + "meta.json")
+        if os.path.exists(meta_p) and not refetch:
+            print(f"s2 {name} composites cached:", meta_p); continue
+        t0 = time.time()
+        grid = s2_grid(bbox); x0, y0, x1, y1, W, H = grid
+        print(f"s2 {name}: grid {W}x{H} px at 10 m, {UTM}, origin ({x0}, {y1})", flush=True)
+        pre = stac_search("2026-08-01T00:00:00Z/2026-08-26T00:00:00Z", bbox)
+        post = stac_search("2026-08-26T12:00:00Z/2026-09-07T00:00:00Z", bbox)
+        meta = {"transform": [10.0, 0.0, float(x0), 0.0, -10.0, float(y1)], "crs": UTM,
+                "shape": [H, W], "bbox": bbox, "pre": [], "post": []}
+        for lab, feats in (("pre", pre), ("post", post)):
+            by_date = {}
+            for f in feats:
+                by_date.setdefault(f["properties"]["datetime"][:10], []).append(f)
+            dates = sorted(by_date)
+            if lab == "pre":   # the 4 least-cloudy dates (mean scene cloud over the tiles)
+                dates = sorted(dates, key=lambda dd: np.mean([f["properties"]["eo:cloud_cover"]
+                                                              for f in by_date[dd]]))[:4]
+            layers = []
+            for dd in dates:
+                mosaic = np.full((H, W), np.nan, "float32")
+                ids = []
+                for f in by_date[dd]:
+                    try:
+                        bad = s2_paste(f, grid, mosaic)
+                    except Exception as e:
+                        print(f"  {lab} {f['id']}: read failed ({e})"); continue
+                    if bad is not None:
+                        ids.append((f["id"], round(bad, 3)))
+                valid = float(np.isfinite(mosaic).mean())
+                print(f"  {lab} {dd}: {len(ids)} tiles, {100*valid:.1f}% of the box valid "
+                      f"[{time.time()-t0:.0f} s]", flush=True)
+                if valid > 0.001:
+                    layers.append(mosaic.astype("float16"))
+                    meta[lab].append({"date": dd, "tiles": ids, "box_valid": valid})
+            stack = np.stack(layers).astype("float32")
+            with np.errstate(all="ignore"):
+                comp = np.nanmedian(stack, axis=0)
+            nval = np.sum(np.isfinite(stack), axis=0).astype("uint8")
+            np.save(os.path.join(d, f"{pfx}{lab}.npy"), comp.astype("float16"))
+            np.save(os.path.join(d, f"{pfx}{lab}_nvalid.npy"), nval)
+            meta[f"{lab}_valid_frac"] = float(np.isfinite(comp).mean())
+            print(f"  -> {name} {lab} composite from {len(layers)} dates: "
+                  f"{100*meta[f'{lab}_valid_frac']:.1f}% of the box valid", flush=True)
+            del stack, layers
+        json.dump(meta, open(meta_p, "w"), indent=1)
+        print(f"s2 {name} done in {time.time()-t0:.0f} s -> {d}")
 
 
 class S2Layer:
+    """All cached composites (upper box, lower box); a point is sampled from
+    the first box that contains it."""
     def __init__(self):
-        d = os.path.join(CACHE, "s2")
-        self.meta = json.load(open(os.path.join(d, "meta.json")))
         from affine import Affine
-        self.tr = Affine(*self.meta["transform"])
-        self.pre = np.load(os.path.join(d, "pre.npy")).astype("float32")
-        self.post = np.load(os.path.join(d, "post.npy")).astype("float32")
-        self.shape = self.pre.shape
+        d = os.path.join(CACHE, "s2")
+        self.boxes = []
+        for pfx in ("", "lower_"):
+            mp = os.path.join(d, pfx + "meta.json")
+            if not os.path.exists(mp):
+                continue
+            meta = json.load(open(mp))
+            self.boxes.append(dict(meta=meta, tr=Affine(*meta["transform"]),
+                                   pre=np.load(os.path.join(d, pfx + "pre.npy")).astype("float32"),
+                                   post=np.load(os.path.join(d, pfx + "post.npy")).astype("float32")))
+        if not self.boxes:
+            raise FileNotFoundError(os.path.join(d, "meta.json"))
+        self.meta = self.boxes[0]["meta"]
         self.res = 10.0
 
-    def _rc(self, x, y):
-        c = np.floor((x - self.tr.c) / self.tr.a).astype(int)
-        r = np.floor((y - self.tr.f) / self.tr.e).astype(int)
-        ok = (c >= 0) & (c < self.shape[1]) & (r >= 0) & (r < self.shape[0])
-        return r, c, ok
-
     def sample(self, x, y):
-        """Returns ndvi_post, ndvi_pre (NaN = invalid/off-array)."""
-        r, c, ok = self._rc(x, y)
-        post = np.full(x.shape, np.nan, "float32"); pre = post.copy()
-        post[ok] = self.post[r[ok], c[ok]]; pre[ok] = self.pre[r[ok], c[ok]]
+        """Returns ndvi_post, ndvi_pre (NaN = invalid / off every box)."""
+        post = np.full(x.shape, np.nan, "float32"); pre = post.copy(); done = np.zeros(x.shape, bool)
+        for b in self.boxes:
+            tr = b["tr"]; shape = b["pre"].shape
+            c = np.floor((x - tr.c) / tr.a).astype(int)
+            r = np.floor((y - tr.f) / tr.e).astype(int)
+            ok = (c >= 0) & (c < shape[1]) & (r >= 0) & (r < shape[0]) & ~done
+            post[ok] = b["post"][r[ok], c[ok]]; pre[ok] = b["pre"][r[ok], c[ok]]
+            done |= ok
         return post, pre
 
 
@@ -557,7 +603,7 @@ class DEM:
         if prefer_hma:
             for p in HMA:
                 if os.path.exists(p):
-                    self.hma.append(self._load(p, window_bbox=BBOX))
+                    self.hma.append(self._load(p, window_bbox=DEM_BBOX))
             if self.hma:
                 self.name = "HMA 8 m (GLO-30 fill)"
                 self._datum_check()
@@ -606,16 +652,14 @@ class DEM:
         arr[arr < -1000] = np.nan
         crs = str(src.crs)
         src.close()
-        # pixel size in metres (for slope)
+        # pixel size in metres (for the on-demand slope)
         if crs.upper().startswith("EPSG:4326"):
             latc = tr.f + tr.e * arr.shape[0] / 2
             dx = abs(tr.a) * 111320.0 * math.cos(math.radians(latc))
             dy = abs(tr.e) * 110574.0
         else:
             dx, dy = abs(tr.a), abs(tr.e)
-        gy, gx = np.gradient(arr, dy, dx)
-        slope = np.sqrt(gx * gx + gy * gy)
-        return dict(path=p, arr=arr, tr=tr, crs=crs, slope=slope)
+        return dict(path=p, arr=arr, tr=tr, crs=crs, dx=dx, dy=dy)
 
     def _sample_tile(self, t, x, y):
         from rasterio.warp import transform
@@ -626,11 +670,17 @@ class DEM:
             X, Y = np.asarray(X), np.asarray(Y)
         col = (X - t["tr"].c) / t["tr"].a - 0.5
         row = (Y - t["tr"].f) / t["tr"].e - 0.5
-        inside = (col >= 0) & (col <= t["arr"].shape[1] - 1) & (row >= 0) & (row <= t["arr"].shape[0] - 1)
+        inside = (col >= 1) & (col <= t["arr"].shape[1] - 2) & (row >= 1) & (row <= t["arr"].shape[0] - 2)
         z = np.full(x.shape, np.nan, "float32"); sl = z.copy()
         if inside.any():
-            z[inside] = self.mc(t["arr"], [row[inside], col[inside]], order=1, mode="nearest", cval=np.nan)
-            sl[inside] = self.mc(t["slope"], [row[inside], col[inside]], order=1, mode="nearest")
+            rr, cc = row[inside], col[inside]
+            z[inside] = self.mc(t["arr"], [rr, cc], order=1, mode="nearest")
+            # slope from bilinear samples one pixel either side (no gradient arrays in memory)
+            zx1 = self.mc(t["arr"], [rr, cc + 1], order=1, mode="nearest")
+            zx0 = self.mc(t["arr"], [rr, cc - 1], order=1, mode="nearest")
+            zy1 = self.mc(t["arr"], [rr + 1, cc], order=1, mode="nearest")
+            zy0 = self.mc(t["arr"], [rr - 1, cc], order=1, mode="nearest")
+            sl[inside] = np.hypot((zx1 - zx0) / (2 * t["dx"]), (zy1 - zy0) / (2 * t["dy"]))
         return z, sl
 
     def sample(self, x, y):
@@ -728,15 +778,20 @@ def stage_map(stations, dem, layers, junction_only=False, tag=""):
         s2pre = None
         print("no Sentinel-2 cache: Pelican walks are NOT change-based (they will climb bare rock)")
     # bed profile first (needs the whole path for the envelope)
-    dem_offs = np.arange(-HALF_SEC, HALF_SEC + 5, 10.0)
+    HMAX = max(half_sec(s) for s in stations)
+    dem_offs = np.arange(-HMAX, HMAX + 5, 10.0)
     Z = []
     for s in stations:
         xs = s["x"] + dem_offs * s["nx"]; ys = s["y"] + dem_offs * s["ny"]
         z, _, _ = dem.sample(xs, ys)
+        z[np.abs(dem_offs) > half_sec(s)] = np.nan
         Z.append(z)
     Z = np.array(Z)
     near = np.abs(dem_offs) <= BED_HALF
     bed_raw = np.nanmin(Z[:, near], axis=1)
+    overrides = []
+    if os.path.exists(OVERRIDES):
+        overrides = list(csv.DictReader(open(OVERRIDES)))
     bed_loc = bed_raw.copy(); bed_env = bed_raw.copy()
     for arm in ("main", "kyirong"):
         ii = [i for i, s in enumerate(stations) if s["arm"] == arm]
@@ -785,7 +840,8 @@ def stage_map(stations, dem, layers, junction_only=False, tag=""):
             cfg = LAYERS[lname]
             cap_flag = {}
             if lname in ("s2", "s2chg"):
-                offs = np.arange(-HALF_SEC, HALF_SEC + 5, 10.0)
+                hs = half_sec(s)
+                offs = np.arange(-hs, hs + 5, 10.0)
                 xs = s["x"] + offs * s["nx"]; ys = s["y"] + offs * s["ny"]
                 post, pre = layer.sample(xs, ys)
                 valid = np.isfinite(post)
@@ -849,6 +905,10 @@ def stage_map(stations, dem, layers, junction_only=False, tag=""):
                     fl.append("side-valley")
                 if lname.startswith("pelican") and cap_flag.get(side):
                     fl.append(cap_flag[side])
+                for o in overrides:
+                    if (o["arm"] == s["arm"] and o["bank"] in (lab, "both")
+                            and float(o["km_from"]) - 1e-6 <= s["km"] <= float(o["km_to"]) + 1e-6):
+                        fl.append("manual:" + o["flag"])
                 if w["status"] == "ok":
                     j = w["j_trim"]
                     xt, yt = xs[j], ys[j]
@@ -981,6 +1041,62 @@ def geopera_velocities(path_xy):
 
 
 # --------------------------------------------------------------------------
+# robust running fit along the corridor (Dave, 7 Sept: "run a fit through
+# the points so as to remove the ones that are artefacts of where the image
+# becomes too hard to determine")
+# --------------------------------------------------------------------------
+def robust_fit(rows, half_km=FIT_HALF_KM):
+    """Pool the clean bank points of the best layer at each station (Pelican
+    1 Sept where it has both banks, else the Sentinel-2 change layer), then a
+    running median over +/-half_km with MAD rejection: a point further than
+    max(2.5 MAD, 10 m) from its window median is an OUTLIER (marked on the
+    row, never averaged in). Three passes. Returns the fit at every 100 m
+    station as {km: (median, p10, p90, n)} and the pooled points."""
+    have_pel = {r["km"] for r in rows if r["arm"] == "main" and r["layer"] == "pelican0901"
+                and r["status_L"] == "ok" and r["status_R"] == "ok"}
+    pts = []
+    for i, r in enumerate(rows):
+        if r["arm"] != "main":
+            continue
+        use = r["layer"] == "pelican0901" or (r["layer"] == "s2chg" and r["km"] not in have_pel)
+        if not use:
+            continue
+        for lab in ("L", "R"):
+            if r[f"status_{lab}"] == "ok" and not r[f"flags_{lab}"] and np.isfinite(r[f"stage_{lab}"]):
+                pts.append((r["km"], r[f"stage_{lab}"], r["layer"], i, lab))
+    if not pts:
+        return {}, pts, np.zeros(0, bool)
+    km = np.array([p[0] for p in pts]); st = np.array([p[1] for p in pts])
+    out = np.zeros(len(pts), bool)
+    for _ in range(3):
+        for j in range(len(pts)):
+            w = (np.abs(km - km[j]) <= half_km) & ~out
+            w[j] = True
+            if w.sum() < 5:
+                continue
+            med = np.median(st[w]); mad = 1.4826 * np.median(np.abs(st[w] - med))
+            out[j] = abs(st[j] - med) > max(2.5 * mad, 10.0)
+    fit = {}
+    for k in np.arange(0.0, KM_END, 0.1):
+        w = (np.abs(km - k) <= half_km) & ~out
+        if w.sum() >= 5:
+            fit[round(float(k), 1)] = (float(np.median(st[w])), float(np.percentile(st[w], 10)),
+                                       float(np.percentile(st[w], 90)), int(w.sum()))
+    for (kk, ss, lay, i, lab), o in zip(pts, out):
+        rows[i][f"outlier_{lab}"] = int(o)
+    return fit, pts, out
+
+
+def write_fit(fit, path):
+    with open(path, "w", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(["km", "stage_fit", "fit_p10", "fit_p90", "n_points"])
+        for k in sorted(fit):
+            m, lo, hi, n = fit[k]
+            w.writerow([f"{k:.1f}", f"{m:.1f}", f"{lo:.1f}", f"{hi:.1f}", n])
+
+
+# --------------------------------------------------------------------------
 # output
 # --------------------------------------------------------------------------
 COLS = ["arm", "km", "layer", "x", "y", "bed_raw", "bed", "bed_env",
@@ -989,7 +1105,8 @@ COLS = ["arm", "km", "layer", "x", "y", "bed_raw", "bed", "bed_env",
         "stage", "stage_n", "width", "Rc", "turn_deg", "outer", "dh", "dh_sig",
         "v_super", "v_lo", "v_hi", "v_quality", "A", "Q", "Fr", "valid_frac",
         "changed_L", "changed_R", "d_pre_L", "d_pre_R", "d_start_L", "d_start_R",
-        "d_last_L", "d_last_R", "prebare_L", "prebare_R", "dem_src_L", "dem_src_R", "bridged"]
+        "d_last_L", "d_last_R", "prebare_L", "prebare_R", "outlier_L", "outlier_R",
+        "dem_src_L", "dem_src_R", "bridged"]
 
 
 def write_csv(rows, path):
@@ -1014,7 +1131,9 @@ def write_csv(rows, path):
 
 REACHES = [("Lhende gorge", 8.0, 21.5), ("border junction", 21.5, 22.8),
            ("Bhote Koshi gorge", 22.8, 35.6), ("Syabrubesi opening", 35.6, 40.0),
-           ("Hakubesi deposit + gorge", 40.0, 46.0), ("to Betrawati", 46.0, 70.0)]
+           ("Hakubesi deposit + gorge", 40.0, 46.0), ("to Betrawati", 46.0, 70.0),
+           ("Betrawati to Galchhi", 70.0, 108.0), ("Galchhi to Mugling", 108.0, 150.0),
+           ("Mugling to Devghat", 150.0, 200.0)]
 
 
 def coverage_table(rows, arm="main"):
@@ -1035,10 +1154,28 @@ def coverage_table(rows, arm="main"):
     return "\n".join(lines)
 
 
-def summarise(rows, geo, geov, dem_name, junction_only):
+def summarise(rows, geo, geov, dem_name, junction_only, fit=None, fit_pts=None, fit_out=None):
     P = []
-    P.append(f"DEM: {dem_name}. Stations every {STEP_M:.0f} m; sections +/-{HALF_SEC:.0f} m.")
+    P.append(f"DEM: {dem_name}. Stations every {STEP_M:.0f} m; sections +/-{HALF_SEC:.0f} m "
+             f"(+/-1,500 m below km 70).")
     P.append(coverage_table(rows))
+    if fit:
+        P.append(f"\nRobust running fit (Pelican 1 Sept where both banks, else the Sentinel-2 change "
+                 f"layer; window +/-{FIT_HALF_KM:.0f} km, outliers = beyond max(2.5 MAD, 10 m), 3 passes): "
+                 f"{len(fit_pts)} points, {int(fit_out.sum())} outliers "
+                 f"({100*fit_out.mean():.0f} %). Fit stage by reach, median of the station fits "
+                 f"[median p10 - p90 of the windows]:")
+        P.append("| reach | fit stage m | stations with a fit / total |")
+        P.append("|---|---|---|")
+        for name, a, b in REACHES:
+            ks = [k for k in fit if a <= k < b]
+            n_st = int(round((b - a) / 0.1))
+            if ks:
+                m = np.median([fit[k][0] for k in ks]); lo = np.median([fit[k][1] for k in ks])
+                hi = np.median([fit[k][2] for k in ks])
+                P.append(f"| {name} {a:.0f}-{b:.0f} | {m:.0f} [{lo:.0f}-{hi:.0f}] | {len(ks)} / {n_st} |")
+            else:
+                P.append(f"| {name} {a:.0f}-{b:.0f} | - | 0 / {n_st} |")
     P.append("\nStage above bed by reach, clean stations only (both banks ok, no flags), median [10-90 %] (n):")
     P.append("| reach | " + " | ".join(LAYERS) + " |")
     P.append("|---|" + "---|" * len(LAYERS))
@@ -1155,12 +1292,12 @@ def summarise(rows, geo, geov, dem_name, junction_only):
     return "\n".join(P)
 
 
-def figure(rows, geo, geov, dem_name, path):
+def figure(rows, geo, geov, dem_name, path, fit=None):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     main = [r for r in rows if r["arm"] == "main"]
-    fig, ax = plt.subplots(4, 1, figsize=(15, 13), sharex=True,
+    fig, ax = plt.subplots(4, 1, figsize=(22, 13), sharex=True,
                            gridspec_kw={"height_ratios": [3, 1.6, 1.6, 0.7]})
     col = {"s2": "#2a78d6", "s2chg": "#1f9e89", "pelican0827": "#eb6834", "pelican0901": "#8e44ad"}
     for lname, c in col.items():
@@ -1186,6 +1323,22 @@ def figure(rows, geo, geov, dem_name, path):
     ax[0].plot([22.0], [60], "s", color="k", ms=6, label="Dave: lee mud line 60 m above bed (GE)")
     ax[0].plot([22.0, 22.0], [105, 115], "-", color="k", lw=3, label="Dave: impact cliff 105-115 m")
     ax[0].plot([43.5, 43.5], [45, 70], "-", color="#d62728", lw=3, label="Hakubesi stills ~45-70 m")
+    for km, (lab, h) in GAUGE_STAGE.items():
+        ax[0].plot([km], [h], "D", color="#ff7f0e", ms=6)
+    ax[0].plot([], [], "D", color="#ff7f0e", ms=6, label="gauge stage rise (Galchhi, Devghat; a floor)")
+    if fit:
+        # draw the fit in segments; never bridge a gap wider than the window
+        ks = sorted(fit); segs, cur = [], [ks[0]]
+        for k0, k1 in zip(ks[:-1], ks[1:]):
+            if k1 - k0 > FIT_HALF_KM:
+                segs.append(cur); cur = []
+            cur.append(k1)
+        segs.append(cur)
+        for j, seg in enumerate(segs):
+            ax[0].fill_between(seg, [fit[k][1] for k in seg], [fit[k][2] for k in seg], color="k", alpha=0.12, lw=0)
+            ax[0].plot(seg, [fit[k][0] for k in seg], "-", color="k", lw=1.2,
+                       label=(f"robust running fit (±{FIT_HALF_KM:.0f} km median; band = window p10-p90; "
+                              "broken where no fit)") if j == 0 else None)
     ax[0].set_ylabel("stage above local bed (m)")
     ax[0].set_ylim(0, 200)
     ax[0].legend(fontsize=7, ncol=3, loc="upper right")
@@ -1222,10 +1375,10 @@ def figure(rows, geo, geov, dem_name, path):
     ax[3].set_title("coverage: colour = both banks, grey = one bank, blank = none", fontsize=8)
     for a in ax:
         a.grid(alpha=0.3)
-        for km, lab in ((22.0, "junction"), (37.6, "Syabrubesi"), (43.5, "Hakubesi"), (68.4, "Betrawati")):
+        for km, lab in LANDMARKS:
             a.axvline(km, color="#bbb", lw=0.8)
     ax[0].set_xlim(5, KM_END)
-    for km, lab in ((22.0, "junction"), (37.6, "Syabrubesi"), (43.5, "Hakubesi"), (68.4, "Betrawati")):
+    for km, lab in LANDMARKS:
         ax[0].text(km + 0.3, 190, lab, fontsize=7, color="#666")
     fig.tight_layout()
     fig.savefig(path, dpi=130)
@@ -1347,17 +1500,22 @@ def main():
     rows, _ = stage_map(stations, dem, layers, junction_only=a.junction)
     geo = geopera_points(path_xy); geov = geopera_velocities(path_xy)
     tag = "_junction" if a.junction else ""
+    fit, fit_pts, fit_out = ({}, [], np.zeros(0, bool))
+    if not a.junction:
+        fit, fit_pts, fit_out = robust_fit(rows)
+        write_fit(fit, os.path.join(OUT, "trimline_fit.csv"))
+        print("fit ->", os.path.join(OUT, "trimline_fit.csv"), f"({len(fit)} stations)")
     out_csv = os.path.join(OUT, f"trimlines{tag}.csv")
     write_csv(rows, out_csv)
     print("csv ->", out_csv, f"({len(rows)} rows)")
-    txt = summarise(rows, geo, geov, dem.name, a.junction)
+    txt = summarise(rows, geo, geov, dem.name, a.junction, fit, fit_pts, fit_out)
     print(txt)
     with open(os.path.join(OUT, f"trimline_map{tag}_RESULTS.md"), "w") as fh:
         fh.write(f"# trimline_map.py results{tag}\n\n{txt}\n")
     if a.junction:
         junction_figure(rows, geo, dem, stations, os.path.join(OUT, "trimline_junction.png"))
     else:
-        figure(rows, geo, geov, dem.name, os.path.join(OUT, "trimline_profile.png"))
+        figure(rows, geo, geov, dem.name, os.path.join(OUT, "trimline_profile.png"), fit)
 
 
 if __name__ == "__main__":
