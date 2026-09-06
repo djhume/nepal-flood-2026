@@ -98,6 +98,9 @@ a{color:var(--river)}
   padding:18px 22px}
 .asks ul{margin:0;padding-left:19px}
 .asks li{margin-bottom:9px;max-width:62ch}
+.legend{font-size:14.5px;color:var(--ink-soft);margin:-.2em 0 1.4em;
+  max-width:66ch;line-height:1.9}
+.legend .chip{margin-left:0;margin-right:2px}
 .caveat{border-left:3px solid var(--silt);padding:2px 0 2px 16px;
   color:var(--ink-soft);font-size:16px;margin:1.4em 0;max-width:64ch}
 footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
@@ -139,7 +142,27 @@ footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
   <p class="dev">दिवंगतहरूको स्मृतिमा — in memory of those lost.</p>
 </div>
 
+<p class="caveat"><strong>What this is, before you read any of it.</strong>
+Independent, AI-assisted analysis published days after the event by one person
+working with a research assistant. It is <strong>not peer-reviewed</strong>, no
+Nepali scientist has read it, and by its own licence it is not fit to sit under
+an operational warning system, an evacuation decision or a hazard zoning
+without independent expert review. Five results have been withdrawn so far and
+all five are still readable below. The contribution is arithmetic on numbers
+already in public — the relative sizes of the terms — not a finding about how
+well anyone else has done their job.</p>
+
 <h2>What we found</h2>
+<p class="legend">Every finding carries a confidence chip, and the colour is
+the part that means something.
+<span class="chip c-strong">green</span> the conclusion survives every
+combination of inputs we can still defend.
+<span class="chip c-robust">blue</span> it has survived the tests run against
+it, including a named challenge, but it rests on at least one input that could
+still move.
+<span class="chip c-open">amber</span> unresolved, under revision, or partly
+withdrawn. The chip says how hard a finding has been shot at, not how much we
+believe it.</p>
 
 <div class="finding">
   <div class="fnum">01</div>
@@ -151,8 +174,14 @@ footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
     (finding 04) that caps frictional melt at
     <strong>1.1&nbsp;million cubic metres</strong> on best evidence and
     <strong>2.5&nbsp;million</strong> if every dial is turned in melt's favour
-    at once — against the ~20&nbsp;million cubic metres of "extra" water
-    officially estimated. Melt reaches that official figure only under the
+    at once — against the ~20&nbsp;million cubic metres of "extra" water in the
+    official estimate. That figure is Nepal DHM's Flood Forecasting Division,
+    in <a href="https://web.archive.org/web/20260831074529if_/https://hydrology.gov.np/cm/files/report_bhotekoshi_1787808964794.pdf">their
+    27 August press release</a>: discharge above base flow, integrated at
+    Devghat over the 14:10–18:00 window. It is a measurement at the bottom of
+    the river, 199&nbsp;km from the collapse, and it is not itself a claim
+    about meltwater — which is the point. Something has to supply it, and
+    melting ice cannot. Melt reaches that official figure only under the
     largest published volume (200&nbsp;Mm³, six times the top of our envelope), 80% ice,
     the full 4,000-metre drop <em>and</em> a heat-to-ice partition at the very
     top of the published range; that combination yields 20.7&nbsp;Mm³, and every
@@ -211,7 +240,20 @@ footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
     difference to this finding: seventeen minutes is still excluded, and so is
     twenty-three. What owes nothing to any camera is a Nepali gauge —
     Syabrubesi, km 37.6, on Nepali time, read 3.8&nbsp;m and rising at 08:50 —
-    and you cannot take 17 minutes to reach km 22 and 13 to reach km 37.6.</p>
+    and you cannot take 17 minutes to reach km 22 and 13 to reach km 37.6.
+    <br><br><strong>The other end of that interval has not had the same
+    treatment.</strong> Every elapsed time on this site is measured from
+    08:37:10 Nepali time, which is the USGS catalogue origin for event
+    <a href="https://earthquake.usgs.gov/earthquakes/eventpage/us7000tbwb/executive">us7000tbwb</a>,
+    reclassified from an M4.4 tectonic earthquake to an M5.2
+    landslide-generated signal (GFZ record Mw 5.7, "consistent with a
+    landslide"). We audited the camera and took the catalogue on trust. A
+    landslide radiates an <em>emergent</em> onset rather than the sharp first
+    arrival a catalogue origin-time solution is built around, and no
+    force-time inversion has been published that would pin it independently.
+    Seconds there do not threaten the finding — 17 minutes is 460 seconds away
+    — but they do move the speed, and the correction we made this morning was
+    itself only 50 seconds. It is on the list.</p>
   </div>
 </div>
 
@@ -234,15 +276,32 @@ footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
     flattened 31 of the 54 km to zero gradient. On a channel that really has a
     slope, the same model arrives four times too early. Both of that test's
     conclusions — the timing pass and the inference that a stored lake was
-    required — are off the table until the event is rebuilt.</p>
+    required — are off the table until the event is rebuilt.
+    <br><br>That post-mortem ended with a fix — "a profile-integrity check
+    belongs in every path build" — which then stayed a sentence for three days.
+    It is now <a href="https://github.com/djhume/nepal-flood-2026/blob/main/model/check_profile.py">a
+    script that runs over every channel this project uses</a> and fails the
+    build rather than warning. Seti as published fails all four of its gates.
+    The Trishuli and Chamoli channels pass. And one result worth stating
+    plainly: the <em>repaired</em> Seti channel still fails, on a 972-metre
+    upward step at km 8, which is why that rebuild is a rebuild and not a
+    patch.</p>
   </div>
 </div>
 
 <div class="finding">
   <div class="fnum">04</div>
   <div>
-    <p class="fclaim">The collapse was far smaller than the headline figures<span class="chip c-open">envelope under revision</span></p>
-    <p class="fbody">Published estimates of the fallen mass span a factor of
+    <p class="fclaim">How big the collapse was — still being worked on, and our own number is moving up<span class="chip c-open">we are still working on this</span></p>
+    <p class="fbody"><strong>This finding used to say "the collapse was far
+    smaller than the headline figures". We are no longer confident of that, and
+    we would rather say so at the top than leave it in the wording and hedge it
+    further down.</strong> The envelope below is what our ensemble still
+    produces and we have not withdrawn it — but four separate lines of
+    evidence, three of them found on 6 September, now lean larger, and none of
+    them has been folded into the number yet. Treat the range as the current
+    output of one model, not as our best estimate of the truth.
+    <br><br>Published estimates of the fallen mass span a factor of
     four hundred, from half a million cubic metres to two hundred million. Rather
     than argue one estimate at a time, we asked which <em>combinations</em> of
     size and composition are consistent with everything measurable at once — the
@@ -256,8 +315,29 @@ footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
     or icy it was is not resolved. One input needs flagging: the border speed we
     scored against is the 45–52&nbsp;m/s superelevation estimate, and the first
     peer-reviewed study of the event — a frame-by-frame video analysis published
-    1 September — measures 19&nbsp;m/s at the same place. We have not yet
-    re-scored against it. If that number is the right one, this envelope moves.
+    1 September — measures 19&nbsp;m/s at the same place. <strong>That
+    re-score has now been run</strong>, and the answer is sharper than a moved
+    envelope: scored against 19&nbsp;m/s, <strong>nothing survives at all</strong>
+    — 0 samples of 200, against 21 of 200 for the front speed. And the
+    incompatibility has nothing to do with size. No sample anywhere in the
+    1–200&nbsp;Mm³ range satisfies the border arrival and a 19&nbsp;m/s border
+    speed together; nor the Syabrubesi arrival and 19&nbsp;m/s. Each is
+    reachable alone — 64 runs make the clock, 35 make the speed — never the
+    same run. Read that carefully, because it is not proof we are right: it
+    says these two numbers cannot describe the same thing in this model, which
+    is what we have argued (19&nbsp;m/s is the post-turn water surface, not the
+    front, and would need an impossible run-up coefficient of 2.72 to raise the
+    observed cliff mark), but it is equally consistent with our model's own
+    speed-to-arrival relationship being wrong. Both scorings are published.
+    <br><br>A correction found in the same audit, and it is one we should not
+    have needed to find. This morning's clock correction — 6&nbsp;min 50&nbsp;s
+    to 7&nbsp;min 40&nbsp;s — updated every place a <em>human</em> reads that
+    number and no place the <em>model</em> does. Six code files were still
+    scoring against 7.0 minutes, so this envelope had been computed against a
+    figure the site had already retracted. Fixed and rerun. It barely moves the
+    answer — 13.3–34.0&nbsp;Mm³, median 23.2, against the 14–34 and median 21
+    published — which is a relief and not the lesson. The lesson is that
+    correcting a published number is not done when the prose reads right.
     A second exposure, added late on 6 September: a first estimate of the volume
     that ran up the Chinese arm, divided by the share of the flow that went that
     way, straddles this envelope: inside it at one corner, at its top at the
@@ -293,7 +373,16 @@ footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
     method, machine-learning calibration of a 2D morphodynamic model against
     stereo satellite imagery, which pulled the settling velocity down by a
     factor of three. Two unreviewed analyses agreeing is weaker evidence than
-    two peer-reviewed ones, and we would rather name the weight than borrow it.</p>
+    two peer-reviewed ones, and we would rather name the weight than borrow it.
+    Name it properly, though, and it is weaker still: "a completely different
+    method" is true of the solver and not of the inputs. Both analyses read the
+    same public stereo imagery, the same week's literature and the same handful
+    of published estimates, and geopera is also fast, unreviewed analysis of
+    this event. Different solvers over shared inputs are not two independent
+    measurements. This is also the source we lean on hardest elsewhere — the
+    erosion figure and the border superelevation that finding 04 scores against
+    are both theirs — and one of their numbers has already been retracted and
+    corrected in our scoring.</p>
   </div>
 </div>
 
@@ -312,10 +401,25 @@ footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
     for every passing version, but all 26 land below the observation
     (1,752–2,889&nbsp;m³/s against ~2,900), so "passed" there means "not
     contradicted", not "reproduced". The river <em>height</em> at Galchhi came
-    out at about 3.6&nbsp;m against roughly 9 observed, which points at our
-    estimate of the lower river's shape. And this is fast, independent,
-    AI-assisted analysis published days after the event: it is not
-    peer-reviewed, and no Nepali scientist has yet read it.</p>
+    out at about 3.6&nbsp;m against roughly 9 observed.
+    <br><br>That last one we chased down late on 6 September, because the
+    obvious suspect was the channel itself — the same component whose failure
+    withdrew the Seti test — and the profile check built for finding 03 says it
+    is <em>not</em> the elevations. The lower river is genuinely so flat that
+    its true fall per 400-metre sample, about 0.6&nbsp;m, is smaller than the
+    elevation data's own noise, so the monotone-descent step every model here
+    applies turns a real gentle slope into a staircase: 82% of the last
+    39&nbsp;km ends up at zero gradient. That looks fatal and is not, because
+    the smoothing applied afterwards averages it back out — the profile the
+    model actually runs on is 1.4% flat and holds the reach-average slopes to
+    within 10% of the raw data. So the elevations are cleared, and the Galchhi
+    miss points instead at the other half of the channel: the
+    <strong>widths</strong>, which below km&nbsp;60 are not measurements at all
+    but a hydraulic-geometry rule of thumb fitted to discharge. Naming a
+    suspect is not fixing it — but both failures at the bottom of the river,
+    Galchhi's height and Devghat's one-sided residual, now point at the same
+    un-measured input, and so does the Hakubesi mud line 65&nbsp;km further
+    up.</p>
   </div>
 </div>
 
@@ -358,6 +462,57 @@ while four of its gauges were being destroyed.</p>
 
 <h2>What changed recently</h2>
 <div class="log">
+  <div><span class="d">6 September 2026 — night</span>
+  <strong>A third cold read, this one aimed at the dependencies rather than
+  the prose, and it found that this morning's correction never reached the
+  code.</strong> The 6 September clock fix — 6&nbsp;min 50&nbsp;s to
+  7&nbsp;min 40&nbsp;s — was applied to the hero stats, the clocks table, the
+  findings and the plain-English page, and to no model constant at all. Six
+  code files were still scoring against 7.0 minutes, which means the
+  14–34&nbsp;Mm³ envelope had been computed against a number this site had
+  publicly retracted eight hours earlier. Fixed in all six and both ensembles
+  rerun. The envelope barely moves — <strong>13.3–34.0&nbsp;Mm³, median
+  23.2</strong>, from 21 of 200 — and the smallness of that change is the
+  reassuring part, not the interesting one. The interesting part is that a
+  retraction is not finished when the pages read right.
+  <br><br><strong>The CAS re-score, promised on three pages for five days, was
+  run.</strong> Scored against the peer-reviewed 19&nbsp;m/s instead of the
+  45–52 superelevation band, <strong>nothing survives — 0 of 200</strong>. The
+  conflict is not about size: no release anywhere between 1 and
+  200&nbsp;Mm³ can satisfy the border arrival and a 19&nbsp;m/s border speed at
+  once, and none can satisfy the Syabrubesi arrival with it either. Each is
+  reachable on its own. That is consistent with our argument that CAS measures
+  the post-turn water surface rather than the front, and equally consistent
+  with our speed-to-arrival physics being wrong; it does not choose between
+  them. Both scorings are now published rather than one asserted.
+  <br><br><strong>The profile-integrity check the Seti post-mortem called for
+  on 3 September had never been built.</strong> It exists now, it gates rather
+  than warns, and it audits the profile the model actually consumes rather than
+  the intermediate — a distinction that matters, because its first draft
+  reported the live Trishuli channel as failing and was itself wrong. Seti as
+  published fails all four gates; the <em>repaired</em> Seti channel still
+  fails one. The Trishuli lower river does turn into a staircase under the
+  monotone clamp — 82% of the last 39&nbsp;km at zero gradient — but the
+  smoothing that follows removes it, so the elevations are cleared and the
+  Galchhi stage failure now points squarely at the channel <em>widths</em>,
+  which below km&nbsp;60 are a rule of thumb rather than a measurement.
+  <br><br><strong>On the Chinese arm, from the routing side.</strong> Modelling
+  the Kyirong arm as a backwater wedge rather than a linear store and sweeping
+  release volume against wetness, no combination reproduces the Galchhi rise
+  and the border clock together. The nearest miss —
+  60&nbsp;Mm³ at 40% liquid — clears Galchhi at 10.6&nbsp;m and arrives at the
+  border <em>eight seconds</em> too early. Under this morning's superseded
+  7.0-minute clock it would have passed. That is a structural result about the
+  store, not a size, and it points the same way as the up-valley volume route
+  above: up. Nothing promoted.
+  <br><br>Also on this page: the confidence chips now have a legend, the FFD's
+  20&nbsp;Mm³ is cited where it is used rather than referred to, the
+  not-peer-reviewed disclosure has moved from the last finding to above the
+  first one, geopera's independence is described as what it is — a different
+  solver over shared inputs — and finding 02 now says which end of its
+  seven-minute clock has actually been audited. It is the camera. The seismic
+  origin at the other end is a catalogue solution taken on trust.</div>
+
   <div><span class="d">6 September 2026 — late</span>
   <strong>A new, loose line of evidence on the collapse size, and it leans
   larger.</strong> Dave Hume's method: treat the border junction as a node,
@@ -560,7 +715,7 @@ is useful and something in it is wrong, we would rather be told than cited.</li>
 
 <footer>
 Independent analysis by <strong>Dave Hume</strong>, carried out with Claude
-(Anthropic) as a research assistant. Version 7, 6 September 2026 (late) — findings and
+(Anthropic) as a research assistant. Version 8, 6 September 2026 (night) — findings and
 casualty figures are as reported at that date and will change. Code, data and
 the full evidence dossier, with every contested number flagged at the point of
 use, are kept in the project repository. Corrections are welcome and will be

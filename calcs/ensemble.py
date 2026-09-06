@@ -37,7 +37,11 @@ PRIORS (from research/event-dossier.md §2 and §11; deliberately wide)
     h_erode   uniform 1 - 10 m          erodible layer, the entrainment free input
 
 OBSERVABLES (upper corridor only in stage 1 — it is where the hard data is)
-    border km 22 arrival      7.0 min      hard (seismic clock + CCTV)
+    border km 22 arrival      7.68 min     hard (USGS seismic origin
+                                           08:37:10 NPT + Gyirong CCTV
+                                           overlay 08:44:50 NPT, read
+                                           directly 6 Sept; was 7.0 until
+                                           the overlay seconds were read)
     Syabrubesi km 37.6        13 min       hard-ish (gauge 3.8 m at 08:50)
     peak speed near km 22     45-52 m/s    geopera superelevation, AND the
                                            134 m junction trimline read as
@@ -88,10 +92,41 @@ PRIORS = {
 }
 
 # ---- observables: (value, tolerance as a fraction, label) -----------------
+#
+# THE BORDER SPEED IS THE ONE CONTESTED ENTRY, and it is the single most
+# consequential input to the size envelope, so it is a named SCENARIO rather
+# than a hard-coded constant. Two candidate values are in print for "the speed
+# at Gyirong Port", differing by a factor of 2.5:
+#
+#   front  48.5 m/s  geopera superelevation, our three mud lines (54), our own
+#                    frame-by-frame front measurement (46.9, envelope 41-63,
+#                    dossier 14d), and the 22-km mean from the corrected clock
+#                    (47.8). Four routes, all measuring the DEBRIS FRONT.
+#   cas    19.0 m/s  CAS Institute of Mountain Hazards & Environment, the first
+#                    peer-reviewed study of the event, frame-by-frame. Our
+#                    reading is that this measures the POST-TURN WATER SURFACE,
+#                    not the front: 19 m/s requires a run-up coefficient
+#                    alpha = 2.72 to produce the observed 45-55 m cliff run-up,
+#                    which is unphysical (alpha <= 1 for a stagnating front).
+#
+# That reconciliation is OURS and it is not peer-reviewed, while the number it
+# sets aside IS. So the "cas" scenario exists to answer the question the site
+# has been promising and not delivering: if CAS is measuring what we measure,
+# where does the size envelope go? Run both, publish both.
+#
+#     python calcs/ensemble.py 200                    # front, the default
+#     TRISHULI_VBORDER=cas python calcs/ensemble.py 200
+#
+V_BORDER = {"front": (48.5, 0.35), "cas": (19.0, 0.35)}
+SCENARIO = os.environ.get("TRISHULI_VBORDER", "front")
+if SCENARIO not in V_BORDER:
+    sys.exit(f"TRISHULI_VBORDER must be one of {sorted(V_BORDER)}")
+_VB, _VB_TOL = V_BORDER[SCENARIO]
+
 OBS = {
-    "border_min":  (7.0,  0.30, "border arrival, min"),
+    "border_min":  (7.68, 0.30, "border arrival, min"),
     "syabru_min":  (13.0, 0.50, "Syabrubesi arrival, min"),
-    "v_border":    (48.5, 0.35, "peak speed near km 22, m/s"),
+    "v_border":    (_VB, _VB_TOL, f"peak speed near km 22, m/s [{SCENARIO}]"),
     "erosion_Mm3": (3.2,  0.60, "erosion km 0-68, Mm3"),
 }
 
@@ -178,6 +213,8 @@ def score(o):
 
 if __name__ == "__main__":
     print(__doc__.split("Run:")[0])
+    print(f"border-speed scenario: {SCENARIO} "
+          f"({_VB} m/s +-{100*_VB_TOL:.0f}%)")
     print(f"drawing {N} Latin-hypercube samples over {len(PRIORS)} inputs\n")
     P = draw(N)
     t0 = time.time()
@@ -234,8 +271,10 @@ if __name__ == "__main__":
         print(f"\n  -> against published claims: Kargel 50-200, ICIMOD 100-200,")
         print(f"     EGU preliminary 0.5-10, our entrainment ledger <=6 Mm3 solids")
 
-    np.save(os.path.join(HERE, "ensemble_samples.npy"),
+    stem = ("ensemble_samples.npy" if SCENARIO == "front"
+            else f"ensemble_samples_{SCENARIO}.npy")
+    np.save(os.path.join(HERE, stem),
             np.array([[r[0][k] for k in PRIORS] +
                       [r[1][k] for k in list(OBS) + list(OBS_MAX)]
                       + [r[3]] for r in rows]))
-    print(f"\nsaved {len(rows)} samples -> calcs/ensemble_samples.npy")
+    print(f"\nsaved {len(rows)} samples -> calcs/{stem}")

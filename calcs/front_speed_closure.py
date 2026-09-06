@@ -67,10 +67,10 @@ def border(V, n_scale=1.0, w0=0.15, mu_dry=None):
         U._settled.clear()
 
 
-OBS = 7.0     # minutes: 08:37:10 collapse -> 08:44 border CCTV
+OBS = 7.68    # minutes: 08:37:10 collapse -> 08:44:50 border CCTV overlay
 
 print(__doc__.split("THE TEST.")[0].strip()[:0] or "", end="")
-print("border arrival (minutes after collapse); observed 7.0")
+print("border arrival (minutes after collapse); observed 7.68")
 print(f"{'V (Mm3)':>9} | " + " | ".join(f"n x{s:<4.2f}" for s in
                                         (1.0, 0.7, 0.5, 0.35)))
 print("-" * 52)

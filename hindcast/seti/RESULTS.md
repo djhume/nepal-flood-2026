@@ -38,6 +38,43 @@ Seti had a straight-line bridge large enough to poison it. A profile-integrity
 check (longest flat run, largest raw upward step) now belongs in every path
 build.
 
+**BUILT, 6 September — `model/check_profile.py`.** The sentence above stayed a
+sentence for three days; the 6 September audit found it unbuilt and built it.
+It runs the same two-step pipeline every model here uses — monotone clamp, then
+the k=5 (~4.4 km) boxcar — and reads each defect at the stage where it is
+actually visible, which matters more than it sounds:
+
+* The **raw upward step** must be read on the raw elevations, before the clamp
+  hides it. It is the bridge artefact itself and nothing downstream can see it.
+* The **flat run** must be read on the CONSUMED profile, after smoothing. Read
+  on the clamped intermediate it cries wolf: the live Trishuli profile is 52%
+  flat there and 1.4% flat in what the model actually runs on, because a lower
+  river falling 0.6 m per 400 m sample is below the DEM's own noise, so the
+  clamp makes a staircase the boxcar then averages away. The first draft of the
+  check reported Trishuli as FAILING on that basis. That was the checker's bug.
+  A 31 km flat, by contrast, walks straight through a 4.4 km boxcar — which is
+  the whole point.
+* The **slope floor** (`S = max(-dz/dx, 1e-4)`) is a second silent guard, and
+  the share of nodes where it binds is now reported. On Seti v1 it binds on 49%.
+
+Gates: raw step > 500 m, longest consumed flat run > 10 km, consumed flat
+fraction > 25%, slope floor binding > 20%. Non-zero exit, so it can gate a
+rebuild rather than print a warning.
+
+Results as at 6 September:
+
+| profile | verdict | raw step | flat run (consumed) | floor |
+|---|---|---|---|---|
+| Trishuli (live findings) | pass | 96 m | 2.0 km / 1.4% | 1% |
+| Chamoli 2021 | pass | 47 m | 0.0 km / 0.0% | 0% |
+| **Seti 2012 as published (v1)** | **FAIL ×4** | 1,882 m | 27.2 km / 50% | 49% |
+| **Seti 2012 repaired** | **FAIL ×1** | 972 m | 0.0 km / 0.0% | 0% |
+
+The last row is the one to note. The repaired channel no longer flattens, but
+it still carries a 972 m upward step at km 8 — a smaller bridge artefact of the
+same kind. The repair fixed the clamp's symptom and not the stitch that caused
+it, which is why the entry above calls for a rebuild rather than a patch.
+
 ## The corrected channel
 
 `build_path2.py` replaces the greedy walk with a Dijkstra shortest path over a

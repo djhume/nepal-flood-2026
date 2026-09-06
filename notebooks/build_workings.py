@@ -371,7 +371,7 @@ code(r'''
 # Kalikhola (near Muglin) danger 12.1 m at 14:14 with max 12.35 m
 # (= effectively peak passage); Devghat front arrival 15:20, peak 16:00.
 FRONT_OBS = [  # (km, minutes, weight)
-    (22.0, 7, 3.0), (37.6, 13, 1.0), (68.4, 43, 2.0),
+    (22.0, 7.68, 3.0), (37.6, 13, 1.0), (68.4, 43, 2.0),
     (107.6, 150, 1.0), (117.0, 163, 2.0), (199.2, 403, 2.0)]
 PEAK_OBS = [(68.4, 113, 1.0), (185.0, 337, 1.5), (199.2, 443, 2.0)]
 
@@ -1025,7 +1025,7 @@ arrival  = float(r_single["arrival"](22.0))
 print(f"EROSION, km 0-68     {ero:6.2f} Mm3   (geopera stereo: 3.2 Mm3)")
 print(f"DEPOSITION, km 0-68  {dep:6.2f} Mm3   (honest cap from the described")
 print(f"                                       deposit geometry: <= 12 Mm3)")
-print(f"BORDER ARRIVAL       {arrival:6.1f} min  (observed: 7.0 min)")
+print(f"BORDER ARRIVAL       {arrival:6.1f} min  (observed: 7.68 min)")
 ''')
 
 md(r"""
@@ -1067,7 +1067,7 @@ for f_fine in (0.00, 0.95):
     rows.append((f_fine, float(r["arrival"](22.0)), e, d))
 
 print(f"{'f_fine':>7} {'border arrival':>16} {'erosion':>9} {'deposition':>12}")
-print(f"{'':>7} {'(obs 7.0 min)':>16} {'(obs 3.2)':>9} {'(cap 12)':>12}")
+print(f"{'':>7} {'(obs 7.68 min)':>16} {'(obs 3.2)':>9} {'(cap 12)':>12}")
 for f, a, e, d in rows:
     verdict = "PASSES BOTH" if (a < 9 and d <= 12) else "FAILS"
     print(f"{f:7.2f} {a:14.1f} m {e:9.2f} {d:12.2f}   {verdict}")
@@ -1077,7 +1077,7 @@ md(r"""
 **Read the second row against the first.** Splitting the solids changes the
 erosion barely at all (3.80 → 3.75 Mm³, still against 3.2 measured) while the
 deposition falls from 18 to 5.4 Mm³ and the front arrives at 6.5 minutes against
-an observed 7.0. One release can now be dense enough to run fast *and* clean
+an observed 7.68. One release can now be dense enough to run fast *and* clean
 enough not to bury the valley, which is precisely the combination the
 single-phase sampling proved impossible.
 
@@ -1133,7 +1133,7 @@ that reproduce every observable inside its stated tolerance.
 
 | Observable | Target | Tolerance |
 |---|---|---|
-| border arrival, km 22 | 7.0 min | ±30% |
+| border arrival, km 22 | 7.68 min | ±30% |
 | Syabrubesi arrival, km 37.6 | 13 min | ±50% |
 | peak speed near km 22 | 48.5 m/s | ±35% |
 | erosion km 0–68 | 3.2 Mm³ | ±60% |

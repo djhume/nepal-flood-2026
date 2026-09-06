@@ -185,7 +185,7 @@ ul.src li{break-inside:avoid;margin-bottom:4px}
 <div class="wrap">
 <nav class="hubnav"><a href="index.html">◀ Project home</a><span class="here">Technical report</span><a href="plain.html">Plain English</a><a href="{{WORKINGS_URL}}">Model workings</a></nav>
 <header>
-  <p class="eyebrow">Preliminary analysis · v7 · 6 September 2026 (late) ·
+  <p class="eyebrow">Preliminary analysis · v8 · 6 September 2026 (night) ·
   <a href="plain.html">plain-English version</a></p>
   <h1>The Trishuli Water Ledger</h1>
   <p class="dek">On 26 August 2026 a collapsing mountainside above the Lhende
@@ -675,6 +675,21 @@ Distances are measured along the river channel we stitched from OpenStreetMap
 <tr><td class="mono">14:14</td><td class="num">185</td><td>Kalikhola, near Muglin, crosses danger (12.1 m); maximum 12.35 m — effectively peak passage.</td><td class="verdict pass">OFFICIAL</td></tr>
 <tr><td class="mono">15:20</td><td class="num">199</td><td>Flood arrives at Devghat; peak 6.57 m / <strong>5,850 m³/s</strong> at 16:00; near normal by 18:30 — a ~3.2-hour surge.</td><td class="verdict pass">OFFICIAL</td></tr>
 </table></div>
+<p class="caveat"><b>One end of that first interval has been audited and the
+other has not.</b> On 6 September we stopped trusting a third party's account
+of the Gyirong overlay and read the footage frame by frame, which is what moved
+the arrival from 08:44:00 to 08:44:50. The <em>start</em> — 08:37:10 — is still
+the USGS catalogue origin for
+<a href="https://earthquake.usgs.gov/earthquakes/eventpage/us7000tbwb/executive">us7000tbwb</a>,
+taken on trust. That event was reclassified from an M4.4 tectonic earthquake to
+an M5.2 landslide-generated signal, and a landslide radiates an
+<em>emergent</em> onset rather than the impulsive first arrival a catalogue
+origin-time solution is built around; no force-time inversion has been
+published that would pin it independently. The uncertainty there is seconds,
+not minutes, so no conclusion in this report turns on it — but the correction
+made earlier the same day was itself only 50 seconds and moved the headline
+speed by 12%, which is the reason to name this rather than leave it implied.
+Every "minutes after the collapse" on this site inherits it.</p>
 
 <h3 id="s03a">Reading the camera: the clock, the calibration, and a direct speed</h3>
 <p><em>Added 6 September. Method and measurement, logged in the changelog rather
@@ -1798,10 +1813,41 @@ Syabrubesi, not this — has ever been an observable in the size envelope. Addin
 them is the next ensemble, and with the up-valley route it is the second
 independent line saying the runs that pass are too small below the junction.
 
-— A measured border velocity for the quantity we actually score. The CAS
-frame-by-frame value of 19&nbsp;m/s sits outside the 48.5&nbsp;±&nbsp;35% window
-the size envelope used. Re-scoring against it is a live task, not a hypothetical
-one (<a href="#s00" class="xref">§00</a>, <a href="#s08" class="xref">§08</a>).<br>
+— <s>A measured border velocity for the quantity we actually score.</s>
+<b>Run, 6 September (late).</b> The CAS frame-by-frame value of 19&nbsp;m/s had
+been listed as a live task on three pages for five days without being executed.
+It is now a named scenario in the ensemble
+(<span class="mono">TRISHULI_VBORDER=cas</span>), and the result is sharper than
+a moved envelope: <b>0 of 200 samples satisfy all five observables</b>, against
+21 of 200 in the front scenario. The incompatibility is specific and it is not
+about volume — <b>no</b> sample anywhere in the 1–200&nbsp;Mm³ prior satisfies
+the border arrival and a 19&nbsp;m/s border speed together
+(<span class="mono">border_min + v_border: 0 runs</span>), and none satisfies
+the Syabrubesi arrival with it either. Taken alone each constraint is
+satisfiable — 64 samples make the clock, 35 make 19&nbsp;m/s — but never the
+same sample. Read it carefully: this does not <em>prove</em> CAS is measuring
+the post-turn water surface rather than the front. It says that under this
+model the two cannot be the same quantity, which is the same conclusion the
+run-up coefficient gives by a different route (19&nbsp;m/s needs α&nbsp;=&nbsp;2.72
+against the observed 45–55&nbsp;m cliff run-up, which is unphysical), and it is
+equally consistent with our model's speed-to-arrival relationship being wrong.
+Both scenarios are published rather than one asserted.<br>
+— <s>The corrected border clock, carried into the scoring.</s>
+<b>Found and fixed, 6 September (late), and it should not have needed finding.</b>
+The morning's correction from 6&nbsp;min 50&nbsp;s to 7&nbsp;min 40&nbsp;s
+updated the hero stats, the clocks table, §00, finding 02 and the plain-English
+page — every place a human reads the number — and touched no model constant.
+<span class="mono">unified.py</span>, <span class="mono">snowplow.py</span>,
+<span class="mono">ensemble.py</span>,
+<span class="mono">front_speed_closure.py</span>,
+<span class="mono">analyse_border_speed.py</span> and
+<span class="mono">build_workings.py</span> were all still scoring against
+7.0&nbsp;min, so the published 14–34&nbsp;Mm³ envelope was computed against a
+figure this site had already retracted. Fixed in all six and the ensemble
+rerun. The envelope barely moves — <b>13.3–34.0&nbsp;Mm³, median 23.2</b>, from
+21 of 200, against 14–34 and median 21 from 26 of 220 — which is the reassuring
+outcome and not the point. The point is that a correction to a published figure
+is not finished when the pages read right.<br>
 — The full Galchhi hydrograph (DHM) and India's CWC hourly stage archive for the
 Gandak stations — the datasets that would show any surviving multi-pulse
 structure and settle the gross-versus-net accounting.<br>
@@ -1885,7 +1931,7 @@ Corrections are welcome at
 <a href="https://github.com/djhume/nepal-flood-2026/issues">the repository's
 issue tracker</a> and are recorded on the
 <a href="index.html">project home page</a> with the date and the reason.</p>
-<p class="mono" style="font-size:12px">v7 · 6 September 2026 (late) · Wellington, NZ</p>
+<p class="mono" style="font-size:12px">v8 · 6 September 2026 (night) · Wellington, NZ</p>
 </div>
 </div>
 </div>

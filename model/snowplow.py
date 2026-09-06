@@ -52,7 +52,7 @@ S = np.maximum(-np.gradient(z_s, x_km * 1000.0), 1e-4)   # slope, m/m
 # danger 12.1 m at 14:14 with max 12.35 m (= effectively peak passage);
 # Devghat front arrival 15:20, peak 16:00.
 FRONT_OBS = [  # (km, minutes, weight)
-    (22.0, 7, 3.0), (37.6, 13, 1.0), (68.4, 43, 2.0),
+    (22.0, 7.68, 3.0), (37.6, 13, 1.0), (68.4, 43, 2.0),
     (107.6, 150, 1.0), (117.0, 163, 2.0), (199.2, 403, 2.0)]
 PEAK_OBS = [(68.4, 113, 1.0), (185.0, 337, 1.5), (199.2, 443, 2.0)]
 

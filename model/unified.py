@@ -123,7 +123,7 @@ K_JUNC_KM = {22.0: 3.0, 37.6: 1.5, 160.0: 1.0, 185.0: 1.0}
 EXTRA_STATIONS = {}   # {name: km} — extra record points, e.g. a trimline station
 
 # ------------------------------------------------------- observations -------
-FRONT_OBS = [(22.0, 7, "border CCTV 08:44"), (37.6, 13, "Syabrubesi 08:50"),
+FRONT_OBS = [(22.0, 7.68, "border CCTV 08:44:50"), (37.6, 13, "Syabrubesi 08:50"),
              (68.4, 43, "Betrawati rising 09:20"),
              (107.6, 150, "Galchhi ~11:00"), (117.0, 163, "Malekhu 11:20"),
              (199.2, 403, "Devghat front 15:20")]

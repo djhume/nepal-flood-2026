@@ -42,7 +42,7 @@ if not same_inputs:
     print("  !! inputs differ — the comparison below is not like-for-like")
 
 # ---- 1. the non-speed constraints, held fixed throughout ------------------
-base = (np.isfinite(border) & (np.abs(border - 7.0) <= 0.30 * 7.0)
+base = (np.isfinite(border) & (np.abs(border - 7.68) <= 0.30 * 7.68)
         & np.isfinite(syabru) & (np.abs(syabru - 13.0) <= 0.50 * 13.0)
         & np.isfinite(ero) & (np.abs(ero - 3.2) <= 0.60 * 3.2)
         & np.isfinite(dep) & (dep <= 12.0))
@@ -85,7 +85,7 @@ for name, x in [("reach max, km 0-22", vmax022), ("local at km 22", v22),
               f"n within CAS 19+/-35%: {band(q, 19.0).sum()}")
 
 # ---- 3. is CAS compatible with the 7-minute clock at all? -----------------
-clock = np.isfinite(border) & (np.abs(border - 7.0) <= 0.30 * 7.0)
+clock = np.isfinite(border) & (np.abs(border - 7.68) <= 0.30 * 7.68)
 print("\nIS THE CAS NUMBER COMPATIBLE WITH THE 7-MINUTE CLOCK?")
 print(f"  samples meeting the clock alone: {clock.sum()}")
 for name, x in [("reach max", vmax022), ("local km22", v22), ("local km30", v30)]:

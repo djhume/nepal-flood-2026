@@ -66,14 +66,24 @@ source is here and the licence permits it.
    **withdrawn**: the channel profile it ran on had 31 of 54 km flattened
    to zero gradient by a path-building bug, and on a corrected channel the model
    fails. See `hindcast/seti/RESULTS.md`.
-4. **The collapse was 14–34 Mm³ (median 21).** Published estimates span a factor
+4. **How big the collapse was — still being worked on, and our own number is
+   moving up.** This item used to read "the collapse was 14–34 Mm³"; we are no
+   longer confident of that. The envelope is still what the ensemble produces
+   and it has not been withdrawn, but four lines of evidence now lean larger and
+   none is in the number yet. With the corrected clock it is
+   **13.3–34.0 Mm³, median 23.2** (21 of 200). Published estimates span a factor
    of four hundred, so rather than argue them one at a time, `calcs/ensemble.py`
    samples six contested inputs over wide priors, runs the full model, and keeps
    only what reproduces every observable: 26 of 220 pass. Only the *volume* is
    constrained — liquid fraction, μ_dry and f_fine each span >90% of their priors.
    One exposure: the border-speed observable is 48.5 ± 35% m/s, and the first
-   peer-reviewed study of the event measures 19 m/s at the same place. Not yet
-   re-scored against it. **Under revision (6 Sept, late):** two routes that share
+   peer-reviewed study of the event measures 19 m/s at the same place. That
+   re-score is now a named scenario
+   (`TRISHULI_VBORDER=cas python calcs/ensemble.py`) rather than a promise, and
+   both answers are published. A second, found in the same audit: the 6 Sept
+   clock correction never reached the code, so the 14–34 envelope was scored
+   against 7.0 min after the site had retracted it — six files fixed and the
+   ensemble rerun. **Under revision (6 Sept, late):** two routes that share
    none of the envelope's observables — the volume that ran up the Chinese arm
    (`calcs/upvalley_wedge_volume.py`) and a 45–70 m mud line at the Upper
    Trishuli-1 headworks where the passing runs put 5–21 m — both say the envelope
@@ -88,14 +98,22 @@ source is here and the licence permits it.
    parameters. The fix splits the solids: coarse deposits and carries the
    granular friction, fine and ice ride with the water. Darcy Weedman at geopera
    reached the same conclusion the same week by gradient-descent calibration —
-   corroboration, not replication; both analyses are unreviewed.
+   corroboration, not replication. Both analyses are unreviewed, and "a
+   different method" is true of the solver, not the inputs: shared public
+   imagery, shared literature, shared published estimates. geopera is also the
+   source of the erosion figure and the border superelevation this project
+   scores against, so the independence is thinner than the phrase suggests.
 6. **What is not settled:** the source volume and ice fraction are unpublished
    and composition is unresolved; the modelled deposit sits at km 0–36 where
    stereo puts it at 40–43; the Galchhi stage rise fails out of sample (3.6 m
    modelled vs ~9 observed) on lower-reach channel widths that are a rule of
    thumb; the Devghat peak meets its factor-of-2 criterion but every passing run
-   lands below the observation. Not peer-reviewed, and no Nepali scientist has
-   read it.
+   lands below the observation. The 6 Sept audit cleared the *elevations* for
+   both of those lower-river failures — `model/check_profile.py` shows the
+   consumed Trishuli profile is 1.4% flat and holds reach slopes to within 10%
+   of the raw data — which leaves the widths as the named suspect, and the
+   Hakubesi mud line points the same way. Not peer-reviewed, and no Nepali
+   scientist has read it.
 
 Every contested number is flagged at the point of use. `PLAN.md` §6 ("Honesty
 rails") states the rules this project holds itself to; `PLAN.md` is also the
@@ -113,6 +131,7 @@ python -m venv .venv && .venv/bin/pip install numpy matplotlib
 **The models** (each prints its own scorecard against observations):
 
 ```bash
+.venv/bin/python model/check_profile.py           # GATE: are the channels real?
 .venv/bin/python calcs/energy_water_budget.py     # source-by-source water budget
 .venv/bin/python model/snowplow.py                # front/peak routing + water ledger
 .venv/bin/python model/ladder.py                  # equivalent-circuit routing
@@ -121,6 +140,14 @@ python -m venv .venv && .venv/bin/pip install numpy matplotlib
 ```
 
 **The portability tests** (other disasters, constants frozen):
+
+Run `check_profile.py` **first**, and read its output before any result below
+it. It audits every channel this project routes on, at each stage of the
+clamp-then-smooth pipeline the models actually use, and exits non-zero on
+failure. It exists because the Seti 2012 test was published as a clean pass for
+a day while running on a channel with 31 of its 54 km flattened to zero
+gradient. Seti-as-published fails all four gates; the repaired Seti channel
+still fails one, on a 972 m raw step; Trishuli and Chamoli pass.
 
 ```bash
 .venv/bin/python hindcast/chamoli/run_hindcast.py   # kinematic law, zero recalibration
