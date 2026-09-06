@@ -73,13 +73,15 @@ inputs**, not a point claim. FFD's "~20 Mm³ excess" is single-source with an
 unpublished method; geopera velocity/height numbers are provisional. Where the
 models disagree with observation, we say so.
 
-**The border clock in this notebook.** The fits below take the border arrival as
-7.0 min and the 22-km mean speed as 52 m/s (labelled Kargel, 193 km/h), the
-values in use when they were made. On 6 September the CCTV overlay was read
-directly and gives 7 min 40 s and 47.8 m/s (report §03). Both corrected values
-lie inside the tolerances the scoring uses (±30% on arrival, ±35% on speed); the
-fits and the ensemble have not yet been repeated at them, and this page says so
-rather than silently changing the targets.
+**The border clock in this notebook.** The border arrival is scored at 7.68 min
+(7 min 40 s, read directly off the CCTV overlay on 6 September). Until late on
+6 September this notebook — and every model constant — still carried 7.0 min
+while the pages already said 7:40; that was caught in a third cold read and
+fixed in six files, and the ensemble was rerun (13.3–34.0 Mm³, median 23.2,
+21 of 200, against 14–34 / median 21 from the 7.0-min run). The speed panel in
+Section 2 still plots the 52 m/s point under its original label ("Kargel,
+193 km/h"); the corrected 22-km mean is 47.8 m/s, and the ensemble's speed
+observable is geopera's 48.5 ± 35%, unchanged.
 """)
 
 # ---------------------------------------------------------------- section 1 --
