@@ -645,6 +645,9 @@ class DEM:
             zz, ss = self._sample_tile(t, x, y)
             take = np.isnan(z) & np.isfinite(zz)
             z[take], sl[take] = zz[take], ss[take]
+            # HMA slope is NaN beside a void pixel: borrow the GLO-30 slope
+            fix = np.isfinite(z) & np.isnan(sl) & np.isfinite(ss)
+            sl[fix] = ss[fix]
         return z, sl, srcc
 
     def sigma(self, slope, srcc):
@@ -661,6 +664,10 @@ def walk(bare, valid, offs, side, gap_px, start_search_m=150.0):
     i0 = int(np.argmin(np.abs(offs)))
     order = range(i0, len(offs)) if side > 0 else range(i0, -1, -1)
     idx = list(order)
+    # no data over the channel itself (frame edge, cloud): truncated, not
+    # "no bare" - the 1 Sept Pelican frames stop short of the Hakubesi channel
+    if not np.any(valid[np.abs(offs) <= 30.0]):
+        return dict(status="truncated", d_trim=np.nan, d_start=np.nan, n_run=0)
     # find the start: first bare pixel within start_search_m of the centreline
     start = None
     for j in idx:

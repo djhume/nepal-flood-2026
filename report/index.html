@@ -442,6 +442,34 @@ while four of its gauges were being destroyed.</p>
 
 <h2>What changed recently</h2>
 <div class="log">
+  <div><span class="d">7 September 2026 — morning</span>
+  <strong>Every mud line in the corridor, mapped from imagery plus the
+  terrain.</strong> The stripped-ground boundary was extracted from Sentinel-2
+  and from Planet's 0.55&nbsp;m Pelican scenes along both banks at every
+  100&nbsp;m from the scar to Betrawati and 6&nbsp;km up the Chinese arm, and
+  sampled on the 8&nbsp;m High Mountain Asia DEM (fetched this morning; the
+  30&nbsp;m DEM put geopera's 134&nbsp;m cliff 90&nbsp;m lower at the same
+  point). It was gated first at the border: the method returns the three mud
+  lines Dave measured there — bed 1,815, lee line 1,875, impact cliff
+  1,920–1,930&nbsp;m — as 1,814–1,818, 1,866–1,878 and 1,917&nbsp;m, each
+  ±5&nbsp;m, and geopera's 134&nbsp;m maximum turns out to be the same wall.
+  Then Hakubesi, where it reads <strong>~85&nbsp;m above the pre-event bed</strong>
+  where the helicopter stills had given 45–70 and geopera's own points give
+  75–107, so the stills were the low read and the passing runs' 5–21&nbsp;m are
+  4–17× short. Then Syabrubesi, where the velocity collapse geopera reported
+  reproduces as 12–15&nbsp;m/s at their station. Along the whole gorge the
+  stage is 62–72&nbsp;m median with both banks valid at 127 of 128 stations;
+  bend pairs give 37–47&nbsp;m/s where they pass a Froude and error grade,
+  and peak discharges of order 300–400 thousand m³/s. <strong>The one thing
+  that moved:</strong> up the Chinese arm the mud line is level at
+  ~1,875&nbsp;m for 2.5&nbsp;km — the lee line, not the 1,925&nbsp;m contour the
+  up-valley volume route used — and a pond at that level holds
+  23&nbsp;Mm³ (15–33), with the widths the sub-metre imagery showed; the
+  170–690&nbsp;Mm³ corners of that route go with it, and its best corner now
+  sits inside or at the top of the 13–34 envelope. Coverage, flags,
+  per-point errors and the CC-BY-NC handling are in dossier §19 and
+  <code>output/trimlines.csv</code>. Nothing promoted: the profile is the
+  observable set for the ensemble rerun, which is the next job.</div>
   <div><span class="d">6 September 2026 — night</span>
   <strong>A third cold read, this one aimed at the dependencies rather than
   the prose, and it found that this morning's correction never reached the
@@ -651,19 +679,19 @@ while four of its gauges were being destroyed.</p>
 
 <h2>What happens next</h2>
 <p class="caveat">Two jobs, both named independently by the two sessions that
-worked on this on 6 September, and both under way on 7 September. <strong>First,
-a map of every mud line in the corridor.</strong> The stripped-ground boundary
-is extracted from the post-event satellite imagery along both banks, the
-elevation model is sampled under it, and where the two banks differ through a
-bend the difference gives the speed. The output is a peak-stage profile and,
-where the bends allow, a discharge profile for the whole upper corridor — the
-water depths this analysis has never been scored against. It must reproduce the
-three mud lines at the border junction and the Hakubesi line before the rest
-is trusted. <strong>Second, the ensemble re-run with those depths as
-observables</strong>, the Chinese arm modelled as a backwater wedge, the
-corrected clock and a properly specified border speed. That run is what turns
-"our number is moving up" into a number. Results go to the changelog first,
-as the rule above requires.</p>
+worked on this on 6 September. <strong>The first is done as of the morning of
+7 September: a map of every mud line in the corridor</strong> — the
+stripped-ground boundary extracted from the post-event imagery along both
+banks, the 8&nbsp;m elevation model sampled under it, speeds from the
+inner–outer bank difference at bends, and a peak-stage and discharge profile
+for the whole upper corridor. It was gated on the three mud lines at the border
+junction and on the Hakubesi line, and it returned them (entry above; dossier
+§19; <code>output/trimlines.csv</code>). These are the water depths this analysis
+has never been scored against. <strong>Second, and next, the ensemble re-run
+with those depths as observables</strong>, the Chinese arm modelled as a
+backwater pond at the level the map found, the corrected clock and a properly
+specified border speed. That run is what turns "our number is moving up" into
+a number. Results go to the changelog first, as the rule above requires.</p>
 
 <h2>What would help most</h2>
 <div class="asks">

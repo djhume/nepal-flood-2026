@@ -1323,3 +1323,147 @@ low-deposit). Logged; not promoted.
 **To sharpen:** Dave's read of frame 14 in portal heights; the UT-1 portal
 invert elevation from the drawings; a pin on the portal and the headworks; a
 bend pair in the same reach for velocity (frames 2/3/8/9 show one).
+
+## 19. THE TRIMLINE MAP — every mud line in the corridor from imagery plus the DEM (7 Sept, morning)
+
+**What was built.** `calcs/trimline_map.py` (Dave's overlay idea of 6 Sept,
+brief in `research/trimline-mapping-brief.md`). For every 100 m station on the
+OSM centreline from the scar to km 70 (Betrawati 68.4) and up the Kyirong arm
+to 6 km, the cross-section is walked outward on each bank through a
+stripped-ground mask until the mask ends; the DEM is sampled there (bilinear)
+and along the section for the bed; stage = trimline − bed; inner/outer pairs
+at bends give v² = g·Rc·dh/W; Q = A(η)·0.85·v where both exist. Outputs:
+`output/trimlines.csv` (one row per station per imagery layer, both banks,
+lat/lon of every point, per-point vertical error, flags), `output/
+trimline_profile.png`, `output/trimline_map_RESULTS.md`, and the junction
+plan view `output/trimline_junction.png` on DEM contours. Rules were fixed
+before the numbers were looked at and are in the docstring, with the three
+that the checks forced (bed window, change-based masks, capped Pelican walks)
+recorded beside the number that forced each.
+
+**DEM.** HMA 8 m mosaic tiles 675/676 (NSIDC, Dave's Earthdata login, fetched
+7 Sept 08:54), which are ellipsoidal heights: the offset to GLO-30 measured on
+242 gentle points is −34.4 m (IQR −37.4..−31.7) and is removed, so every
+elevation below is on the GLO-30 / Google Earth datum. GLO-30 fills HMA voids
+per point. The Mapzen profile is not used anywhere. GLO-30 alone gave the same
+reach medians to within a few metres but ±12–25 m per point at the junction
+against ±3–5 m on HMA; at geopera's 134 m station GLO-30 read 1,839 m where
+HMA reads 1,950 m at the same point — a cliff inside one 30 m pixel.
+
+**Imagery layers and their coverage** (both banks valid / stations):
+
+| layer | what | Lhende 8–21.5 | junction | gorge 22.8–35.6 | Syabrubesi 35.6–40 | Hakubesi 40–46 | to Betrawati 46–70 |
+|---|---|---|---|---|---|---|---|
+| `s2` | Sentinel-2 10 m, NDVI<0.20 after; pre 12 Aug, post median 27 Aug–6 Sept (post composite 26.5 % of the box valid; the corridor is far better covered than the box) | 109/135 | 11/13 | 127/128 | 41/44 | 26/60 | 156/236 |
+| `s2chg` | as `s2` but bare after AND not bare before (or inside the pre-event channel) — the like-for-like of a disturbance product | 109/135 | 11/13 | 127/128 | 41/44 | 27/60 | 159/236 |
+| `pelican0827` | Planet Pelican 0.55 m, 27 Aug, read at 1.5 m; haze-flattened, no mud/vegetation gap in its NDVI histogram | 0/135 | 8/13 | 94/128 | 24/44 | 44/60 | — |
+| `pelican0901` | Planet Pelican 0.55 m, 1 Sept, read at 1.5 m; clean bimodal NDVI (mud −0.20, vegetation +0.25) | 2/135 | 11/13 | 127/128 | 44/44 | 12/60 (frames stop short of the channel) | — |
+
+Pelican walks are capped at the 10 m change boundary + 15 m (flag
+`capped-by-s2chg`) because NDVI alone climbs bare rock above the mud line
+(first run: 2,040–2,190 m at the junction). Cloud-truncated walks are
+reported, never filled. Planet imagery is CC-BY-NC: analysed through the COG
+overviews along the sections only; nothing stored in the repo.
+
+**The junction gate (Dave's three mud lines, dossier §6c), on HMA + Pelican
+1 Sept:**
+
+| mark | Dave (GE) | this map | where |
+|---|---|---|---|
+| bed | 1,815 | 1,814–1,818 | HMA section minimum, km 21.8–22.0 |
+| lee line | 1,875 | 1,866–1,878 ± 3–5 | port-side bank of the Kyirong arm, level from 0.3 to 2.5 km up the arm |
+| impact cliff | 1,920–1,930 | 1,917 ± 5 | the arm's wall facing the Lhende mouth, 0.2–0.3 km up the arm (28.2795 N, 85.3754 E) |
+| geopera's 134 m maximum | 1,929 on their HMA | 1,917–1,950 | the same wall; their station is 88 m out from their centreline at our km 22.2 |
+
+Paired with geopera v1.1 on the same bank at unflagged stations (their L/R
+convention was checked against GLO-30 at their own points and is ours), the
+Pelican 1 Sept layer is +12 m (10–90 % −16..+28) in the border reach and −6 m
+(−31..+39) in km 35–46; Sentinel-2 alone +5 and −3 with ±25–70 m spread. Not
+independent of theirs — same DEM family, same kind of mask — so this is
+corroboration of a method, not replication of a result.
+
+*Open at the junction:* the Nepal-side wall at km 21.5–21.6 reads stripped to
+2,027–2,036 m (28.2800 N, 85.3824 E) in both the change-based Sentinel and the
+Pelican, ~200 m above the bed and 70 m above anything else on the corridor.
+A fresh bank collapse, or something the masks cannot tell from one. Flagged
+`junction`, excluded from every average; Dave to look.
+
+**Hakubesi (km 42.5–45.5; §18 read ~45–70 m above the pre-event bed from the
+stills, ±40 %).** Left bank 83–85 m median (55–109, n=16–17) on both Sentinel
+layers, right bank 60–67 (n=6–7), clean-station median 85–86 m; Pelican 27 Aug
+95 m (n=8). geopera's own points on the left bank there are 75–107 m. So the
+two imagery reads agree with each other and the stills were the low read;
+against the passing runs' 5–21 m (§18) the shortfall is 4–17×, not 1.5–10×.
+Coverage is the worst on the corridor (26–44 of 60 stations, cloud).
+
+**Syabrubesi (geopera: collapse to ~11 m/s at the opening).** At geopera's
+station (their km 38.8 = our 36.3) the map gives 12 m/s (Sentinel, km 36.4)
+and 15 m/s (Pelican 1 Sept, km 36.2); both, like theirs, sit at Fr < 0.7 and
+are graded weak. Two hundred metres on (km 36.5) both layers give 38–45 m/s
+with Fr 1.4–1.8 (strong). Stage through the opening 64–69 m median (n=27–44).
+
+**The corridor.** Stage above the local bed, clean stations only (both banks,
+no flags), median [10–90 %]:
+
+| reach | `s2` | `s2chg` | `pelican0901` | geopera (their thalweg) |
+|---|---|---|---|---|
+| Lhende gorge 8–21.5 | 144 [107–169] (36) | 140 [105–169] (36) | — | 40–134 in their reach A |
+| Bhote Koshi gorge 22.8–35.6 | 63 [52–84] (58) | 62 [51–84] (60) | 72 [56–89] (29) | "median ~70 in the gorges" |
+| Syabrubesi 35.6–40 | 65 [54–75] (27) | 64 [53–74] (28) | 69 [65–86] (11) | 71 median km 35–46 |
+| Hakubesi 40–46 | 72 [60–88] (12) | 70 [54–88] (15) | — | |
+| to Betrawati 46–70 | 34 [23–68] (127) | 33 [21–67] (136) | — | |
+
+The 140 m in the Lhende gorge is the rock–ice avalanche reach (§15): those
+are avalanche trimlines with a 4.5 km bridged centreline at km 7.5–11.9
+(flagged), not flood stage. Every stripped-ground boundary is a floor on the
+water surface; the 1 Sept scenes are post-drain.
+
+**Velocities and discharge.** Bend pairs graded strong when dh > 2σ, Rc ≥ 2W
+and Fr 0.5–2.5 (the range the forced-vortex relation is validated for):
+24–42 per layer. Bhote Koshi gorge: Sentinel median 44–47 m/s (n=8–10),
+Pelican 37–39 (n=24–34), range 20–70; Lhende gorge 45 (39–70, n=9);
+Syabrubesi 35–40; Hakubesi 51 (25–66, n=8, Pelican 27 Aug); below km 46
+41–52 (25–75). Q = A(η)·0.85·v at strong pairs: gorge median 310–410 ×10³ m³/s
+(66–1,150), Lhende 800–850 ×10³, Syabrubesi 180–350, Hakubesi 440, below km 46
+340–480. These are peak-instant floor-surface areas times a surface velocity,
+on a DEM cross-section, at a trimline that may hold some run-up even where
+unflagged: an observable set with its errors, not a discharge finding. The
+§6c decomposition gave 270–390 ×10³ at the border from one stage; the gorge
+numbers are the same order.
+
+**The Kyirong arm, and what it does to §17.** The arm's trimline on HMA +
+Pelican 1 Sept is level at 1,870–1,878 m on both banks from 0.5 to 2.5 km
+(bed 1,807 → 1,849), i.e. it is the lee line, not the 1,920–1,930 m head
+that §6c traced as a contour and §17 used for the stored volume. Beyond 3 km
+the marks carry `prebare`/`no-change` flags (river gravel, road) and by 4 km
+the "trimline" is within 10–40 m of the bed — no flood signal, which is where
+the Sentinel corridor test (§16) put the end of stripping. A level pond at the
+lee line on the GLO-30 cross-sections holds **23 Mm³** (15 at 1,860, 33 at
+1,890), reaches the bed at 3.1 km, and is 180 m wide at 0–2.5 km — the widths
+the sub-metre imagery showed (150–250 m), where every 1,925 m surface was
+240–270 m and over-reached to 5.3 km. Re-running §17's release table with
+V_up = 15 / 23 / 33 Mm³ and the Lhende subtraction of 3–15:
+
+| V_up | f_up 0.50 | 0.30 | 0.10 |
+|---|---|---|---|
+| 15 (pond at 1,860) | **15–27** | 35–47 | 135–147 |
+| 23 (pond at 1,875) | **31–43** | 62–74 | 215–227 |
+| 33 (pond at 1,890) | 51–63 | 95–107 | 315–327 |
+
+against the 13.3–34.0 envelope: the f_up = 0.5 corner now sits inside or at
+the top of it and the 170–690 corners of §17 are gone with the 1,925 m head.
+The split is still unmeasured (0.1–0.5); the 1,917 m mark on the wall facing
+the Lhende is a splash, consistent with §6c's run-up reading. Logged for §17;
+nothing promoted.
+
+**What next, in order.** (1) The ensemble rerun with this profile as the
+observable set (stage per reach with its 10–90 %, the Hakubesi 85 m, the
+junction 60 m lee stage) — the job both sessions named. (2) Dave's read of the
+2,030 m Nepal-side points and of the arm level in Google Earth. (3) The Vantor
+WV03 stereo pair for a post-event surface on the arm (§17a route 2), which
+would turn the pond level into a measured fill. (4) A pre-event image at
+Pelican resolution (Vantor 2021 WV2) so the Pelican walks need no cap.
+
+*Credit: cross-checked against geopera v1.1 (Geopera Pty Ltd, Darcy Weedman;
+company blog, unreviewed — as this is), whose trimline and superelevation
+vectors were read from their GitHub release and are not redistributed here.*
