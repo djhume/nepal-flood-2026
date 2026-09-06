@@ -1547,3 +1547,22 @@ flow"; sections of ±1,500 m still stop short of the flood edge in places
 (`open`); cloud removed 60–80 % of the stations below Galchhi. SkySat 31 Aug
 (0.64 m, Betrawati → Trishuli Bazaar) and PlanetScope 28 Aug (3.9 m, to
 27.71 N) are the next imagery to add there; neither is read yet.
+
+
+### 15b. Classification and the terminal-speed friction bracket (7 Sept)
+
+Dave (6 Sept night): a "contained avalanche" — a slide slows with time, an
+avalanche speeds up, and in a gorge the mass is funnelled and cannot spread.
+Written into report §04b. Hungr et al. 2014 (Varnes update): slide vs
+avalanche/flow by coherence and speed history; debris avalanche (unconfined)
+vs debris flow (channelised) by confinement. Nicoletti & Sorriso-Valvo 1991
+(GSA Bull.): channelled rock avalanches are the most mobile class.
+Terminal speed v² = ξ h (S − μ); gorge grade ~0.12 (≈4,000 m at the impact
+zone → 1,815 m over 17–19 km); depth 40–75 m (trimline map §19: gorge 73,
+Lhende ~140 as avalanche trimlines); v = 47 ⇒ μ_eff ≈ 0.04–0.09 for ξ
+500–1,000. Speed record: Lhende gorge ~45 (§19 bend pairs), border 45–52
+(geopera), 47 (video §14d), 47.8 mean (§14b) ⇒ plateau from the first few km;
+geopera's upper-Lhende 37 was a single point. Reverse at Syabrubesi: spread,
+11 m/s, deposit at km 40–43. Interpretation, not a scored result; feeds the
+μ_dry prior of a future ensemble (currently 0.10–0.35 — the bracket sits
+below it, which is worth noting when v6 reports its posterior on μ).
