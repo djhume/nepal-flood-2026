@@ -1,5 +1,14 @@
 # Brief: map every mud line in the corridor from imagery plus the DEM
 
+> **Status, 7 Sept 2026 late morning: DONE.** Built as `calcs/trimline_map.py`
+> (whole corridor scar → Devghat plus the Kyirong arm, HMA 8 m, robust fit) and
+> `calcs/trimline_inset.py` (image + contours check-plots). Results in dossier
+> §19 and §19a, `output/trimlines.csv`, `output/trimline_fit.csv`,
+> `output/trimline_profile.png`. Junction gate passed. Next job: the ensemble
+> rerun with the fit profile as observables; SkySat / PlanetScope for the
+> lower river; the Vantor stereo for the arm. Nothing promoted.
+
+
 *Written 7 Sept 2026 for a fresh session. Dave's idea (6 Sept, late): overlay
 the post-event imagery on the topography so that wherever the stripped-ground
 boundary crosses a contour we get a three-dimensional point on the mud line —
