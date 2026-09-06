@@ -1280,3 +1280,71 @@ independent line (with §17) saying the runs that pass are too small below the
 junction. **Action: the next ensemble must score stages** (Rasuwagadhi
 trimlines, Syabrubesi, Hakubesi) — none has ever been an observable.
 `model/unified.py` gained EXTRA_STATIONS (additive, default empty).
+
+## 10. Plan from 7 September — after the trimline map
+
+**State.** The trimline map exists (`calcs/trimline_map.py`, HMA 8 m, dossier
+§19/§19a, `output/trimline_fit.csv`): a peak-stage profile for the whole
+corridor, bend-pair velocities, and a pond level on the Kyirong arm. It passed
+its gate (Dave's three mud lines at the junction, ±5 m). It is an observable
+set, not a finding. Everything below is ordered by what it unlocks.
+
+**What it settled.** (a) The arm filled as a POND to the lee line, ~1,875 m,
+level for 2.5 km on both banks: 23 Mm³ (15–33). The 1,925 m mark is splash.
+§17's tongue/pond-at-1,925 rows (51–74 Mm³, release 170–690) are withdrawn;
+the up-valley route now gives 15–63 Mm³ at f_up = 0.5, 35–107 at 0.3.
+(b) Hakubesi stage 68–90 m (geopera 75–107); the stills' 45–70 was the low
+read; the passing runs' 5–21 m are 4–17× short. (c) Gorge stage 73 m median,
+Syabrubesi 71, to Betrawati 29, Betrawati–Galchhi 15, Galchhi 7.4 vs the
+gauge's 9. (d) Gorge surface speeds 37–47 m/s; the Lhende gorge ~45 — the
+plateau starts inside the first few km (geopera's 37 was one point).
+
+**1. Ensemble v6 with the profile as observables — THE JOB (this session).**
+- Observables: stage per reach with its window p10–p90 (gorge 73 [59–99],
+  Syabrubesi 71 [59–82], Hakubesi 68 [42–85], to Betrawati 29 [20–41],
+  Betrawati–Galchhi 15 [9–21], Galchhi 7.4 [4.7–9.9]); border clock 7.68 ±30%;
+  Syabrubesi 13 min ±50%; erosion 3.2 ±60%; deposition ≤12. Velocity
+  observable RE-SPECIFIED: model section-mean speed in the gorge (km 24–34,
+  peak, median over the reach) vs the bend pairs scaled to section mean,
+  ~34 m/s ±35% — replacing reach-max Q/A vs a front speed.
+- Geometry: channel width below km 34 from the trimline sections (equivalent
+  rectangular width = area/stage at the mapped stage), replacing 4.8√Q; the
+  Kyirong arm as a wedge at the measured lee level (h_max 60 m, S ≈ 0.017,
+  width 180) with the junction weir's 8 m head cap lifted behind a flag
+  (default off ⇒ every published table reproduces).
+- Held out: Devghat peak, Malekhu 11:20/11:40, Kalikhola 14:14.
+- Priors unchanged (V log-uniform 1–200). 200 samples ≈ 90 min. Results →
+  changelog and dossier §20; promote after a night and the held-out check.
+- Also read off the map: peak-discharge continuity at the node (Lhende bend
+  pairs ~800 ×10³ vs Bhote Koshi gorge 310–410 ×10³ would give f_up ≈ 0.5,
+  but the Lhende marks are avalanche trimlines, not flood stage — low
+  confidence; test with §6c-flagged stations only).
+
+**2. Side-valley mud lines (the other session's extension).** Chain each
+tributary from its mouth, walk up its floor to the end of stripped ground,
+Δh against the main-stem trimline ⇒ v = √(2gΔh/α): the "free measurement"
+of §6c, many stations, no model. Start inside the Pelican 1 Sept coverage;
+check each on `calcs/trimline_inset.py`.
+
+**3. Vantor WV03 stereo pair (27 Aug) → post-event surface on the arm** —
+turns the pond level into a measured fill and gives deposition on the arm.
+A day's photogrammetry (ASP/MicMac), 40 GB, cloud 71–73%.
+
+**4. Lower-river imagery into the map**: SkySat 31 Aug (0.64 m, Betrawati →
+Trishuli Bazaar), PlanetScope 28 Aug (3.9 m). Below Mugling the 10 m mask
+mostly returns the pre-event gravel edge.
+
+**5. Dave's reads:** the arm level on the image+contour plot (done at the
+junction); side-valley mouths as they come; the sight-line separation range
+(§14d) still open.
+
+**Superseded / closed:** "re-score the border-speed observable" (PLAN open
+item 1) → replaced by the re-specified velocity observable in v6; the CAS
+re-score is done (0/200); "Galchhi widths are the suspect" → to be tested by
+v6's measured widths; §17's 1,925 m head rows → withdrawn by §19.
+
+**Unchanged, lower:** Seti rebuild; no Nepali reviewer; DHM gauge data;
+velocity-weakening friction (§8a); the classification note for §04b
+(rock–ice avalanche → channelised debris flow at avalanche speed; terminal
+velocity fixes μ_eff ≈ 0.04–0.08 at h 40–70 m, S 0.12 — 6 Sept night, not
+yet on the page).
