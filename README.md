@@ -73,7 +73,12 @@ source is here and the licence permits it.
    constrained — liquid fraction, μ_dry and f_fine each span >90% of their priors.
    One exposure: the border-speed observable is 48.5 ± 35% m/s, and the first
    peer-reviewed study of the event measures 19 m/s at the same place. Not yet
-   re-scored against it.
+   re-scored against it. **Under revision (6 Sept, late):** two routes that share
+   none of the envelope's observables — the volume that ran up the Chinese arm
+   (`calcs/upvalley_wedge_volume.py`) and a 45–70 m mud line at the Upper
+   Trishuli-1 headworks where the passing runs put 5–21 m — both say the envelope
+   is probably too small. The ensemble was never scored on a stage; the next one
+   will be (report §12b, dossier §17–18).
 5. **The single-phase model was falsified, then fixed.** With entrainment built
    (`model/ENTRAINMENT.md`, literature constants, nothing fitted) the model tears
    3.8 Mm³ out of the corridor against 3.2 measured by stereo DEM — but the same
@@ -180,7 +185,7 @@ and remains a useful explanation of storage, junctions and pulse structure.
 
 ## Status, licence, and use
 
-Version 6, 6 September 2026. Preliminary, independent, AI-assisted analysis
+Version 7, 6 September 2026 (late). Preliminary, independent, AI-assisted analysis
 published days after the event. Five results have been withdrawn or reversed in
 that time and all five remain readable on the site with their reasons.
 **Not peer-reviewed, not read by any Nepali scientist, and not suitable as the
