@@ -1116,3 +1116,66 @@ produced, and finding 03 was promoted and then withdrawn.
 
 Phase A sensitivity: an evening. Phase B model: 2–3 evenings (DEM profile + routing + calib).
 Phase C: 1 evening. Write-up: 1–2 evenings. Phase D only if hooked.
+
+## 8. Research directions logged, not being built
+
+Ideas judged worth recording and not worth chasing this week. Each says why it
+is deferred, so a later session does not have to re-derive the reasoning.
+
+### 8a. Velocity-weakening friction from frictional melt (Dave, 6 Sept)
+
+**Origin.** Dave, driving home, wondering about ice-skate blades. It first
+caught a published error: the plain-English page claimed the contact stress
+between ice grains (~10,000 atm) collapses the melting point by ~70 °C, a
+straight-line extrapolation of the 0.0074 °C/atm figure the *same page* uses
+three sections earlier to argue pressure melting is negligible. Ice Ih ceases
+to exist near 210 MPa (~2,000 atm) where the depression is ~22 °C; beyond that
+the high-pressure ices melt *hotter*. Wrong in magnitude and, past 2 kbar, in
+sign. Corrected on the site 6 Sept.
+
+**The mechanism that actually applies.** Ice is slippery because of
+**premelting** — a disordered quasi-liquid surface film present with no load at
+all, thickening toward 0 °C — plus **frictional heating**, plus flash heating
+at asperity contacts. Skating works at −30 °C, where pressure melting cannot
+operate at all.
+
+**Why it matters dynamically, which is the actual point.** Pressure melting
+scales with *normal stress*. Frictional melting scales with shear stress ×
+*slip rate*. That makes friction **velocity-weakening**: faster sliding makes
+more meltwater, which lowers μ, which makes it faster still — a runaway that
+saturates once the surface is fully lubricated. Standard in the rock-friction
+literature (rate-and-state; frictional melt → pseudotachylyte) and invoked for
+rock-ice avalanche mobility.
+
+**What our model does instead.** `model/core.py` carries μ(w), a dial on the
+*water volume fraction* — an advected state variable — plus the τ ≈ 5 min
+thermal lag fitted at Chamoli. So lubrication is parameterised by *accumulated
+melt*, not by *slip rate*. Downstream, where the flow is already saturated,
+those are nearly the same thing. On the initial acceleration off the scar they
+are not, and that is precisely the reach Dave identified.
+
+**A signature already sitting in the data.** The 6 Sept video measurement puts
+the instantaneous front speed at km 22 at ~47 m/s (dossier §14d), and the
+corrected 22-km mean is 47.8 m/s. The front did **not** decelerate down the
+Lhende. A velocity-weakening law that saturates once lubricated predicts
+exactly that plateau; constant Coulomb friction predicts steady deceleration.
+That is a real, already-observed discriminator, not a hypothetical one.
+
+**The reason it is attractive beyond fitting better.** It would *remove* a
+degree of freedom rather than add one. τ is currently the single fitted
+constant in the Chamoli hindcast. If rate-dependence reproduces the Chamoli
+arrival without a separately fitted τ, that is a genuine test under the
+honesty rails, not a curve-fit — fewer knobs, same data.
+
+**Why deferred.** It will not move the size envelope, which is pinned by the
+border clock, the erosion volume and the deposition cap, none of which are
+sensitive to how μ gets low — only to the fact that it does. It is a
+next-version refinement of the *mechanism*, and this version's open items
+(re-scoring the border-speed observable, the Seti rebuild, the Galchhi stage
+failure) all bear more directly on published numbers.
+
+**If picked up, the order is:** (1) replace μ(w) with μ(w, slip rate) in
+`model/core.py` behind a flag, defaulting off so every published table
+reproduces bit-identically; (2) re-run Chamoli and see whether τ can be
+dropped; (3) only then look at whether the Lhende plateau is reproduced
+without tuning.
