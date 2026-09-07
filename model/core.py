@@ -374,6 +374,10 @@ def step(st, R, dt, mu_dry, w_sat=W_SAT, mu_wet=MU_WET, side_valleys=True,
         strand = (u_node < u_dep) & (wfrac < w_sat) & (h_sol > 0.02)
         dep = np.where(strand, h_sol * dt / t_dep, 0.0)
         h = h - dep
+        # v10 ledger: the release-origin share of what strands (hr is drawn
+        # down first, so it is min(dep, hr)). Pure bookkeeping — lets a
+        # scorecard count rock-only deposition when the release was ice-rich.
+        st["bed_r"] = st.get("bed_r", np.zeros_like(bed)) + np.minimum(dep, hr) * wn * DX
         hr = np.clip(hr - dep, 0.0, None)
         bed = bed + dep * wn * DX
         h, hw = _floor(h, hw)
@@ -455,6 +459,9 @@ def _entrain(st, R, dt, h, hw, hwr, hr, hf, u_node, opt):
     # release tracers ride along with their share of what leaves
     sol_share = np.where(h_sol > 1e-9, hr / np.maximum(h_sol, 1e-9), 0.0)
     wat_share = np.where(hw > 1e-9, hwr / np.maximum(hw, 1e-9), 0.0)
+    # v10 ledger: release-origin share of the deposited bulk (bookkeeping only;
+    # lets a scorecard count rock-only deposition for an ice-rich release)
+    st["dep_r"] = st.get("dep_r", np.zeros_like(dD)) + dD * np.clip(sol_share, 0.0, 1.0)
     hr = hr - dD * C_STAR * np.clip(sol_share, 0.0, 1.0)
     hwr = hwr - dD * (1.0 - C_STAR) * np.clip(wat_share, 0.0, 1.0)
 

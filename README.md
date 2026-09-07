@@ -99,8 +99,14 @@ source is here and the licence permits it.
    lower river at once. **v9** (drag following the solids fraction,
    `calcs/ensemble_v9.py`, `core.XI_COMP`): 0 of 200; the runs with drag
    deposit 50–64 Mm³ against a 12 Mm³ cap that was measured from post-event
-   DEMs and so counts rock only, while the engine counts ice as solid. Next,
-   for decision: rock-only deposition (report §12b, dossier §19–22).
+   DEMs and so counts rock only, while the engine counts ice as solid.
+   **v10** (`calcs/ensemble_v10.py`, 300 runs): release duration sampled
+   60–600 s (was fixed at 180), μ floor 0.03 for ice, rock-only deposition
+   via a release-origin ledger — 0 of 300, but 14 runs meet the clock and
+   the gorge depth together and three meet 10 of 11, failing only Galchhi;
+   above Betrawati the model matches the record at 110–175 Mm³ released over
+   5–10 min. Next: the lower river's floodplain width (report §12b, dossier
+   §19–23).
 5. **The single-phase model was falsified, then fixed.** With entrainment built
    (`model/ENTRAINMENT.md`, literature constants, nothing fitted) the model tears
    3.8 Mm³ out of the corridor against 3.2 measured by stereo DEM — but the same

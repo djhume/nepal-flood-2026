@@ -462,6 +462,37 @@ while four of its gauges were being destroyed.</p>
 
 <h2>What changed recently</h2>
 <div class="log">
+  <div><span class="d">7 September 2026 — night</span>
+  <strong>Fifth version, three hundred runs, none pass — and the upper
+  corridor is now solved in the model. What is left is the lower river.</strong>
+  Dave asked whether our limits were wrong, or whether there was a
+  non-linearity we did not understand. Both, as it turned out, and the answer
+  is in dossier §23. Three limits were wrong and none of them were being
+  sampled: the collapse had been fed into the valley over a fixed three
+  minutes in every version, an assumption standing in for a seismic duration
+  nobody has published, and it acts directly on the border clock; the
+  dry-friction floor sat above the values ice gives; and the deposit limit is
+  a measurement of rock, from elevation models made days after the event,
+  that had been applied to ice as well. With those three moved — release
+  duration sampled up to ten minutes, ice-capable friction, deposition scored
+  on rock alone — fourteen runs now meet the border clock and the gorge depth
+  together where the previous version managed one, three runs meet ten of
+  the eleven tests, and the two best fail on exactly one thing: too much
+  water at Galchhi, eighty-five kilometres downstream. The non-linearity is
+  that every limit on the flood's speed in this model grows with the square
+  root of its depth, so volume, valley width, composition, drag, deposition
+  and the clock are one coupled system rather than six dials, and the search
+  had been walking its boundary on assumptions it was never allowed to vary.
+  The remaining conflict discriminates cleanly: wet releases put fourteen to
+  nineteen metres at Galchhi and arrive at Malekhu half an hour to an hour
+  early, dry ones put one to seven metres there and arrive late or not at all.
+  The answer is between them, and a single 267-metre channel cannot produce
+  it in a valley the site table puts at five hundred. Next: the lower river's
+  floodplain, from the elevation model, as the gorge and the Lhende were done
+  before it. Where the model is converging, stated as the shape of a search
+  and not a finding: 110 to 175 million cubic metres, mostly ice and water,
+  released over five to ten minutes. Finding 04 unchanged: under revision,
+  moving up. Dossier §23; output/ensemble_v10_RESULTS.md.</div>
   <div><span class="d">7 September 2026 — evening</span>
   <strong>A fourth version, and the failure has moved again — this time onto a
   measurement, not the model.</strong> The afternoon's result was that one drag
@@ -803,14 +834,15 @@ for the whole upper corridor. It was gated on the three mud lines at the border
 junction and on the Hakubesi line, and it returned them (entry above; dossier
 §19; <code>output/trimlines.csv</code>). These are the water depths this analysis
 has never been scored against. <strong>Second, the ensemble re-run with those
-depths as observables</strong> — done four times on 7 September, and failed
-four times (entries above). The failures are the finding for now: the depths
-need a release of order a hundred million cubic metres in this model, the
-model can carry that volume through the gorge at the observed speed and reach
-the border on time, and the one thing it cannot do is deposit as little as
-the measurement says — a measurement that could only see rock, applied to a
-flow that was mostly ice. The next version, argued for in the changelog and
-waiting on a decision, scores deposition on rock alone. Results go to
+depths as observables</strong> — done five times on 7 September, and failed
+five times (entries above). The failures are the finding for now: the depths
+need a release of order a hundred million cubic metres in this model; with
+the release duration, ice friction and a rock-only deposit limit sampled, the
+model now matches everything above Betrawati at that size; and the one thing
+it cannot yet do is put the right amount of water at Galchhi, in a valley it
+carries as a channel half the width the site table gives it. The next
+version, argued for in the changelog, gives the lower river its floodplain.
+Results go to
 the changelog first, as the rule above requires; finding 04 will move when a
 version passes and survives a night.</p>
 
@@ -861,7 +893,7 @@ is useful and something in it is wrong, we would rather be told than cited.</li>
 
 <footer>
 Independent analysis by <strong>Dave Hume</strong>, carried out with Claude
-(Anthropic) as a research assistant. Version 10, 7 September 2026 (evening) — findings and
+(Anthropic) as a research assistant. Version 11, 7 September 2026 (night) — findings and
 casualty figures are as reported at that date and will change. Code, data and
 the full evidence dossier, with every contested number flagged at the point of
 use, are kept in the project repository. Corrections are welcome and will be

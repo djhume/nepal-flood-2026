@@ -256,6 +256,8 @@ def simulate(V_rel=V_REL, w0=W0, w_sat=W_SAT, mu_wet=MU_WET, mu_dry=None,
     front = np.maximum.accumulate(out["front"])
     out.update(arrival=arrival_fn(front, out["t"]), front=front,
                umax=st["umax"], bed=st["bed"], ero=st["ero"], dep=st["dep"],
+               bed_r=st.get("bed_r", np.zeros_like(st["bed"])),
+               dep_r=st.get("dep_r", np.zeros_like(st["dep"])),
                mu_dry=mu_dry, h0=h0, hmax=hmax, hs_max=hs_max)
     return out
 

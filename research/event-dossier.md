@@ -1940,3 +1940,157 @@ becomes the number. Then Galchhi with a floodplain width.
 "under revision, moving up". The direction has not changed once: of order
 100 Mm³ in this model, mostly ice and water, slower in the gorge than water
 would be.
+
+## 23. ENSEMBLE v10 — the limits question (7 Sept, night)
+
+Dave, on seeing four zeros: *"are our limits ok — or do we need to broaden
+them — or is there some non-linearity we do not yet understand here?"* This
+section answers it before the run rather than after. Three limits were
+wrong, one non-linearity is real and now understood, and one measurement
+has been mis-applied.
+
+**Limits that were wrong.**
+
+1. **The release duration was fixed.** Every version fed the release into
+   km 0–1.2 over 180 s ("seismic duration scale") — an assumption, never a
+   sampled input, and no force-time inversion has been published to set
+   it. It acts directly on the border clock. On v9's near-hit (132 Mm³,
+   w0 0.74, ξ 108, f_wl 0.86), holding everything else:
+
+   | T_rel (s) | border (min) | v_gorge | gorge | Syabrubesi | Hakubesi | Galchhi | deposition | met |
+   |---|---|---|---|---|---|---|---|---|
+   | 180 | 5.3 | 26 | 74 | 69 | 53 | 16.3 | 21.8 | 8 |
+   | 400 | **7.5** | 25 | 71 | 68 | 52 | 16.3 | 22.0 | **9** |
+   | 600 | 9.2 | 24 | 66 | 65 | 51 | 16.3 | 22.1 | 9 |
+
+   Observed 7.68. The stages barely move; the clock moves through the
+   whole window. Every deep run since v6 has missed the clock by seconds
+   to a minute, and this dial was never turned. v10 samples T_rel
+   log-uniform 60–600 s.
+2. **The dry-friction floor excluded ice.** μ_dry ran 0.10–0.35 (Schneider
+   ice-avalanche to Scheidegger rock). Flows on ice give 0.03–0.10 (Sosio
+   2012) and our own terminal-speed bracket for the first 22 km (§04b,
+   §15) is 0.04–0.09. The prior's floor sat above the answer. v10: 0.03–0.35.
+3. **The deposition cap is a rock measurement, applied to ice.** The
+   engine counts unmelted ice as solid (correct on a three-hour
+   timescale); the 12 Mm³ comes from DEMs of 28 Aug–1 Sept, and §12 of
+   this dossier already records it as a lower bound over 45 % coverage
+   with an honest range of 5–15. In the entrainment configuration all of
+   the model's deposition is the closure's re-deposition term, which draws
+   on release solids in proportion to their share of the coarse column;
+   v10 ledgers that share (`dep_r`) and scores rock-only deposition =
+   bulk with the release-origin part counted at (1 − f_ice), f_ice
+   uniform 0.3–0.9 (§04's composition lines), still against 12. The bulk
+   figure is recorded, and the coverage question (12 over 45 % of the
+   floor could be 15–27 over all of it) is left as a post-hoc
+   sensitivity on the saved samples, not built into the score.
+
+**The non-linearity, now understood.** Every limit on the front's speed in
+this model scales with the square root of depth — the Froude cap 2√(gh)
+and the Voellmy terminal speed √(ξh(S−μ)) — so a width error anywhere
+above the junction becomes a clock error at the border (§21: a 50 m Lhende
+made a 100 Mm³ release 200 m thick and unstoppable). Below the junction the
+same √h coupling means depth and speed cannot be fitted separately: a run
+that is deep enough is fast, unless a resistance that grows with depth is
+present, and that resistance (v9) is carried by the solids, which deposit.
+So volume, width, composition, drag, deposition and the clock are one
+coupled system, not six dials, and the sampler has been walking its
+boundary since v6. That is the interesting part: the observables are
+consistent with each other, and the model has been failing on assumptions
+it was not sampling.
+
+**What v10 is.** v9's physics and geometry with the three limits above
+moved and nothing else; eleven inputs; 300 samples (55 min). Sanity, a
+dry corner chosen by hand before the run — 120 Mm³, w0 0.20, μ 0.06,
+ξ 300, f_wl 0.8, T_rel 300 s, f_ice 0.7:
+
+| border | v_gorge | gorge | Galchhi | deposition bulk → rock-only |
+|---|---|---|---|---|
+| 6.8 min | — | 66 m | 5.9 m | 42 → 12.8 Mm³ |
+
+Regression: v8 sample 0 identical after both ledger patches (bookkeeping
+only).
+
+**Not moved, on purpose:** the observable windows. The clock's ±30 %, the
+gorge speed's ±35 %, the stage p10–p90 and the erosion ±60 % are as wide
+as their measurements justify; widening them to admit a run is the
+tuning-to-pass that PLAN §6a forbids. The Galchhi window (3.5–9.9 m,
+gauge +9) is the one a reader might question, and the answer there is
+geometry, not tolerance: the model carries 267 m through Galchhi where the
+site table (§1) has the valley at ~500 m, which alone takes the near-hit's
+16 m to ~11. A floodplain width for the lower river is the next geometry
+revision, after this run.
+
+**Results (7 Sept, night):** filled in below when the run finishes.
+
+**RESULTS (7 Sept, night). v10: 0 of 300** — and the largest move of the
+day. `output/ensemble_v10_RESULTS.md`, `calcs/ensemble_samples_v10.npy`
+(11 priors + 11 observables + bulk deposition + n_ok). 57 min.
+
+| | v8 (200) | v9 (200) | v10 (300) |
+|---|---|---|---|
+| border clock AND gorge stage | 6 | 1 | **14** |
+| … AND gorge speed | — | — | 9 |
+| … AND rock-only deposition | — | — | 10 |
+| … AND Galchhi | 0 | 0 | 2 |
+| all four | 0 | 0 | 1 |
+| best run | 9 of 11 | 9 of 11 | **10 of 11** (three runs) |
+| Galchhi met | 8 | 13 | 30 |
+| deposition met | 141 | 140 | 257 |
+
+**What each moved limit did** (deep runs, V ≥ 60, medians):
+
+| cut | n | border (min) | v_gorge | gorge | Hakubesi | Galchhi | rock-only dep | bulk dep |
+|---|---|---|---|---|---|---|---|---|
+| T_rel 60–180 s | 35 | 4.3 | 29 | 63 | 41 | 7.9 | 15.0 | 45.6 |
+| T_rel 180–350 | 21 | 5.6 | 29 | 59 | 42 | 12.1 | 6.1 | 14.5 |
+| T_rel 350–600 | 13 | **7.1** | 30 | 61 | 47 | 11.9 | 5.9 | 18.6 |
+| μ_dry 0.03–0.10 | 13 | 5.5 | 25 | 44 | 28 | 5.0 | 15.2 | 34.2 |
+| μ_dry 0.10–0.20 | 23 | 5.2 | 31 | 61 | 42 | 11.9 | 5.9 | 19.7 |
+| w0 0.02–0.30 | 22 | 5.5 | 26 | 63 | 40 | **4.6** | 23.8 | 43.7 |
+| w0 0.55–0.95 | 30 | 5.6 | 35 | 61 | 47 | **13.4** | 5.9 | 16.1 |
+
+The release duration does what §23 said: at 350–600 s the deep runs'
+median border arrival is 7.1 min against 7.68 observed, with the stages
+unchanged. The rock-only cap turns a 45 Mm³ bulk deposit into 15 and lets
+257 of 300 runs pass it. The ice-friction floor produces thinner, faster
+flows that undershoot the gorge stage — the posterior does not want μ
+below 0.10 at these volumes, which is a result, not an assumption.
+
+**The three runs at 10 of 11:**
+
+| V | w0 | μ | f_fine | ξ | K | f_wl | f_ice | T_rel | border | v_gorge | gorge | Syabru | Hakubesi | Galchhi | rock (bulk) | fails | held out: Malekhu (163) / Kalikhola (~337) / Devghat (~2,900) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 129 | 0.87 | 0.17 | 0.14 | 145 | 7.9 | 0.54 | 0.86 | 466 | 7.0 | 37 | 60 | 69 | 49 | **17.6** | 4.1 (22.8) | Galchhi | 85 / 180 / 5,900 at 307 min |
+| 123 | 0.81 | 0.13 | 0.45 | 131 | 8.7 | 0.46 | 0.82 | 501 | 7.3 | 28 | 63 | 63 | 49 | **14.5** | 3.9 (20.6) | Galchhi | **130 / 292 / 3,697 at 596** |
+| 128 | 0.14 | 0.17 | 0.92 | 187 | 6.4 | 0.48 | 0.74 | 198 | 5.4 | **21** | 78 | 71 | 56 | 7.2 | 4.1 (15.1) | v_gorge (21 vs ≥ 22) | 197 / never in 10 h / 1,646 |
+
+**Where this leaves it.** Above Betrawati the model can now do everything
+the record asks: clock, gorge depth and speed, Syabrubesi, Hakubesi, the
+scour volume and a rock-only deposit inside the cap — at 110–175 Mm³,
+released over 5–10 min, into a Lhende at 0.35–0.7 of its trimline width,
+with ξ 100–350. **The lower river is the whole remaining conflict, and it
+discriminates cleanly:** the wet runs (w0 ≳ 0.6) put 14–19 m at Galchhi
+against ≤ 9.9 and reach Malekhu 30–80 min early; the dry runs (w0 ≲ 0.3)
+put 1–7 m there and reach Malekhu 30 min late or not at all. The answer is
+between them and a single 267 m channel cannot produce it. Post-hoc cap
+sensitivity on the saved samples: no full pass at ≤ 12, ≤ 15 or ≤ 27
+Mm³ rock-only — **Galchhi is the blocker, not the cap.**
+
+**Next (v11): the lower river's floodplain.** The model carries 267 m from
+Betrawati to km 108 (one v6 station's value held flat) and drops to the
+120 m rule at km 110; the site table (§1) has the valley at Galchhi at
+~500 m. A wider section lowers the stage for the same discharge (the
+near-hit's 16 m → ~11 at 500 m) and slows the wave (floodplain storage),
+which is the direction both lower-river failures need. Build: valley-floor
+width from Betrawati to Devghat from the DEM cross-sections at the mapped
+stage (the trimline map's sections exist; the width filter needs the
+outlier fix of §21), applied as the channel width below km 70, with a
+sampled factor 0.5–1.0 because a floodplain is not a rectangle. Everything
+else v10. This is geometry from the map, the same correction that fixed
+the gorge widths in v6 and the Lhende in v8, not a new dial.
+
+**Standing:** five versions, 0 of 1,100. Nothing promoted; finding 04
+stays "under revision, moving up". The envelope this model is converging
+on: **110–175 Mm³, mostly ice and water, released over 5–10 minutes** —
+stated here as the shape of the posterior-in-progress, not a finding.

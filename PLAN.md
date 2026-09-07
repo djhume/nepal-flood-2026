@@ -1393,3 +1393,19 @@ deposition** (track the release-origin share of stranded solids, sample the
 ice share of the release 0.3–0.9, score (1 − f_ice) × release deposition +
 entrained deposition ≤ 12). No dynamics change. Then Galchhi with a
 floodplain width. Four versions, 0 of 800; nothing promoted.
+
+**v10 RAN (7 Sept night, "keep trying") — 0 of 300, the biggest move
+(dossier §23).** Three limits moved, nothing else: release duration
+sampled 60–600 s (was FIXED at 180 — on the near-hit 400 s takes the clock
+5.3 → 7.5 min with the stages unchanged), μ_dry floor 0.10 → 0.03 (ice),
+deposition scored rock-only via a release-origin ledger with the ice share
+sampled 0.3–0.9. Result: 14 runs meet clock AND gorge depth (v9: 1), three
+runs at 10 of 11, the two best failing Galchhi alone (14.5, 17.6 m vs
+≤ 9.9). Above Betrawati everything is matched at 110–175 Mm³, released
+over 5–10 min, wide Lhende, ξ 100–350. The lower river is the whole
+remaining conflict and discriminates: wet runs too much and too early at
+Galchhi/Malekhu, dry runs too little and too late; no cap (12/15/27)
+changes that. **Next: v11 = lower-river floodplain width** from the DEM
+sections below Betrawati (site table: ~500 m at Galchhi vs the model's
+267), sampled factor 0.5–1.0. Then promote nothing until a version passes
+and survives a night and the held-out set.
