@@ -1409,3 +1409,21 @@ changes that. **Next: v11 = lower-river floodplain width** from the DEM
 sections below Betrawati (site table: ~500 m at Galchhi vs the model's
 267), sampled factor 0.5–1.0. Then promote nothing until a version passes
 and survives a night and the held-out set.
+
+**LATE 7 Sept — the lower river (dossier §24).** The DEM sections say the
+channel below Betrawati is narrower than the model's, not wider (W_eq
+116–142 m vs 267; the 500 m is the valley). v11 (compound section: DEM
+channel + terrace storage above the bank, `core.FP_W`) was tested on the
+wet 10-of-11 run before any ensemble and makes Galchhi WORSE (17–24 m) —
+set aside, on the page. The discharge diagnosis: mud lines × sections give
+~30–45k m³/s at Betrawati and ~20k through km 70–90, which the model
+matches; the gauge and section give a few thousand at Galchhi and ~2,900 at
+Devghat; the model carries 10–13k through Galchhi and loses the factor
+below it. Diffusion cannot do that in 38 km; it needs tens of Mm³ of
+temporary storage between km 70 and 108, or an over-read stage at km 46–90,
+or a far more resistive flow. **Decisive data: the DHM Betrawati (447) and
+Galchhi records, which survived** — add to "What would help most". Also:
+UT-3A dam / Trishuli–Devighat weirs as impoundment candidates; geopera's
+trimlines at km 46–90. Meanwhile v10b = stage-2 resample inside the box of
+v10's thirteen best runs (V 93–167, f_wl 0.30–0.79; the rest nearly full),
+same physics — reported as conditional on stage 1.
