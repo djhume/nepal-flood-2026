@@ -7,7 +7,7 @@ emails sent.**
 ## Cleared before the public push (5 Sept 2026)
 
 - [x] No secrets, API keys or tokens anywhere in the tree or history
-- [x] No email addresses or personal contact details
+- [x] No email addresses or personal contact details in the prose or code — **but see the 8 September note below: this was not quite true of the data files**
 - [x] No absolute home paths leaking into committed files
 - [x] Licence present — MIT for code, CC-BY-4.0 for prose, third-party data
       under its own terms, plus an explicit no-operational-warning-use clause
@@ -42,9 +42,8 @@ emails sent.**
 - [ ] **`data/198_discharge.csv`** — same question, DHM data.
 - [x] **`outreach/gift-note.md` deleted** (Dave, 8 Sept). No outreach is
       happening, so the note had no purpose, and it named four people who did
-      not ask to be named. Note that the file remains in the git history;
-      purging it would need a `git filter-repo` rewrite of the kind already
-      done once for binaries, which is a separate decision.
+      not ask to be named. **The git history is deliberately NOT being
+      rewritten — see the decision below.**
       **Still in `outreach/`: `dhm-data-request.md`, a data request to DHM,
       and `warning-concept-note.md`. Both are asks under the 8 September rule
       and neither was sent. Decide.**
@@ -189,3 +188,51 @@ after the *dependencies* rather than the prose. Five things came out of it.
   corrected clock)
 - Seti 2012 needs a full rebuild — spec in `hindcast/seti/RESULTS.md`
 - Nepali translation withdrawn pending a native speaker
+
+## The git history stays as it is — decided 8 September
+
+Deleting `outreach/gift-note.md` from HEAD raised the obvious follow-up:
+purge it from the history too, since a public repo still carries it in every
+clone. It was scoped and prepared — `git filter-repo` is installed, the repo
+has 0 stars, 0 forks, 0 watchers and 0 issues so deleting and recreating it on
+GitHub would have cost nothing, and a full pre-rewrite bundle was taken and
+verified (`~/personal/nepal-flood-2026-backup/nepal-flood-PREREWRITE.bundle`,
+"records a complete history"). **We are not doing it.** Three reasons, in
+order of weight.
+
+1. **The content does not warrant it.** The note was read before deciding. It
+   offers four people the work for free, explicitly asks nothing of them, and
+   the recipient table's remarks about each are complimentary. There is nothing
+   in it that could embarrass or misrepresent any of them. The privacy concern
+   is real but thin, and deleting it from HEAD already stops the site and the
+   repo presenting anyone as a target.
+
+2. **The commit log is the thing this project trades on.** Two pages say so:
+   "every retraction and the reasoning behind it is in the commit log; nothing
+   rests on trusting either of us." Rewriting 86 commits — every hash changed,
+   the GitHub repo deleted and recreated, a creation date later than the first
+   commit — to chase a deleted draft is disproportionate, and it damages
+   exactly the asset the work runs on.
+
+3. **It would be inconsistent with the discipline.** The rule here is *do not
+   tidy the record*: retractions stay visible, and the wrong first version of
+   §26b sits above its own correction. A history rewrite to remove something
+   mildly awkward is tidying the record. The inconsistency costs more than the
+   tidiness is worth.
+
+Also true and worth stating plainly: **a rewrite would reduce future exposure,
+not past.** The repo has been public since 5 September.
+
+**Revisit if** the project acquires a DOI, a preprint, or any real readership —
+scrutiny of the history goes up and the calculus changes. The bundle makes the
+rewrite easy to do later; it cannot be undone once done.
+
+**One thing that WAS fixed, without a rewrite.** The checklist above claimed no
+email addresses or contact details were in the tree. Checking the history for
+this decision found two: `contact@geoclash.org`, an institutional address in a
+source-table line about the CLaSH centre, which is published on their own site
+and stays; and `hotelmilarepa@gmail.com`, a private business's address carried
+in on an `email` tag that OSM had attached — plainly in error — to a stream in
+`hindcast/seti/osm_rivers.json` (way 577718458, "Firke Khola"). That one had no
+analytical purpose and is removed from the working tree. Not from the history,
+for the reasons above.

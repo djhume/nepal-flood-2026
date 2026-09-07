@@ -2842,8 +2842,17 @@ change our mind" is about our model, not about anybody else.
 
 **Done the same evening:** `outreach/gift-note.md` **deleted** on Dave's
 instruction — no outreach is happening, so the note had no purpose, and it
-named four people who did not ask to be named. It remains in the git history;
-purging that would need a `filter-repo` rewrite, which is a separate call.
+named four people who did not ask to be named. **The git history is
+deliberately not rewritten** (full reasoning in `PUBLISHING.md`): the note's
+content warrants nothing stronger — it offers four people the work for free
+and speaks well of all of them — the commit log is what this project trades
+on, and rewriting history to remove something mildly awkward is tidying the
+record, which is the one thing the discipline here forbids. A verified
+pre-rewrite bundle exists if the decision is ever reversed; it cannot be
+un-reversed. Revisit if the work acquires a DOI, a preprint or a readership.
+Checking the history for that decision did turn up one real thing: a private
+business's email address on an OSM `email` tag mis-attached to a stream in
+`hindcast/seti/osm_rivers.json`. Removed from the working tree.
 `outreach/` still holds `dhm-data-request.md` (a data request to DHM) and
 `warning-concept-note.md`. Both are asks under this rule, neither was ever
 sent, and both are flagged in `PUBLISHING.md` for a decision.
