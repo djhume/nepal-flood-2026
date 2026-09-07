@@ -2505,11 +2505,9 @@ pieces of primary measurement this project has produced.
 
 ### 26i. Standing note on voice — preliminary, modest, no fights
 
-Dave, 8 September: *"we should make sure that we caveat our work and be
-humble and modest in our nature ... we don't pick any fights ... everything
-is preliminary, but we have the advantage of being nimble and fast and not
-hindered by group politics. I am literally an independent single person, and
-I'm out of field too."*
+Dave, 8 September: caveat the work, stay humble and modest, don't pick
+fights, keep everything preliminary, and be plain that the author is an
+independent individual working outside his own field.
 
 Adopted as a standing editorial rule, alongside PLAN §6/§6a:
 
@@ -2520,11 +2518,15 @@ Adopted as a standing editorial rule, alongside PLAN §6/§6a:
    state the difference, and stop. No adjectives about the other party. The
    §26e note on the 197–492 Mm³ figure is written this way deliberately:
    what the arithmetic looks like, not who was careless.
-3. **Claim the advantage we actually have, which is not expertise.** It is
-   being one person who can rebuild an ensemble in an hour, follow a lead
-   the same evening, publish a failure the day it happens, and change our
-   minds without asking anyone. Institutions cannot do that. Say that, and
-   do not imply anything more.
+3. **Claim no advantage at all.** An earlier draft of this rule said to
+   claim the advantage of being nimble and unencumbered. Dave withdrew it
+   the same evening and he was right: any such claim is a comparison with
+   the people whose data we depend on, it cannot be falsified, and it is a
+   fight picked in a soft voice. State what was done and when. The
+   changelog dates demonstrate the pace without a word of self-description.
+   If a reader asks why an independent analysis is worth their time, the
+   answer is the methods and the published failures, never a comparison
+   with anyone else.
 4. **Say plainly that the author is out of field.** It is true, it is
    disarming, and it sets the correct prior for a reader.
 5. **The tragedy is the subject, not the backdrop.** Nearly six thousand

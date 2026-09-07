@@ -1449,9 +1449,10 @@ Betrawati/Galchhi records still the decisive data. Six versions, 1 of
 **Standing voice rule (Dave, 8 Sept; dossier §26i).** Preliminary in the
 sentence that carries the number, not in a footer. Describe methods and
 numbers, never characterise people or teams; where we differ from a
-published figure, state both methods and the difference and stop. Claim the
-advantage we actually have — one person, nimble, can publish a failure the
-day it happens and change our minds without asking anyone — and nothing
-more. Say plainly the author is out of field. The tragedy is the subject,
+published figure, state both methods and the difference and stop. Claim NO
+advantage over anyone: it is a comparison with the people whose data we
+depend on, it cannot be falsified, and it is a fight picked in a soft
+voice. The changelog dates show the pace without a word of
+self-description. Say plainly the author is out of field. The tragedy is the subject,
 not the backdrop. And modesty about status is not vagueness about findings:
 where a number is well constrained, say so cleanly.
