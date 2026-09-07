@@ -2422,6 +2422,21 @@ where they came from. Page 2 gives the FFD's source coordinate N 28°16'50",
 E 85°32'15.45" and calls it a snow avalanche (हिमपहिरो) — already at dossier
 line 722.
 
+**What a real volume balance would need, since the question was asked.** Not
+this figure, but the same gauge read differently: **the excess hydrograph at
+Devghat integrated to the end of the recession** — the FFD's own release says
+the flood was "near normal by 18:30" at Devghat, so the tail beyond 18:00 is
+short and a full-day record would close it — **together with the baseflow that
+record sits on**, which is the unresolved question of §07 (Trishuli ~1,500 or
+Narayani ~2,950). With those two, the gross surge past Devghat becomes a real
+number, and the difference between it and the release becomes a real budget
+against deposition, the arm, floodplain storage and unmelted ice. **That is
+already the top item in "What would help most" on the site** — the full DHM
+Devghat and Galchhi records, and which station and rating curve the Devghat
+figures come from. The §26b episode does not add an ask; it sharpens why the
+existing one matters. Nothing short of the full record can turn a windowed
+excess into a balance, and no arithmetic on our side can substitute.
+
 **Rail invoked.** This is the failure mode [[dave-corrects-the-model]] names:
 confident perception of a secondary source, not arithmetic. A sweep must check
 `data/` and the dossier before logging anything as NEW. Published as a
@@ -2750,6 +2765,35 @@ v10b's single pass (160 Mm³, 4 % water) gets worse, as expected: a conveying
 floor slows an already-slow flow further (Malekhu 205 → 222, Kalikhola 489 →
 never, Devghat volume 0.6 Mm³). The hypothesis v12 tests is that the answer is
 now a WETTER, FASTER release than either.
+
+**Does the floor have the right sign and size for Galchhi?** Same wet run,
+the three corners of the new inputs:
+
+| floodplain corner | Galchhi (≤ 9.9) | Betrawati–Galchhi (9.4–21.1) | rise74 s | hold74 m | front km 73–75 |
+|---|---|---|---|---|---|
+| `f_fp` 0.5, bank 8 m, n 0.06 (narrow, late, smooth) | 18.2 | 22.0 | 80 | 15.2 | 17 |
+| `f_fp` 1.0, bank 5 m, n 0.09 (the DEM's measured area) | 15.0 | 19.0 | 90 | 13.3 | 15 |
+| `f_fp` 2.0, bank 3 m, n 0.12 (wide, early, rough) | **11.2** | 15.1 | 120 | 11.0 | 12 |
+
+Galchhi falls monotonically, 18.2 → 11.2, as the floor widens, engages lower
+and roughens. **So the mechanism has the right sign and very nearly the right
+size** — the wet corner is within 1.3 m of the window at the edge of the
+prior, on a run whose other ten observables already pass. That is the first
+time anything has moved Galchhi toward its window without wrecking the reach
+above it (`stage_betra_gal` stays inside 9.4–21.1 throughout).
+
+**And it exposes a new tension, which is the interesting part.** The same
+widening takes the front over km 73–75 from 17 m/s down to 12 — *away* from
+the video's ≥ 30. The floodplain that fixes Galchhi makes the front slower
+still, and the clip says the front there was fast. Both cannot be right as
+they stand. Either the front reading is wrong (it is judged by eye at 640×360
+and is deliberately unscored), or the flood was fast at km 73–75 and lost its
+speed abruptly further down — which is what the record between Betrawati and
+Galchhi already says (37.6 km in ~100 min, ~6 m/s average, against ≥ 30 in
+the video's reach). A wave that runs at 30 m/s at km 74 and averages 6 m/s to
+km 108 must be doing something violent in between, and the basins at km 86–98
+are where §25 put it. **This is now the sharpest open question in the lower
+river, and it came out of the video rather than the model.**
 
 ### 27e. The run
 
