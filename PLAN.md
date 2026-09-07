@@ -1554,3 +1554,166 @@ evening, but the document they came from was still in the tree. **The git
 history keeps all three deliberately** — the reasoning is in
 `PUBLISHING.md`, and it comes down to the record not being tidied. Nothing
 in the repo now asks anything of anyone or tells anyone what to do.
+
+## 11. THE RESTRUCTURE — plan from the evening of 8 September
+
+**This section supersedes §10's "next version" line. Written after Dave called
+a halt: "we need to think a bit harder over what we are actually attempting to
+model."** It is the working spec for the next phase. Read this first.
+
+### 11a. Why we are stopping the version treadmill
+
+Seven versions (v6–v12), roughly 1,800 samples, **one run has ever satisfied
+every scored observable and it failed all three held-out checks.** That is not
+the argument on its own — the argument is the *shape* of the failure.
+
+1. **The blocker relocates instead of shrinking.** v9: the deposition cap.
+   v10/v10b: Galchhi. v12: ten of the twelve best runs fail on Galchhi alone
+   and the other two on deposition alone — the sampler is being pushed between
+   two corners that exclude each other, not converging on one.
+2. **The scoring cannot see most of the data.** `calcs/fit_vs_chainage.py`
+   (8 Sept) compares modelled peak stage against the reconstructed profile at
+   all 1,098 stations. **The v10b run that satisfied all eleven scored
+   observables sits inside the station band at 11 % of stations in km 0–22 and
+   24 % in km 90–108.** Six of the eleven scored observables are REACH MEDIANS
+   of that profile, and a model can hit every median while being wrong at most
+   points inside them. We are throwing away ~99 % of the spatial information
+   and then wondering why the remainder does not constrain anything.
+3. **Six of eleven scored observables are our own reconstruction.** Only
+   `border_min`, `syabru_min`, `v_gorge` and `erosion_Mm3` come from outside;
+   `deposit_Mm3` is third-party. The six stage bounds are trimlines we mapped
+   from imagery and sampled against an 8 m DEM. Most of the scoring weight
+   sits on the softest data in the project.
+4. **Fourteen parameters against thirteen correlated observables.** This is an
+   ill-posed inverse problem, and 1,800 failures is its shape, not bad luck.
+5. **Everything is coupled, so blame can always move.** To test whether the
+   lower river routes correctly you must first commit to a release volume,
+   composition, friction, release duration and junction split. A downstream
+   failure can be blamed upstream and an upstream failure downstream, forever.
+
+### 11b. What the record says about the WAVE SHAPE — Dave's insight, measured
+
+Dave, 8 Sept: *"at any location the peak of this pulse is after the initial
+front passes and as it travels downstream the peak gets more delayed behind
+the front in time and lower and broader."* Correct, it is in the official
+record, and the model gets its magnitude badly wrong.
+
+The FFD release gives front and peak separately at Devghat: flood arrived
+**15:20**, peak **16:00** — a 40-minute lag at km 199.
+
+| station | km | model front | model peak | model lag | observed |
+|---|---|---|---|---|---|
+| the camera | 74.8 | 33 min | 45 min | +12 | ≥ 4 (clip ends) |
+| Galchhi | 107.6 | 82 | 122 | +41 | — |
+| Malekhu | 117 | 98 | 154 | +56 | ≥ 20 (7→8 m) |
+| **Devghat** | **199** | **290** | **444** | **+153** | **+40** |
+
+(wet 12-of-13 v12 run, 120 Mm³, w0 0.64.) **The modelled lag at Devghat is
+close to four times the observed one — and the peak TIME is nearly exact
+(444 vs 443), so the error is in the front, which runs 113 min early.** Part
+of that is a threshold definition (we call it arrived at +0.5 m; the FFD meant
+something visible on a ~2,950 m³/s river) but not a factor of four.
+
+The physics is standard and worth writing down because it is what the split
+below is for: the front advances as a bore at √(g·h₁(h₁+h₀)/2h₀) — ~33 m/s for
+a 20 m wave on 2 m of baseflow, which is where the video's ≥ 30 m/s comes from
+— while the crest travels at the kinematic celerity, ~5/3 of the mean
+velocity. Different speeds, so the separation grows with distance, and
+diffusion lowers and broadens the crest as it goes. Three independent readings
+now say the model gets this shape wrong: the lag above, the FFD volume (peak
+13 % HIGH while the volume under it is 64 % LOW), and the video front speed
+(≥ 30 m/s against the model's 14).
+
+### 11c. THE SPLIT — two models and an interface (Dave's proposal, adopted)
+
+| | **Model A — km 0–22 and the arm** | **Model B — km 22–199** |
+|---|---|---|
+| what it is | a confined rock–ice avalanche: granular, mass-conserving, energy set by the 3,400 m drop, almost no river to sweep (0.5 Mm³ in 22 km, §04b) | a flood wave on a monsoon river, which does not carry its own water but **integrates** the channel's as a source term along the path |
+| hard observables | **the 7 min 40 s border clock**, the 46.9 m/s video front speed, the gorge trimlines, the Kyirong arm pond (23 Mm³), erosion, the deposition cap | the stage profile at all 1,098 stations, the front-to-peak lags, the FFD windowed volume, the arrival times at Malekhu / Kalikhola / Devghat |
+| free parameters | release volume, composition (water and ice fractions), friction, release duration | floodplain geometry, roughness — few |
+| **interface** | **emits a junction hydrograph — peak Q, duration, total volume, composition — plus the split up the arm** | **consumes it as 4–5 numbers** |
+
+**Why this is the fix and not merely tidier.** It decouples the inference. The
+interface becomes a small parameter vector that BOTH models are scored
+against, instead of a quantity implied by fourteen entangled dials.
+
+**The decisive first experiment, and it does not need Model A at all:**
+
+> **Is there ANY junction hydrograph that Model B can route to match the lower
+> river?** Sweep peak Q, duration, volume and composition directly at km 22.
+> Score against the full profile, the lags, the FFD volume and the arrivals.
+
+- **If no such hydrograph exists**, the problem is in Model B or in the data —
+  and no amount of avalanche modelling will help. That is a real and
+  publishable result, and it points straight at §24's other two candidates: an
+  over-read stage at km 46–90, or the DHM records we do not have.
+- **If one does exist**, then ask separately whether Model A can produce it.
+  Two answerable questions in place of one unanswerable one.
+
+**Where to cut.** At km 22, the junction — but Model B must carry a
+composition tracer for its first ~15 km. geopera's speeds are 45–52 m/s at the
+border and ~50 in the gorge, then **11 m/s at the Syabrubesi opening
+(km 37.6)**: the debris signature persists well past the junction, and
+pretending the flow becomes clean water at the boundary would be wrong.
+
+### 11d. Order of work
+
+0. **The identifiability check, from the 1,800 samples already saved.** Do the
+   observables constrain the parameters at all? Cheap, no new modelling, and
+   it tells any audit what to look for. Offered 8 Sept, not yet run.
+1. **Fix the trimline outlier bug (§21, still live).** `outlier_L`/`outlier_R`
+   hold `''`, `'0'`, `'1'`; the filter is a truthy test on the string, so
+   every row flagged NOT an outlier is discarded — 18 of 25 width stations
+   survive. Fixing it moves widths by **+31 % at km 35.6–40** and **+12 % at
+   km 46–70**, both scored reaches, and `stage_syabru` in v10b's only pass sat
+   at 81.4 against a ceiling of 81.8. Free, known since 7 Sept, and no physics
+   should be layered on top of it.
+2. **Score the profile, not six reach medians.** `fit_vs_chainage.py` already
+   computes the per-station comparison; make it the objective.
+3. **The interface sweep (11c).** The decisive experiment.
+4. **Model A separately**, against its own hard observables.
+5. Only then, new physics — and the one bounded piece is compound-channel
+   momentum exchange (Knight, Shiono, Ackers; the UK Flood Channel Facility
+   work). We used the naive parallel-conveyance sum, which is known to
+   OVER-estimate conveyance because it ignores the shear layer between fast
+   channel and slow floodplain — the layer Dave's video shows as the giant
+   eddy. Its omission biases the model toward losing too little energy in
+   exactly the reaches where the record says it lost a lot. **Not a research
+   programme: a textbook correction we skipped.**
+
+**Explicitly NOT needed:** a 2-D solver (a different project, weeks, a DEM
+grid instead of sections — and 1-D compound-section routing *is* the standard
+engineering treatment of a wave on a floodplain; we have not outgrown the
+method, we have not finished implementing it). Nor debris-flow rheology
+research: Coulomb + Bingham + Voellmy with a composition dial already carries
+the upper corridor.
+
+### 11e. What stands regardless of all of this
+
+Worth naming, because the model has been carrying more weight in our attention
+than in our findings.
+
+| finding | depends on the routing model? |
+|---|---|
+| **01 the water was already in the river** | **NO.** A kilogram falling 1,200 m releases gh/L = 1/28 of the heat to melt a kilogram of ice. Pure energy budget. |
+| 02 it did not fall like dry rock | partly — but there is a model-free version: H/L = 0.14 requires μ < 0.14, and Scheidegger gives dry rock 0.28–0.30 at this size, so it stops in ~10 km |
+| 03 the method travels (Chamoli) | yes |
+| **04 how big the collapse was** | **entirely — and this is the one that has never worked** |
+| 05 we proved our own model wrong | about the model itself |
+
+**The two strongest findings do not need this model.** It became load-bearing
+only when we asked it to invert for the collapse volume, which is a far harder
+question than the one the project set out to answer. The primary measurements
+— the corrected clock, the 46.9 m/s sight-line speed, the trimline map, and
+the FFD release transcribed from the original — stand on their own and are the
+most durable things here.
+
+### 11f. A named risk, so it is not read as failure later
+
+The interface sweep may show that **no junction hydrograph routes to the
+observed lower river.** If so the honest conclusion is that our reconstructed
+stages, or the model's lower-river physics, or both, are wrong — and that the
+DHM Betrawati and Galchhi records are the only thing that would settle it, and
+we have decided not to ask for them (8 Sept, §26j). That is a legitimate
+terminus for this line of work, and finding 04 would then stay withdrawn
+rather than being resolved. Say so in advance.

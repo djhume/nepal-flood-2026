@@ -2906,3 +2906,50 @@ regulator, at DHM and seismology, at NEA/IPPAN, and at development partners —
 the single clearest instance on the whole tree of the thing rule 7 forbids.
 Neither was ever sent. The directory is gone; the rule now has nothing left to
 catch.
+
+## 28. THE HALT — what we are actually modelling, and why the version treadmill stopped (8 Sept, evening NZT)
+
+Dave, after v12's 0 of 400: *"I'm starting to think we need to stop and do a
+full audit... what are we actually modelling here — what are we measuring and
+comparing against, and why? What is the objective function of this research?"*
+
+**The full spec for what follows is PLAN §11.** This section records what was
+established in the conversation that produced it, because the reasoning is
+worth keeping and none of it was written down before.
+
+**Three definitions that had not been made plain, and should have been.**
+The "% inside" of `calcs/fit_vs_chainage.py` is the fraction of the ~1,098
+mud-line stations in a reach where the modelled peak depth lands inside that
+station's own p10–p90 band. **In-sample** means the ensemble *selected* on
+those numbers, so agreement describes the fit rather than testing it —
+marking our own homework; only Malekhu, Kalikhola and Devghat are out of
+sample. And **48 % is not good**, as Dave said. Worse: the v10b run that
+satisfied all eleven scored observables matches **11 %** of stations in
+km 0–22, because six of the eleven observables are REACH MEDIANS.
+
+**The wave-shape finding (PLAN §11b).** Dave's own physical reading — the peak
+lags further behind the front, and gets lower and broader, the further it
+travels — is in the FFD record (Devghat: arrived 15:20, peak 16:00, a 40 min
+lag) and the model reproduces the mechanism but not the size: **+153 min at
+Devghat against +40 observed**, with the peak TIME nearly exact (444 vs 443)
+and the front 113 min early. Three independent readings now say the model gets
+the shape wrong — that lag, the FFD volume (peak 13 % high, volume 64 % low),
+and the video front speed (≥ 30 m/s against 14).
+
+**The split (PLAN §11c), Dave's proposal, adopted.** Model A = the confined
+rock–ice avalanche, km 0–22 and the arm. Model B = a flood wave on a monsoon
+river from km 22, which does not carry its own water but integrates the
+channel's along the path. The interface is a junction hydrograph — peak,
+duration, volume, composition — and the point is not physical tidiness but
+**identifiability**: it decouples an inference in which a downstream failure
+could always be blamed upstream and vice versa. The decisive first experiment
+needs no avalanche model at all: *is there ANY junction hydrograph that Model
+B can route to match the lower river?*
+
+**And the thing that reframes the project.** Finding 01 — the water was
+already in the river — is an energy budget: gh/L = 1/28. **No routing model
+anywhere in it.** Finding 02 has a model-free version in the H/L arithmetic.
+The routing model is load-bearing only for finding 03 and for **finding 04,
+the one that has never worked**. The model became central when we asked it to
+invert for the collapse volume, which is a far harder question than the one
+the project set out to answer. Worth holding on to while the restructure runs.
