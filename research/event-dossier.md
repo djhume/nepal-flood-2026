@@ -2805,3 +2805,41 @@ a stage-2 posterior conditional on stage 1, not an independent prior.
 untruncated prior instead.
 
 **RESULTS:** filled in below when the run finishes.
+
+### 26j. Standing note on voice, second addition — no telling, no asking
+
+**Dave, 8 September:** *"I do not want to tell anyone anything or ask anything
+of anyone either."*
+
+This is stronger than the "no press, no amplification" line already in
+`PUBLISHING.md`, and stronger than §26i.3's withdrawal of any claimed
+advantage. It removes the **asks** as well. Adopted as rule 7, alongside the
+six in §26i:
+
+7. **Publish the work; make no claim on anyone else's attention or behaviour.**
+   No requests for data. No recommendations, to agencies, to the hydropower
+   industry, or to anyone building a warning system. No instructions about how
+   other people should handle their own numbers. No appeals for a reviewer.
+
+**What changed on the site to comply** (commit following this entry):
+
+| was | is |
+|---|---|
+| "What would help most" — four asks: DHM gauge records, hydropower SCADA, stereo imagery, India's CWC archive | "What is missing from this analysis" — the same four facts as limits on what we can conclude, with "we do not have them, and we have not asked for them" |
+| plain page: "Three things, and none of them require new instruments" | "What this analysis does not have … not a request — a note on the limits" |
+| "Warning systems should know that" | cut |
+| "only a machine deciding on its own — a seismometer wired directly to a siren — would have worked" | "Nothing that existed anywhere that morning would have reached the border crossing in time" |
+| industry section: prescribed seismic/stage tripwires, tunnel egress alarms, fail-safe intake gates; "recovering those records would do more … than any instrument that could be deployed now" | states the timescale and stops; "that is a statement of what this analysis is missing, not a proposal to anyone" |
+| "a much cheaper gap to close than new monitoring hardware — the sensors it would need are already in the ground" | "a gap in what the technology can currently do anywhere" |
+| "If you are that reader, the offer above stands" (Nepali reviewer) | the absence stays on the page as a limitation, not an appeal |
+| "Send a correction by opening an issue" | "Corrections are recorded on this page … The repository's issue tracker is open" — availability, not invitation |
+| four emails planned (ICIMOD, Kargel, Petley, Willsey) | cancelled |
+
+**What stays, and why it is not in conflict.** The licence grants rather than
+asks. The retraction history is a record, not a claim on anyone. Saying that no
+Nepali scientist has read this is a caveat on our own work. And §13 "What would
+change our mind" is about our model, not about anybody else.
+
+**Note for the next session:** `outreach/gift-note.md` names four people who
+did not ask to be named and now has no purpose. Flagged in `PUBLISHING.md`,
+not deleted — that is Dave's call.

@@ -40,11 +40,13 @@ emails sent.**
       release. Redistribution terms unverified. Decide: link to the source
       instead of redistributing, or confirm terms with DHM.
 - [ ] **`data/198_discharge.csv`** — same question, DHM data.
-- [ ] `outreach/gift-note.md` names four people we intend to contact. Harmless
-      but oddly public. Decide whether it belongs in the repo at all.
-- [ ] **Find a Nepali reader.** This is the largest gap in the work and the one
-      thing that cannot be closed from Wellington. The site now says so
-      explicitly rather than leaving it as a silence.
+- [ ] `outreach/gift-note.md` names four people we once intended to contact.
+      **No outreach is happening (Dave, 8 Sept — see below), so this file has
+      no purpose and names people who did not ask to be named.** Decide
+      whether to delete it.
+- [x] **No Nepali scientist has read this.** It remains the largest gap in the
+      work. The site states it as a limitation of the analysis rather than as
+      a request, which is where it now stays.
 
 ## Then, in order
 
@@ -57,13 +59,43 @@ emails sent.**
 3. Zenodo DOI via the GitHub release integration (tag a version; the retraction
    history must be visible IN the archived snapshot, not just in the git log)
 4. EarthArXiv preprint, citing the Zenodo DOI
-5. Four emails, no reply expected — ICIMOD, Kargel, Petley, Willsey.
-   **One thing to check before the Kargel email:** the site used to describe his
-   6 min 50 s as independent confirmation of our clock. It is not demonstrably
-   independent — his stated basis is "22 km at 193 km/h" with no method — and
-   the pages now say so. If he replies with his method, that resolves the
-   largest remaining soft spot in finding 02 either way.
-6. Nothing else. No press, no media, no amplification.
+5. **Nothing else. No emails, no press, no media, no amplification, and no
+   requests of anybody.**
+
+## The no-outreach rule, adopted 8 September
+
+Dave: *"I do not want to tell anyone anything or ask anything of anyone
+either."* Adopted, and it is stronger than the earlier "no press" line —
+it removes the asks as well as the amplification.
+
+What this means in practice, and what was changed on the site to comply:
+
+1. **No requests for data.** The landing page's "What would help most" and the
+   plain page's equivalent were lists of things we wanted from DHM, from the
+   hydropower operators, and from whoever might fly a survey. They are now
+   "What is missing from this analysis" — the same facts, stated as limits on
+   what we can conclude, explicitly not a request.
+2. **No recommendations to anyone.** Gone: "Warning systems should know that";
+   the prescription of seismic tripwires, tunnel egress alarms and fail-safe
+   intake gates to the hydropower industry; "recovering those records would do
+   more … than any instrument that could be deployed now"; and the framing of
+   the detection gap as "a much cheaper gap to close than new monitoring
+   hardware". Where the physics implies something about timescales, the page
+   now states the timescale and stops.
+3. **No instructions about other people's numbers.** "We would ask anyone
+   quoting it to go back to the release" is gone (8 Sept, earlier commit).
+4. **No asking for a reviewer.** The absence of a Nepali reader stays on the
+   page as a limitation of the work, not as an appeal.
+5. **What stays.** The licence, which grants rather than asks; the fact that
+   the issue tracker exists, stated without inviting anyone to use it; and
+   every retraction. Publishing the work and making no claim on anyone else's
+   attention are not in conflict.
+
+The four emails (ICIMOD, Kargel, Petley, Willsey) are cancelled. The note that
+went with them — that the site used to describe Kargel's 6 min 50 s as
+independent confirmation of our clock, and no longer does because his stated
+basis is "22 km at 193 km/h" with no method — is a correction we made to our
+own page and stands on its own; it needed no email.
 
 ## A promotion rule, adopted 5 September
 
