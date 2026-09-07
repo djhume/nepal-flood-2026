@@ -1445,3 +1445,13 @@ arrival detection to the true stage; then the stage-2 box.** Identify the
 video's location (boulder + cable crossing) and read the rise rate. DHM
 Betrawati/Galchhi records still the decisive data. Six versions, 1 of
 1,400, nothing promoted.
+
+**Standing voice rule (Dave, 8 Sept; dossier §26i).** Preliminary in the
+sentence that carries the number, not in a footer. Describe methods and
+numbers, never characterise people or teams; where we differ from a
+published figure, state both methods and the difference and stop. Claim the
+advantage we actually have — one person, nimble, can publish a failure the
+day it happens and change our minds without asking anyone — and nothing
+more. Say plainly the author is out of field. The tragedy is the subject,
+not the backdrop. And modesty about status is not vagueness about findings:
+where a number is well constrained, say so cleanly.

@@ -2427,3 +2427,109 @@ not verified damage. Nepal toll unchanged at 1,342 dead, 4,886 missing.
 **Nothing here changes a finding tonight.** The volume line strengthens
 (26a, 26c), the lower-river conflict sharpens (26b), and one new hypothesis
 is on the table (26d).
+
+### 26g. The endpoint angle in plain English — and how much credit to take
+
+*Written for the page, 8 September, at Dave's request.*
+
+Draw a straight line from where the mountain broke away to where the debris
+came to rest, and measure the angle it makes with the horizontal. That is
+the endpoint angle. It is the same thing as the drop divided by the distance
+travelled: about 3,400 m of fall over about 22 km of travel, a shade under
+nine degrees.
+
+The reason it is worth measuring is that the ratio is a **measurement of the
+physics, not just a description of the path**. Slide a block down a slope
+and let it stop, and the drop divided by the run gives you the coefficient
+of friction. The same arithmetic on a landslide gives its *apparent*
+friction. So:
+
+| material | effective friction | comes to rest at |
+|---|---|---|
+| dry rock on rock | ~0.6 | ~31° |
+| **this event** | **0.156** | **8.8°** |
+
+Dry rubble released at 5,200 m would have stopped within a couple of
+kilometres. This ran twenty-two. Something made it roughly four times more
+slippery than rock: the ice, the meltwater, and the sheer size of the mass
+(large failures are systematically more mobile than small ones). The
+"ice-skating" question of §04b, reduced to a single measured number.
+
+**Why the agreement with arXiv 2609.04563 matters.** Every number we have
+rests on our own geometry: our centreline, our chainage, our elevation
+model, our choice of crown and toe. Speeds are distances over times; slopes
+are drops over distances. A stretched centreline would quietly corrupt all
+of it. They built their reconstruction independently and got 8.84°; we had
+0.154 (8.76°) from a 5,200 m crown. About one per cent apart. It is the
+first time an outside group has measured the same physical quantity as us
+and landed on our answer.
+
+**How much credit to take — Dave's own calibration, and it is the right
+one.** This is a *simple* measurement. Both teams used similar public
+elevation data; the crown and the toe are fairly obvious features on an
+image. Agreement is close to expected, and we should say so rather than
+present it as a triumph. What it validates is the **foundation, not the
+building**: it says our geometry is sound. It says nothing about whether our
+volume is right, nothing about our velocities, nothing about the model.
+The judgment calls (which crown height, where the runout ends, path measured
+flat or draped over terrain) could each have moved the answer by more than
+the gap between us; they did not. That is worth one modest sentence on the
+page, not a headline.
+
+### 26h. The velocity cross-checks — the harder agreement, and we already have it
+
+Dave asked whether there are comparable independent measurements of the
+*speed*. There are four, and unlike the endpoint angle these are genuinely
+hard measurements that could easily have disagreed:
+
+| source | method | value |
+|---|---|---|
+| geopera | superelevation at bends | 37 m/s upper Lhende; **45–52 at the border**; ~50 in the gorge; 11 at the Syabrubesi opening |
+| geopera | boulder competence, 4,329 clasts | **19–26 m/s** in the deposit reach |
+| Chinese Academy of Sciences | frame-by-frame of the border video | **19 m/s** (surface, after the turn) |
+| **ours** | **two sight lines 50 m apart, 1.066 s, camera calibrated on the frieze** | **46.9 m/s (41–63)** |
+| ours | run-up arithmetic, v = √(2gR) | 51.3 m/s |
+
+**Our video-derived 46.9 m/s sits inside geopera's independently derived
+45–52.** Two different methods (sight-line timing against superelevation at
+bends), two different teams, on the same reach. *That* is the agreement
+worth more than the endpoint angle, because there was every opportunity for
+it to fail. The CAS 19 m/s remains the outlier and our reading of it is
+unchanged (§5): it is the water after the turn, not the front.
+
+**Already published:** the sight-line method is on the site — report §03a
+("Reading the camera: the clock, the calibration, and a direct speed"), with
+the to-scale plan view of the two sight lines, plus the plain-English
+version on the summary page. Nothing to add there; it is one of the few
+pieces of primary measurement this project has produced.
+
+### 26i. Standing note on voice — preliminary, modest, no fights
+
+Dave, 8 September: *"we should make sure that we caveat our work and be
+humble and modest in our nature ... we don't pick any fights ... everything
+is preliminary, but we have the advantage of being nimble and fast and not
+hindered by group politics. I am literally an independent single person, and
+I'm out of field too."*
+
+Adopted as a standing editorial rule, alongside PLAN §6/§6a:
+
+1. **Everything is preliminary and says so.** Not as a disclaimer at the
+   bottom, but in the sentence that carries the number.
+2. **Describe methods and numbers, never characterise people or teams.**
+   Where we differ from a published figure, state our method, state theirs,
+   state the difference, and stop. No adjectives about the other party. The
+   §26e note on the 197–492 Mm³ figure is written this way deliberately:
+   what the arithmetic looks like, not who was careless.
+3. **Claim the advantage we actually have, which is not expertise.** It is
+   being one person who can rebuild an ensemble in an hour, follow a lead
+   the same evening, publish a failure the day it happens, and change our
+   minds without asking anyone. Institutions cannot do that. Say that, and
+   do not imply anything more.
+4. **Say plainly that the author is out of field.** It is true, it is
+   disarming, and it sets the correct prior for a reader.
+5. **The tragedy is the subject, not the backdrop.** Nearly six thousand
+   people are dead or missing. Enthusiasm for the physics is legitimate and
+   human, and it stays out of the writing.
+6. **Modesty is not the same as vagueness.** Being humble about status is
+   right; being mushy about findings is not. Where a number is well
+   constrained, say so cleanly. False modesty is its own kind of inaccuracy.
