@@ -216,7 +216,6 @@ disk on first run; delete the cache files to refetch.
 | `data/` | River profiles, cross-sections, gauge and barrage records — see `DATA-SOURCES.md` |
 | `report/` | The published pages and their build scripts; `docs/` is the built output GitHub Pages serves |
 | `notebooks/` | The executable workings and the two scripts that build and render them |
-| `outreach/` | Draft data requests and a warning-system concept note |
 
 ## The physics, briefly
 

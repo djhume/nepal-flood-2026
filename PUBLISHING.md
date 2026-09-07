@@ -44,9 +44,9 @@ emails sent.**
       happening, so the note had no purpose, and it named four people who did
       not ask to be named. **The git history is deliberately NOT being
       rewritten — see the decision below.**
-      **Still in `outreach/`: `dhm-data-request.md`, a data request to DHM,
-      and `warning-concept-note.md`. Both are asks under the 8 September rule
-      and neither was sent. Decide.**
+- [x] **`outreach/` deleted entirely** (Dave, 8 Sept), taking
+      `dhm-data-request.md` and `warning-concept-note.md` with it. Both were
+      asks under the 8 September rule and neither was ever sent. See below.
 - [x] **No Nepali scientist has read this.** It remains the largest gap in the
       work. The site states it as a limitation of the analysis rather than as
       a request, which is where it now stays.
@@ -236,3 +236,24 @@ in on an `email` tag that OSM had attached — plainly in error — to a stream 
 `hindcast/seti/osm_rivers.json` (way 577718458, "Firke Khola"). That one had no
 analytical purpose and is removed from the working tree. Not from the history,
 for the reasons above.
+
+## `outreach/` is gone — 8 September
+
+All three files deleted, the directory with them. What they were:
+
+| file | what it was | why it went |
+|---|---|---|
+| `gift-note.md` | a note offering the work to four named people, with a recipient table | no outreach is happening; it named people who did not ask to be named |
+| `dhm-data-request.md` | a data request addressed to the Flood Forecasting Division's signatory by name, asking for five things | an ask, and a personal one |
+| `warning-concept-note.md` | a two-tier warning-system proposal (seismic trigger, Cell Broadcast, InSAR watchlist) with an explicit **"Asks"** section directed at NTC/Ncell and their regulator, at DHM and seismology, at NEA/IPPAN, and at development partners | the clearest instance anywhere in this repo of telling other people what to do |
+
+None of the three was ever sent. The concept note in particular is the reason
+rule 7 needed to reach past the published pages: the site's recommendations
+were removed earlier the same evening, but the document they came from was
+still sitting in the tree.
+
+The git history keeps all three, deliberately — see the decision above. The
+substantive point is that nothing in the repo now asks anything of anyone or
+tells anyone what to do, and the ideas in the concept note are covered anyway
+by the openly-licensed analysis, which anyone is free to take without us
+proposing anything.

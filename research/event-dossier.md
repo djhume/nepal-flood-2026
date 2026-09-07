@@ -2853,6 +2853,11 @@ un-reversed. Revisit if the work acquires a DOI, a preprint or a readership.
 Checking the history for that decision did turn up one real thing: a private
 business's email address on an OSM `email` tag mis-attached to a stream in
 `hindcast/seti/osm_rivers.json`. Removed from the working tree.
-`outreach/` still holds `dhm-data-request.md` (a data request to DHM) and
-`warning-concept-note.md`. Both are asks under this rule, neither was ever
-sent, and both are flagged in `PUBLISHING.md` for a decision.
+**`outreach/` is now deleted entirely**, taking `dhm-data-request.md` and
+`warning-concept-note.md` with it. The first was a data request addressed to
+the Division's signatory by name. The second was a two-tier warning-system
+proposal with an explicit "Asks" section directed at the telcos and their
+regulator, at DHM and seismology, at NEA/IPPAN, and at development partners —
+the single clearest instance on the whole tree of the thing rule 7 forbids.
+Neither was ever sent. The directory is gone; the rule now has nothing left to
+catch.

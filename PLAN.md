@@ -1540,3 +1540,17 @@ would need a `filter-repo` rewrite (a separate decision).
 the same category, unsent, and flagged in `PUBLISHING.md` for a call.
 Kept: the licence (grants rather than asks), the retraction history (a
 record), and §13 (about our own model).
+
+**8 Sept evening — `outreach/` deleted entirely.** All three files, and the
+directory: `gift-note.md` (offered the work to four named people),
+`dhm-data-request.md` (a five-part data request addressed to the Flood
+Forecasting Division's signatory by name), and `warning-concept-note.md` (a
+two-tier warning proposal — seismic trigger, Cell Broadcast, InSAR watchlist
+— whose explicit "Asks" section was directed at NTC/Ncell and their
+regulator, at DHM and seismology, at NEA/IPPAN and at development partners).
+None was ever sent. The concept note is why rule 7 had to reach past the
+published pages: the site's recommendations came off earlier the same
+evening, but the document they came from was still in the tree. **The git
+history keeps all three deliberately** — the reasoning is in
+`PUBLISHING.md`, and it comes down to the record not being tidied. Nothing
+in the repo now asks anything of anyone or tells anyone what to do.
