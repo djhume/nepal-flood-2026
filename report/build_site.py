@@ -36,6 +36,10 @@ PAGES = {
                   "Lirung collapse and the Bhote Koshi / Trishuli flood, Nepal. "
                   "Where the flood water came from, how big the collapse was, "
                   "and every retraction along the way.",
+    "changelog.html": "The full working record of an independent analysis of "
+                      "the 26 August 2026 Bhote Koshi / Trishuli flood, Nepal "
+                      "— every result withdrawn or corrected, with the date "
+                      "and the reason, newest first.",
     "plain.html": "The whole argument in plain English, no equations: why a "
                   "1,200-metre fall cannot melt enough ice to make the Bhote "
                   "Koshi / Trishuli flood, and what actually carried the water.",
