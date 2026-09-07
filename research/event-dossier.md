@@ -2300,3 +2300,130 @@ that spreads over floors like this one and loses its energy there, which
 is the physics v12 adds (floodplain conveyance below Betrawati). Clip
 continuity still to confirm with Dave; the sat-image pair of the reach is
 in `output/cache/insets/zoom_A_km69-77.png` (Sentinel-2 NDVI, open data).
+
+## 26. LITERATURE SWEEP, 8 September — the first academic reconstruction, and four numbers we can use
+
+Dave asked for a fresh dig ~36 h after the last sweep. Six items are new.
+
+### 26a. The first academic reconstruction (arXiv 2609.04563)
+
+*"When a high-mountain slope failure cascades downstream: reconstructing
+the 26 August 2026 Gyirong mixed rock–ice disaster"*, arXiv preprint
+(September 2026), open-data reconstruction. **What it deliberately does
+NOT do is the point:** it reports no source volume ("no suitable
+co-registered pre/post DEM pair exists"), no velocities (feature tracking
+failed its stable-terrain and coherence tests), and no dynamic model — the
+authors state a dynamic model "would add false precision without source
+volume, material fractions, hydrograph or suitable validation". What it
+does give:
+
+| quantity | value |
+|---|---|
+| source area, preferred | **1.009 km²** (conservative–inclusive 0.491–1.841) |
+| crown elevation | ~5,220 m; toe 1,823 m; **drop ~3,396 m** |
+| runout | 21.843 km planimetric, 22.710 km along the 3-D surface |
+| **mean endpoint angle** | **8.84°** |
+| disturbed corridor width, 12 transects | 145–1,298 m, **median 533 m** |
+| mapped footprint | 37.353 km² |
+| destroyed buildings / road | 695 points / 15.671 km |
+| 7-day mean air temperature | 9.43 °C — above all 25 matched years 2001–2025 |
+| 7-day positive degree days | 65.94 °C·d — likewise above all 25 |
+| 5-day antecedent rainfall | 8.3 mm (IMERG) / 5.7 mm (ERA5-Land) — **below** median |
+| last pre-event optical image | 45.85 h before failure |
+
+**Three of these bite on our work.**
+
+1. **Their 8.84° endpoint angle is tan⁻¹(H/L) = 0.156. Our own §15
+   arithmetic gave H/L = 0.154 from a 5,200 m crown** (0.141 from the lower
+   crown). Two independent geometries agree to the third decimal. Our
+   mobility framing is not an artefact of our chainage.
+2. **Their source area converts our volume into a thickness.** Our
+   converging release of 110–175 Mm³ over their preferred 1.009 km² is a
+   mean detachment thickness of **109–173 m**; over their full area range,
+   60–356 m. Chamoli 2021 was ~27 Mm³ from ~0.2 km² ⇒ ~135 m. So our number
+   implies a slab of entirely ordinary thickness for this class of failure.
+   **This is the first independent constraint that makes 110–175 Mm³ look
+   physically unremarkable rather than large.**
+3. **Their corridor widths (median 533 m, up to 1,298) are the floodplain
+   picture from a different method** — an independent line supporting the
+   v12 direction of §25.
+
+**And the gap it leaves is exactly our niche.** The academic reconstruction
+declines to model the dynamics for want of a volume, material fractions and
+a hydrograph. We have built the dynamic model and constrained the hydrograph
+from mud lines. That makes this project complementary rather than duplicative
+— and it means we should say so plainly, and cite them, when the analysis is
+published.
+
+### 26b. DHM's excess volume — a NEW integral observable
+
+The Flood Forecasting Division report (27 Aug), as relayed by NESRA
+FloodWatch and Nepali press: Devghat peak stage **6.57 m at 16:00 NPT**,
+peak discharge **~5,850 m³/s**, and — the new number — an estimated
+**additional flood volume of 19.96 Mm³** through the Bhote Koshi–Trishuli–
+Narayani system.
+
+That is a **volume balance the ensemble has never been scored on**, and it
+is in tension with everything we have: a release of 110–175 Mm³ that
+delivers only ~20 Mm³ of excess past Devghat has lost 85–90 % of itself en
+route. Some of that is real and expected (the arm's 23 Mm³, deposition,
+unmelted ice still stranded on 26 August, floodplain storage of the kind
+§25's video shows). **Caveats before anyone uses it as an observable:** the
+report is a 27 August provisional; "additional flood volume" is not defined
+in what we can see (over what baseflow, over what window, at which
+station); and it may be an excess-hydrograph integral at Devghat alone. But
+if it survives scrutiny it is the strongest constraint yet on where the
+flood went, and it points the same way as the Galchhi conflict of §24:
+**most of this event never reached the lower river as water.**
+
+### 26c. Boulder competence — a third velocity, in the deposit reach
+
+geopera's stereo post gives a boulder census: 4,329 clasts > 1 m, 84th
+percentile ~7 m, largest resolved 26 m, and a competence velocity of
+**19–26 m/s** for the debris sheet (km ~40–43). That is an independent
+speed in the one reach where our stage observable (Hakubesi) is strongest,
+and it is comfortably inside our v_gorge window (22–46). Their other
+velocities are unchanged: 37 m/s Lhende Khola, 45–52 border, 50 gorge, 11
+Syabrubesi. Their released volume stands at **~100 Mm³ ±40 %** (60–140),
+which now **overlaps our 110–175 from below**.
+
+### 26d. Precursors — the release may have been staged
+
+The Institute of Tibetan Plateau Research (Chinese Academy of Sciences),
+preliminary and press-reported only: the glacier's upper and middle
+sections had been moving "relatively rapidly" for two years, and there were
+**unusual seismic signals at ~06:04, ~06:50 and 08:15–08:19 NPT** — the
+last of these **18–22 minutes before the 08:37 main event**. Six
+contributing factors listed (fast flow, crevassing, meltwater infiltration,
+weakening permafrost, loading from above, freeze–thaw); explicitly no
+single trigger, no volume, no ice/rock split. **Consequence for us:** v10's
+T_rel prior (60–600 s) assumes one release. A staged failure with a
+precursor 20 minutes earlier is a different hydrograph shape, and it is a
+candidate explanation for the border clock that we have not tested.
+
+### 26e. Wikipedia's 197–492 Mm³ — treat with care
+
+The Wikipedia article now states the collapsed material "had a size of
+around 197,000,000–492,000,000 m³", without attributing it to a named
+study in the text we can see. Note that Shugar's widely-quoted observation
+is a **0.2 km² detachment falling ~1.2 km vertically**, and 0.2 km² × 1.2 km
+= 240 Mm³ — i.e. the published range looks like it may be an area × drop-
+height product, which is not a detached volume. **We should not cite it as
+a volume estimate, and we should not present our number as "low" relative
+to it.** What is fair to say: published released-volume estimates now run
+from geopera's 100 ±40 % to our 110–175, on a source area that makes both
+plausible.
+
+### 26f. Housekeeping
+
+Two barrier lakes formed after the collapse, total ~2 Mm³, one overflowing
+slightly on 28 August and largely empty by 30 August — small, and on the
+Tibetan side; not the in-event blockage of §11. Chinese-side toll updated
+to **43 dead, 519 missing** (our page still carries 31 and 531 — fix).
+NESRA's exposure layer: 101.6 km of river assessed, 3,216 buildings, 62
+bridges and 11.5 km of major road intersecting the flood path — exposure,
+not verified damage. Nepal toll unchanged at 1,342 dead, 4,886 missing.
+
+**Nothing here changes a finding tonight.** The volume line strengthens
+(26a, 26c), the lower-river conflict sharpens (26b), and one new hypothesis
+is on the table (26d).
