@@ -207,7 +207,7 @@ ul.src li{break-inside:avoid;margin-bottom:4px}
  <a href="https://github.com/djhume/nepal-flood-2026" style="color:var(--river,#1e5f8e)">source, data and full
  revision history on GitHub</a></div>
 <header>
-  <p class="eyebrow">Preliminary analysis · v14 · 8 September 2026 (evening) ·
+  <p class="eyebrow">Preliminary analysis · v15 · 8 September 2026 (evening) ·
   <a href="plain.html">plain-English version</a></p>
   <h1>The Trishuli Water Ledger</h1>
   <p class="dek">On 26 August 2026 a collapsing mountainside above the Lhende
@@ -1982,15 +1982,39 @@ broad farmed valley on the Trishuli shows why: the flow leaves its channel
 and covers the whole floor, several hundred metres wide, within about
 seventy seconds, and the mud-line map has the same event — the stage halves
 at km&nbsp;90 where the floor opens from 250 to 600&nbsp;m (dossier §25).
-The next version gives the lower river that floor, with conveyance across
-it. Until a version passes and survives the held-out set, finding 04
-stands with this caveat attached,
-and the numbers on this page that depend on it — the melt ceiling in
-<a href="#s04" class="xref">§04</a> above all — should be read as conditional
-on it.</div>
+That version was built (v12: compound section with the
+inner channel from the DEM, floodplain conveyance at its own roughness, the
+arrival detected on the true stage, and the video's rise curve as an
+observable) and <strong>it returned 0 of 400</strong>. The floor works — Galchhi
+is met by 70 runs against 52, and the video observables by 256 and 302 — but
+the failure split: ten of the twelve best runs fail on Galchhi alone and two
+on deposition alone, with the dry corner reaching Galchhi at 9.5&nbsp;m
+<em>and</em> Malekhu at 166&nbsp;min against 163 while stranding 44&nbsp;Mm³
+of rock against a 12&nbsp;Mm³ cap (dossier §27).
+<br><br><strong>The modelling stopped there, on 8 September, and this is the
+reason.</strong> A per-station comparison of modelled depth against the
+mud-line profile (<code>calcs/fit_vs_chainage.py</code>) shows that the one run
+which has ever satisfied all eleven scored observables sits inside the
+station's own p10–p90 band at <strong>11&nbsp;% of stations in km 0–22</strong>
+and 24&nbsp;% in km 90–108. Six of the eleven observables are REACH MEDIANS of
+that profile: a run can satisfy every median while being wrong at most points
+inside them, and ~99&nbsp;% of the spatial information was never in the score.
+Fourteen parameters against thirteen correlated observables, six of them
+medians of our own reconstruction, is an ill-posed inverse problem, and seven
+versions of failure are its shape rather than bad luck.
+<br><br>The work is now split at the junction — a confined rock–ice avalanche
+above it, a flood wave gathering the river's own water below it, joined by a
+junction hydrograph that both halves are scored against, so that a downstream
+failure can no longer be blamed upstream and back (PLAN §11, dossier §28).
+<strong>Until something passes and survives the held-out set, finding 04
+stands with this caveat attached and may end up withdrawn rather than
+corrected</strong>, and the numbers on this page that depend on it — the melt
+ceiling in <a href="#s04" class="xref">§04</a> above all — should be read as
+conditional on it. Note that <a href="#s04" class="xref">§04</a>'s own
+conclusion does not depend on the routing model: it is an energy budget.</div>
 
 <h2 id="s13"><span class="no">13</span>What would change our mind</h2>
-<p>This is v14, built thirteen days after the event on contested numbers, and five
+<p>This is v15, built thirteen days after the event on contested numbers, and five
 results have already been withdrawn or reversed in that time
 (<a href="#s00" class="xref">§00</a>). It moves if the facts move:</p>
 <p>— <strong>Done, 7 September:</strong> a map of every mud line in the
@@ -2163,7 +2187,7 @@ Corrections are welcome at
 <a href="https://github.com/djhume/nepal-flood-2026/issues">the repository's
 issue tracker</a> and are recorded on the
 <a href="index.html">project home page</a> with the date and the reason.</p>
-<p class="mono" style="font-size:12px">v14 · 8 September 2026 (evening) · Wellington, NZ</p>
+<p class="mono" style="font-size:12px">v15 · 8 September 2026 (evening) · Wellington, NZ</p>
 </div>
 </div>
 </div>
