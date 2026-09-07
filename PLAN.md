@@ -1427,3 +1427,21 @@ UT-3A dam / Trishuli–Devighat weirs as impoundment candidates; geopera's
 trimlines at km 46–90. Meanwhile v10b = stage-2 resample inside the box of
 v10's thirteen best runs (V 93–167, f_wl 0.30–0.79; the rest nearly full),
 same physics — reported as conditional on stage 1.
+
+**8 Sept early morning NZT — v10b: 1 of 300, the first full pass, FAILED
+on the held-out set (dossier §24).** 160 Mm³ at 4 % water — a stiff flow
+that scrapes the clock (5.7) and the gorge speed (22.2) at the window edges
+and reaches Galchhi's depth by crawling: Malekhu 205 (163), Kalikhola 489
+(~337), Devghat 1,576 (~2,900). Not promoted. The dry near-miss at 121 Mm³
+gets the held-out set within 5–30 % and fails Galchhi (16.4). In this
+model a flow gets Galchhi right only by being slow, and Malekhu right only
+by being deep at Galchhi. **Dave's video (§25) shows the real answer: the
+flood left its channel and covered a farmed valley floor several hundred
+metres wide in ~70 s and stayed there.** The map agrees (stage halves at
+km 90 where the DEM floor opens to 600 m; basins km 86–98 and 104–110).
+**Next = v12: compound section with the floor at +3–8 m (sampled) and
+floodplain CONVEYANCE with its own n (0.06–0.12), not storage only; fix
+arrival detection to the true stage; then the stage-2 box.** Identify the
+video's location (boulder + cable crossing) and read the rise rate. DHM
+Betrawati/Galchhi records still the decisive data. Six versions, 1 of
+1,400, nothing promoted.

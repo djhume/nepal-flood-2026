@@ -2167,3 +2167,111 @@ stage 1. Not tuning: no window moves, no physics changes; the prior is
 narrowed by the data and the narrowing is on the page.
 
 **Results:** filled in below when the run finishes.
+
+**RESULTS (8 Sept, early morning NZT). v10b: 1 of 300 — the first full
+pass in the project — and it fails the held-out set.**
+`output/ensemble_v10b_RESULTS.md`, `calcs/ensemble_samples_v10b.npy`. 60 min.
+Inside the narrowed box the observables are met far more often (border
+clock 125/300, gorge stage 228, gorge speed 197, Hakubesi 193; clock AND
+gorge 74 runs; Galchhi 52; clock AND gorge AND Galchhi 6), and the
+distribution of "observables met" peaks at 8 of 11 (69 runs), with 14 at
+10 and one at 11.
+
+| | the pass (11 of 11) | best wet near-miss (10, fails Galchhi) | best dry near-miss (10, fails Galchhi) |
+|---|---|---|---|
+| V (Mm³) | 160 | 136 | 121 |
+| w0 (water fraction) | **0.04** | 0.77 | 0.17 |
+| μ_dry | 0.31 | 0.28 | 0.20 |
+| f_fine / f_ice | 0.77 / 0.81 | 0.37 / 0.81 | 0.92 / 0.82 |
+| ξ / K / f_wl / T_rel | 188 / 8.3 / 0.34 / 291 s | 183 / 1.3 / 0.44 / 429 | 385 / 2.6 / 0.69 / 457 |
+| border (5.4–10.0) | **5.7** | 6.5 | 7.7 |
+| v_gorge (22.1–45.9) | **22.2** | 34 | 26 |
+| gorge / Syabru / Hakubesi (m) | 89 / 81 / 63 | 72 / 73 / 54 | 68 / 65 / 51 |
+| to Betrawati / Betrawati–Galchhi | 31 / 15.8 | — | — |
+| Galchhi (≤ 9.9) | **5.7** | 15.6 | 16.4 |
+| rock-only deposition (bulk) | 8.7 (44.7) | 5.9 (29.7) | 2.8 (15.2) |
+| **held out: Malekhu (163) / Kalikhola (~337) / Devghat (~2,900)** | **205 / 489 / 1,576** | 114 / 258 / 4,068 | **154 / 349 / 2,006** |
+
+The pass is the dry corner. A 160 Mm³ release that is 4 % water at
+detachment, 81 % of whose solids are ice, with 36 Mm³ of that ice laid
+down along the corridor (bulk 44.7, rock 8.7): it scrapes the clock and
+the gorge speed at the very edge of their windows and reaches Galchhi's
+depth by crawling — then arrives at Malekhu 42 min late, at Kalikhola two
+and a half hours late, and at Devghat with half the peak. **Not promoted.
+It is the reason the held-out set exists.** The dry near-miss at 121 Mm³
+(w0 0.17) is the mirror image: the three held-out numbers within 5–30 %
+(Malekhu 154, Kalikhola 349, Devghat 2,006 and rising) and Galchhi 16.4.
+The wet near-miss overshoots everything below Betrawati. So the stage-2
+sample says, with more resolution than stage 1: **in this model a flow
+reaches Galchhi at the right depth only by being slow, and reaches Malekhu
+on time only by being too deep at Galchhi.** The real flood did both. §25
+says how.
+
+## 25. THE FLOOD SPREADING OVER A VALLEY FLOOR — a video, the map, and the DEM agree (8 Sept, early morning NZT)
+
+**The video.** Dave found a YouTube clip (youtu.be/ipigdLDU3LA; 4 min
+30 s, 640×360; copied to `research/video/clip3/`, third-party, never
+committed; 39 screenshots, matched back to the video clock by frame
+comparison) shot from a hillside above a broad farmed valley, looking
+up-river toward cloud-covered mountains. Location not yet identified (no
+caption; a large mid-channel boulder and a cable crossing in the first
+frames are the landmarks to find). Timeline, valid if the clip is uncut:
+
+| clip time | what the frame shows |
+|---|---|
+| 7 s | a braided gravel river ~150 m wide between paddies and terraces; normal flow |
+| ~30 s | the front appears up-valley as a wall of spray and dust |
+| ~45 s | brown flow fills the channel bank to bank, rising |
+| ~60 s | the whole channel is a single surface of standing waves |
+| ~100 s | the flow has left the channel and covers the valley floor, several hundred metres across, to the houses on the left bank |
+| 140–260 s | the entire floor stays covered; the surface moves slowly, with large recirculations at the margins — Dave's "giant eddy" |
+
+So the river went from its channel to the full valley floor in roughly
+seventy seconds and stayed there for at least the next three minutes.
+
+**The map has it.** The fitted stage (§19a) along the Trishuli:
+
+| km | stage (p10–p90) | floor width at +5 / +10 / +20 m (DEM, median) |
+|---|---|---|
+| 80–82 | 20.4 (17–28) | 80 / 100 / 208 |
+| 86–88 | 16.6 (12–22) | 128 / 192 / 336 |
+| 88–90 | 13.7 (10–20) | — |
+| **90–92** | **8.8 (3.7–12.7)** | **176 / 348 / 612** (max 1,136) |
+| 92–94 | 10.9 (3–18) | — |
+| 96–98 | 8.0 (5–14) | 112 / 284 / 348 |
+| 104–106 | 9.8 (4–13) | 60 / 80 / 160 |
+| 106–110 | 5.2–6.4 | 68 / 84 / 284 (max 720) |
+
+The stage halves between km 88 and km 90, exactly where the floor opens
+from ~250 to ~600 m. The record has been showing a flood that spread over
+a valley floor and dropped since the map was made; it was read as an
+attenuation problem in the model rather than a geometry the model lacks.
+
+**Where it happens.** Two basins: **km 86–98** (Bidur / Trishuli Bazaar;
+floor 250 m wide at +10 m, 400–1,100 at +20; 16–32 Mm³ on the floor at
+5–10 m depth over 12 km) and **km 104–110** (Galchhi; 4–8 Mm³). The video
+is very probably in the first; the frames' valley proportions fit it.
+
+**Why v11's test missed it.** The compound section was built with the
+floor engaging at +10 m and as pure storage. The video shows the floor
+flooding at a few metres above the river, and water over fields and trees
+that moves slowly rather than sitting still — a conveying floodplain with
+high roughness, which lengthens the wave and lowers its peak far more than
+a store that fills and empties with the main channel. With the bank at
++5 m the same test took Galchhi's peak discharge from 11,900 to 7,500 m³/s
+and the stage from 24 to 17 m; the front detection then failed on the
+storage-equivalent depth, which is a tooling bug to fix, not a result.
+
+**v12, to build:** compound section below Betrawati with the inner channel
+from the DEM at +5 m, the floor from W_top_20 − W_top_5 engaging at a bank
+height sampled 3–8 m, and floodplain conveyance with its own Manning n
+(0.06–0.12, fields and trees) rather than storage only; fix the arrival
+detection to use the true stage; everything else v10. Then the stage-2
+box. **Standing:** one full pass, failed on the held-out set, not promoted;
+six versions, 1 of 1,400; finding 04 "under revision, moving up".
+
+**To do with the video:** identify the location (title/description,
+the boulder and the cable crossing on the Pelican or Vantor imagery);
+confirm the clip is uncut; read the rise rate against the DEM floor
+height at that spot — it is a direct measurement of the floodplain filling
+that the model can be scored on.

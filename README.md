@@ -105,8 +105,13 @@ source is here and the licence permits it.
    via a release-origin ledger — 0 of 300, but 14 runs meet the clock and
    the gorge depth together and three meet 10 of 11, failing only Galchhi;
    above Betrawati the model matches the record at 110–175 Mm³ released over
-   5–10 min. Next: the lower river's floodplain width (report §12b, dossier
-   §19–23).
+   5–10 min. A DEM compound section was tested and set aside (§24); a
+   stage-2 sample (`calcs/ensemble_v10b.py`) gave the first full pass — 160
+   Mm³ at 4 % water — which fails the held-out Malekhu/Kalikhola/Devghat
+   checks. A video of the flood covering a valley floor several hundred
+   metres wide in ~70 s, and the map's stage halving at km 90 where the DEM
+   floor opens to 600 m, say what is missing: the lower river's floor, with
+   conveyance across it (v12, §25). Report §12b, dossier §19–25.
 5. **The single-phase model was falsified, then fixed.** With entrainment built
    (`model/ENTRAINMENT.md`, literature constants, nothing fitted) the model tears
    3.8 Mm³ out of the corridor against 3.2 measured by stereo DEM — but the same
