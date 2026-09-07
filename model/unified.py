@@ -200,7 +200,7 @@ def simulate(V_rel=V_REL, w0=W0, w_sat=W_SAT, mu_wet=MU_WET, mu_dry=None,
                for km in watch}
     rec = {"t": [], "front": [], "w_front": [], "mu_front": []}
     for s in stations:
-        rec[s] = {"q": [], "h": [], "r": [], "w": [], "wr": []}
+        rec[s] = {"q": [], "h": [], "r": [], "w": [], "wr": [], "y": []}
     for km in watch:
         rec[f"v@{km}"] = []
     save = int(10.0 / dt)
@@ -228,7 +228,13 @@ def simulate(V_rel=V_REL, w0=W0, w_sat=W_SAT, mu_wet=MU_WET, mu_dry=None,
             h, hw, hwr, hr, Qi = (st["h"], st["hw"], st["hwr"], st["hr"],
                                   st["Qi"])
             rec["t"].append(it * dt / 60.0)
-            risen = x_km[h - h0 > 0.5]
+            # ARRIVAL ON THE TRUE STAGE (v12 fix). h is the VOLUME-equivalent
+            # depth over the main channel; with a compound section the water
+            # surface is lower than h wherever the floor is engaged, so a
+            # front detected on h is detected on a depth nobody could see.
+            # true_stage() is the identity when FP_W is None, so every
+            # published run is untouched.
+            risen = x_km[true_stage(h, wn) - h0 > 0.5]
             fk = risen.max() if len(risen) else 0.0
             rec["front"].append(fk)
             j = min(int(np.argmin(np.abs(x_km - fk))), N - 2) if fk else 0
@@ -237,14 +243,16 @@ def simulate(V_rel=V_REL, w0=W0, w_sat=W_SAT, mu_wet=MU_WET, mu_dry=None,
             rec["mu_front"].append(float(mu_of_w(np.array([wj]),
                                                  np.array([h[j]]), mu_dry,
                                                  mu_wet, w_sat)[0]))
+            ts_all = true_stage(h, wn)
             for s, j2 in st_j.items():
                 jj = min(j2, N - 2)
                 rec[s]["q"].append(Qi[jj])
                 rec[s]["h"].append(h[j2])
+                rec[s]["y"].append(ts_all[j2] - h0[j2])   # stage above baseflow
                 rec[s]["r"].append(hr[j2] / max(h[j2], 1e-6))
                 rec[s]["w"].append(hw[j2] / max(h[j2], 1e-6))
                 rec[s]["wr"].append(hwr[j2] / max(h[j2], 1e-6))
-            eta = z + h
+            eta = z + true_stage(h, wn)
             hfe_s = np.maximum(np.maximum(eta[:-1], eta[1:])
                                - np.maximum(z[:-1], z[1:]), 0.05)
             for km, jj in watch_j.items():

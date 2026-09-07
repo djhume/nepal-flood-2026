@@ -2586,3 +2586,178 @@ Adopted as a standing editorial rule, alongside PLAN §6/§6a:
 6. **Modesty is not the same as vagueness.** Being humble about status is
    right; being mushy about findings is not. Where a number is well
    constrained, say so cleanly. False modesty is its own kind of inaccuracy.
+
+## 27. ENSEMBLE v12 — a floodplain that CONVEYS, the arrival on the true stage, and the video as an observable (8 Sept, evening NZT)
+
+**The problem, restated from §24.** v10b's single pass reached Galchhi's depth
+by crawling and then arrived at Malekhu 42 min late, at Kalikhola 2.5 h late
+and at Devghat with half the peak; the wet runs do the reverse. **In this
+model a flow is right AT Galchhi or right BELOW it, never both.** §25 says why:
+the flood left its channel and spread over a valley floor several hundred
+metres wide, which lengthens the wave and lowers its peak at once. v11 tried a
+floor and failed, because the floor was pure STORAGE — it took water out of
+the wave and gave the wave nothing to move through, so Galchhi came down and
+Devghat starved together.
+
+### 27a. What v12 changes
+
+**1. A real compound section** (`core.FP_N`, new). Flow area and conveyance are
+now summed over channel and floor:
+
+    K = Σ_i (A_i / n_i) y_i^(2/3),   S_f = Q|Q| / K²
+
+In the single-channel limit K = (1/n) A y^(2/3) and this reduces to Manning
+exactly, so `FP_N = None` is bit-identical — **checked against v10's wet and
+dry near-misses before anything else was written, and it is** (json diff of
+all 13 observables plus the held-out line, both runs). The Froude cap, the
+Voellmy term and the shock viscosity move onto the hydraulic mean depth
+A/W_top, which is what they want once the section is not a rectangle.
+
+**2. Geometry from the DEM, aggregated by MEAN not median.** The inner channel
+is `W_top_5` — the section width 5 m above the bed, i.e. bank-full — and the
+floor is sized so the compound section reproduces the section's **measured**
+area at +20 m:
+
+    A20  = 5·W5 + 5·(W5+W10)/2 + 10·(W10+W20)/2       (trapezoid)
+    W_fp = f_fp · max(A20 − 20·W_ch, 0) / (20 − h_b)
+
+At `f_fp = 1` the two-part section holds exactly what the DEM says the valley
+holds at +20 m, **whatever bank height is drawn** — so `h_b` moves only the
+TIMING of engagement, not the storage, which is the thing the video actually
+measures. That separation is the point of the parameterisation.
+
+**v11 aggregated the DEM's 0.1 km stations to the model's 0.4 km cells by
+running MEDIAN, and that suppressed precisely the wide basins that matter.**
+km 73.5 is 496 m at +5 m between neighbours at 96 and 48; a median of the
+reach throws it away. Storage and conveyance add along a reach, so the
+volumetrically correct aggregator is the MEAN over the cell. Stated because it
+is a real choice and it moves the answer: at the video's floor the cell-mean
+gives W_ch 248 m and W_fp 216 m where v11's median gave a floor of ~70 m.
+
+The trapezoid over-reads the DEM's own area at the fitted stage by a median
+14 % (p10 1.01, p90 1.47), because real sections are V-shaped rather than
+stepped. `f_fp` 0.5–2.0 carries that. `f_fp` ≈ 2.5 would reproduce the naive
+`W_top_20 − W_top_5` floor of the §25 sketch, which over-states the measured
+area by about half — so the sketch's version is inside the prior, at its edge.
+
+**3. The arrival is detected on the true stage** (`model/unified.py`). `h` is
+the VOLUME-equivalent depth over the main channel; where the floor is engaged
+the water surface is well below it. Every version to v11 detected the front on
+`h` — a depth nobody could see. This is the tooling bug §25 named and the
+reason v11's +5 m test reported "front detection failed". `true_stage()` is
+the identity when `FP_W` is None, so every published run is untouched. The
+recorded velocity watch had the same defect (`eta = z + h`) and is fixed with
+it.
+
+**4. The bank cannot be under the river — and the first build got this
+wrong.** `h_b` is sampled 3–8 m and applied as `max(h_b, settled depth + 0.5)`
+per node, so the floor is dry at baseflow everywhere and the compound system
+reduces exactly to the channel one at t = 0. The river is settled with the
+floor OFF and the bank taken from that state.
+
+The first build used the ANALYTIC normal depth for the guard instead of the
+relaxed settled depth. The relaxed depth is higher wherever the DEM channel is
+narrow and the local slope small, and **90 of the 324 nodes below km 70 — the
+Galchhi window among them — came out with baseflow already ON the floodplain.**
+That puts floodplain water into the datum `h0` that every stage observable is
+measured above, and `stage_galchhi` was over-read by up to 2.9 m. Caught by
+an explicit check (`nodes with baseflow above the bank: 90 of 324`) run before
+the ensemble, which is the only reason it is a footnote and not a retraction.
+`core.FP_HB` now takes a per-node array.
+
+### 27b. The video as an observable — and where it actually points
+
+**The camera is at km 74.8. The floor that floods is not under it.** Dave
+located the camera at 27°55'40.33"N 85°08'54.45"E — west bank, 82 m from the
+centreline, 44 m above the river, looking NNE. The ground that goes under in
+the frames is the ground the camera is looking AT: 700 m away on bearing 30°
+and 1.3 km away on 39°, which is **km 74.0** (1,016 m wide at +20 m) and
+**km 73.5** (496 m at +5 m, 720 at +20). §25's own table says so. At the
+camera's own node the DEM floor is narrow — cell-mean 72 m at +5 m — so
+scoring the rise there would score the wrong ground. **The rise is scored at
+km 73.6 and the camera's node is recorded alongside it.** (The first build of
+v12 scored at km 74.8 and was corrected before the ensemble ran.)
+
+**Scored — what the frames establish:**
+
+| observable | video | window |
+|---|---|---|
+| `rise74_s` — front at km 73.6 → stage past +5 m, the floor going under | ~70 s (front ~30 s, floor covered ~100 s) | 20–180 s |
+| `hold74_m` — stage 260 s after the front; the flow is still over the floor at the end of the clip, not drained | over the floor | ≥ 5 m |
+
+The windows are wide because the clip is 640×360 and its continuity is
+unconfirmed.
+
+**Reported, NOT scored — inferences rather than things the frames show:**
+the depth at four minutes (§25's ~10–15 m; a camera 44 m up cannot read a 12 m
+stage), the stage at the camera's own node (the clip ends with the water well
+below the camera — a bound of 44 m, which is weak), and **the front speed over
+km 73–75: the video's ≥ 30 m/s against the model's ~9–15**. That last one is
+the sharpest disagreement in the whole lower river and it is deliberately left
+out of the scoring, because the front's first appearance up-valley is judged
+by eye in a low-resolution frame. It is the reason to go back to the clip.
+
+### 27c. The FFD volume as a SHAPE observable (§26b)
+
+~20 Mm³ above base flow at Devghat between 14:10 and 18:00 fixes the AREA
+under the excess hydrograph over a stated window. **Every version to v10b has
+been scored on the HEIGHT of the Devghat peak and never on its WIDTH**, and
+width is exactly what a floodplain changes. Reported with the held-out set,
+integrated 333–563 min after 08:37, at one significant figure as the source
+states it. It is NOT a volume balance on the release and is not scored as one
+(§26b, `research/ffd-press-release-27aug.md`).
+
+### 27d. Single-run tests before the ensemble
+
+v10's wet 10-of-11 run (123 Mm³, w0 0.81, T_rel 501 s) at `f_fp` 1, `h_b` 5 m,
+`n_fp` 0.09:
+
+| | v10 (267 m flat) | v11 (DEM median + storage) | **v12 (DEM mean + conveyance)** | observed |
+|---|---|---|---|---|
+| Galchhi stage, m | 14.5 | 16.7–24.1 | **14.6** | ≤ 9.9 |
+| Betrawati–Galchhi, m | 13.2 | 17.8–23.2 | **18.8** | 9.4–21.1 |
+| Malekhu front, min | 127 | — | **135** | 163 |
+| Kalikhola front, min | 284 | — | **336** | ~337 |
+| Devghat peak, m³/s | 3,730 | 1,300–3,800 | **3,274** | ~2,900 |
+| Devghat excess volume, Mm³ | — | — | **7.2** | ~20 |
+| `rise74_s` | — | (detection failed) | **90 s** | ~70 |
+| `hold74_m`, m | — | — | **13.5** | ≥ 5 |
+| front km 73–75, m/s | — | — | **14** | ≥ 30 |
+
+**Three of the four downstream numbers move the right way at once, which no
+previous geometry change did** — **Kalikhola 284 → 336 against ~337**, Devghat
+3,730 → 3,274 against ~2,900, Malekhu 127 → 135 against 163 — and both video
+observables are met. This is one run, not a result; but it is the first time
+the lower river has moved as a piece rather than trading one number against
+another.
+
+Galchhi is *not* fixed: the narrower true channel still puts 14.6 m there
+against ≤ 9.9. **The floodplain was the §25 hypothesis for Galchhi and on this
+run it does not carry it** — it fixes the reach BELOW Galchhi instead. Whether
+the ensemble can find a corner where it does both is what v12 is for; if it
+cannot, the honest reading is that the Galchhi conflict is not a floodplain
+problem, and §24's other two candidates (an over-read stage at km 46–90, or
+the DHM records themselves) move to the front.
+
+And the new volume observable earns its place immediately: **the Devghat peak
+is 13 % HIGH while the volume under it is 64 % LOW**, and the peak arrives at
+600 min against an observed 443. The modelled wave down there is too peaky,
+too short and too late at once — a diagnosis no peak-height test could have
+produced, and the reason §26b's figure was worth chasing even though it turned
+out not to be the constraint the sweep thought it was.
+
+v10b's single pass (160 Mm³, 4 % water) gets worse, as expected: a conveying
+floor slows an already-slow flow further (Malekhu 205 → 222, Kalikhola 489 →
+never, Devghat volume 0.6 Mm³). The hypothesis v12 tests is that the answer is
+now a WETTER, FASTER release than either.
+
+### 27e. The run
+
+400 Latin-hypercube samples, **fourteen inputs** (v10b's eleven over the
+stage-2 box, plus `f_fp`, `h_b`, `n_fp` at full range), **thirteen scored
+observables**. Thin — ~1.6 samples per dimension per octave — and reported as
+a stage-2 posterior conditional on stage 1, not an independent prior.
+`calcs/ensemble_v12.py`; `TRISHULI_V12_BOX=stage1` runs it over v10's
+untruncated prior instead.
+
+**RESULTS:** filled in below when the run finishes.

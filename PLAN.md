@@ -1456,3 +1456,66 @@ voice. The changelog dates show the pace without a word of
 self-description. Say plainly the author is out of field. The tragedy is the subject,
 not the backdrop. And modesty about status is not vagueness about findings:
 where a number is well constrained, say so cleanly.
+
+**8 Sept midday — §26 published, and a correction of our own (site v13 /
+plain v12 / report v13; commit 76dbf7c).** The arXiv reconstruction's
+endpoint angle 8.84° against our 8.76° from an independent geometry; their
+1.009 km² source area turning our 110–175 Mm³ into a 109–173 m detachment
+slab (Chamoli ~135), which is the first independent constraint making our
+volume ORDINARY; the gap they leave — no dynamic model, for want of volume,
+fractions and hydrograph — named as our niche, with the credit taken
+calibrated to what a simple measurement is worth. **And the 19.96 Mm³
+"additional flood volume" corrected in public.** The FFD's 27 August
+release has been in `data/ffd_report.pdf` since 2 September; read in the
+original (scanned Nepali, no text layer, pages extracted as images and
+transcribed in full in `research/ffd-press-release-27aug.md`) it says
+**करिब २ करोड घनमिटर — approximately 2 crore, one significant figure, a
+preliminary estimate — for the flow above base at Devghat between 14:10 and
+18:00.** A windowed gross excess at ONE gauge, not a system volume balance,
+exactly as report §07 has said since the first published version. The
+19.96 is precision added downstream of the document. **The sweep re-imported
+a number the project had already sourced properly, in a more precise and
+less careful form.** Recorded on all three pages rather than dropped; the
+rail is that a literature sweep checks `data/` and the dossier before
+logging anything as NEW. What the figure CAN do is fix the AREA under the
+excess hydrograph over a stated window — a SHAPE observable, which no
+version has ever been scored on. Also from the same document: the M2.6 at
+08:20 and M4.4 at 08:37 near Rasuwagadhi (Dept of Mines and Geology) — a
+17-minute precursor, which the dossier had marked "soft, Wikipedia only",
+independent of the CAS signals at 08:15–08:19. Two records now support a
+staged release; every version assumes a single one.
+
+**8 Sept evening — v12 built and run (dossier §27).** Three engine changes,
+all bit-identical when switched off (checked against v10's wet and dry
+near-misses before anything else was written): a REAL compound section
+(`core.FP_N`) summing area and conveyance over channel and floor with
+S_f = Q|Q|/K², the Froude cap and Voellmy term moved onto the hydraulic
+mean depth; the arrival detected on the TRUE stage rather than the
+volume-equivalent depth (the §25 tooling bug — every version to v11
+detected the front on a depth nobody could see); and a per-node bank height
+taken from the SETTLED state so the floor is dry at baseflow everywhere.
+(The first build guarded with the ANALYTIC normal depth and left 90 of 324
+nodes below km 70 — the Galchhi window among them — with baseflow already
+on the floodplain, putting floodplain water into the datum every stage
+observable is measured above; caught by an explicit check before the
+ensemble ran.) Geometry: inner channel `W_top_5`, floor sized so the
+section reproduces the DEM's MEASURED area at +20 m, **aggregated to model
+cells by MEAN not median** — v11's running median threw away exactly the
+wide basins that matter (km 73.5 is 496 m at +5 m between neighbours at 96
+and 48). The video's rise curve is scored at **km 73.6**, the floor the
+camera is looking AT, not km 74.8 where the camera stands. Two scored
+observables (`rise74_s`, `hold74_m`) from what the frames establish; the
+depth at four minutes, the stage at the camera and the front speed over
+km 73–75 (video ≥ 30 m/s vs the model's 9–15) reported and NOT scored.
+Single-run test on v10's wet near-miss moved Kalikhola 284 → 336 (~337),
+Devghat 3,730 → 3,274 (~2,900) and Malekhu 127 → 135 (163) together — the
+first geometry change to move three downstream numbers the right way at
+once — while **Galchhi stayed at 14.6 m against ≤ 9.9**. So on that run the
+floodplain fixes the reach BELOW Galchhi and not Galchhi itself, which was
+the §25 hypothesis. If the ensemble cannot find a corner that does both,
+the honest reading is that Galchhi is not a floodplain problem and §24's
+other candidates (an over-read stage at km 46–90, or the DHM records) move
+to the front. The new volume observable earned its place immediately: the
+Devghat peak is 13 % HIGH while the volume under it is 64 % LOW and it
+arrives at 600 min against an observed 443. Too peaky, too short, too late
+— a diagnosis no peak-height test could have produced.

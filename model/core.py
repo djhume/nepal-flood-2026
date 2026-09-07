@@ -112,11 +112,25 @@ XI_COMP = False         # v9: weight the Voellmy term by the coarse-solids
                         # (fines keep their drag: a mud-rich debris flow still
                         # carries Voellmy resistance; dilution by water is what
                         # turns it into a flood). Off = v7/v8 behaviour.
-FP_W = None             # v11: terrace-storage width per node (m), engaged
-FP_HB = None            # above bank height FP_HB (m). h stays the volume-
-                        # equivalent depth (V = wn h DX, tracers untouched);
-                        # the water surface rises only by the main-channel
-                        # share once over the bank. None = off (bit-identical).
+FP_W = None             # v11: floodplain width per node (m), engaged above
+FP_HB = None            # bank height (m), scalar or one value per node — a
+                        # per-node array lets the bank be held above the local
+                        # baseflow depth, which a single scalar cannot do
+                        # (Devghat's settled river is 3.2 m deep). h stays the
+                        # volume-equivalent
+                        # depth (V = wn h DX, tracers untouched); the water
+                        # surface rises only by the main-channel share once
+                        # over the bank. None = off (bit-identical).
+FP_N = None             # v12: floodplain Manning n. With FP_W set and FP_N
+                        # None the floor is STORAGE ONLY — it holds water and
+                        # conveys none, which is what v11 tested and what §25
+                        # says is wrong: the video shows water MOVING across
+                        # the floor, slowly. Set FP_N and the section becomes
+                        # a true compound one: flow area and conveyance are
+                        # summed over channel and floor, K = sum (A_i/n_i)
+                        # y_i^(2/3), and the friction slope is Q|Q|/K^2. In
+                        # the single-channel limit that reduces exactly to
+                        # Manning, so FP_N = None stays bit-identical.
 XI = None               # Voellmy turbulent-drag coefficient, m/s^2. None = off
                         # (bit-identical to every published run). Ensemble v7
                         # samples it 100-2,000: the friction slope v|v|/(XI h)
@@ -266,7 +280,28 @@ def step(st, R, dt, mu_dry, w_sat=W_SAT, mu_wet=MU_WET, side_valleys=True,
     Sf = (eta[:-1] - eta[1:]) / DX
     hfe = np.maximum(np.maximum(eta[:-1], eta[1:])
                      - np.maximum(z[:-1], z[1:]), 0.05)
-    Af = np.maximum(wf * hfe, 1e-6)
+    # COMPOUND SECTION (v12). hfe is the stage above the face bed; below the
+    # bank the floor is dry and everything here collapses to wf*hfe with a
+    # single n. Above it, area and conveyance are summed over the two
+    # sub-sections. h_hyd = A/W_top is the hydraulic mean depth, which is what
+    # the Froude cap and the Voellmy term want once the section is not a
+    # rectangle. Kc = the conveyance A R^(2/3)/n, so Sf_friction = Q|Q|/Kc^2.
+    if FP_W is None or FP_N is None:
+        Af = np.maximum(wf * hfe, 1e-6)
+        Kc = None
+        h_hyd = hfe
+    else:
+        fpw = 0.5 * (FP_W[:-1] + FP_W[1:])          # floor width at the face
+        hb = np.asarray(FP_HB, float)
+        hb_f = 0.5 * (hb[:-1] + hb[1:]) if hb.ndim else hb
+        y_fp = np.maximum(hfe - hb_f, 0.0)
+        A_ch = wf * hfe
+        A_fp = fpw * y_fp
+        Af = np.maximum(A_ch + A_fp, 1e-6)
+        Kc = np.maximum(A_ch * hfe ** (2 / 3) / nf
+                        + A_fp * y_fp ** (2 / 3) / FP_N, 1e-9)
+        h_hyd = np.maximum(Af / np.maximum(wf + np.where(y_fp > 0, fpw, 0.0),
+                                           1e-6), 0.05)
     up = Qi >= 0
     hu = np.where(up, h[:-1], h[1:])
     w_face = np.where(up, hw[:-1], hw[1:]) / np.maximum(hu, 1e-6)
@@ -284,21 +319,23 @@ def step(st, R, dt, mu_dry, w_sat=W_SAT, mu_wet=MU_WET, side_valleys=True,
     conv[1:] = np.where(Qi[1:] >= 0, (uQ[1:] - uQ[:-1]) / DX, 0.0)
     conv[:-1] += np.where(Qi[:-1] < 0, (uQ[1:] - uQ[:-1]) / DX, 0.0)
     num = Qi + dt * (G * Af * Sf - conv)
-    den = (1.0 + G * dt * nf ** 2 * np.abs(Qi) / (Af * hfe ** (4 / 3))
+    fric = (G * dt * nf ** 2 * np.abs(Qi) / (Af * hfe ** (4 / 3)) if Kc is None
+            else G * dt * Af * np.abs(Qi) / Kc ** 2)
+    den = (1.0 + fric
            + K_loc * dt * np.abs(Qi) / (2.0 * Af * DX))
     if XI is not None:                       # Voellmy turbulent term (v7)
-        drag = G * dt * np.abs(Qi) / (XI * Af * hfe)
+        drag = G * dt * np.abs(Qi) / (XI * Af * h_hyd)
         if XI_COMP:                          # v9: solids-weighted
             drag = drag * np.clip((1.0 - np.clip(w_face, 0, 1)) / (1.0 - w_sat), 0.0, 1.0)
         den = den + drag
     Qi = num / den
     Qi = np.sign(Qi) * np.maximum(np.abs(Qi) - mu_i * G * Af * dt, 0.0)
-    Qcap = FR_MAX * Af * np.sqrt(G * hfe)
+    Qcap = FR_MAX * Af * np.sqrt(G * h_hyd)
     Qi = np.clip(Qi, -Qcap, Qcap)
     # von Neumann-Richtmyer shock viscosity, discriminating by SHARPNESS
     # (second difference of Q) rather than Froude: smooth waves at any Fr are
     # untouched, single-cell spikes dissipate on the cell-crossing timescale.
-    cfl = (np.abs(Qi) / Af + np.sqrt(G * hfe)) * dt / DX
+    cfl = (np.abs(Qi) / Af + np.sqrt(G * h_hyd)) * dt / DX
     curv = np.zeros(N - 1)
     curv[1:-1] = np.abs(Qi[:-2] - 2 * Qi[1:-1] + Qi[2:]) \
         / (np.abs(Qi[1:-1]) + 200.0)
