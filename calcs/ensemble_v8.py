@@ -96,12 +96,14 @@ def run(p, base=None):
         U.set_widths(base); U._settled.clear()
 
 
-if __name__ == "__main__":
+def main(N, tag="v8", run_fn=None, title=None):
+    global BASE
+    run_fn = run_fn or run
     lines = []
     P_ = lambda s="": (print(s, flush=True), lines.append(s))
     old, BASE = V6.apply_v6_geometry()
     kms, weq = lhende_weq()
-    P_("# Ensemble v8 — v7 plus the Lhende's mapped width as a sampled input (dossier §21)\n")
+    P_(title or "# Ensemble v8 — v7 plus the Lhende's mapped width as a sampled input (dossier §21)\n")
     P_(f"{N} Latin-hypercube samples over {len(PRIORS)} inputs (v7's eight + f_wl log-uniform 0.3–1.0 × A/stage on km 12–22.8, "
        f"{len(kms)} mapped stations, A/stage median {np.median(weq):.0f} m, range {weq.min():.0f}–{weq.max():.0f}; model was 50 m); "
        f"ramp km 6–12; T_END {V6.T_END/3600:.2f} h; observables as v6.\n")
@@ -113,7 +115,7 @@ if __name__ == "__main__":
     P = draw(N); t0 = time.time(); rows = []
     for i in range(N):
         p = {k: float(v[i]) for k, v in P.items()}
-        o = run(p)
+        o = run_fn(p)
         if o is None: continue
         ok = V6.score(o); rows.append((p, o, ok, sum(ok.values())))
         if (i + 1) % 10 == 0:
@@ -155,7 +157,11 @@ if __name__ == "__main__":
             finally:
                 core.XI = None; U.R.K_loc[V7.J22] = k0; U.set_widths(BASE)
                 U.R.nn = nn0; U.R.nf = 0.5*(nn0[:-1]+nn0[1:]); U.R.h_erode = core.H_ERODE; U._settled.clear()
-    np.save(os.path.join(HERE, "ensemble_samples_v8.npy"),
+    np.save(os.path.join(HERE, f"ensemble_samples_{tag}.npy"),
             np.array([[r[0][k] for k in PRIORS] + [r[1][k] for k in KEYS] + [r[3]] for r in rows]))
-    open(os.path.join(ROOT, "output", "ensemble_v8_RESULTS.md"), "w").write("\n".join(lines) + "\n")
-    print(f"\nsaved calcs/ensemble_samples_v8.npy and output/ensemble_v8_RESULTS.md ({(time.time()-t0)/60:.0f} min)")
+    open(os.path.join(ROOT, "output", f"ensemble_{tag}_RESULTS.md"), "w").write("\n".join(lines) + "\n")
+    print(f"\nsaved calcs/ensemble_samples_{tag}.npy and output/ensemble_{tag}_RESULTS.md ({(time.time()-t0)/60:.0f} min)")
+
+
+if __name__ == "__main__":
+    main(N)

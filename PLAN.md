@@ -1377,3 +1377,19 @@ input), then Galchhi with a floodplain width. Also found: v6's width filter
 read the outlier columns as text, so Pelican widths never applied (≤ 30 %
 locally; Hakubesi has no width station either way) — fix in the next
 geometry revision, not mid-series.
+
+**v9 RAN (7 Sept evening, on Dave's go) — 0 of 200 (dossier §22).** Drag
+weighted by the solids fraction (water only; fines keep their drag). It did
+what the physics says: the drag is on for the dry runs, which deposit 50–64
+Mm³ against the 12 cap and stall below Betrawati; the wet runs pass the cap,
+keep Galchhi, and have no drag (v8's six clock-and-gorge runs shrink to
+one). Galchhi improved (13 vs 8). One run — 132 Mm³, w0 0.74, ξ 108, wide
+Lhende — meets every stage but Galchhi, the gorge speed, the erosion volume
+and all three held-out numbers within 5–15 %, failing the clock by six
+seconds, Galchhi by 6 m and deposition by 10 Mm³. **The cap is the live
+conflict: the engine's deposition counts ice as solid; the DEM cap (28
+Aug–1 Sept) saw only rock.** Next, Dave's decision: **v10 = rock-only
+deposition** (track the release-origin share of stranded solids, sample the
+ice share of the release 0.3–0.9, score (1 − f_ice) × release deposition +
+entrained deposition ≤ 12). No dynamics change. Then Galchhi with a
+floodplain width. Four versions, 0 of 800; nothing promoted.

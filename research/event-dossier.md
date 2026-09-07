@@ -1820,3 +1820,123 @@ up". The direction of every version since v6 is the same: the release that
 leaves the mapped mud lines is of order 100 Mm³ in this model, and the model
 still cannot carry that volume through both the gorge and the lower river
 with one rheology.
+
+## 22. ENSEMBLE v9 — the drag follows the flow's composition (7 Sept, evening)
+
+**Why.** §21's bracket: the gorge wants ξ of order 500–900 and the lower
+river wants none. The flow was a debris flow in the gorge and a muddy flood
+below Betrawati, and the engine already carries the water fraction w at
+every face (it drives the Coulomb dial `mu_of_w`). Dave's call, 7 Sept
+evening: build it.
+
+**What changes** (`core.XI_COMP`, default off ⇒ v7/v8 reproduce; regression:
+v8 sample 0 returns 6.5 / 20.581 / 21.368 / 4.454 / 24.65 to the saved
+digits with the switch off). The Voellmy term is multiplied by the
+coarse-solids fraction **(1 − w)/(1 − W_SAT)**, clipped to [0, 1], with
+W_SAT = 0.25 — full drag at or below pore saturation, none for pure water,
+the same normalisation the yield stress uses. Two decisions inside that:
+(i) **w is the water fraction alone**, not the water-plus-fines argument the
+friction dial uses. A mud-rich debris flow still carries Voellmy resistance
+(RAMMS-class back-analyses of muddy flows give ξ 200–500, granular ones
+100–200); dilution by water is what ends it. Had the fines been counted as
+liquid, the composition the deposition cap forces on the deep runs (f_fine
+≳ 0.8) would have switched the drag off exactly where it is needed. (ii) ξ
+now means the coefficient at saturation; a run at w0 = 0.5 carries 0.67 of
+it, at w0 = 0.85 (the top of the prior) 0.2. No new prior:
+`calcs/ensemble_v9.py` runs v8's nine inputs, observables, geometry and
+held-out set through v8's reporting (`ensemble_v8.main`, refactored to take a
+tag) with the switch on.
+
+**Sanity on the v8 near-miss (V 101, ξ 593, f_wl 0.78), switch on:**
+
+| w0 | solids weight | border | v_gorge | gorge | Syabrubesi | Hakubesi | Galchhi | deposit | erosion | met / failed |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 0.87 (as sampled) | 0.17 | 5.3 | 44 | 62 | 56 | 41 | 14.6 | 10.6 | 4.7 | 7 — clock, Syabru, Hakubesi, Galchhi |
+| 0.50 | 0.67 | 5.4 | 32 | 58 | 50 | 38 | 10.4 | 29.3 | 2.9 | 5 — gorge, Syabru, Hakubesi, to-Betrawati, Galchhi, deposit |
+| 0.30 | 0.93 | 5.5 | 28 | 57 | 48 | 36 | **8.1** | 40.1 | 2.7 | 5 — gorge, Syabru, Hakubesi, to-Betrawati, Betrawati–Galchhi, deposit |
+
+As the physics says: at the sampled w0 the drag is mostly gone and the gorge
+runs at 44 m/s again; at w0 = 0.3 the drag is on, the gorge speed is 28,
+Galchhi drops inside its window — and the stages fall 3–6 m short while
+deposition climbs to 40 Mm³, because a drier flow lays more down. Volume,
+composition, drag and the deposition cap are now one coupled question, which
+is the point; whether any corner of the nine-dimensional prior answers all
+eleven observables is what the 200 samples are for.
+
+**Results (7 Sept, evening):** filled in below when the run finishes.
+
+**RESULTS (7 Sept, evening). v9: 0 of 200.** `output/ensemble_v9_RESULTS.md`,
+`calcs/ensemble_samples_v9.npy` (9 priors + 11 + n_ok). 39 min.
+
+| met singly (of 200) | v8 | v9 (drag ∝ solids) |
+|---|---|---|
+| border clock | 63 | 63 |
+| Syabrubesi clock | 38 | 49 |
+| v_gorge | 21 | 27 |
+| gorge stage | 17 | 18 |
+| Syabrubesi stage | 11 | 11 |
+| Hakubesi | 22 | 21 |
+| Galchhi 3.5–9.9 | 8 | **13** |
+| deposition ≤ 12 | 141 | 140 |
+| **border clock AND gorge stage** | **6** | **1** |
+| clock AND gorge AND Galchhi | 0 | 0 |
+| best run | 9 of 11 | 9 of 11 |
+
+**What the coupling did.** Exactly what the physics says, and that is the
+problem. Among deep runs (V ≥ 60):
+
+| w0 (water fraction) | n | border (min) | v_gorge | gorge (m) | Hakubesi | Galchhi | deposition (Mm³) |
+|---|---|---|---|---|---|---|---|
+| 0.02–0.30 (drag on) | 17 | 5.6 | 24 | 52 | 32 | 0.1 | **53** |
+| 0.30–0.55 | 8 | 4.8 | 27 | 78 | 47 | 0.8 | **64** |
+| 0.55–0.86 (drag mostly off) | 15 | 5.1 | 30 | 57 | 38 | 10.5 | 22 |
+
+The runs that carry the drag are the dry ones, and in this model a dry
+deep flow lays down 50–64 Mm³ against a cap of 12 and stalls below
+Betrawati (Galchhi 0.1–0.8 m). The wet runs pass the cap, keep Galchhi in
+range, and have no drag — v6's water bore again (the six clock-and-gorge
+runs of v8 shrink to one, at w0 0.30 with 140 Mm³ deposited). The best run,
+V 115 at w0 0.29 and f_fine 0.95, fails the clock (4.9) and Galchhi (15.7)
+and is too fast on the held-out set (Malekhu 107 vs 163, Kalikhola 244 vs
+~337).
+
+**The held-out near-hit.** One run is worth recording on its own:
+
+| V | w0 | μ_dry | f_fine | ξ | K | f_wl | scored (8 of 11) | held out (10 h) |
+|---|---|---|---|---|---|---|---|---|
+| 132 | 0.74 | 0.23 | 0.61 | 108 | 9.0 | 0.86 | border **5.3** (window from 5.4), v_gorge 26, gorge 74, Syabrubesi 69, Hakubesi 53, to-Betrawati ✓, Galchhi **16.3**, deposition **21.8** | **Malekhu 141 (obs 163), Kalikhola 324 (~337), Devghat 2,628 m³/s at 600 min and rising (~2,900 excess)** |
+
+Every corridor stage but Galchhi, the gorge speed, the erosion volume, and
+all three held-out numbers within 5–15 % — from a 132 Mm³ release that is
+three-quarters water by volume at detachment, with the drag at 0.35 of a
+low ξ. It fails the border clock by six seconds, Galchhi by 6 m and the
+deposition cap by 10 Mm³. Not a pass, not promoted; it is the shape of the
+answer this model is circling.
+
+**Where the conflict has moved: the deposition cap.** The engine counts
+unmelted ice as solid ("melt is second-order here per our own budget",
+`model/unified.py`), and the observable `deposit_Mm3` is the bulk volume of
+ALL stranded solids plus re-deposited bed material, scored against
+geopera's 12 Mm³ from DEMs of 28 Aug–1 Sept. Ice laid down in the corridor
+on 26 August was gone by then: the DEM cap is a cap on ROCK. So every run
+that carries the drag (solids-rich, therefore ice-rich if §04's composition
+lines are right) is being failed for depositing material the measurement
+could not see. The cap that was doing the most work in §20 ("a 90–140 Mm³
+release passes only as ice and fines") has been applied to the ice as well
+as the rock.
+
+**Next (v10), Dave's call, not built:** track the release-origin share of
+each stranded column (the engine already carries the release-solids tracer
+`hr`), sample the ice share of the release solids f_ice (0.3–0.9, from
+§04's lines), and score rock-only deposition = (1 − f_ice) × stranded
+release solids + stranded entrained material + re-deposited bed, against
+the same 12 Mm³. No change to the dynamics; ice still counts as solid for
+friction and drag (correct at these timescales). If that opens the corner
+the near-hit is pointing at — a large, ice-rich, solids-carrying release
+with debris-flow drag in the gorge — the posterior on (V, w0, f_ice, ξ)
+becomes the number. Then Galchhi with a floodplain width.
+
+**Standing:** four versions, 0 of 800. Nothing promoted; finding 04 stays
+"under revision, moving up". The direction has not changed once: of order
+100 Mm³ in this model, mostly ice and water, slower in the gorge than water
+would be.

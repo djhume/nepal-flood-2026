@@ -107,6 +107,11 @@ TAU_Y0, RHO_MIX = 400.0, 1800.0   # Bingham yield stress at saturation, Pa;
                                   # mixture density used in tau_y/(rho g h)
 U_DEP, T_DEP = 1.0, 120.0         # stranding: slow + granular -> bed
 FR_MAX = 2.0
+XI_COMP = False         # v9: weight the Voellmy term by the coarse-solids
+                        # fraction (1 - w)/(1 - W_SAT), w = WATER fraction only
+                        # (fines keep their drag: a mud-rich debris flow still
+                        # carries Voellmy resistance; dilution by water is what
+                        # turns it into a flood). Off = v7/v8 behaviour.
 XI = None               # Voellmy turbulent-drag coefficient, m/s^2. None = off
                         # (bit-identical to every published run). Ensemble v7
                         # samples it 100-2,000: the friction slope v|v|/(XI h)
@@ -268,7 +273,10 @@ def step(st, R, dt, mu_dry, w_sat=W_SAT, mu_wet=MU_WET, side_valleys=True,
     den = (1.0 + G * dt * nf ** 2 * np.abs(Qi) / (Af * hfe ** (4 / 3))
            + K_loc * dt * np.abs(Qi) / (2.0 * Af * DX))
     if XI is not None:                       # Voellmy turbulent term (v7)
-        den = den + G * dt * np.abs(Qi) / (XI * Af * hfe)
+        drag = G * dt * np.abs(Qi) / (XI * Af * hfe)
+        if XI_COMP:                          # v9: solids-weighted
+            drag = drag * np.clip((1.0 - np.clip(w_face, 0, 1)) / (1.0 - w_sat), 0.0, 1.0)
+        den = den + drag
     Qi = num / den
     Qi = np.sign(Qi) * np.maximum(np.abs(Qi) - mu_i * G * Af * dt, 0.0)
     Qcap = FR_MAX * Af * np.sqrt(G * hfe)

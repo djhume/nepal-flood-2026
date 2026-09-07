@@ -96,7 +96,11 @@ source is here and the licence permits it.
    (`calcs/ensemble_v7.py`, `_v8.py`): 0 of 200 each, but the pair v6 could
    never make — mapped gorge depth and border clock together — now exists at
    V ≥ 100 Mm³; a single drag coefficient cannot serve the gorge and the
-   lower river at once (report §12b, dossier §19–21).
+   lower river at once. **v9** (drag following the solids fraction,
+   `calcs/ensemble_v9.py`, `core.XI_COMP`): 0 of 200; the runs with drag
+   deposit 50–64 Mm³ against a 12 Mm³ cap that was measured from post-event
+   DEMs and so counts rock only, while the engine counts ice as solid. Next,
+   for decision: rock-only deposition (report §12b, dossier §19–22).
 5. **The single-phase model was falsified, then fixed.** With entrainment built
    (`model/ENTRAINMENT.md`, literature constants, nothing fitted) the model tears
    3.8 Mm³ out of the corridor against 3.2 measured by stereo DEM — but the same
