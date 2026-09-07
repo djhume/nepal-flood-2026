@@ -112,6 +112,11 @@ XI_COMP = False         # v9: weight the Voellmy term by the coarse-solids
                         # (fines keep their drag: a mud-rich debris flow still
                         # carries Voellmy resistance; dilution by water is what
                         # turns it into a flood). Off = v7/v8 behaviour.
+FP_W = None             # v11: terrace-storage width per node (m), engaged
+FP_HB = None            # above bank height FP_HB (m). h stays the volume-
+                        # equivalent depth (V = wn h DX, tracers untouched);
+                        # the water surface rises only by the main-channel
+                        # share once over the bank. None = off (bit-identical).
 XI = None               # Voellmy turbulent-drag coefficient, m/s^2. None = off
                         # (bit-identical to every published run). Ensemble v7
                         # samples it 100-2,000: the friction slope v|v|/(XI h)
@@ -123,6 +128,15 @@ XI = None               # Voellmy turbulent-drag coefficient, m/s^2. None = off
 def mu_dry_scheidegger(V_m3):
     """Scheidegger (1973) volume-mobility regression, log H/L = a - b log V."""
     return 10 ** (0.62419 - 0.15666 * math.log10(V_m3))
+
+
+def true_stage(h, wn):
+    """Water-surface depth for a volume-equivalent depth h (v11 compound
+    section): identical to h unless FP_W is set and h exceeds the bank."""
+    if FP_W is None:
+        return h
+    over = np.maximum(h - FP_HB, 0.0)
+    return h - over * FP_W / (wn + FP_W)
 
 
 def mu_of_w(w, h, mu_dry, mu_wet=MU_WET, w_sat=W_SAT):
@@ -248,7 +262,7 @@ def step(st, R, dt, mu_dry, w_sat=W_SAT, mu_wet=MU_WET, side_valleys=True,
         hf = np.zeros_like(h); st["hf"] = hf
     hs, bed = st["hs"], st["bed"]
 
-    eta = z + h
+    eta = z + true_stage(h, wn)
     Sf = (eta[:-1] - eta[1:]) / DX
     hfe = np.maximum(np.maximum(eta[:-1], eta[1:])
                      - np.maximum(z[:-1], z[1:]), 0.05)

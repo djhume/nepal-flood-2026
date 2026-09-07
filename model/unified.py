@@ -58,7 +58,7 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from core import (G, MU_WET, W_SAT, TAU_Y0, RHO_MIX, U_DEP, T_DEP, FR_MAX,
+from core import (true_stage, G, MU_WET, W_SAT, TAU_Y0, RHO_MIX, U_DEP, T_DEP, FR_MAX,
                   mu_dry_scheidegger, mu_of_w, Reach, step, arrival_fn,
                   entrain_opts, H_ERODE)
 
@@ -220,7 +220,7 @@ def simulate(V_rel=V_REL, w0=W0, w_sat=W_SAT, mu_wet=MU_WET, mu_dry=None,
             st["hf"][rel] += dh * (1 - w0) * f_fine_rel
         st = step(st, R, dt, mu_dry, w_sat, mu_wet, side_valleys,
                   deposit=True, u_dep=u_dep, t_dep=t_dep, entrain=entrain)
-        np.maximum(hmax, st["h"] - h0, out=hmax)
+        np.maximum(hmax, true_stage(st["h"], wn) - h0, out=hmax)
         for _nm, _v in st["hs"].items():         # peak fill of each side branch
             if _v > hs_max.get(_nm, 0.0):
                 hs_max[_nm] = float(_v)

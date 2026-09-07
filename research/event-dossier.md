@@ -2094,3 +2094,76 @@ the gorge widths in v6 and the Lhende in v8, not a new dial.
 stays "under revision, moving up". The envelope this model is converging
 on: **110–175 Mm³, mostly ice and water, released over 5–10 minutes** —
 stated here as the shape of the posterior-in-progress, not a finding.
+
+## 24. THE LOWER RIVER — v11 tested and set aside; what the discharge says; a second-stage sample (7 Sept, late night)
+
+**The DEM sections below Betrawati** (`calcs/lowerriver_widths.py` →
+`output/lowerriver_widths.csv`; 1,594 stations km 40–199 on HMA 8 m at the
+fitted stage): the conveying channel is NARROWER than the model's, not
+wider. Equivalent width A/stage: km 46–70 133 m (model 164–284), 70–90 142
+(284–270), 90–108 116 (267), 108–140 42–49 (120), 140–200 67–136 (120–160).
+The site table's "~500 m at Galchhi" is the valley, not the water. The
+sections do widen above the water: between the 10 m and 20 m levels by
+90–120 m through km 70–140, and in the Galchhi window from 80 m at +10 to
+264 m at +20 (up to 520 at km 107.0). Those are terraces a 15–20 m wave
+floods and a 9 m one does not.
+
+**v11 = compound section** (`calcs/ensemble_v11.py`; `core.FP_W/FP_HB`,
+`core.true_stage` — h stays the volume-equivalent depth so every tracer and
+deposit volume is untouched, and the water surface rises only by the
+main-channel share above the bank; default off, v8 sample 0 identical).
+Tested on v10's wet 10-of-11 run (123 Mm³, w0 0.81, T_rel 501 s) before any
+ensemble — and set aside on the result:
+
+| lower-river geometry | Galchhi stage (≤ 9.9) | Betrawati–Galchhi (9–21) | peak Q Betrawati / km 90 / Galchhi / Malekhu / Devghat (m³/s) | fronts Galchhi / Malekhu / Kalikhola (obs 150 / 163 / ~337) |
+|---|---|---|---|---|
+| v10 (267 m flat, 120 m rule) | 14.5 | 13.2 | 50,700 / 23,600 / 12,700 / 11,200 / 3,700 | 111 / 130 / 292 |
+| DEM channel, no storage | 24.1 | 23.2 | 46,500 / 26,000 / 11,900 / 10,200 / 3,800 | 93 / 106 / 246 |
+| DEM channel + terraces above 10 m | 20.7 | 20.5 | 45,700 / 20,300 / 10,300 / 7,500 / 1,900 | 105 / 115 / 395 |
+| DEM channel + terraces above 5 m | 16.7 | 17.8 | 45,300 / 16,300 / 7,500 / 6,000 / 1,300 | (front detection fails) |
+
+(An earlier version of this test left v6's widths in place under the
+storage and showed 14.5 → 14.6; corrected.) The narrower true channel
+raises Galchhi more than the terraces lower it; storage sized from the
+sections buys back a third of the excess and starves Devghat. The lower
+river's problem is not its section.
+
+**What the discharge says.** Against the observations, the run that
+matches the whole upper corridor delivers the wrong wave to the lower one:
+
+| where | observed (mud lines × DEM section, or gauge) | model near-miss |
+|---|---|---|
+| Betrawati, km 70 | stage 29 m (20–41) × W_eq 133 → A ≈ 3,900 m²; **~30,000–45,000 m³/s** | 46,000–51,000 ✓ |
+| km 70–90 | stage 20 × 142 → **~17,000–26,000** | 20,000–26,000 ✓ |
+| Galchhi, km 107.6 | gauge +9 m in 30 min; fit 7.4; DEM section at 9.6 m A ≈ 390 m² (13 stations) → **~1,600–2,700 excess**; even at the reach-median section ~5,500–7,800 | **10,000–13,000** |
+| Malekhu | +7 m | 7,500–11,000 |
+| Devghat, km 199 | ~2,900 excess (5,850 total) | 3,700–3,900 ✓ |
+| front Betrawati → Galchhi | 09:20 → ~11:00: 38 km in ~100 min, **~6 m/s** | 70 min, 9 m/s |
+
+So the record says the peak fell from tens of thousands at Betrawati to a
+few thousand by Galchhi, 38 km downstream, and then held to Devghat; the
+model loses that factor BELOW Galchhi instead of above it. Simple wave
+diffusion cannot do it (celerity ~6 m/s, diffusivity ~10⁴ m²/s: ~35 min of
+spreading over 38 km, not the hours needed); it takes tens of Mm³ of
+temporary storage between km 70 and 108, or a stage over-read at km 46–90,
+or a flow that was far more resistive than water there (the dry v10 runs
+get Galchhi's stage and are then too slow and too small below it). **The
+decisive data are the DHM records at Betrawati (stn 447) and Galchhi, both
+of which survived** — a peak discharge at either settles which of the three
+it is. Also worth checking: whether the Upper Trishuli-3A dam or the
+Trishuli/Devighat diversion weirs impounded anything (a physical storage
+candidate with a location), and geopera's trimlines at km 46–90 against
+our 29 and 20 m.
+
+**A second-stage sample instead (v10b).** v10's thirteen runs at 9 or 10 of
+11 span a box in which the wet corner fails Galchhi high and the dry corner
+fails the gorge speed and the lower clocks; v10's own cut at w0 0.3–0.55
+had Galchhi at 9.0, inside the window. Three hundred samples in eleven
+dimensions is thin (~1.7 per dimension per octave), so the standard
+refinement is to resample inside that box (padded 15 %, clipped to the
+stage-1 prior): `calcs/ensemble_v10b.py`, same physics, geometry and
+observables, 300 samples, reported as a stage-2 posterior conditional on
+stage 1. Not tuning: no window moves, no physics changes; the prior is
+narrowed by the data and the narrowing is on the page.
+
+**Results:** filled in below when the run finishes.
