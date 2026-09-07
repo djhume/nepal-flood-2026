@@ -2804,7 +2804,52 @@ a stage-2 posterior conditional on stage 1, not an independent prior.
 `calcs/ensemble_v12.py`; `TRISHULI_V12_BOX=stage1` runs it over v10's
 untruncated prior instead.
 
-**RESULTS:** filled in below when the run finishes.
+**RESULTS (8 Sept, evening NZT). v12: 0 of 400 — and the blocker has SPLIT.**
+`output/ensemble_v12_RESULTS.md`, `calcs/ensemble_samples_v12.npy`. 81 min.
+Sixteen runs at 12 of 13, 52 at 11, 70 at 10.
+
+The floodplain does what §25 said it would: **Galchhi is met by 70 of 400
+runs** against 52 of 300 in v10b, and the video observables are met often
+(`rise74_s` 256/400, `hold74_m` 302/400). But nothing passes, and the reason
+is that the failure has split into two mutually exclusive corners:
+
+| | dry corner | wet corner |
+|---|---|---|
+| example | 139 Mm³, w0 0.03, f_fp 1.77, bank 7.4 m | 120 Mm³, w0 0.64, f_fp 0.61, bank 5.8 m |
+| Galchhi (≤ 9.9) | **9.5 ✓** | 15.2 ✗ |
+| rock-only deposition (≤ 12) | **43.6 ✗** | 6.5 ✓ |
+| held out: Malekhu (163) | **166 ✓** | 107 |
+| Kalikhola (~337) | never arrives | 267 |
+| Devghat peak (~2,900) | 1,374 | 3,793 |
+| Devghat volume (~20 Mm³) | 0.9 | **31.6** |
+
+**Ten of the twelve best runs fail on `stage_galchhi` alone; the other two
+fail on deposition alone.** The dry runs now reach Galchhi at the right depth
+*and* Malekhu on time — 166 against 163, which no previous version managed —
+and pay for it by stranding 44–59 Mm³ of rock against a 12 Mm³ cap and never
+reaching Kalikhola. The wet runs deposit almost nothing and are 5–7 m too deep
+at Galchhi.
+
+**So v12 did not fail the way v10b failed.** v10b's problem was that nothing
+could be right at Galchhi and right below it. v12 has runs that are right at
+Galchhi *and* right at Malekhu. What they cannot also do is respect the
+deposition limit — which is a *different* constraint, measured by a third
+party from post-event DEMs, and the one §22 already flagged as the live
+conflict. The blocker moved from a geometry problem to a mass-balance one.
+
+**Seven versions, 0 of 1,800 excluding v10b's single pass, which failed its
+held-out set. Nothing promoted.** Finding 04 stays "under revision".
+
+**And the honest reading, which is bigger than the run.** Thirteen observables
+over fourteen parameters, and the failure keeps relocating — Galchhi, then
+deposition, then Galchhi again — as the sampler is pushed from one corner to
+another. Combined with what `calcs/fit_vs_chainage.py` found the same evening
+(a run can satisfy every scored observable while matching 11 % of the stations
+underneath them, because six of the eleven are REACH MEDIANS of our own
+reconstruction), the pattern is not "the search has not found it yet". It is
+**an inverse problem whose observables do not pin its parameters.** That is
+the thing to test next, and it is testable from the 1,800 samples already
+saved. Dave called the halt on 8 September; see §28 when it is written.
 
 ### 26j. Standing note on voice, second addition — no telling, no asking
 
