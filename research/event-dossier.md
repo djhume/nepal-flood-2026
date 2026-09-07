@@ -2275,3 +2275,28 @@ the boulder and the cable crossing on the Pelican or Vantor imagery);
 confirm the clip is uncut; read the rise rate against the DEM floor
 height at that spot — it is a direct measurement of the floodplain filling
 that the model can be scored on.
+
+**§25 addendum — location found (Dave, 8 Sept early morning): 27°55'40.33"N
+85°08'54.45"E.** On our chainage that is **km 74.8, the west bank, 82 m
+from the channel centreline and 44 m above the river** (HMA 8 m: camera
+562 m, river 518 m), 2 km above Trishuli Bazaar and 5 km below the
+Betrawati gorge mouth, looking north-north-east up the reach: the bend and
+gravel bar at km 74 are 700 m away (bearing 30°), the wide floor at km
+73.5 is 1.3 km away (39°), the gorge mouth at km 70 is 4 km away on the
+skyline. So the frames read as measurements:
+
+| quantity | from the video | from the map and DEM at km 73–75 |
+|---|---|---|
+| the floor that flooded | covered by ~100 s, i.e. ~70 s after the front | km 73.5: 496 m wide at +5 m, 512 at +10, 720 at +20; km 74.0: 1,016 m at +20 — a low, wide floor on the west bank |
+| depth at the end of the clip (260 s) | over the floor, at the village's edge; not to the camera | camera 44 m up; fitted peak stage 28.5 m (km 74–75), 21–24 at km 72–73 — the clip is the first four minutes of a rise to ~25 m |
+| front speed | appears at km 72–73 at ~30 s, fills the channel at the camera (km 74.5) at ~60 s: 1–2 km in ~30 s, **≥ 30 m/s** | plausible for a 25 m bore (√(gh) ≈ 16 m/s plus the flow); the model's near-miss front here is ~11 m/s |
+| what follows | — | Betrawati 09:20 → Galchhi ~11:00 averages 6 m/s |
+
+**New observable for v12: the rise curve at km 74.8** — floor (+5 m)
+covered ~70 s after the front, ~10–15 m at four minutes, ~25 m at the
+peak — and a front speed ≥ 30 m/s at km 73–75. The flood was FASTER than
+the model at Betrawati and far slower after it: the signature of a wave
+that spreads over floors like this one and loses its energy there, which
+is the physics v12 adds (floodplain conveyance below Betrawati). Clip
+continuity still to confirm with Dave; the sat-image pair of the reach is
+in `output/cache/insets/zoom_A_km69-77.png` (Sentinel-2 NDVI, open data).
