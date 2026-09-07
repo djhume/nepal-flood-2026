@@ -2840,6 +2840,10 @@ asks. The retraction history is a record, not a claim on anyone. Saying that no
 Nepali scientist has read this is a caveat on our own work. And §13 "What would
 change our mind" is about our model, not about anybody else.
 
-**Note for the next session:** `outreach/gift-note.md` names four people who
-did not ask to be named and now has no purpose. Flagged in `PUBLISHING.md`,
-not deleted — that is Dave's call.
+**Done the same evening:** `outreach/gift-note.md` **deleted** on Dave's
+instruction — no outreach is happening, so the note had no purpose, and it
+named four people who did not ask to be named. It remains in the git history;
+purging that would need a `filter-repo` rewrite, which is a separate call.
+`outreach/` still holds `dhm-data-request.md` (a data request to DHM) and
+`warning-concept-note.md`. Both are asks under this rule, neither was ever
+sent, and both are flagged in `PUBLISHING.md` for a decision.

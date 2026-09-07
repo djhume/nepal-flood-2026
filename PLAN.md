@@ -994,7 +994,7 @@ accountability signature) but participation does not.
 Prepared this session: `LICENSE` (MIT code / CC-BY-4.0 prose / third-party data
 under its own terms, plus an explicit no-operational-warning-use clause);
 `README.md` rewritten so a stranger can reproduce everything;
-`DATA-SOURCES.md`; `outreach/gift-note.md` with the note, a four-name recipient
+`DATA-SOURCES.md`; `outreach/gift-note.md` (DELETED 8 Sept — see below) with the note, a four-name recipient
 list and a release checklist.
 
 **NOT SENT.** Checklist to clear first (full version in gift-note.md): build
@@ -1519,3 +1519,24 @@ to the front. The new volume observable earned its place immediately: the
 Devghat peak is 13 % HIGH while the volume under it is 64 % LOW and it
 arrives at 600 min against an observed 443. Too peaky, too short, too late
 — a diagnosis no peak-height test could have produced.
+
+**8 Sept evening — no telling, no asking (dossier §26j; voice rule 7).**
+Dave: *"I do not want to tell anyone anything or ask anything of anyone
+either."* Site v14 / plain v13 / report v14. "What would help most" became
+"What is missing from this analysis" on both pages — the same four facts
+(DHM gauge records, hydropower SCADA, stereo imagery, CWC archive) stated
+as limits on what we can conclude, with "we do not have them, and we have
+not asked for them". Every recommendation removed: "Warning systems should
+know that"; the seismometer-to-siren line; the hydropower prescriptions
+(tripwires, egress alarms, fail-safe gates); "recovering those records
+would do more … than any instrument that could be deployed now"; "a much
+cheaper gap to close than new monitoring hardware". The appeal for a Nepali
+reviewer became a statement that none has read it. The four planned emails
+are cancelled. **`outreach/gift-note.md` deleted** on Dave's instruction —
+it named four people who did not ask to be named and had no purpose once
+the outreach stopped; it is still in the git history, and purging that
+would need a `filter-repo` rewrite (a separate decision).
+`outreach/dhm-data-request.md` and `outreach/warning-concept-note.md` are
+the same category, unsent, and flagged in `PUBLISHING.md` for a call.
+Kept: the licence (grants rather than asks), the retraction history (a
+record), and §13 (about our own model).

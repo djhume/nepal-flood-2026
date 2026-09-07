@@ -40,10 +40,14 @@ emails sent.**
       release. Redistribution terms unverified. Decide: link to the source
       instead of redistributing, or confirm terms with DHM.
 - [ ] **`data/198_discharge.csv`** — same question, DHM data.
-- [ ] `outreach/gift-note.md` names four people we once intended to contact.
-      **No outreach is happening (Dave, 8 Sept — see below), so this file has
-      no purpose and names people who did not ask to be named.** Decide
-      whether to delete it.
+- [x] **`outreach/gift-note.md` deleted** (Dave, 8 Sept). No outreach is
+      happening, so the note had no purpose, and it named four people who did
+      not ask to be named. Note that the file remains in the git history;
+      purging it would need a `git filter-repo` rewrite of the kind already
+      done once for binaries, which is a separate decision.
+      **Still in `outreach/`: `dhm-data-request.md`, a data request to DHM,
+      and `warning-concept-note.md`. Both are asks under the 8 September rule
+      and neither was sent. Decide.**
 - [x] **No Nepali scientist has read this.** It remains the largest gap in the
       work. The site states it as a limitation of the analysis rather than as
       a request, which is where it now stays.
