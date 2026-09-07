@@ -107,6 +107,12 @@ TAU_Y0, RHO_MIX = 400.0, 1800.0   # Bingham yield stress at saturation, Pa;
                                   # mixture density used in tau_y/(rho g h)
 U_DEP, T_DEP = 1.0, 120.0         # stranding: slow + granular -> bed
 FR_MAX = 2.0
+XI = None               # Voellmy turbulent-drag coefficient, m/s^2. None = off
+                        # (bit-identical to every published run). Ensemble v7
+                        # samples it 100-2,000: the friction slope v|v|/(XI h)
+                        # is the resistance that SURVIVES depth, which Manning's
+                        # n^2 v|v|/h^(4/3) does not — v6 showed a 100 Mm3
+                        # release running as a frictionless bore (dossier §20).
 
 
 def mu_dry_scheidegger(V_m3):
@@ -261,6 +267,8 @@ def step(st, R, dt, mu_dry, w_sat=W_SAT, mu_wet=MU_WET, side_valleys=True,
     num = Qi + dt * (G * Af * Sf - conv)
     den = (1.0 + G * dt * nf ** 2 * np.abs(Qi) / (Af * hfe ** (4 / 3))
            + K_loc * dt * np.abs(Qi) / (2.0 * Af * DX))
+    if XI is not None:                       # Voellmy turbulent term (v7)
+        den = den + G * dt * np.abs(Qi) / (XI * Af * hfe)
     Qi = num / den
     Qi = np.sign(Qi) * np.maximum(np.abs(Qi) - mu_i * G * Af * dt, 0.0)
     Qcap = FR_MAX * Af * np.sqrt(G * hfe)

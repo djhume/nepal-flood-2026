@@ -1358,3 +1358,22 @@ flow needs resistance that survives depth. **v7 = add a sampled Voellmy ξ
 (100–2,000) to the friction law and re-score.** Volume and rheology come out
 together or not at all. Widths from the map are 1.5–3× WIDER than the rule —
 the width suspect for the stage failures is dead.
+
+**v7 AND v8 RAN (7 Sept afternoon) — 0 of 200 each (dossier §21).** v7 =
+v6 + Voellmy ξ (100–2,000) + border K (1–10); v8 = v7 + the Lhende's mapped
+width (A/stage 95–189 m at km 12–20 vs the model's 50) as a sampled factor
+0.3–1.0. The sanity run located the clock ABOVE the junction: a 100 Mm³
+release runs the model's 50 m Lhende as a 200 m slug, and both the Froude
+cap and the Voellmy terminal speed scale with √h. Result: the pair v6 could
+never make — gorge depth AND border clock — now exists (2 runs in v7, 6 in
+v8, all V ≥ 100, ξ 100–600, wide Lhende). What a uniform ξ breaks is the
+lower river: below ξ ≈ 400 it stalls (Galchhi met by 7–8 runs vs 37 in v6);
+above, the gorge speed is right but Galchhi is 12–18 m vs ≤ 9.9. The near
+miss at V 101 / ξ 593 gets the held-out Malekhu and Kalikhola clocks within
+5–10 % and fails only Galchhi (16 m) and Syabrubesi stage by 3 m. **Next,
+for Dave's decision: v9 = composition-dependent drag** (scale the Voellmy
+term by the coarse-solids fraction the engine already carries; no new
+input), then Galchhi with a floodplain width. Also found: v6's width filter
+read the outlier columns as text, so Pelican widths never applied (≤ 30 %
+locally; Hakubesi has no width station either way) — fix in the next
+geometry revision, not mid-series.

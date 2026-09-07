@@ -1634,3 +1634,189 @@ posterior on (V, ξ, μ, f_fine) is the number. Logged; nothing promoted;
 finding 04 stays "under revision, moving up".
 
 **Held-out check:** not run (nothing passed).
+
+## 21. ENSEMBLE v7 AND v8 — a resistance that survives depth, and the Lhende's width (7 Sept, afternoon)
+
+**v7 = v6 + two inputs** (`calcs/ensemble_v7.py`; PLAN §10, §20's closing
+paragraph). (i) A Voellmy turbulent-drag coefficient ξ, log-uniform
+100–2,000 m/s², as a friction slope v|v|/(ξh) applied in the same
+semi-implicit step as Manning and the Coulomb dial (`core.XI`, default off ⇒
+every published table reproduces; regression: sample 0 of the v5 ensemble
+returns 5.583 / 10.833 / 73.179 / 1.713 / 26.273 to three decimals with the
+switch off). This is the term Manning lacks: n²v²/h^{4/3} vanishes at 70 m,
+v²/ξh does not (at h = 70, n = 0.055, ξ = 500 the Voellmy resistance is 2.7×
+Manning's; at ξ = 100, 14×). Rock–ice avalanche back-analyses give ξ of
+order 300–2,000 (Sosio et al. 2012 fit 1,000–2,000 on ice; Chamoli and Kolka
+fits lower). (ii) The border node's minor-loss coefficient K, uniform 1–10
+(was a fixed 3): Dave's point (7 Sept) that the junction was a turbulence
+event of a different order from the gorge above it. Same eleven observables,
+same widths, pond, clock and held-out set as v6.
+
+**Sanity on v6's deepest near-miss (V 99.6 Mm³, w0 0.81, f_fine 0.79):**
+
+| ξ (m/s²) | K | border (min) | v_gorge (m/s) | gorge (m) | Hakubesi (m) | Galchhi (m) | deposit (Mm³) | met |
+|---|---|---|---|---|---|---|---|---|
+| off | 3 | 4.6 | 53 | 72 | 49 | 16.3 | 8.7 | 8/11 |
+| 2,000 | 3 | 4.6 | 50 | 69 | 44 | 15.8 | 8.7 | 8/11 |
+| 500 | 3 | 4.6 | 32 | 68 | 45 | 16.1 | 8.6 | 8/11 |
+| 200 | 3 | 5.2 | 20 | 66 | 46 | 5.8 | 8.4 | 8/11 |
+| 200 | 8 | 5.2 | 20 | 65 | 45 | 4.5 | 8.4 | 8/11 |
+
+Observed: border 7.68 [5.4–10.0]; v_gorge ~34 [22–46]; gorge 73 [59–99];
+Hakubesi 68 [42–85]; Galchhi 7.4 [3.5–9.9]. So ξ does what §20 asked of it
+in the gorge — ξ = 500 takes the section-mean speed from 53 to 32 with the
+depths barely moved, and ξ = 200 drops Galchhi into its window — but the
+border clock hardly answers (4.6 → 5.2), and K does nothing that matters.
+
+**Where the clock is set.** Front arrival, segment speed and peak depth for
+that sample along the first 32 km:
+
+| km | arrival ξ off (min) | speed (m/s) | h_max (m) | arrival ξ 200 | speed | h_max |
+|---|---|---|---|---|---|---|
+| 2 | 0.33 | 73 | 209 | 0.33 | 73 | 229 |
+| 6 | 1.50 | 67 | 207 | 1.50 | 67 | 223 |
+| 10 | 2.33 | 80 | 205 | 2.42 | 67 | 219 |
+| 14 | 3.08 | 80 | 201 | 3.25 | 80 | 213 |
+| 18 | 3.83 | 86 | 191 | 4.08 | 80 | 180 |
+| 22 | 4.58 | 80 | 291 (node) | 5.17 | 57 | 185 |
+| 24 | 5.00 | 80 | 80 | 5.83 | 50 | 76 |
+| 28 | 6.17 | 57 | 68 | 8.00 | 31 | 67 |
+| 32 | 7.33 | 57 | 74 | 10.67 | 25 | 61 |
+
+A 100 Mm³ release runs the model's Lhende as a slug **~200 m thick**,
+because that reach is **50 m wide** in the model (the rule of thumb above
+km 34; v6's measured widths start at km 22.8). At 200 m both limits on the
+front speed scale with √h — the Froude cap 2√(gh) = 89 m/s, the Voellmy
+terminal speed √(ξh(S−μ)) ≈ 63 m/s at ξ = 200 — so the front covers the
+22 km in 4.6–5.2 min however ξ is set. Below the junction, at 60–80 m, the
+same ξ halves the speed. **The clock is a geometry problem above the
+junction, not a rheology problem in it.**
+
+**The Lhende's width from the map (§19).** The mapper found a section area
+at only 9 of its 276 Lhende stations (all `s2chg`, 10 m; km 12.2–20.0):
+stage 86–177 m, area 15,000–25,000 m², equivalent width A/stage **95–189 m**,
+median ~170. Two are outlier-flagged and dropped; five are one-bank reads at
+side-valley mouths whose A/stage sits inside the same range and are kept
+(the reach has nothing else); seven survive, km 12.2–20.0, median 174 m.
+Below km 20 the last value (96 m) is held to 22.8 where v6's 120 m gorge
+takes over. Caveat that makes this a sampled input rather than a fix: these
+are avalanche trimlines (§19 flagged the Lhende marks as run-up, not flood
+stage), so A/stage at the trimline overstates the width at the flow's real
+depth in a V-shaped section — for a section with A ∝ h^1.5, the equivalent
+width at a third of the trimline height is ~0.6× the trimline value.
+
+**v8 = v7 + f_wl** (`calcs/ensemble_v8.py`): a ninth input, log-uniform
+0.3–1.0 × A/stage on km 12–22.8, ramped from the model's 50 m over km 6–12.
+Sanity on the same deep sample:
+
+| ξ | f_wl (Lhende width) | border (min) | v_gorge | gorge | Syabrubesi | Hakubesi | Galchhi | deposit | met / failed |
+|---|---|---|---|---|---|---|---|---|---|
+| off | 1.0 (~170 m) | **5.7** | 47 | 57 | 58 | 44 | 17.0 | 9.2 | 7 — v_gorge, gorge, Syabru, Galchhi |
+| off | 0.5 | 4.9 | 51 | 66 | 61 | 47 | 16.4 | 8.9 | 8 — clock, v_gorge, Galchhi |
+| 300 | 1.0 | **6.2** | 22 | 59 | 56 | 44 | 16.1 | 9.0 | **9 — Syabru, Galchhi** |
+| 300 | 0.5 | 5.2 | 24 | 64 | 57 | 45 | 16.0 | 8.7 | 8 — clock, Syabru, Galchhi |
+| 300 | 0.3 | 4.8 | 25 | 66 | 59 | 46 | 15.7 | 8.5 | 8 — clock, Syabru, Galchhi |
+| 150 | 0.5 | 6.2 | 17 | 63 | 58 | 45 | 0.1 (stalls) | 8.5 | 8 — v_gorge, Syabru, Galchhi |
+
+The wider Lhende alone puts the clock inside its window (5.7 min, thinner
+and slower above the junction); with ξ = 300 the deep sample meets nine of
+eleven, failing only the Syabrubesi stage (56 vs 59–82) and Galchhi (16 vs
+≤ 9.9 — this V is too big for the lower river). Whether a smaller V with the
+same rheology closes both is what the 200 samples are for.
+
+**A v6 defect found on the way.** `trimlines.csv` stores `outlier_L/R` as
+the strings "0"/"1" on the change and Pelican layers (blank on the plain
+`s2` layer); v6's `trimline_widths()` tests the field as a truthy string, so
+every "0" row was dropped and its "Pelican first" preference never applied:
+v6's widths below the junction came from 18 stations (11 `s2`, 5
+`pelican0827`, 2 `s2chg`) where the corrected test gives 25 (12 `s2chg`, 4
+`pelican0901`, 3 `pelican0827`, 6 `s2`). Reach medians move little (km
+22.8–35.6: 133 → 132 m; 35.6–40: 105 → 137; 46–70: 164 → 169; 70–108: 267 →
+221) and **km 40–46 (Hakubesi) has no width station under either filter** —
+its width is interpolated across from km 40 and 46. v6, v7 and v8 all run on
+the as-built v6 widths below km 22.8 (v8 changes only the Lhende), so the
+three are like-for-like; the corrected filter goes into the next geometry
+revision, not into a running ensemble. Not a retraction of §20: nothing in
+its diagnosis depended on a 30 % width.
+
+**Results: v7 and v8, 200 samples each** — filled in below when the runs
+finish (both launched 7 Sept afternoon, ~40 min each, in parallel).
+
+**RESULTS (7 Sept, late afternoon). v7: 0 of 200. v8: 0 of 200.** Full
+tables `output/ensemble_v7_RESULTS.md`, `output/ensemble_v8_RESULTS.md`;
+samples `calcs/ensemble_samples_v7.npy` (8 priors + 11 + n_ok) and `_v8.npy`
+(9 priors + 11 + n_ok). 200 LHS samples each, 36 min each, run in parallel.
+
+| met singly (of 200) | v6 | v7 (+ξ, K) | v8 (+ Lhende width) |
+|---|---|---|---|
+| border clock 7.68 ±30 % | 64 | 64 | 63 |
+| Syabrubesi clock | 77 | 46 | 38 |
+| v_gorge 34 ±35 % | 37 | 23 | 21 |
+| gorge stage 59–99 | 20 | 18 | 17 |
+| Syabrubesi stage 59–82 | 10 | 15 | 11 |
+| Hakubesi 42–85 | 25 | 24 | 22 |
+| to Betrawati | 22 | 18 | 19 |
+| Betrawati–Galchhi | 18 | 20 | 19 |
+| Galchhi 3.5–9.9 | 37 | 7 | 8 |
+| deposition ≤ 12 | 140 | 142 | 141 |
+| **border clock AND gorge stage** | **0** | **2** | **6** |
+| best run, observables met | 8 | 9 | 9 |
+
+**What moved.** The one pair that v6 could not produce at any size — the
+mapped gorge depth and the border clock together — now exists: 2 runs in v7,
+6 in v8, all with V ≥ 100 Mm³ (100–182), ξ 108–593 and, in v8, a Lhende at
+0.54–0.96 of the trimline width. Among deep runs (V ≥ 60) the median border
+arrival is 5.1 min at f_wl 0.3–0.45, 5.2 at 0.45–0.7 and **6.2 at 0.7–1.0**;
+by ξ it is 6.3 at ξ 100–200 and 4.7–5.2 above. So both levers act on the
+clock as the sanity runs said, and the wide Lhende is the larger one.
+
+**What a uniform ξ breaks.** Galchhi: met by 37 runs in v6, 7–8 in v7/v8.
+Below ξ ≈ 400 the lower river stalls — median Galchhi stage 0.1–0.2 m in
+every volume class under 100 Mm³, because a drag sized for a 70 m debris
+flow in a gorge leaves a 10 m muddy flood on a 0.5 % slope with a terminal
+speed of a few m/s. Above ξ ≈ 400 the gorge speed comes right (v_gorge
+33–36 m/s at ξ 400–2,000 vs 16–21 below) but Galchhi is 12–13 m at the
+volumes the gorge needs. The three v8 runs at 9 of 11 are the bracket:
+
+| V (Mm³) | ξ | K | f_wl | border | v_gorge | gorge | Hakubesi | Galchhi | fails | held out (10 h): Malekhu / Kalikhola / Devghat |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 115 | 873 | 6.3 | 0.59 | 4.9 | 39 | 68 | 49 | 17.9 | clock, Galchhi | 118 / 299 min; 4,806 m³/s at 454 min |
+| 142 | 157 | 9.3 | 0.90 | 6.3 | 19 | 82 | 61 | 8.9 | v_gorge, erosion (10.7) | **never reaches Devghat in 10 h** (886 m³/s at 600; its 78/97 min "arrivals" are the precursor ripple) |
+| 101 | 593 | 1.5 | 0.78 | 5.5 | 29 | 62 | 44 | 16.0 | Syabrubesi stage (56 vs 59), Galchhi | **155 / 302 min** (obs 163 / ~337); Devghat 3,537 and rising at 600 |
+
+Observed held-out: Malekhu 163 min, Kalikhola ~337, Devghat ~2,900 m³/s
+excess. The ξ ≈ 600 run gets the two lower clocks within 5–10 % without
+being scored on them; the ξ ≈ 150 run that makes the gorge depth and the
+border clock kills the lower river. **The gorge wants ξ of order 500–900;
+the lower river wants none.** That is not a contradiction in the data, it is
+the statement that the flow was a debris flow in the gorge and a muddy flood
+below Betrawati, and one drag coefficient cannot be both.
+
+**What is left at V ≈ 100, ξ ≈ 600.** Two misses: Syabrubesi stage 56 vs a
+floor of 59 (3 m, inside the map's own error), and **Galchhi 16 m vs a
+ceiling of 9.9** (gauge +9). The lower river receives too much. With the arm
+holding 23 Mm³ and deposition capped at 12, a 100 Mm³ release still sends
+~65 Mm³ past Betrawati into a single-channel model with no floodplain; the
+Trishuli below Betrawati has one. Either the loss between the gorge and
+Galchhi is larger than the model allows (floodplain storage, more deposition
+than the 45 %-coverage DEM saw, more up the arm), or V is smaller than 100
+and the gorge stage is made by a slower, deeper flow than ξ = 600 gives —
+which points the same way as the composition question.
+
+**Next (v9), not built:** make the drag composition-dependent instead of
+adding another input — scale the Voellmy term by the coarse-solids fraction
+the engine already carries at each face (1 − (w + f), the argument of
+`mu_of_w`), so a solids-rich flow in the gorge carries the resistance and
+the diluted flood below Betrawati reverts to Manning. One switch, no new
+prior; ξ then means the debris-flow coefficient (literature 300–1,000),
+which is where the gorge put it. The transparent alternative is a second ξ
+for the reach below km 70. Then look at Galchhi with a floodplain width. This
+is Dave's call — three structural changes in one afternoon is where "adding
+physics" starts to look like "searching for a pass", and the rule (PLAN §6a)
+is that the next version is argued for on the page before it runs.
+
+**Standing:** nothing promoted. Finding 04 stays "under revision, moving
+up". The direction of every version since v6 is the same: the release that
+leaves the mapped mud lines is of order 100 Mm³ in this model, and the model
+still cannot carry that volume through both the gorge and the lower river
+with one rheology.

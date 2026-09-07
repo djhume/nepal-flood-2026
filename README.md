@@ -91,8 +91,12 @@ source is here and the licence permits it.
    was (`calcs/ensemble_v6.py`, the trimline map's profile as observables) and
    **0 of 200 pass**: the runs deep enough for the mud lines are 86–142 Mm³ and
    arrive 1.6× too early at 1.5× the speed. Structural — the friction law has
-   no resistance at depth. v7 adds a sampled Voellmy ξ (report §12b, dossier
-   §19–20).
+   no resistance at depth. **v7 and v8 (7 Sept afternoon)** added a sampled
+   Voellmy ξ, a fitted border junction loss and the Lhende's mapped width
+   (`calcs/ensemble_v7.py`, `_v8.py`): 0 of 200 each, but the pair v6 could
+   never make — mapped gorge depth and border clock together — now exists at
+   V ≥ 100 Mm³; a single drag coefficient cannot serve the gorge and the
+   lower river at once (report §12b, dossier §19–21).
 5. **The single-phase model was falsified, then fixed.** With entrainment built
    (`model/ENTRAINMENT.md`, literature constants, nothing fitted) the model tears
    3.8 Mm³ out of the corridor against 3.2 measured by stereo DEM — but the same

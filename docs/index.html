@@ -462,6 +462,37 @@ while four of its gauges were being destroyed.</p>
 
 <h2>What changed recently</h2>
 <div class="log">
+  <div><span class="d">7 September 2026 — afternoon</span>
+  <strong>Two more versions of the size test, and the failure has moved to a
+  more interesting place.</strong> The midday result said a release deep enough
+  to leave the mud lines runs the gorge as a frictionless bore. So the model
+  was given a turbulent-drag term of the kind used for rock–ice avalanches, as
+  a sampled input alongside the others, and the loss at the border junction
+  was fitted rather than assumed. On the deepest near-miss that fixed the gorge
+  speed at once and did nothing to the clock — and the reason turned out to be
+  above the junction, not in it. The model's Lhende valley was 50 metres wide,
+  a rule of thumb; the mud-line map has it at 95 to 190 metres over the ten
+  kilometres above the border. In a 50 m channel a hundred-million-cubic-metre
+  release runs two hundred metres thick, and at that depth every limit on its
+  speed scales with the square root of the depth. So a third version added
+  the mapped width as a sampled input. Both versions still pass nothing — zero
+  of two hundred, twice — but the pair the midday run could never produce at
+  any size, the mapped gorge depth and the border clock together, now exists:
+  six runs, all a hundred million cubic metres or more. What one drag
+  coefficient cannot do is serve the gorge and the lower river at once. Sized
+  for a seventy-metre debris flow it stalls the muddy flood below Betrawati;
+  sized for the lower river it leaves the gorge too fast. The nearest miss, a
+  hundred million cubic metres with the gorge's drag, reaches Malekhu and
+  Kalikhola within five to ten per cent of the observed times without being
+  scored on them, and fails only by putting sixteen metres of water at Galchhi
+  where the gauge saw nine. Next, and it is Dave's decision, not the
+  session's: make the drag depend on how much rock the flow is carrying, which
+  the model already tracks, so the gorge and the lower river stop asking for
+  different physics. Finding 04 is unchanged: under revision, moving up. Also
+  found and logged: a text-versus-number slip in the width filter of the
+  midday run that kept the sharpest imagery out of it; it moves widths by less
+  than a third and nothing in the midday diagnosis depended on it. Dossier
+  §21; output/ensemble_v7_RESULTS.md and _v8_.</div>
   <div><span class="d">7 September 2026 — midday</span>
   <strong>The size envelope was re-run against the mud-line map, and nothing
   passes — which is the most useful result this project has had.</strong> Two
@@ -744,11 +775,16 @@ inner–outer bank difference at bends, and a peak-stage and discharge profile
 for the whole upper corridor. It was gated on the three mud lines at the border
 junction and on the Hakubesi line, and it returned them (entry above; dossier
 §19; <code>output/trimlines.csv</code>). These are the water depths this analysis
-has never been scored against. <strong>Second, and next, the ensemble re-run
-with those depths as observables</strong>, the Chinese arm modelled as a
-backwater pond at the level the map found, the corrected clock and a properly
-specified border speed. That run is what turns "our number is moving up" into
-a number. Results go to the changelog first, as the rule above requires.</p>
+has never been scored against. <strong>Second, the ensemble re-run with those
+depths as observables</strong> — done three times on 7 September, and failed
+three times (entries above). The failures are the finding for now: the depths
+need a release of order a hundred million cubic metres in this model, the
+model can now carry that volume through the gorge at the observed speed and
+reach the border on time, and it cannot yet carry it through the lower river
+with the same drag. The next version, argued for in the changelog and waiting
+on a decision, lets the drag follow the flow's rock content. Results go to
+the changelog first, as the rule above requires; finding 04 will move when a
+version passes and survives a night.</p>
 
 <h2>What would help most</h2>
 <div class="asks">
@@ -797,7 +833,7 @@ is useful and something in it is wrong, we would rather be told than cited.</li>
 
 <footer>
 Independent analysis by <strong>Dave Hume</strong>, carried out with Claude
-(Anthropic) as a research assistant. Version 8, 6 September 2026 (night) — findings and
+(Anthropic) as a research assistant. Version 9, 7 September 2026 (afternoon) — findings and
 casualty figures are as reported at that date and will change. Code, data and
 the full evidence dossier, with every contested number flagged at the point of
 use, are kept in the project repository. Corrections are welcome and will be
