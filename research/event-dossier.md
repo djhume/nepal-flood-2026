@@ -7,7 +7,7 @@ Numbers marked **[soft]** are single-source or contested — see §11.
 
 | Time (NPT, 26 Aug) | Event | Source |
 |---|---|---|
-| 08:20 | M2.6 tremor near Rasuwagadhi — 17 min before collapse **[soft — Wikipedia timeline only; possible precursor]** | [Wikipedia Timeline](https://en.wikipedia.org/wiki/Timeline_of_the_2026_Nepal_floods) |
+| 08:20 | M2.6 tremor near Rasuwagadhi — 17 min before collapse **[CONFIRMED 8 Sept: in the FFD press release of 27 Aug, attributed to the Dept of Mines and Geology — see §26b. Precursor; supports the staged-release hypothesis of §26d]** | [Wikipedia Timeline](https://en.wikipedia.org/wiki/Timeline_of_the_2026_Nepal_floods) |
 | 08:37 (02:52:10 UTC) | Collapse on north flank of Langtang Lirung. USGS reclassified the seismic event from M4.4 tectonic to **M5.2 landslide-generated** (id `us7000tbwb`); GFZ recorded Mw 5.7 "consistent with a landslide" | [USGS](https://www.usgs.gov/programs/landslide-hazards/science/2026-nepal-debris-avalanche-and-flash-flood), [EarthSky](https://earthsky.org/earth/nepal-flash-flood-glacier-collapse-landslide-aug-26-2026/) |
 | 08:40 | Syabrubesi DHM station: Bhote Koshi stage 1.62 m (normal); transmission ceases 08:50 | Wikipedia Timeline |
 | 08:44 | CCTV captures destruction beginning at Gyirong Port — ~20 km in ~7 min (~180 km/h). **Hardest arrival datum.** | Wikipedia Timeline |
@@ -686,7 +686,7 @@ Aggregate: 431 MW off grid; 13 projects (748 MW) damaged, ~Rs 145 bn build cost 
 
 ## 10. Data availability for modeling
 
-- **Seismic:** USGS `us7000tbwb` (waveforms via IRIS); GFZ Mw 5.7; Ms 4.2 secondary +3 h; 08:20 M2.6 **[soft]**; Chinese stations Jilong (~12 km) and Zhangmu. No force-time inversion published — doing one would independently constrain source mass.
+- **Seismic:** USGS `us7000tbwb` (waveforms via IRIS); GFZ Mw 5.7; Ms 4.2 secondary +3 h; 08:20 M2.6 **[confirmed — FFD release, §26b]**; Chinese stations Jilong (~12 km) and Zhangmu. No force-time inversion published — doing one would independently constrain source mass.
 - **Gauges (DHM/FFD):** Syabrubesi (last 08:40), Betrawati stn 447 (long record; last 09:20), **Galchhi (survived, full record)**, Malekhu, Devghat. Full FFD technical report worth obtaining from DHM.
 - **Imagery:** Planet pre/post (Shugar's Bluesky compilations); Sentinel-2 12/24/27/29 Aug ([ESA](https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2/Nepal_flash_flood_imaged_by_satellites)); Landsat-9 ~2 h post; WorldView-3 stereo (geopera trimline/superelevation method + 1 Sept correction); Gyirong CCTV 08:44; the drone video of the collapse.
 - **DEMs:** Copernicus GLO-30; HMA 8 m (NSIDC); SRTM.
@@ -2355,26 +2355,77 @@ from mud lines. That makes this project complementary rather than duplicative
 — and it means we should say so plainly, and cite them, when the analysis is
 published.
 
-### 26b. DHM's excess volume — a NEW integral observable
+### 26b. DHM's excess volume — ~~a NEW integral observable~~ **CORRECTED 8 Sept (midday): not new, not a volume balance, and not 19.96**
 
-The Flood Forecasting Division report (27 Aug), as relayed by NESRA
-FloodWatch and Nepali press: Devghat peak stage **6.57 m at 16:00 NPT**,
-peak discharge **~5,850 m³/s**, and — the new number — an estimated
-**additional flood volume of 19.96 Mm³** through the Bhote Koshi–Trishuli–
-Narayani system.
+**Written first, wrongly, as:** *"The FFD report (27 Aug), as relayed by NESRA
+FloodWatch and Nepali press: Devghat peak stage 6.57 m at 16:00 NPT, peak
+discharge ~5,850 m³/s, and — the new number — an estimated additional flood
+volume of 19.96 Mm³ ... a volume balance the ensemble has never been scored on,
+and in tension with a release of 110–175 Mm³ ..."* Left in place because the
+correction is the point.
 
-That is a **volume balance the ensemble has never been scored on**, and it
-is in tension with everything we have: a release of 110–175 Mm³ that
-delivers only ~20 Mm³ of excess past Devghat has lost 85–90 % of itself en
-route. Some of that is real and expected (the arm's 23 Mm³, deposition,
-unmelted ice still stranded on 26 August, floodplain storage of the kind
-§25's video shows). **Caveats before anyone uses it as an observable:** the
-report is a 27 August provisional; "additional flood volume" is not defined
-in what we can see (over what baseflow, over what window, at which
-station); and it may be an excess-hydrograph integral at Devghat alone. But
-if it survives scrutiny it is the strongest constraint yet on where the
-flood went, and it points the same way as the Galchhi conflict of §24:
-**most of this event never reached the lower river as water.**
+**What happened.** The sweep took the figure from a monitoring newsletter and
+the press rather than the source, and did not check the project's own records.
+The source document has been in `data/ffd_report.pdf` since 2 September
+(9.6 MB, 2 pages, scanned Nepali, iOS Quartz PDFContext, created 27 Aug 2026
+17:04 NZST); dossier §12 and report §07 have carried its correct reading since
+the site's first published version.
+
+**Read in the original, 8 Sept midday** (no text layer; `pdfimages -png`, read
+as images). Page 2, first paragraph, verbatim:
+
+> देवघाटमा मापन भएको बहाव विश्लेषण गर्दा १४:१० देखि १८:०० बजेसम्म आधार बहाव भन्दा
+> अतिरिक्त बाढीजन्य पानीको आयतन करिब २ करोड घनमिटर रहेको प्रारम्भिक आंकलन गरिएको छ।
+
+"On analysis of the flow measured at Devghat, from 14:10 to 18:00, the volume of
+flood water additional to the base flow is preliminarily estimated at
+approximately 2 crore cubic metres."
+
+| the claim | what the source says |
+|---|---|
+| "19.96 Mm³" | **करिब २ करोड** — *approximately* 2 crore = ~20 Mm³, ONE significant figure. The 19.96 is not in the document; it is precision added downstream of it. |
+| "through the Bhote Koshi–Trishuli–Narayani system" | **देवघाटमा मापन भएको बहाव** — the flow measured **at Devghat**. One gauge. |
+| an integral volume balance | **आधार बहाव भन्दा अतिरिक्त**, **१४:१० देखि १८:०० बजेसम्म** — above base flow, over a stated 3 h 50 min window. A windowed gross excess at the bottom station. |
+| a firm figure | **प्रारम्भिक आंकलन** — preliminary estimate. |
+
+**So it CANNOT be a volume-balance observable.** A windowed gross excess at
+Devghat counts redistributed channel water that arrived inside the window,
+misses the tail after 18:00, and is silent on deposition, ponding and unmelted
+ice upstream. Setting it against a 110–175 Mm³ release is a category error, and
+§07's gross-vs-net argument already says why. **The "85–90 % lost en route"
+tension of the first draft does not exist.**
+
+**It CAN be a hydrograph-shape observable, and that is genuinely new.** ~20 Mm³
+above base between 14:10 and 18:00 fixes the area under the excess hydrograph
+at Devghat over a stated window: mean excess ~1,450 m³/s, and against a peak
+excess ~2,900 that is a roughly triangular wave of known width. **Every version
+v1–v10b has been scored on the HEIGHT of the Devghat peak and never on its
+WIDTH** — and width is exactly what floodplain conveyance changes. Score it
+loosely at one significant figure (accept 10–40 Mm³) as the source states it.
+Added to v12 as `devghat_vol`.
+
+**Also in the document, and worth more than the volume was.** Page 1, from the
+Department of Mines and Geology: **M2.6 near the Rasuwagadhi border at 08:20
+NPT and M4.4 at the same place at 08:37** — a precursor 17 minutes ahead, in an
+official Nepali record, independently of §26d's CAS report of signals at
+08:15–08:19. The dossier had this at line 10 marked *"[soft — Wikipedia
+timeline only]"*; it is not soft, it is in the FFD release. Two independent
+records now support the staged-release hypothesis. Page 1 also gives the
+station-by-station chronology the model is scored against — Rasuwagadhi (1 km
+below the border) last stage 1.62 m at 08:40 then swept away; Syabrubesi (9 km)
+3.5 m at 08:50 then swept away; Betrawati (36 km) 3.55 m at 09:20; Malekhu
+(Phurke) warning 7 m at 11:20, danger 8 m at 11:40, max **10.48 m** then swept
+away; Kalikhola (near Mugling) danger 12.1 m at 14:14, max **12.35 m**; Devghat
+arrival 15:20, max 6.57 m at 16:00. Our held-out arrivals (Malekhu 163 min,
+Kalikhola 337 min after 08:37) reproduce 11:20 and 14:14 exactly, which is
+where they came from. Page 2 gives the FFD's source coordinate N 28°16'50",
+E 85°32'15.45" and calls it a snow avalanche (हिमपहिरो) — already at dossier
+line 722.
+
+**Rail invoked.** This is the failure mode [[dave-corrects-the-model]] names:
+confident perception of a secondary source, not arithmetic. A sweep must check
+`data/` and the dossier before logging anything as NEW. Published as a
+correction on all three pages rather than dropped.
 
 ### 26c. Boulder competence — a third velocity, in the deposit reach
 
