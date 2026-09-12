@@ -2953,3 +2953,76 @@ The routing model is load-bearing only for finding 03 and for **finding 04,
 the one that has never worked**. The model became central when we asked it to
 invert for the collapse volume, which is a far harder question than the one
 the project set out to answer. Worth holding on to while the restructure runs.
+
+## 29. LEADS FROM WILLSEY'S 11 SEPTEMBER VIDEO — unverified, logged not acted on (12 Sept)
+
+Dave sent a summary of **"Nepal Disaster Analysis: How Much Rock and Ice Came
+Down?"** — Shawn Willsey, published 11 Sept 2026
+(youtube.com/watch?v=SFtA0qOsdio). Title, channel and date verified via the
+oEmbed endpoint. **The contents are NOT verified:** YouTube serves the
+description and transcript through JavaScript, the video exposes no public
+caption track, and a targeted search for the key attribution returned nothing.
+Per the §26b rail — a summary is not a source — the five claims below are
+logged as LEADS and nothing has been scored or published on them.
+
+| claim in the summary | bears on | status |
+|---|---|---|
+| 3-D simulation, "Johan G", ETH — almost certainly Johan Gaume (MPM; did the Chamoli work) | our §04b claim to be filling a dynamic-modelling gap | **ACTED ON** — see below |
+| InSAR, Sonam Wangchuk: >50 cm in the 48 days before failure | the precursor question | unverified; arithmetic below |
+| Himalayan Geological Research Group: leucogranite source, **198 Mm³** | §04b's dismissal of the 197–492 range | **partially acted on** — see below |
+| Marc Hendrickx: frictional heat flash-melted internal ice, fluidising the flow | finding 01 / §04b | **not a contradiction** — see below |
+| entrained ice from a lower glacier critical; without it a static landslide dam | finding 02 | consistent, no action |
+
+**The InSAR arithmetic, if the Wangchuk figure is right.** Three readings now:
+
+| source | claim | rate | acceleration |
+|---|---|---|---|
+| geopera, 31 Aug | <2 m / 100 d | 20 mm/day | **none** — all four precursor channels null |
+| Shirzaei, *Nature* 2 Sept | ~10 mm/month | 0.33 mm/day | yes, final days |
+| Wangchuk (reported) | >50 cm / 48 d | 10.4 mm/day | — |
+
+Wangchuk's 50 cm sits INSIDE geopera's bound over the same window (96 cm), so
+those two are compatible on magnitude and differ only on whether the motion was
+predictive. **Wangchuk is ~30× Shirzaei**, which is a real conflict between two
+InSAR analyses and is new. Not published; the figure is unverified.
+
+**Hendrickx is not a contradiction of finding 01, and the distinction matters.**
+Frictional heat flash-melting ice to *fluidise* a sliding mass is precisely the
+§04b ice-skate mechanism, which this project already argues for. Finding 01 is
+that frictional melt cannot supply **~20 Mm³ of flood water**. The film needed
+to lubricate a sliding mass is orders of magnitude smaller than the flood. Both
+hold at once, and the summary does not say he claims melt made the flood. Read
+as support for §04b, not as a challenge to §01. **Do not "correct" finding 01
+against this without reading what he actually claims.**
+
+### 29a. What was changed on the site, and why it needed no verification
+
+1. **The niche claim is gone.** §04b closed with the arXiv preprint declining a
+   dynamic model and *"that is the gap this project has been working in"*. That
+   implied an empty field. A credible report that ETH has run a 3-D simulation
+   makes the implication stale, and it was a comparative claim about us, which
+   §26i rule 3 disfavours anyway. **Removing a claim needs less evidence than
+   adding one**, which is why this did not wait on verification. The paragraph
+   now says the preprint declined a dynamic model, that I built one and it has
+   failed seven times — *"which is some evidence for their caution"* — and that
+   other groups are modelling it too.
+2. **The dismissal of the 197–492 range is softened.** It read *"I cannot trace
+   it to a named study."* If a named group has published ~198 Mm³ then that
+   sentence is publicly dismissive of a figure that has a source. It now reads
+   as a limit of my searching rather than a judgement, notes that figures near
+   200 Mm³ are reported, and adds the arithmetic: on the arXiv source area
+   200 Mm³ is a ~196 m slab, still ordinary, so **nothing in the physics rules
+   it out**. Three estimates now form a chain rather than a spread — geopera
+   60–140, this project 110–175, ~198 reported.
+
+### 29b. Independent corroboration found while checking
+
+A search turned up [Down To Earth](https://www.downtoearth.org.in/natural-disasters/when-rock-flows-like-a-river)
+reporting the collapse as bedrock plus glacier ice **from 5,200 m**, in
+**leucogranite**, at **167 km/h**, covering **22 km in seven minutes**. Against
+our §00b: 5,200 m, 22 km in 7 min 40 s, 172 km/h. Their "about 10:50 a.m." is
+Beijing time = 08:35 NPT against our 08:37:10. A fourth independent line on the
+geometry.
+
+**To do:** get the video description — that is where Willsey credits sources,
+and it would give the HGRG attribution and the Wangchuk figure properly.
