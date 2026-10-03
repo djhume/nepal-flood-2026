@@ -1,6 +1,8 @@
 # The first 22 kilometres
 
-*Draft, 12 September 2026. Not published.*
+*Draft, 12 September 2026; revised 4 October. Not published as a page — the
+new parts of it are folded into the plain-English page instead, and the rest
+duplicates what is already there.*
 
 At 8:37 on the morning of 26 August a piece of the north face of Langtang
 Lirung let go from about 5,200 metres. It fell around 1,200 metres onto the
@@ -119,6 +121,14 @@ work yet — it puts about 15 metres of water at Galchhi where the gauge says
 around 9, and I have not fixed that. Seven attempts have failed, and on
 8 September I stopped and split the problem in two rather than try an eighth.
 This is the half that fits.
+
+**And the caveat that matters most.** The way I caught the last false answer
+was by holding three downstream measurements back — the arrival times at two
+towns and the peak at a third — and checking against them after the fact. All
+three are below the border. So when I split the model at the border, I
+switched off the only thing that has ever stopped me believing a bad fit. The
+top half fits. That is not the same as the top half being right, and I cannot
+currently tell the difference.
 
 Six passing runs out of 300 is thin. One input, the width of the upper valley,
 is not constrained at all by these tests. Every number here is preliminary,
