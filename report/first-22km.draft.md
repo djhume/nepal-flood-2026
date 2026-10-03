@@ -110,9 +110,17 @@ here I would defend.
 
 ## What would settle it
 
-Two surveys of the deposit a month apart. If it is mostly ice it must keep
-losing volume as the buried ice melts out. Rock does not do that. Nobody needs
-a model to read that measurement, and the window for taking it is open now.
+Photograph the debris pile from a satellite, build a surface from it, and do
+it again after a warm season. Ice melts and rock does not, so an ice-rich pile
+sags as the buried ice drains away and a rocky one sits still. Nobody needs a
+model to read that.
+
+I had been saying a month apart would do it. It will not. The deposit is at
+about 1,300 metres, where bare ice melts 3 to 6 cm a day, but this ice is
+buried under rubble and rubble insulates it — half a metre of cover cuts the
+melting by five to ten times. The sag so far is probably 0.1 to 0.5 m, and
+satellite stereo resolves about 0.5 to 1 m. The right comparison is across a
+full melt season, May to September 2027.
 
 ## What I am not claiming
 
