@@ -89,7 +89,16 @@ def trimline_widths():
         if n < 2 or st <= 0 or A <= 0: continue
         fl = (r["flags_L"] + " " + r["flags_R"]).lower()
         if any(t in fl for t in ("junction", "side-valley", "manual", "cloud")): continue
-        if r["outlier_L"].strip() or r["outlier_R"].strip(): continue
+        # OUTLIER FILTER — FIXED 4 Oct 2026. `outlier_L`/`outlier_R` hold "",
+        # "0" or "1", and the old test was a truthy check on the string, so
+        # "0" — meaning explicitly NOT an outlier — was discarded along with
+        # "1". It threw away 7 of 25 width stations, and the loss was not
+        # even: km 35.6-40 came out 31 % narrow and km 46-70 12 % narrow.
+        # Known since 7 Sept (dossier §21), carried through v6-v13, and left
+        # unfixed while every published width rested on it. Every ensemble
+        # before this date ran on the as-built (buggy) widths.
+        if r["outlier_L"].strip() == "1" or r["outlier_R"].strip() == "1":
+            continue
         pref = 0 if r["layer"] == "pelican0901" else 1 if r["layer"] == "s2chg" else 2
         if km not in best or pref < best[km][0]:
             best[km] = (pref, A / st)

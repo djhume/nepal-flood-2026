@@ -3026,3 +3026,173 @@ geometry.
 
 **To do:** get the video description — that is where Willsey credits sources,
 and it would give the HGRG attribution and the Wangchuk figure properly.
+
+## 30. MODEL A — the first 22 km scored on its own, and the first complete pass (12 Sept)
+
+`calcs/ensemble_v13_upper.py`, `output/ensemble_v13upper_RESULTS.md`. PLAN §11's
+upper half, built after the 8 September halt.
+
+**Three choices, all of them the point.** Nine observables, all above
+Betrawati — Galchhi, the Betrawati–Galchhi reach and the video rise curve are
+not scored, because they belong to the other model. **The volume prior is the
+field's 135–200 Mm³, not ours** (geopera ~100 ±40 %, Hendrickx 132 → 175 at the
+border, ~198 reported, our own in-model 110–175; our *published* 14–34 is far
+below all of it). **The ice prior is widened down to 0.10 from 0.30**, because
+Hendrickx uses 13 % and a prior that excludes another analyst's composition
+cannot test it — the same correction v10 made to `mu_dry`. No window moved.
+
+**Result: 6 of 300 satisfy all nine.** The first complete observable set this
+project has ever met.
+
+| input | p10 | median | p90 | prior | reading |
+|---|---|---|---|---|---|
+| V_rel, Mm³ | 141 | **143** | 161 | 135–200 | constrained |
+| w0 | 0.39 | **0.57** | 0.83 | 0.02–0.95 | constrained |
+| f_ice | 0.43 | **0.88** | 0.92 | 0.10–0.95 | weak |
+| T_rel, s | 270 | **376** | 439 | 60–600 | constrained |
+| ξ | 133 | **180** | 287 | 100–2,000 | constrained |
+| μ_dry | 0.13 | 0.20 | 0.31 | 0.03–0.35 | weak |
+| h_erode, m | 2.5 | 5.3 | 7.6 | 1–10 | weak |
+| k_junc | 2.0 | 4.1 | 6.4 | 1–10 | constrained |
+| **f_wl** | 0.37 | 0.51 | 0.90 | 0.3–1.0 | **UNCONSTRAINED** |
+
+Publishable as **140–160 Mm³, released over 4½–7½ minutes**. Nothing here
+deserves a decimal place.
+
+**`stage_syabru` is the binding constraint** — met by 95 of 300, the tightest
+of the nine — and it is what rejects 175–200 Mm³. At w0 0.5 the modelled stage
+there runs 65 m at 135 Mm³, 77 at 155, 86 at 175, 97 at 200, against a window
+of 58.7–81.8.
+
+### 30a. Composition is NOT resolved, and one measurement is doing all the work
+
+Rescoring the same 300 runs at different deposition caps, which costs nothing:
+
+| cap, Mm³ | passes | ice share p10/median/p90 | volume median |
+|---|---|---|---|
+| **12** (ours) | 6 | 0.43 / **0.88** / 0.92 | 143 |
+| 20 | 11 | 0.30 / 0.86 / 0.91 | 143 |
+| 30 | 14 | 0.31 / 0.75 / 0.91 | 145 |
+| 50 | 20 | 0.30 / 0.59 / 0.90 | 146 |
+| **none** | 24 | 0.18 / **0.46** / 0.89 | 151 |
+
+**The other eight observables are indifferent to composition.** The clock, the
+gorge speed, all four stages, the erosion and the Syabrubesi arrival do not
+care. Every bit of the ice-rich reading comes from the 12 Mm³ rock-deposit
+cap — which is a LOWER BOUND from less than half the valley floor. Of the 24
+runs meeting the other eight, **13 have ice below 0.5 and only 6 above 0.85**.
+Hendrickx's 13 % works; so does 88 %. **Volume is constrained (143–151 across
+every cap); composition is not.** This is finding 06 restated with the
+sensitivity attached, and it is the most useful thing the run produced.
+
+### 30b. The caveat that keeps it out of the findings
+
+**Model A has no out-of-sample check, and by construction cannot have one.**
+The held-out set — Malekhu, Kalikhola, Devghat — is entirely below the
+junction. Splitting at km 22 switched off the machinery that caught v10b's
+false pass. Six of 300 is thin and `f_wl` is flatly unconstrained. The passing
+runs put **7.6–19.3 m at Galchhi (median 14.9)** against a 3.5–9.9 window they
+were never asked to meet — so the two halves of the river still disagree by a
+factor of two, which is PLAN §11's question answered in the direction
+suspected. **Finding 04 stays under revision. Not promoted.**
+
+## 31. OCTOBER — the field catches up, and two things of ours come down (1–4 Oct)
+
+Three weeks without looking. Written up because the dossier had fallen behind
+the site, which is the fault the 5 September cold read caught, in reverse.
+
+### 31a. Huang, Wang & Chen — seismology does what we said would settle it
+
+*"Runout, force history, and mass estimation of the August 26 2026 Lhende Khola
+avalanche (central Nepal)"*, manuscript **in preparation for GRL**, data open at
+Zenodo `10.5281/zenodo.22884627`. **Every number below is read from the
+archive, not the paper, which is not public.** Their `gates.yaml` records
+acceptance criteria written down before the results they govern — pre-registered,
+with a SHA-256 manifest and a named commit.
+
+| | |
+|---|---|
+| far-field | 3-component force from 80–150 s Rayleigh waves, **47 stations** 20–110° away, Syngine Green's functions, path-corrected on two regional earthquakes |
+| **mass** | **0.53–2.04 × 10¹² kg** over 24 ensemble members; stated bounds 2.55 × 10¹¹ to 2.29 × 10¹², a factor of 9 |
+| near-field | 16 regional stations, 1–2 Hz pattern correlation |
+| **two seismic onsets** | **initial detachment 11.9 s, "massive runout" 33.9 s — 22.0 s apart**, the mass reaching the end of the headwall 1.38 km down and striking the valley floor. **That impact is the M 5.2**, not a trigger. |
+| front, by leg | **76.5 m/s** (0–1.4 km), **111.4** (1.4–6.6), **38.8 (37.3–40.5)** (6.6–20.9) |
+| centroid, by leg | 76.5 / 53.5 / 36.6 |
+| front at the border | **458 s** vs our corrected clock 460.6 s (but "front exact" — anchored on the same CCTV, so corroboration not independence) |
+| their checkpoint D | 28°16′45″N 85°22′42″E — **56 m from our km 22.0** |
+| mass-flow | three-phase rock/ice/water **r.avaflow v4** on Copernicus GLO-30, releases of **200, 300 and 400 Mm³**, melting on/off at L = 0.002 and 0.02 |
+
+**Their mass does NOT contradict ours, and the first reading that it did was
+wrong.** Force inversion weighs the mass that was MOVING, 7–21 km down, after
+entrainment; `V_rel` is what detached at the crown. Bulked by the 32.5 % that
+Hendrickx uses, our 140–160 Mm³ is 3.7–4.2 × 10¹¹ kg — inside their range,
+above their floor, below their centre. What it does kill is **our own published
+14–34 Mm³, by an order of magnitude**, from physics that uses no imagery, no
+DEM and no runout model.
+
+How good is the method? Not very, and they say so: *"no method here measures
+the depth."* Mass comes from peak force via the Ekström–Stark (2013) regression
+and an assumed acceleration. Their peak force ÷ their central mass implies
+3.2 m/s²; their own headwall kinematics (1,683 m from rest in 22.0 s) give
+7.0 m/s², and our mass implies 7.6–8.7. But their peak force is at t = 104 s,
+long after the headwall, where lower acceleration is expected — so that
+cross-check does not settle it either way.
+
+### 31b. RETRACTED: "the front did not slow down"
+
+Report §00b and §03a, and the plain page, said the front did not decelerate
+over the first 22 km. The near-field tracking says it accelerated off the
+headwall and then ran the last 14.3 km at **38.8 m/s**. Removed from all three.
+**Recorded unresolved:** 38.8 as a leg average does not sit comfortably with
+our own instantaneous ~47 m/s at the border, which would need the front to
+speed up into the junction. No explanation; the disagreement is on the page.
+
+### 31c. CORRECTED: the deposit survey is a 2027 measurement, not a monthly one
+
+§13 and the plain page said two elevation surveys a month apart would separate
+ice from rock. The test is right; the timing was asserted and never checked.
+The deposit sits at **1,293–1,353 m**, where bare ice ablates 3–6 cm/day — over
+a metre since the event — but it is **debris-covered**, and debris above a few
+centimetres suppresses ablation by roughly 5–10×. Subsidence to date is
+therefore ~**0.1–0.5 m** against a stereo-DEM precision of ~0.5–1 m: marginal
+to undetectable, and post-monsoon cooling works against it. **The informative
+comparison is across a full ablation season, roughly May–September 2027.** So
+the composition question of §30a is open for most of a year.
+
+### 31d. CLOSED: the trimline outlier bug (§21), and it did not matter
+
+Fixed 4 October in `ensemble_v6.trimline_widths()`. `outlier_L`/`outlier_R`
+hold `""`, `"0"` or `"1"`; the filter was a truthy test on the string, so every
+row flagged explicitly NOT an outlier was discarded. Width stations 18 → 25.
+
+**It was flagged as possibly biasing the headline volume. It does not.** The
++31 % quoted since 7 September was the median of trimline STATION widths; on
+the model grid, after interpolation, the change is:
+
+| reach | buggy | fixed | |
+|---|---|---|---|
+| km 22.8–35.6 | 120 | 122 | +1.9 % |
+| km 35.6–40 | 123 | 129 | **+4.6 %** |
+| km 40–46 | 86 | 86 | 0 |
+| km 46–70 | 171 | 170 | −0.2 % |
+| **km 70–108** | 271 | 210 | **−22.4 %** |
+
+Syabrubesi stage moves by ~1 m and **the volume ceiling does not move**: 175 Mm³
+still gives 85 m against an 81.8 m limit. **140–160 Mm³ stands and is not an
+artefact of the bug.** The 22 % drop at km 70–108 is the lower river, which
+Model A does not score and v12 overrides with DEM sections. Model A was NOT
+rerun; the sensitivity test above is why, and that is a judgement recorded
+rather than hidden.
+
+### 31e. Everything else published since 12 September
+
+Xu, EarthArXiv — multi-source observational reconstruction; its wave at the
+first gauge **12.8 min** against our unfitted `syabru_min` of **13.0**. A
+45-year reanalysis storyline attributing preconditioning to record melt-season
+warmth (Zenodo 22806147). A multi-institution field and imagery assessment led
+from Hirosaki University with Tribhuvan University and NDRI co-authors —
+qualitative, no volumes. Petley on precursory deformation (Eos). All linked in
+report §14.
+
+**Standing: 140–160 Mm³ from the upper corridor, not promoted; composition
+unresolved until mid-2027; the lower river still unsolved.**

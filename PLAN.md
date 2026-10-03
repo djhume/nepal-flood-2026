@@ -1717,3 +1717,54 @@ DHM Betrawati and Galchhi records are the only thing that would settle it, and
 we have decided not to ask for them (8 Sept, §26j). That is a legitimate
 terminus for this line of work, and finding 04 would then stay withdrawn
 rather than being resolved. Say so in advance.
+
+## 12. WHERE THIS STANDS — 4 October 2026
+
+**Model A works, is not promoted, and the reason is structural** (dossier §30).
+The upper corridor scored alone over the field's 135–200 Mm³ prior gives 6 of
+300 meeting all nine observables: **140–160 Mm³ released over 4½–7½ minutes**.
+`stage_syabru` is the binding constraint and is what rejects 175–200. It does
+not go into the findings because **splitting the model at the junction switched
+off the held-out set** — Malekhu, Kalikhola and Devghat are all below it — so
+the only machinery that has ever caught a false pass here is off. Finding 04
+stays under revision.
+
+**Composition is unresolved and now quantified as such** (§30a). Relaxing the
+12 Mm³ rock-deposit cap alone moves the median ice share 0.88 → 0.46, with 13
+of 24 surviving runs carrying less ice than rock. The other eight observables
+are indifferent. The cap is a lower bound from less than half the valley floor.
+**The deciding measurement — DEM differencing of the deposit — is a
+May–September 2027 job, not a monthly one** (§31c): debris-covered ice at
+1,300 m has subsided ~0.1–0.5 m against a ~0.5–1 m stereo precision.
+
+**The field has moved and we are inside it** (§31a). Seismic force inversion
+(Huang, Wang & Chen, in prep. for GRL) weighs the MOVING mass at
+0.53–2.04 × 10¹² kg; bulked for entrainment our figure sits inside that. It
+kills our own published 14–34 Mm³ by an order of magnitude. Two retractions
+went with it: **the front DID decelerate** (§31b), and the deposit-survey
+timing (§31c).
+
+**The trimline outlier bug is closed and did not matter** (§31d) — on the model
+grid it is +4.6 % at Syabrubesi, not the +31 % the station medians suggested,
+and the volume ceiling is unmoved. Model A was not rerun; the sensitivity test
+is the reason.
+
+### Still open, in order
+
+1. **The interface sweep** (§11c) — is there ANY junction hydrograph that
+   routes to the lower river as reconstructed? Needs no avalanche model. Still
+   the decisive experiment and still unrun.
+2. **The identifiability check** on the ~2,100 saved samples — do the
+   observables constrain the parameters at all? Cheap, never run.
+3. **Model B** — the lower river, where seven versions have failed and where
+   Galchhi remains the blocker.
+4. **A held-out test for Model A.** Without one it cannot be promoted, and
+   there is no obvious candidate above the junction. Worth thinking about
+   rather than assuming it is impossible.
+
+### Standing rules, unchanged
+
+Nothing reaches the findings on the day it is computed. Everything is
+preliminary in the sentence that carries the number. No telling anyone
+anything, no asking anything of anyone (§26j). First person, numerals, broad
+about scope and specific about provenance.
