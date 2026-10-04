@@ -3196,3 +3196,86 @@ report §14.
 
 **Standing: 140–160 Mm³ from the upper corridor, not promoted; composition
 unresolved until mid-2027; the lower river still unsolved.**
+
+## 32. THE PRE/POST DEM PAIR EXISTS, AND A CRUSTAL-REBOUND IDEA (4 Oct)
+
+### 32a. Shean & Bhushan released the pair on 18 September; nobody has computed a volume
+
+arXiv 2609.04563 published no volume because *"no suitable co-registered
+pre/post DEM pair exists"*. One has existed since 18 September:
+
+| record | contents |
+|---|---|
+| [Zenodo 22842748](https://zenodo.org/records/22842748) | **pre-event**: NASA HMA 8 m (2012–2016) + WorldView/GeoEye 2 m (2015–2017) |
+| [Zenodo 22842746](https://zenodo.org/records/22842746) | **post-event optical**: WV-2, WV-3, Legion 2/3 stereo 27 Aug–8 Sept, 2 m, pair DEMs + composites + dh maps |
+| [Zenodo 22842744](https://zenodo.org/records/22842744) | **post-event SAR**: Umbra spotlight, 1–13 Sept |
+
+David Shean (UW) and Shashank Bhushan (NASA GSFC / Maryland). Their own record
+states **"No explicit volume measurements are provided."** The surfaces are
+built and co-registered; the integration has not been done. **Pre minus post
+over the scar is the only direct measurement of the release volume, and it is
+undone with public data.**
+
+### 32b. The control test — measured, not assumed
+
+Dave's gate: *"if the error is the size of the event then this is pointless."*
+Measured on `rasuwa_dh_lg03_20260907_minus_wv03_20260827_2m_v1.0.tif`, which
+differences two INDEPENDENT post-event surfaces, so stable ground should read
+zero. Sampled at 8 m, binned by distance from our mapped corridor:
+
+| distance from corridor | n | median | NMAD | std |
+|---|---|---|---|---|
+| 500–1,000 m | 209,480 | +0.54 m | 2.14 | 10.2 |
+| 1,000–2,000 m | 288,981 | +0.63 | 2.21 | 8.3 |
+| 2,000–4,000 m | 302,673 | +0.48 | 2.01 | 12.1 |
+| >4,000 m | 325,983 | +0.86 | 2.35 | 11.1 |
+
+**Bias +0.5 to +0.9 m, stable with distance; NMAD ~2 m.** The std of ~10 m is
+steep-terrain and cliff-edge noise and averages out.
+
+**What that costs.** Over a 1.0–1.95 km² scar against ~150 Mm³: a 1 m bias is
+1–2 Mm³ (**<1.5 %**); random scatter over 250,000+ pixels is ~0.01 Mm³. **It
+would take 75–150 m of systematic bias to make this pointless.** The gate is
+passed by two orders of magnitude.
+
+**The real error sources are not noise.** (i) The pre-event surface is
+2012–2017 and the glacier thinned on its own since — at the ICESat-2 rate of
+~1.3 m/2 yr that is ~6 m, or **6–12 Mm³ of elevation loss that is not the
+avalanche**, biasing the answer HIGH. (ii) Coverage: the scene is 32 % valid,
+and voids concentrate in exactly the steep shadowed terrain the scar occupies.
+(iii) Snow differences between acquisitions.
+
+**Note:** the `dh` product does NOT reach the detachment zone. Its bounds are
+E 334,020–344,748, and the scar projects to 354,788 E — **10 km east of the
+raster edge**. It covers the corridor from our km 14.8 to 40.8. The composites
+are being checked for scar coverage.
+
+### 32c. Crustal rebound from unloading — Dave's idea, 4 Oct
+
+The slope carried the mass and no longer does, so it should spring back.
+Boussinesq, uniform pressure on a disc, w(0) = 2qa(1−ν²)/E, ν = 0.25; 150 Mm³
+at 2,000 kg/m³ over 1.0–1.95 km² = 3 × 10¹¹ kg, 1.5–2.9 MPa:
+
+| E | uplift |
+|---|---|
+| 80 GPa (intact gneiss) | 28–39 mm |
+| 40 GPa (fractured) | 56–78 mm |
+| 15 GPa (heavily fractured) | 149–208 mm |
+
+**It is a DIPOLE** — the mass landed 40 km downstream, so the deposit zone
+should subside 20–120 mm. Uplift and subsidence at a known separation is a far
+more distinctive signature than one patch of motion.
+**And it measures MASS directly** (load = mg): no density assumption, unlike
+DEM differencing; no assumed acceleration, unlike the Ekström–Stark scaling of
+§31a. Cleaner in principle than either method in use.
+
+**Not attempted, and the reasons are on the page.** It needs InSAR at
+5–10 mm; stereo DEM at ~2 m is 100–400× too coarse, so none of the September
+products bear on it. Coherence is the obstacle — steep, snowy, partly vegetated
+terrain, and the precursor work on this same slope reported coherence
+saturating at zero. The uplift also peaks where the surface was destroyed, and
+phase cannot be measured on ground that no longer exists, so it would have to
+be read in the intact rock around the scar where the signal has already fallen
+off. C-band probably cannot; L-band (ALOS-2, NISAR) is where to look. A null
+result is uninformative — no uplift and no coherence look alike. Recorded in
+report §13 rather than claimed.
