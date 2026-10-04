@@ -27,3 +27,8 @@ research/video/*
 # Copernicus GLO-30 tile (~25 MB), re-downloadable; URL in DATA-SOURCES.md
 data/*.tif
 output/cache/
+
+# Rasuwa DEM products (Shean & Bhushan, Zenodo 22842744/46/48, CC-BY).
+# Third-party, large, and re-downloadable from the DOIs. Kept locally only —
+# see PLAN §13 for what they are and how to refetch.
+data/dem_rasuwa/

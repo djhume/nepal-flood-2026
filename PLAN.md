@@ -1768,3 +1768,93 @@ Nothing reaches the findings on the day it is computed. Everything is
 preliminary in the sentence that carries the number. No telling anyone
 anything, no asking anything of anyone (§26j). First person, numerals, broad
 about scope and specific about provenance.
+
+## 13. MEASURING THE DETACHMENT VOLUME FROM THE DEMs — the plan, 4 October 2026
+
+**The job: subtract the mountain after from the mountain before, over the scar,
+and get a volume that owes nothing to any model.** It is the only direct
+measurement of the release, nobody has published one, and dossier §32 shows the
+errors are two orders of magnitude smaller than the signal. Start here next
+session.
+
+### 13a. What is already in hand
+
+`data/dem_rasuwa/` — **gitignored, 1.6 GB, kept locally.** Third-party
+(Shean & Bhushan, CC-BY), re-downloadable from the DOIs below.
+
+| file | what |
+|---|---|
+| `post_comp.zip` | post-event composites, Zenodo **10.5281/zenodo.22842746** |
+| `composites/…_2m_count_v1.0.tif` | already extracted; stack count per pixel |
+| `dh.zip` | post-minus-post dh pair, same record |
+
+**Established already, do not redo:**
+- post-event composite covers **E 330,346–363,842 / N 3,108,095–3,138,775**,
+  33.5 × 30.7 km, EPSG:32645, 2 m — **all three published scar coordinates are
+  inside**
+- **scar coverage 76–98 %** within ±750 m (scene average 28.5 %), median stack
+  of 2 DEMs
+- **control error, measured**: bias **+0.5 to +0.9 m**, flat with distance,
+  NMAD ~2 m → **1–2 Mm³ over a 1–2 km² scar, under 1.5 % of ~150 Mm³**
+- the `dh` product does **not** reach the scar (10 km short); use the composites
+
+### 13b. Still to fetch
+
+Zenodo **10.5281/zenodo.22842748** — pre-event:
+`HMA_DEM_2m_zoom.zip` (413 MB, WorldView/GeoEye 2015–2017, **preferred**) and
+`HMA_DEM_8m_v2.zip` (944 MB, NASA HMA 2012–2016, fallback / cross-check).
+We already hold HMA 8 m tiles in `data/HMA_DEM8m_MOS_*.tif` — check whether
+they are the same product before re-downloading the 944 MB.
+
+### 13c. Method, in order
+
+1. **Load both at 2 m on a common grid**, EPSG:32645. `rasterio` is installed;
+   no GDAL CLI, no pyproj — there is a hand-rolled `utm45()` in the session
+   notes and in `calcs/` if needed.
+2. **Co-register on stable ground.** Mask out the corridor (our `river_path.csv`
+   projected, buffered ~500 m) and the scar, then solve the translation that
+   zeroes the median dh. Report the shift. Nuth & Kääb if the slope/aspect
+   residual warrants it; a median translation is probably enough given 13a.
+3. **Verify on the control** — rerun the §32b binning. If the post-fit bias is
+   not ≲0.5 m with NMAD ≲2 m on stable ground, stop and say why.
+4. **Define the scar footprint FROM the data**, not from someone's polygon.
+   Contiguous region of dh below a threshold (start at −10 m), largest connected
+   component, holes filled. **This matters: UNOSAT says 1.95 km² and arXiv says
+   1.009 — a factor of two, and volume scales with it.** Report the area the
+   method finds and compare with both.
+5. **Integrate** dh over that footprint. Report volume with the footprint area
+   and mean depth beside it.
+6. **Corrections, each stated separately, never silently folded in:**
+   - **glacier thinning** between the pre-event epoch (2012–2017) and Aug 2026.
+     ICESat-2 gave ~1.3 m/2 yr → ~6 m over the decade → **6–12 Mm³ biasing the
+     answer HIGH**. Subtract it and say so.
+   - **voids** — report what fraction of the footprint was interpolated and how.
+   - **snow** differences between acquisitions; bound rather than correct.
+7. **Uncertainty**: propagate the measured control bias × area, the void
+   fraction, and the thinning correction. **Publish a range, not a number**
+   (writing-for-dave: ranges, no decimal places).
+
+### 13d. Gates — when to stop and say so
+
+- post-fit control bias worse than ~1 m, or NMAD worse than ~3 m
+- scar footprint more than ~40 % void
+- the derived footprint area not within ~±50 % of both published areas —
+  that would mean the threshold is finding something other than the scar
+
+### 13e. What the answer bears on
+
+- **Finding 04 directly.** Model A gives 140–160 Mm³ with no held-out test
+  (§30b). A measured volume either confirms it or kills it, and needs no model.
+- The field: geopera 60–140, Hendrickx 132→175, ~198 reported, r.avaflow run at
+  200–400, seismic moving-mass 0.53–2.04 × 10¹² kg (§31a). A DEM volume is the
+  only one of these that measures the detachment itself.
+- **It does not settle composition.** DEM differencing gives volume, not ice
+  fraction. That still waits on the deposit resurvey in mid-2027 (§31c).
+
+### 13f. Honest framing for whatever comes out
+
+Shean and Bhushan built this data and will likely do this themselves, better.
+We are doing it because it is undone, not because we are the right people. If
+they publish first, cite them and withdraw ours. Say in the write-up that the
+data is theirs and openly licensed, and that the measurement is straightforward
+arithmetic on it — no claim of advantage (§26i rule 3).
