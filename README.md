@@ -160,6 +160,9 @@ python -m venv .venv && .venv/bin/pip install numpy matplotlib
 .venv/bin/python model/ladder.py                  # equivalent-circuit routing
 .venv/bin/python model/unified.py                 # the live model: scar -> Devghat
 .venv/bin/python calcs/ensemble.py 220            # the size envelope (~75 min)
+.venv/bin/python calcs/dem_grid.py                # pre/post DEMs onto one grid (needs data/dem_rasuwa/, see DATA-SOURCES)
+.venv/bin/python calcs/dem_volume.py              # the measured detachment volume (~2 min)
+.venv/bin/python calcs/dem_figure.py              # output/dem_volume.png
 ```
 
 **The portability tests** (other disasters, constants frozen):

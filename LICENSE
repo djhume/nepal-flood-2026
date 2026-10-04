@@ -38,6 +38,12 @@ either licence and carries its own terms — see DATA-SOURCES.md. In particular,
 OpenStreetMap-derived geometry is ODbL 1.0 and requires the attribution
 "© OpenStreetMap contributors" on any derived map or figure.
 
+FIGURES DERIVED FROM NON-COMMERCIAL DATA. output/dem_volume.png and the copy
+embedded in report §12b are drawn from Shean & Bhushan's elevation data
+(Zenodo 10.5281/zenodo.22842746 and .22842748), which is CC BY-NC 4.0. My
+contribution to those figures is CC BY 4.0 as above, but anyone reusing them
+must also meet that data's non-commercial condition and credit its authors.
+
 NO WARRANTY, ESPECIALLY FOR SAFETY USE. This is preliminary research code
 written days after a disaster and is not peer-reviewed. It must not be used as
 the basis of an operational warning system, an evacuation decision, or a

@@ -3279,3 +3279,231 @@ be read in the intact rock around the scar where the signal has already fallen
 off. C-band probably cannot; L-band (ALOS-2, NISAR) is where to look. A null
 result is uninformative — no uplift and no coherence look alike. Recorded in
 report §13 rather than claimed.
+
+## 33. THE DETACHMENT VOLUME, MEASURED FROM THE DEMs — 110–125 Mm³, preliminary (5 Oct)
+
+PLAN §13 run end to end. `calcs/dem_grid.py` (common grid), `calcs/dem_volume.py`
+(everything numbered below), `calcs/dem_figure.py`; raw output in
+`output/dem_volume_RESULTS.md`, figure `output/dem_volume.png`. **Not promoted.**
+Changelog first, under the 5 September rule.
+
+### 33a. The data, and three things about it §32 had wrong or did not know
+
+- **Licence is CC BY-NC 4.0, not CC-BY**, on both the pre- and post-event
+  records. PLAN §13a and `.gitignore` said CC-BY; corrected. Any figure drawn
+  from it carries the non-commercial condition, and the report says so.
+- **Pre-event 2 m composite** (`HMA_DEM_2m_zoom`, 413 MB, md5 matches Zenodo):
+  per-pixel median of **12 pairs, 21 Jan 2015 – 22 Dec 2017**, ten of them
+  Sept 2015 – Jan 2016, so the effective epoch is late 2015. Two pairs predate
+  the 25 April 2015 Gorkha earthquake; most are winter acquisitions.
+  `median_gated` (≥3 pairs, NMAD <3 m) is the authors' recommended layer.
+- **Only two independent post-event surfaces reach the scar**: WV-2 (8 Sept,
+  three images) and the Legion-2 pair (6 Sept). WV-3 (27 Aug) stops at
+  346,207 E and Legion-3 at 344,746 E, both ~10 km short. The pairs zip
+  (444 MB, md5 matches) was fetched for Legion-2.
+- Our NSIDC `HMA_DEM8m_MOS` tiles are **not** the Zenodo 8 m v2 product: HMA
+  Albers, no co-registration to the authors' reference, no date or dh/dt layers.
+  The 944 MB v2 was not fetched; it was not needed (§33e).
+- The hand-rolled `utm45()` PLAN §13c mentions was never saved. `rasterio.warp`
+  carries PROJ, and puts Petley's coordinate at **354,788 E** — the value §32b
+  got from the hand-rolled one. Two methods, same metre.
+
+All inputs are EPSG:32645, WGS 84 ellipsoidal heights, so no datum shift.
+Everything resampled bilinear onto the post-event all-source composite's grid,
+cropped to the pre-event footprint (12.8 × 10.8 km).
+
+### 33b. Co-registration and the control — G1 and G1s pass
+
+Stable ground: off RGI 7.0 glacier +100 m (83 outlines, GLIMS WFS, CC BY 4.0,
+`data/rgi7_langtang.json`), >500 m from our path and from Huang et al.'s mapped
+path (`data/huang_path_utm.csv`, CC BY 4.0), >2 km from the scar, slope <40°:
+3.2 km². Shift applied to the pre-event surface **+0.50 m E, −0.43 m N,
+−0.17 m up** — the authors' own registration was already good.
+
+| distance from either path | n | median | NMAD |
+|---|---|---|---|
+| 500–1,000 m | 161,077 | +0.02 | 1.09 |
+| 1,000–2,000 m | 115,754 | −0.10 | 1.63 |
+| 2,000–4,000 m | 248,490 | −0.07 | 1.66 |
+| >4,000 m | 261,591 | +0.07 | 1.27 |
+
+By elevation the bias stays within ±0.25 m up to 5,500 m (5,500–6,000 m:
++1.05, NMAD 4.0, n = 4,413). **G1 (§13d) and G1s (§13c step 3) both pass**,
+the stricter by a factor of 5 on bias.
+
+### 33c. The scar, and where the published coordinates sit
+
+The lowering is unambiguous: a slab cut from a **west-facing** slope, crown
+~5,190 m ellipsoidal at the east edge, opening downslope to ~4,300 m. The
+straight east edge looked like a data seam; east–west profiles show it is the
+headscarp (post surface steps up 100–150 m to rejoin the pre surface), and it
+runs ~100 m west of the pre-event pair-count seam with dh ≈ 0 across the seam.
+The pre and post surfaces coincide to a few metres either side of the scar.
+
+| point | pre m | post m | dh m | in −10 m footprint |
+|---|---|---|---|---|
+| Davies | 4,833 | 4,674 | −159 | yes |
+| Huang et al. path start (their crown) | 5,182 | 5,026 | −156 | yes (all three footprints) |
+| **Petley = our path km 0** | 4,835 | 4,837 | +2 | **no** |
+| UNOSAT centroid | 4,329 | 4,337 | +8 | no |
+| Huang et al. pin | void | void | — | no |
+
+Footprint centroid **28.2880 N, 85.5262 E**. **Our own path's km 0 is 1.4 km
+from it, on ground that did not move.** That is a geometry error in the head of
+Model A's channel, recorded here and not yet fixed; it is unlikely to matter
+downstream but it has not been tested.
+
+Crown at ~5,190 m ellipsoidal is ~5,220 m orthometric with the +32 m GLO-30
+offset measured in 33d, which is arXiv 2609.04563's crown. An easy agreement:
+the same top of the same scar off related DEMs. One line, no more.
+
+**Withdrawn in-session, never published:** I first read the pre-event 5,182 m
+at Huang et al.'s crown against their GLO-30 5,181 m as "an agreement to 1 m".
+GLO-30 is EGM2008 and these heights are ellipsoidal; the offset is +32 m on
+stable ground, so the 1 m match is a coincidence of a 30 m DEM smoothing a
+steep headwall. I also said in-session that the scar's north edge was the
+post-event data edge; the void-aware map shows data beyond it.
+
+### 33d. The weak point: 36 % of the footprint fails the authors' quality gate
+
+Over stable ground, where the gate fails, the ungated median is badly biased:
+
+| stable ground | n | median | NMAD | **mean** | 5th pct |
+|---|---|---|---|---|---|
+| gate passed | 1,593,246 | +0.01 | 2.1 | +2.2 | −11 |
+| **gate failed** | 538,761 | −4.5 | 16.2 | **−47.9** | **−353** |
+
+A volume integrates the mean, so this had to be settled. 0.41 km² of the
+1.24 km² footprint is gate-failed and holds 49 of its 125 Mm³; using the gated
+layer alone, its voids fragment the scar and connected-component labelling
+finds a 0.39 km² piece — a method artefact, not a result, which is why the
+footprint is drawn on the median surface and the void question is tested
+separately. **Two other pre-event surfaces, co-registered to the gated 2 m one
+on the same stable ground**:
+
+| surface | raw offset | post-fit NMAD | 2 m median minus it, gate-failed scar cells: median / mean | volume effect |
+|---|---|---|---|---|
+| NSIDC HMA 8 m (same Maxar archive and ASP pipeline) | +1.5 m | 0.9 m | −0.7 / +5.1 m | +2.1 Mm³ |
+| **Copernicus GLO-30 (TanDEM-X radar, independent)** | **+32.0 m** (geoid) | 4.6 m | −2.9 / −10.7 m | −4.4 Mm³ |
+
+**Inside the scar the gate-failed cells are not showing the stable-ground
+failure**: the two checks put them at −4 to +2 Mm³ and straddle zero. The
+blunder field is on Langtang Lirung's face (5,300–6,500 m), not in the scar —
+it is also where 208 of the 249 Mm³ of "loss outside the footprint within
+3 km" in the first pass came from.
+
+### 33e. Volumes, with thinning measured for each surface
+
+Thinning reference: RGI glacier >500 m from the −5 m footprint and >1 km from
+either path, median dh in 100 m bands at the footprint's own elevations
+(4,300–5,300 m: **−1 to −9 m**, mostly −5 to −9, over ~11 years), applied
+band by band to the footprint's glacier cells (low) or all cells (high).
+
+| footprint | pre-event surface | raw Mm³ | thinning | corrected |
+|---|---|---|---|---|
+| −10 m, 1.24 km² | 2 m median | 125 | 4.3–7.1 | 118–121 |
+| | 2 m gated + hypsometric fill | 120 | 4.3–7.1 | 113–116 |
+| | HMA 8 m | 123 | 4.2–7.7 | 115–119 |
+| | GLO-30 | 131 | 8.2–14.1 | 117–123 |
+| −20 m, 0.89 km² | 2 m median | 122 | 2.4–5.0 | 117–120 |
+| | HMA 8 m / GLO-30 | 119 / 126 | | 114–117 / 115–121 |
+| −30 m, 0.79 km² | 2 m median | 118 | 2.1–4.5 | 114–116 |
+| | HMA 8 m / GLO-30 | 116 / 122 | | 111–114 / 113–118 |
+
+Post-event surfaces on the 2 m median, −10 / −20 / −30 m: all-source 125 / 122
+/ 118; WV-2 126 / 122 / 118; Legion-2 120 / 123 / 119 (74–79 % covered). WV-2
+minus Legion-2 over 1.0 km² of footprint: median −0.77 m, NMAD 1.5 m.
+GLO-30's larger thinning is its longer gap (2011–2015) plus X-band snow and
+firn penetration, and its corrected volume still lands with the others. The
+gated + fill variant is held out of the envelope: its voids are the deepest
+part of the scar, so the band fill borrows shallower depths and it is low by
+construction — and it lands inside the range regardless.
+
+Snow on off-glacier stable ground at 4,100–5,300 m: −0.12 m, worth 0.2 Mm³.
+Random error, NMAD 1.7 m correlated over 500 m (Rolstad et al. 2009): ±0.8 Mm³
+(1σ). Depth: median 90–160 m by footprint, deepest tenth beyond 210–240 m.
+
+**Measured thinning 2–7 Mm³ (2 m surface), against the 6–12 PLAN §13 assumed
+from geopera's ICESat-2 figure.**
+
+### 33f. The number: 110–125 Mm³, and exactly what it is
+
+Envelope of 3 footprints × 3 pre × 3 post surfaces, each thinning-corrected:
+**111–123**; ±2σ random: **109.9–124.4 → 110–125 Mm³.** Mean depth 100–150 m
+over 0.8–1.2 km². Robust to the thinning correction anywhere from ~2 to ~14
+Mm³, which covers PLAN's assumed 6–12.
+
+**It is everything that left the scar between ~2015 and 6–8 Sept 2026, net of
+thinning.** That includes the three precursory seismic signals that morning
+(§26d, the last 18–22 min before 08:37), the event 3 h 08 min after the main
+one that Huang et al. log as their question Q7, any rockfall to 8 Sept and any
+slow change before the event that the glacier reference does not capture. **As a
+measure of the 08:37 release alone it is an upper bound.** Volume only; no ice
+fraction (§31c).
+
+**Gates (§13d), at the threshold named in advance (−10 m): all four pass** —
+G1, G1s, G2 (36 % gate-failed, against 40 %; median-surface void 3 %; 11 % of
+the footprint's edge borders void, so it is not truncated), G3 (1.24 km²:
++23 % against arXiv, −37 % against UNOSAT, window 0.98–1.51). **At −20 and −30 m
+G2 and G3 fail** (43–44 % gate-failed; 0.79–0.89 km² is −54 to −60 % against
+UNOSAT). Their volumes, 114–120, are inside the range, so the failures do not
+move it. That UNOSAT's polygon reaches lower (3,913 m in Huang et al.'s
+reading, against my footprint's 4,100–4,300 m) is an explanation offered after
+the fact, and labelled so.
+
+Unattributed: east and north-east of the crown the glacier is 10–25 m lower,
+against −7 m of reference thinning at 5,100–5,300 m. Possibly drawdown of an
+upper glacier the Institute of Tibetan Plateau Research reported moving
+"relatively rapidly" for two years (§26d), possibly snow. A reading, not a
+finding; the −10 m footprint includes a little of it and −30 m none.
+
+### 33g. What it does to Model A — and PLAN §13e overstated what it would do
+
+**The measured detachment is below Model A's 140–160 and below the 135 floor of
+the prior Model A was run with** (§30). The six passing runs sat at the bottom
+of that prior (p10 141, median 143). The model was never run at the size the
+mountain gives.
+
+**But it is not a clean kill**, and §13e's "either confirms it or kills it" was
+wrong. `model/unified.py` injects V_rel over km 0–1.2 of our path, so V_rel is
+everything entering the channel at its head — the detachment plus net scour of
+the headwall below the scar, which the model has no stage for. Within 1.5 km of
+the footprint, on gated cells only (53 % of that ground measured), thinning
+removed: **≥20 Mm³ lost** in cells beyond −10 m, **≥7 Mm³ gained** beyond +10 m
+(within 2.5 km, 31 % measured: ≥24 lost, ≥26 gained, the channel deposit
+appearing). Detachment plus net headwall scour is therefore ≥ ~123–138, with
+the void doing the rest. **Model A is neither confirmed nor ruled out. It has
+to be rerun with a prior that reaches the measurement.** This is also the
+held-out test §12 item 4 said Model A lacked, and its first outcome is "not
+passed".
+
+Other estimates against it: geopera ~100 ±40 % — inside. Hendrickx 132 at
+release — just above. arXiv's 1.009 km² — inside my footprints. ~198 reported
+and r.avaflow's 200–400 — above. Our own published 14–34 — already dead
+(§31a).
+
+**Seismic mass, corrected.** Bulked by Hendrickx's 32.5 % at 2,000 kg/m³,
+110–125 Mm³ is **2.9–3.3 × 10¹¹ kg**: inside Huang et al.'s stated bounds
+(2.55 × 10¹¹ – 2.29 × 10¹²) and just above the floor, **below** their 24-member
+spread (0.53–2.04 × 10¹²). §31a's 140–160 → 3.7–4.2 × 10¹¹ was also below that
+spread; §31a said "inside their range, above their floor, below their centre",
+which is right only for the stated bounds. **The plain page compressed that to
+"comfortably inside their range" next to the half-to-two-billion-tonnes figure
+it contradicts.** Corrected there 5 Oct, old wording quoted. Composition moves
+this by ~2× either way, so it is not a contradiction; it is not a comfortable
+fit either.
+
+**Finding 01** — melt is linear in volume, so §04's absolute ceiling (20.7 Mm³
+at 200 Mm³, 80 % ice, 4,000 m, partition 0.70) becomes **11–13 Mm³** at
+110–125 with every other input at its limit. That strengthens finding 01; it
+waits for promotion like the volume itself, and is recorded in report §13.
+
+### 33h. Also changed on the site today
+
+- Landing page "What happens next" still listed the trimline filtering bug as
+  pending; it was closed 4 Oct (§31d). Fixed.
+- Landing page "What is missing" said nobody had published stereo of the
+  glacier below the scar. Shean and Bhushan had, on 18 Sept. Clause removed.
+- Report §12b carries the measurement and the figure; §13 the melt arithmetic;
+  §14 the data sources. Plain page and changelog carry the measurement in
+  plain English. Versions: landing v19, plain and report v20.

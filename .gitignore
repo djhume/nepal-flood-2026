@@ -28,7 +28,9 @@ research/video/*
 data/*.tif
 output/cache/
 
-# Rasuwa DEM products (Shean & Bhushan, Zenodo 22842744/46/48, CC-BY).
+# Rasuwa DEM products (Shean & Bhushan, Zenodo 22842744/46/48). Licence: 46 and 48
+# are CC BY-NC 4.0 (corrected 5 Oct; this line said CC-BY); 44, the Umbra SAR
+# record, is "other-at" on Zenodo and was not used.
 # Third-party, large, and re-downloadable from the DOIs. Kept locally only —
 # see PLAN §13 for what they are and how to refetch.
 data/dem_rasuwa/

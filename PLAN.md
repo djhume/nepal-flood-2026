@@ -1780,7 +1780,8 @@ session.
 ### 13a. What is already in hand
 
 `data/dem_rasuwa/` — **gitignored, 1.6 GB, kept locally.** Third-party
-(Shean & Bhushan, CC-BY), re-downloadable from the DOIs below.
+(Shean & Bhushan, ~~CC-BY~~ **CC BY-NC 4.0** — corrected 5 Oct from the Zenodo
+records), re-downloadable from the DOIs below.
 
 | file | what |
 |---|---|
@@ -1858,3 +1859,69 @@ We are doing it because it is undone, not because we are the right people. If
 they publish first, cite them and withdraw ours. Say in the write-up that the
 data is theirs and openly licensed, and that the measurement is straightforward
 arithmetic on it — no claim of advantage (§26i rule 3).
+
+### 13g. RESULT, 5 October — 110–125 Mm³, preliminary, not promoted (dossier §33)
+
+Run as written. `calcs/dem_grid.py`, `calcs/dem_volume.py`, `calcs/dem_figure.py`.
+
+- **Control:** shift +0.5 E, −0.4 N, −0.2 up; post-fit bias ≤0.1 m and NMAD
+  ≤1.7 m in every bin. **G1 and the stricter step-3 gate pass.**
+- **Footprint from the dh:** 1.24 / 0.89 / 0.79 km² at −10 / −20 / −30 m. arXiv's
+  1.009 sits inside; UNOSAT's 1.96 reaches further down the headwall.
+- **Volume:** raw 115–131 Mm³ over 3 footprints × 3 pre × 3 post surfaces;
+  **thinning MEASURED at 2–7 Mm³** on untouched glacier at the scar's heights
+  (not the assumed 6–12); envelope 111–123, ±2σ → **110–125 Mm³.**
+- **Gates at −10 m (named in advance): all four pass** (void 36 % gate-failed vs
+  40 %). At −20/−30 m G2 and G3 fail; their volumes are inside the range.
+- **The weak point and its check:** the ungated median is biased by −48 m (mean)
+  on stable ground where the gate fails, and 36 % of the scar is gate-failed. HMA
+  8 m and GLO-30 (radar) put those cells at −4 to +2 Mm³. Not biased inside the scar.
+- **It includes everything that left the scar ~2015 → 6–8 Sept** (precursors that
+  morning, the 3 h-later event, later falls): an upper bound on the 08:37 release.
+
+**§13e was overstated.** The measurement neither confirms nor kills Model A,
+because Model A's V_rel enters at the path head and so includes headwall scour
+(≥20 Mm³ lost, ≥7 gained within 1.5 km, half that ground void). What it does
+say: **Model A's prior floor (135) is above the measurement**, so the model was
+never run at the measured size, and the first held-out test above the junction
+(§12 item 4) comes out "not passed".
+
+Also found: our path's km 0 (Petley's coordinate) is 1.4 km from the scar
+centroid, on unchanged ground. The plain page's "comfortably inside" the seismic
+mass range was wrong (below their 24-member spread; inside only their outer
+bounds) — corrected on the page.
+
+## 14. WHERE THIS STANDS — 5 October 2026
+
+**The detachment is measured: 110–125 Mm³, preliminary** (§13g, dossier §33).
+It goes to the changelog today and is a candidate for finding 04 after a night
+and Dave's look at `output/dem_volume.png`. Volume only; composition still waits
+for May–September 2027 (§31c).
+
+**Model A (140–160) is not confirmed by it.** Its prior started above the
+measurement. Not a clean kill either, because its release includes headwall scour
+the DEMs only half see.
+
+### Still open, in order
+
+1. **Rerun Model A with V_rel reaching down to ~90 Mm³** — or better, with the
+   measured 110–125 plus a headwall-scour term as the input, and see what the
+   nine observables do to `w0`, `f_ice` and `T_rel`. If they still need 140+,
+   that is a real tension between the model and the mountain; if they pass at
+   110–125, Model A has its first out-of-sample support. **Needs Dave's call** —
+   it is a new ensemble run.
+2. **Move km 0 to the scar** (centroid 28.2880 N, 85.5262 E) before that rerun,
+   and test whether it matters.
+3. **The interface sweep** (§11c) — unchanged, still decisive, still unrun.
+4. **The identifiability check** on the ~2,100 saved samples.
+5. **Model B** — Galchhi still the blocker.
+6. At promotion: carry 110–125 into finding 01's melt ceiling (absolute ceiling
+   20.7 → 11–13 Mm³), finding 04's text, and every page that quotes a volume.
+   Grep for 140–160, 110–175 and 14–34.
+
+### Standing rules, unchanged
+
+Nothing reaches the findings on the day it is computed. Preliminary in the
+sentence that carries the number. The data is Shean and Bhushan's (CC BY-NC 4.0);
+if they publish a volume, it replaces ours. No telling, no asking. First person,
+numerals, ranges.

@@ -61,3 +61,13 @@ in the gorge.
 | geopera v1.1 trimline observations, superelevation velocities, per-km budget | https://github.com/geo-pera/bhotekoshi-2026-reconstruction (code MIT; derived data CC-BY-NC-4.0 via the imagery) | CC-BY-NC-4.0 | Cross-check only; cached under `output/cache/geopera/` (gitignored), never redistributed. Geopera Pty Ltd, Darcy Weedman — a company blog, unreviewed. |
 
 Added later on 7 Sept for the whole-corridor run: `data/HMA_DEM8m_MOS_20170716_tile-674.tif` (214 MB, 83.4–84.45 E: the last kilometres to Devghat) from the same NSIDC directory; `data/Copernicus_DSM_COG_10_N27_00_E084_00_DEM.tif` from the same AWS bucket; Sentinel-2 tiles T45RTL, T45RUL, T45RTM and T45RUM for the lower box (84.40–85.22 E, 27.70–28.00 N), composites cached as `output/cache/s2/lower_*.npy`. `data/trimline_overrides.csv` holds manual flags with their provenance (ours).
+
+## Detachment-volume inputs (added 5 Oct 2026, `calcs/dem_grid.py`, `calcs/dem_volume.py`)
+
+| File(s) | Source | Licence / status | Notes |
+|---|---|---|---|
+| `data/dem_rasuwa/pre/HMA_DEM_2m_zoom/*` | Shean & Bhushan, pre-event DEM composites, Zenodo [10.5281/zenodo.22842748](https://doi.org/10.5281/zenodo.22842748), `HMA_DEM_2m_zoom.zip` (413 MB, md5 c5b3b3de…) | **CC BY-NC 4.0** | 12 WorldView/GeoEye pairs, Jan 2015 – Dec 2017. gitignored. The 944 MB 8 m v2 composite in the same record was not fetched. |
+| `data/dem_rasuwa/composites/*`, `data/dem_rasuwa/pairs/*` | Shean & Bhushan, post-event optical stereo DEMs, Zenodo [10.5281/zenodo.22842746](https://doi.org/10.5281/zenodo.22842746), composites zip and `rasuwa_post_vantor_pairs.zip` (444 MB, md5 2a2913e1…) | **CC BY-NC 4.0** | All-source composite, WV-2 (8 Sept) and Legion-2 (6 Sept) reach the scar; WV-3 and Legion-3 do not. gitignored. Figures derived from these carry the non-commercial condition. |
+| `data/rgi7_langtang.json` | RGI 7.0 glacier outlines, region 15, via the GLIMS WFS (`GLIMS:RGI2000-v7.0-G-15_south_asia_east_epsg3857`, bbox 85.38–85.68 E, 28.20–28.36 N) | CC BY 4.0, RGI Consortium | 83 outlines; stable-ground mask and thinning reference. |
+| `data/huang_path_utm.csv` | Huang, Wang & Chen, far-field force inversion archive, Zenodo 10.5281/zenodo.22884627, `data/derived/lhende_valley_path.npz`, projected to EPSG:32645 | CC BY 4.0 | Their mapped avalanche path; used only to keep the track out of the stable-ground set. |
+| `data/HMA_DEM8m_MOS_20170716_tile-676.tif`, `data/Copernicus_DSM_COG_10_N28_00_E085_00_DEM.tif` | as above | as above | Reused as the two independent pre-event surfaces for the cross-check in dossier §33d. |
