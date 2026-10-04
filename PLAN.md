@@ -1925,3 +1925,44 @@ Nothing reaches the findings on the day it is computed. Preliminary in the
 sentence that carries the number. The data is Shean and Bhushan's (CC BY-NC 4.0);
 if they publish a volume, it replaces ours. No telling, no asking. First person,
 numerals, ranges.
+
+### 14a. PRE-REGISTERED, 5 October, before any run — Model A at the measured volume
+
+Dave's question: rerun at the lower number and see whether the fit extends
+downstream. `calcs/ensemble_v14_measured.py`. Written and committed BEFORE the
+run, so the git timestamp is the evidence that nothing below was set after.
+
+**Unchanged from Model A (§30):** engine (`V10.run`), observables, every window,
+every prior except V_rel. **Changed, unavoidably:** the 4 Oct trimline fix (§31d)
+is now in the geometry, which narrows km 70–108 by 22 % and pushes Galchhi UP.
+That is why arm C exists. km 0 is NOT moved (one change at a time).
+
+| arm | V_rel, uniform | what it represents | runs |
+|---|---|---|---|
+| **M** | 110–125 Mm³ | the measured detachment, no headwall term | 300 |
+| **H** | 125–150 Mm³ | detachment + 0–25 Mm³ net headwall scour (≥13 measured on half the ground) | 300 |
+| **C** | 135–200 Mm³ | Model A's own prior, on today's geometry — the control | 300 |
+
+**Upper fit:** all nine Model A observables, windows as §30.
+**Downstream, for every run meeting all nine (not scored, read out):**
+- Betrawati–Galchhi reach stage: 9.4–21.1 m
+- **Galchhi stage: 3.5–9.9 m** — the blocker since v9
+- held out, rerun to 10 h: **Malekhu arrival 163 min ±20 %**, **Kalikhola
+  ~337 min ±20 %**, **Devghat peak ~2,900 m³/s within a factor of 2**
+
+**Readings, written now:**
+1. M passes the nine at a rate like C's → 140–160 was an artefact of the prior,
+   and Model A is consistent with the mountain.
+2. M fails, H passes → the model needs headwall scour of the size the DEMs half
+   see; next job is measuring that scour.
+3. Neither M nor H passes, C does → real tension: the upper corridor wants more
+   than the mountain lost plus plausible scour, so something in the model is
+   standing in for volume.
+4. **Galchhi:** a hit in M or H is the first downstream fit this project has had
+   without scoring for it. A miss is ambiguous, because the lower-river physics is
+   Model B's known failure (§11), so it is reported against C, not read as a
+   verdict on the volume.
+5. If passes are fewer than ~3 in an arm, report counts and say nothing about
+   posteriors.
+
+Nothing promoted from this run on the day.
