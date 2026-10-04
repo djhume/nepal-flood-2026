@@ -1966,3 +1966,23 @@ That is why arm C exists. km 0 is NOT moved (one change at a time).
    posteriors.
 
 Nothing promoted from this run on the day.
+
+### 14b. RESULT of §14a, 5 October (dossier §34)
+
+- **Reading 1 holds.** Arm M (110–125) 15/300 meet all nine; C (135–200,
+  today's geometry) 4/300. By volume: 0 % at 110–115, **10 % at 115–120**,
+  3–8 % to 150, ~0 above 160. The 140–160 was the floor of the prior.
+- **Reading 4: Galchhi 0 of 34**, M 14–17 m vs 3.5–9.9, same as C. Not a
+  volume problem; it is the lower river.
+- **Held-out set: 4 of 15 M runs pass Malekhu, Kalikhola, Devghat and the
+  Betrawati–Galchhi reach** (windows set in §14a). Model A's first
+  out-of-sample support.
+
+**Revised order:**
+1. Promote after a night (Dave's call): finding 04 = measured 110–125 Mm³,
+   model consistent at that volume, held-out timing passes in 4 of 15.
+2. **The interface sweep (§11c)**, now with the release pinned: take the
+   junction hydrographs of these 15 runs and ask what the lower river needs to
+   put 3.5–9.9 m at Galchhi without breaking Malekhu.
+3. Move km 0 to the scar and check nothing above moves.
+4. Identifiability check — now on a model whose volume is fixed by measurement.

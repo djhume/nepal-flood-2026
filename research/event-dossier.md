@@ -3507,3 +3507,85 @@ waits for promotion like the volume itself, and is recorded in report §13.
 - Report §12b carries the measurement and the figure; §13 the melt arithmetic;
   §14 the data sources. Plain page and changelog carry the measurement in
   plain English. Versions: landing v19, plain and report v20.
+
+## 34. MODEL A AT THE MEASURED VOLUME — it fits, and it fits better than at its own (5 Oct, later)
+
+Dave: rerun at the lower number and see whether the fit extends downstream.
+Pre-registered in PLAN §14a and committed (`7f5901a`) before the run.
+`calcs/ensemble_v14_measured.py`, 900 runs, 7 workers, 77 min;
+`output/ensemble_v14_measured_RESULTS.md`, `calcs/ensemble_samples_v14measured.npy`.
+Model A's engine, nine observables, windows and priors; only V_rel changed.
+Today's geometry includes the 4 Oct trimline fix; km 0 not moved.
+
+### 34a. Upper corridor — reading 1 of §14a: the 140–160 was the prior
+
+| arm | V_rel | all nine |
+|---|---|---|
+| **M**, measured detachment | 110–125 | **15 / 300 (5.0 %)** |
+| H, + 0–25 headwall scour | 125–150 | 15 / 300 (5.0 %) |
+| C, Model A's prior, today's geometry | 135–200 | 4 / 300 (1.3 %) |
+
+Not pre-registered, a summary of the same 900 runs by volume:
+
+| V_rel | 110–115 | 115–120 | 120–125 | 125–130 | 130–135 | 135–150 | 150–160 | 160–200 |
+|---|---|---|---|---|---|---|---|---|
+| pass rate | **0 %** | **10 %** | 5 % | 8 % | 3 % | 4–6 % | 2 % (1 of 45) | 0 of 162 |
+
+**The upper half of the model fits from about 115 to 150 Mm³ and best at
+115–120.** It was run at 135–200 on 12 Sept because that was the field's
+range; its six passes sat at the bottom (p10 141) because that is where the
+prior started. Below ~115 the near-misses fail on the border clock (16 of
+26) — a smaller mass arrives late. H and C agree where they overlap
+(135–150: 8/180 = 4.4 %, 3/70 = 4.3 %), so the arms are sampling consistently.
+Old geometry, old prior (§30): 6 / 300; today's geometry, same prior: 4 / 300.
+The trimline fix did not change the picture much.
+
+**This is a two-sided constraint from two independent routes.** The model's
+floor (~115) comes from the border clock and owes nothing to the DEMs. The
+DEMs' 110–125 owes nothing to the model. They overlap at roughly 115–125 for
+the detachment, extending towards 150 only if the headwall scour is large.
+Corroboration of real strength — the DEM is fully independent — but the
+model's ceiling (~150) is soft.
+
+Posterior, arm M (15): w0 0.24–0.84 (median 0.72), f_ice 0.47–0.92 (0.80 —
+still the 12 Mm³ rock cap, §30a, unchanged), T_rel 248–483 s (**4–8 min**),
+mu_dry 0.10–0.27, f_wl 0.39–0.81.
+
+### 34b. Downstream — Galchhi is not a volume problem, and the held-out set passes in 4
+
+Windows from §14a, set before the run: Betrawati–Galchhi reach 9.4–21.1 m;
+Galchhi 3.5–9.9 m; Malekhu 163 min ±20 %; Kalikhola ~337 ±20 %; Devghat peak
+~2,900 m³/s within ×2. (Sanity check on their strictness: v10b's 8 Sept pass,
+judged a held-out failure then — Malekhu 205, Kalikhola 489 — still fails two
+of three here.)
+
+| arm | all nine | Galchhi in window | everything downstream except Galchhi |
+|---|---|---|---|
+| M | 15 | **0** | **4** |
+| H | 15 | 0 | 3 |
+| C | 4 | 0 | 1 |
+
+- **Galchhi: 0 of 34.** M puts 14.2–17.3 m there; C 13.5–19.0. A 25 % smaller
+  release lowers Galchhi by a metre or two, not the 5+ it needs. So the blocker
+  since v9 is not that the release was too big. It is the lower river — the
+  floodplain the 8 Sept video showed (§25), which this engine does not have.
+  That is Model B's question, and this answers one part of it.
+- **The held-out set: 4 of the 15 M runs land Malekhu, Kalikhola and the
+  Devghat peak, and the Betrawati–Galchhi reach** — e.g. 117 Mm³, w0 0.17:
+  Malekhu 142 (163), Kalikhola 332 (~337), Devghat 2,108 (~2,900). This is the
+  out-of-sample machinery §30b said splitting the model had switched off, used
+  as it was meant to be: none of it was scored. **Model A has its first
+  out-of-sample support, at the measured volume, in 4 of 15 runs, with one
+  measurement (Galchhi) failing in all of them.**
+
+### 34c. What this changes
+
+- **140–160 is retired** as Model A's answer: it was the bottom of a prior,
+  not a constraint. On today's geometry the model says ~115–150, best 115–120.
+- **Finding 04 candidate, for after the night:** measured 110–125 Mm³; the
+  upper-corridor model fits at that volume and, in 4 of 15 runs, passes the
+  held-out downstream timing and peak; Galchhi still fails.
+- **Finding 01** unchanged in direction; its worst-case melt is 11–13 Mm³ (§33g).
+- **Model B now has a cleaner question:** with the release pinned at ~115–125
+  and the junction hydrograph from these 15 runs, why is Galchhi 14–17 m in
+  the model and 3.5–9.9 on the ground? The interface sweep (§11c) is the test.
