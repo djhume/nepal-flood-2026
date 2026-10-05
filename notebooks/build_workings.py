@@ -45,7 +45,9 @@ channel. Five model stages run top to bottom, in the order they were built:
    the model form wrong, and the two-phase fix.
 5. **The consistency envelope** — which combinations of release volume and
    composition are simultaneously consistent with everything measurable, giving
-   14–34 Mm³.
+   14–34 Mm³. *Superseded:* seismic mass ruled it out on 1 October, and the scar
+   was measured from the Shean & Bhushan DEMs on 5 October at 110–125 Mm³,
+   preliminary (`calcs/dem_volume.py`); see the note in Section 5.
 
 **Dates.** Sections 1–3 are dated 2 September 2026 (event + 7 days), with all
 inputs stamped to what was public then. Sections 4 and 5 were built on 3–5
@@ -66,9 +68,10 @@ wrong way round, and the fix is this notebook rather than a footnote about it.
 
 **Authorship:** Dave Hume, with Claude as research and modelling assistant.
 
-**Honesty rail.** The two most important inputs are *not published*: the source
-volume (public estimates span 0.5–200 Mm³) and the ice fraction of the collapsed
-mass (unknown). Every conclusion below is therefore an **envelope over defensible
+**Honesty rail.** The two most important inputs were *not published* when this
+notebook was built: the source volume (public estimates spanned 0.5–200 Mm³;
+measured on 5 October from the Shean & Bhushan DEMs at 110–125 Mm³, preliminary)
+and the ice fraction of the collapsed mass (still unknown). Every conclusion below is therefore an **envelope over defensible
 inputs**, not a point claim. FFD's "~20 Mm³ excess" is single-source with an
 unpublished method; geopera velocity/height numbers are provisional. Where the
 models disagree with observation, we say so.
@@ -1286,6 +1289,17 @@ from. This is an *envelope from consistency*, not a measurement of the mountain:
 nobody has surveyed the scar, and if someone does, this number is the one that
 should yield.
 
+**It has yielded (note added 6 October).** Seismic weighing of the moving mass
+ruled 14–34 Mm³ out on 1 October, and on 5 October the scar itself was measured
+by differencing the pre- and post-event DEMs David Shean and Shashank Bhushan
+released: **110–125 Mm³, preliminary** (`calcs/dem_volume.py`, dossier §33). The
+model that fits at that size is Model A, the upper 22 km on its own
+(`calcs/ensemble_v14_measured.py`, dossier §34); this notebook does not execute
+it, because the DEMs are third-party, large and re-downloadable from their
+Zenodo DOIs, so they are kept out of the repository (PLAN §13 says how to
+refetch them). The section below is kept as it was, as the record of what was
+published and why it was wrong.
+
 **Only the volume is constrained.** Liquid fraction, `mu_dry` and `f_fine` each
 span more than 90% of their priors among the passing runs — the right panel above.
 An earlier run appeared to pin all three, which turned out to be an artefact of a
@@ -1355,8 +1369,9 @@ md(r"""
   the ~1,500 m³/s Trishuli-only base the models route. On an excess basis the
   ladder sits low and the snowplow high, with the truth between them.
 
-**Limitations.** Source volume and ice fraction are unpublished — everything
-above is an envelope, and FFD's 20 Mm³ is single-source with unpublished method.
+**Limitations.** Ice fraction is unpublished, and the source volume is my own
+preliminary measurement (110–125 Mm³, 5 October) — everything above is an
+envelope, and FFD's 20 Mm³ is single-source with unpublished method.
 The front-speed law and loss rates are calibrated, not derived. Side-valley plan
 areas are order-of-magnitude v0 values pending Sentinel-2 mapping. Even with the
 local-inertia term the ladder under-predicts the distal peak against the 5,850

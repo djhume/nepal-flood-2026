@@ -2011,3 +2011,17 @@ night had not passed. **Dave's call: split by the rule (§6a).**
 a fifth ice. The Chamoli validation says yes on the project's own terms. If
 that stands, finding 01's corner stays open until the composition is measured
 (May–Sept 2027 resurvey, §31c).
+
+### 14d. 6 October — finding 04 promoted (dossier §36)
+
+Pushed after the night, as §14c set out: finding 04 = measured 110–125 Mm³
+(preliminary, Shean & Bhushan), Model A consistent at that volume, held-out in
+4 of 15, Galchhi failing in all. The 140–160 / 110–175 / 14–34 grep is done;
+what was kept as the record is listed in dossier §36.
+
+**Order of work from here** (unchanged from §14b, renumbered):
+1. Regenerate the junction hydrographs of the 15 arm-M passes (~3 min; the v14
+   run saved none), then **the interface sweep (§11c)** with the release pinned.
+2. Move km 0 to the scar and check nothing above moves.
+3. Identifiability check on a model whose volume is fixed by measurement.
+4. Finding 01's corner (§14c): is a 0.70 partition defensible at a fifth ice?

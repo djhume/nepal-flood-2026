@@ -3685,3 +3685,38 @@ interactive explorer still defaulted to 21 Mm³ ("best evidence") and its
 
 Finding 04, the 140–160 / 110–175 / 14–34 sweep and §34's promotion are NOT in
 this push (PLAN §14c).
+
+## 36. FINDING 04 PROMOTED — the measured volume, with the model's agreement and its limits (prepared 5 Oct, pushed 6 Oct)
+
+Committed locally on the afternoon of 5 Oct and held for the night (§35,
+PLAN §14c); pushed on 6 Oct. Nothing new was computed for it.
+
+**Finding 04 now reads:** "How big the collapse was: 110–125 million cubic
+metres, measured", chip blue ("measured, preliminary", was amber "under
+revision"). Preliminary and Shean & Bhushan credited in the sentence that
+carries the number, on the landing page, the plain page, report §12b and the
+README. Content, all from §33–34: the DEM volume and what it includes (upper
+bound on the 08:37 release); Model A at that volume 15/300 vs 4/300, floor
+~115 from the border clock, so two independent routes overlap at ~115–125;
+held-out Malekhu, Kalikhola and Devghat in 4 of 15; Galchhi failing in all;
+composition open. History in one sentence per page: 14–34 → 110–175 →
+140–160 → measured.
+
+**The grep (140–160, 110–175, 14–34, every spelling incl. "to" and &nbsp;).**
+Live claims rewritten: landing finding 04, intro and "What happens next";
+plain "How big was the collapse" (restructured: measurement first, model
+second, history in the box), "What I'm not sure of", one-paragraph version;
+report §00 callout (8 Sept → 6 Oct), §12b heading and lead, the
+published-volumes paragraph, footer; README finding 4 (the September version
+log collapsed to a history line) and finding 2's ratio; workings intro,
+Section 5 note, limitations. Kept as the record, dated: every changelog
+entry, the landing "What changed recently" entries, report §12b's routes /
+halt callout / measurement callout (tense changed, labels updated), the
+plain page's seismic-mass correction, the workings' Section 5 text and
+scenario comments, report §04's relabelled old rows.
+
+**Also changed by the promotion:** finding 06 — Galchhi fails "now in every
+run at the measured size"; the Devghat one-sided residual is no longer
+one-sided (3 of the 4 held-out passes below ~2,900, one at 3,513). The
+plain page's Galchhi line had the September sign (model 3.6 m vs ~9); now
+14–17 m vs 3.5–9.9.

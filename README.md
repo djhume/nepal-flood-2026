@@ -57,7 +57,7 @@ source is here and the licence permits it.
    finding is unaffected — 17 and 23 min stay excluded — and the Syabrubesi
    gauge (3.8 m at 08:50, km 37.6, a Nepali instrument owing nothing to any
    camera) still carries it independently. Read alongside report §04b (added
-   6 Sept): the Lhende held ~0.5 Mm³ of water against a 14–34 Mm³ release, so
+   6 Sept): the Lhende held ~0.5 Mm³ of water against a 110–125 Mm³ release, so
    what reached the border was a rock–ice avalanche, not a flood, and the run
    is what an ice-rich mass does on its own — the lubrication is the ice
    skate's, frictional melt at the base, not bulk water.
@@ -70,52 +70,25 @@ source is here and the licence permits it.
    **withdrawn**: the channel profile it ran on had 31 of 54 km flattened
    to zero gradient by a path-building bug, and on a corrected channel the model
    fails. See `hindcast/seti/RESULTS.md`.
-4. **How big the collapse was — still being worked on, and our own number is
-   moving up.** This item used to read "the collapse was 14–34 Mm³"; we are no
-   longer confident of that. The envelope is still what the ensemble produces
-   and it has not been withdrawn, but four lines of evidence now lean larger and
-   none is in the number yet. With the corrected clock it is
-   **13.3–34.0 Mm³, median 23.2** (21 of 200). Published estimates span a factor
-   of four hundred, so rather than argue them one at a time, `calcs/ensemble.py`
-   samples six contested inputs over wide priors, runs the full model, and keeps
-   only what reproduces every observable: 26 of 220 pass. Only the *volume* is
-   constrained — liquid fraction, μ_dry and f_fine each span >90% of their priors.
-   One exposure: the border-speed observable is 48.5 ± 35% m/s, and the first
-   peer-reviewed study of the event measures 19 m/s at the same place. That
-   re-score is now a named scenario
-   (`TRISHULI_VBORDER=cas python calcs/ensemble.py`) rather than a promise, and
-   both answers are published. A second, found in the same audit: the 6 Sept
-   clock correction never reached the code, so the 14–34 envelope was scored
-   against 7.0 min after the site had retracted it — six files fixed and the
-   ensemble rerun. **Under revision (6 Sept, late):** two routes that share
-   none of the envelope's observables — the volume that ran up the Chinese arm
-   (`calcs/upvalley_wedge_volume.py`) and a 45–70 m mud line at the Upper
-   Trishuli-1 headworks where the passing runs put 5–21 m — both say the envelope
-   is probably too small. The ensemble was never scored on a stage; on 7 Sept it
-   was (`calcs/ensemble_v6.py`, the trimline map's profile as observables) and
-   **0 of 200 pass**: the runs deep enough for the mud lines are 86–142 Mm³ and
-   arrive 1.6× too early at 1.5× the speed. Structural — the friction law has
-   no resistance at depth. **v7 and v8 (7 Sept afternoon)** added a sampled
-   Voellmy ξ, a fitted border junction loss and the Lhende's mapped width
-   (`calcs/ensemble_v7.py`, `_v8.py`): 0 of 200 each, but the pair v6 could
-   never make — mapped gorge depth and border clock together — now exists at
-   V ≥ 100 Mm³; a single drag coefficient cannot serve the gorge and the
-   lower river at once. **v9** (drag following the solids fraction,
-   `calcs/ensemble_v9.py`, `core.XI_COMP`): 0 of 200; the runs with drag
-   deposit 50–64 Mm³ against a 12 Mm³ cap that was measured from post-event
-   DEMs and so counts rock only, while the engine counts ice as solid.
-   **v10** (`calcs/ensemble_v10.py`, 300 runs): release duration sampled
-   60–600 s (was fixed at 180), μ floor 0.03 for ice, rock-only deposition
-   via a release-origin ledger — 0 of 300, but 14 runs meet the clock and
-   the gorge depth together and three meet 10 of 11, failing only Galchhi;
-   above Betrawati the model matches the record at 110–175 Mm³ released over
-   5–10 min. A DEM compound section was tested and set aside (§24); a
-   stage-2 sample (`calcs/ensemble_v10b.py`) gave the first full pass — 160
-   Mm³ at 4 % water — which fails the held-out Malekhu/Kalikhola/Devghat
-   checks. A video of the flood covering a valley floor several hundred
-   metres wide in ~70 s, and the map's stage halving at km 90 where the DEM
-   floor opens to 600 m, say what is missing: the lower river's floor, with
-   conveyance across it (v12, §25). Report §12b, dossier §19–25.
+4. **How big the collapse was: 110–125 Mm³, measured — preliminary.**
+   Differencing the pre- and post-event stereo DEMs David Shean and Shashank
+   Bhushan released on 18 Sept (Zenodo, CC BY-NC 4.0) gives 110–125 Mm³,
+   preliminary, net of glacier thinning measured at the scar's own heights
+   (`calcs/dem_volume.py`, dossier §33). It is everything that left the scar
+   between ~2015 and 6–8 Sept, so an upper bound on the 08:37 release, and it
+   says nothing about ice fraction. The data is theirs: if they publish a
+   volume, it replaces this one. Model A (the upper 22 km on its own), rerun at
+   that volume under a pre-registered plan (`calcs/ensemble_v14_measured.py`,
+   PLAN §14a), fits better than at its own prior — 15/300 against 4/300 at
+   135–200 — with a floor near 115 Mm³ set by the border clock; 4 of the 15
+   pass the held-out Malekhu, Kalikhola and Devghat checks. Galchhi fails in
+   all 34 passing runs, nearly unchanged by volume: the lower river, not the
+   release. Promoted 6 Oct, a night after it was computed. **History:** this
+   item read 14–34 Mm³ through September (ruled out by seismic mass, 1 Oct),
+   then 110–175 from the mud-line map, then 140–160 from Model A, which was the
+   floor of its prior. Seven whole-river versions failed on 7–8 Sept and the
+   work was split at the junction (PLAN §11). Report §12b, dossier §19–34, and
+   the changelog.
 5. **The single-phase model was falsified, then fixed.** With entrainment built
    (`model/ENTRAINMENT.md`, literature constants, nothing fitted) the model tears
    3.8 Mm³ out of the corridor against 3.2 measured by stereo DEM — but the same

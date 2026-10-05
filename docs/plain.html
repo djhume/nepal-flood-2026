@@ -105,13 +105,13 @@ svg text{font-family:var(--mono)}
  revision history on GitHub</a></div>
 <div class="wrap">
 <header>
-  <div class="eyebrow">Plain-English companion · 5 October 2026 · v21 — not peer-reviewed</div>
+  <div class="eyebrow">Plain-English companion · 6 October 2026 · v22 — not peer-reviewed</div>
   <h1>The Water Was Already in the River</h1>
   <p class="standfirst">On 26 August 2026 a piece of a Himalayan mountain fell
   into a river valley in Rasuwa, Nepal. Seven minutes and forty seconds later a
   wall of ice, rock and mud taller than a ten-storey building destroyed the
   border crossing at Rasuwagadhi, 22&nbsp;km away, and turned down the Bhote Koshi into Nepal. More than 1,340
-  people are dead and nearly 4,900 missing. This is a plain-English account of where all that water came from, how I tested the idea, and what I got wrong along the way. It is preliminary, it is not peer-reviewed, and the parts that depend on the routing model are still unresolved. The full
+  people are dead and nearly 4,900 missing. This is a plain-English account of where all that water came from, how I tested the idea, and what I got wrong along the way. It is preliminary, it is not peer-reviewed, and the parts that depend on the routing model are less settled than the rest. The full
   technical version, with every number and every assumption on display, is
   <a href="report.html">here</a>.</p>
 </header>
@@ -505,99 +505,54 @@ claimed.</p>
 
 
 <h2>How big was the collapse, really?</h2>
-<p>This is the number everyone disagrees about, and the disagreement is
-enormous: published estimates run from half a million cubic metres to two
+<p>This was the number everyone disagreed about, and the disagreement was
+enormous: published estimates ran from half a million cubic metres to two
 hundred million.</p>
-<p>Arguing about it one estimate at a time gets nowhere, so I asked a different
-question. Not "which number is right", but <em>which combinations of size,
-wetness and slipperiness are consistent with everything I can measure at
-once</em> — the border clock, the speed at the border, how much valley floor
-the flood scoured out, how much debris it left, and how deep the water got
-everywhere along the river. Then run the model hundreds of times across the
-whole disputed range and keep only the versions that pass every test.</p>
-<div class="honesty"><span class="lbl">This is the part I have not solved</span>
-<p>An early answer of <strong>14–34 Mm³</strong> is on this page in places and
-<strong>I no longer believe it</strong>. Three things say it is too small. Part
-of the flow ran about 3 km up the main valley on the Chinese side and came
-back, and the pond it left holds ~23 Mm³ on its own. A mud line at the Upper
-Trishuli-1 headworks, 21 km downstream, sits 45–70 m above the old bed where
-the passing runs put 5–21 m of water. And the mud-line map of the whole
-corridor, made on 7 September, needs a release nearer
-<strong>110–175 Mm³</strong> in this model.</p>
-<p>Two measurements published since would make that ordinary rather than
-alarming. The first academic reconstruction maps the piece of mountain that
-broke away at 1.009 km²; spread 110–175 Mm³ over that and the slab was
-109–173 m thick, where Chamoli in 2021 was about 135 m. And another analyst's
-estimate of ~100 Mm³ ±40% overlaps my range from below.</p>
-<p><strong>But I have not replaced the number, and I may not be able to.</strong>
-Between 7 and 8 September I built seven versions of the routing model, each
-fixing something the last one got wrong — the valley widths, the drag law, the
-debris limit, how long the collapse took to feed into the gorge, and finally a
-floodplain the flood could spread across. None passed. One version produced a
-single run that met all eleven tests and then failed all three measurements it
-had been kept away from, which is exactly what that reserve is for.</p>
-<p>What stopped me was not the failures. It was checking my own scoring. I had
-been comparing the model to the mud lines as six reach averages; when I
-compared it point by point instead, at all 1,100 places where a mud line was
-measured, <strong>the one run that ever passed everything matched at 11% of
-the points in the first 22 km</strong>. It hit every average while being wrong
-at most places inside them. That is not a model needing an eighth version. It
-is a question not asked precisely enough to have an answer, and on 8 September
-I stopped and started again on a different footing.</p>
-<p>So the size is moving up, by a lot. The details of what was tried and why
-each attempt failed are in the code and in the changelog rather than here.</p>
-<p><strong>What splitting the problem bought me.</strong> Cutting the model in
-two at the border, and asking only whether the top half works, gives an
-answer. Out of 300 attempts, six match everything measured above Betrawati at
-once: the clock, the speed in the gorge, how deep the water got at four
-places, how much valley floor was scoured out, and how much rock was left
-behind. Those six put the collapse at <strong>140 to 160 million cubic
-metres</strong>, released over four and a half to seven and a half minutes.
-Spread over the piece of mountain that broke away, that is a slab 140 to 160
-metres thick. Chamoli in India in 2021 was about 135 metres thick. A big
-number, then, but not a strange one.</p>
-<p><strong>And a caveat that matters more than the number.</strong> The way I
-caught the last false answer was by holding three downstream measurements back
-and checking against them afterwards. All three are below the border. So when
-I split the model at the border, I switched off the only thing that has ever
-stopped me believing a bad fit. Six out of 300 is also thin, and one input —
-how wide the upper valley was — is not pinned down at all by these tests. The
-top half of the model fits. That is not the same as the top half being
-right.</p>
-<p><strong>Then I measured it, and it is smaller.</strong> <em>Added
-5 October.</em> David Shean and Shashank Bhushan have published satellite
-elevation maps of the mountain from before the collapse and from the two weeks
-after. Subtract one from the other and the hole is plain to see: a slab cut out
-of the slope between about 4,300 and 5,200 metres, mostly 90 to 160 metres deep
-and more than 200 in places, over about a square kilometre. The ground around
-it has not moved. Add up the hole and it comes to <strong>110 to 125 million
-cubic metres</strong>. That is preliminary, it is their data rather than mine,
-and they may well publish a better figure.</p>
+<p><strong>It is now measured: 110 to 125 million cubic metres,
+preliminary</strong>, from satellite elevation maps of the mountain that David
+Shean and Shashank Bhushan published on 18 September, one from before the
+collapse and one from the two weeks after. Subtract one from the other and the
+hole is plain to see: a slab cut out of the slope between about 4,300 and 5,200
+metres, mostly 90 to 160 metres deep and more than 200 in places, over about a
+square kilometre. The ground around it has not moved. It is their data rather
+than mine, and if they publish a figure, it replaces this one.</p>
 <p>Two things had to come off first. The glacier had been thinning on its own
 for ten years, which I measured on nearby glaciers the avalanche never touched
 and subtracted. And everything that fell that morning is in the hole together:
 the smaller signals before the main collapse, and anything that came down in
-the two weeks after. The number cannot tell me how much of it was ice.</p>
-<p>It sits below my model's 140 to 160, and below the smallest collapse I let
-the model try. My model feeds the collapse in at the head of the valley, so its
-number should also include whatever the avalanche scraped off the slope below
-the scar. At least 20 million cubic metres came off there and at least 7 was
-dropped again, but half of that ground has no data. So the measurement does not confirm the model's number, and it
-does not quite rule it out. What it does say is that the model must be run
-again with room to go lower.</p>
-<p><strong>So I ran it again, the same day.</strong> At the measured size the
-model fits better than it did at its own number: 15 tries out of 300 match
-everything measured above Betrawati, against 4 out of 300 at the old size. It
-fits best at 115 to 120 million cubic metres and will not go below about 115,
-because a smaller collapse reaches the border too late for the camera. So the
-hole in the mountain says no more than about 125, and the border camera says
-no less than about 115.</p>
+the two weeks after. So it is the most that could have fallen at 08:37, not
+exactly what did. The number cannot tell me how much of it was ice.</p>
+<p><strong>My model agrees, from the other end.</strong> I ran the top half of
+it — the 22 km above the border — at the measured size. 15 tries out of 300
+match everything measured above Betrawati, against 4 out of 300 at the size it
+had been using. It fits best at 115 to 120 million cubic metres and will not go
+below about 115, because a smaller collapse reaches the border too late for the
+camera. So the hole in the mountain says no more than about 125, and the border
+camera says no less than about 115. Neither knows anything about the other.</p>
 <p>Four of those 15 also get right the three things I hold back and never
 tune to — when the water reached Malekhu and Kalikhola, and how big the peak
-was at Devghat. That is the check that caught me out on 8 September. Every one
+was at Devghat. That is the check that caught me out on 8 September, and this
+is the first time the model has passed it. Four out of 15 is not many. Every one
 of them still gets Galchhi wrong, about twice too deep, and making the collapse
 smaller hardly changes that. So whatever is wrong at Galchhi is in the lower
 river, not in the size of the collapse.</p>
+<div class="honesty"><span class="lbl">How I got here, and what I still cannot tell you</span>
+<p>In early September I published 14 to 34 million cubic metres, from a model
+run hundreds of times and kept only where it matched everything I could measure
+at once. It was several times too small. Three things I found myself said so —
+part of the flow ran 3 km up the main valley on the Chinese side and came back,
+a mud line at the Upper Trishuli-1 headworks sat 45 to 70 m above the old bed,
+and the mud-line map of the whole corridor needed 110 to 175 in the model — and
+a seismic weighing of the avalanche, which I read on 1 October, ruled it out
+(next section).</p>
+<p>Between 7 and 8 September I built seven versions of the routing model, and
+none passed. What stopped me was checking my own scoring: the one run that ever
+passed everything matched the mud lines at 11% of the points in the first
+22 km. It hit every reach average while being wrong at most places inside them.
+So I split the model at the border and asked only whether the top half worked.
+Six runs of 300 did, at 140 to 160 million cubic metres. That turned out to be
+the bottom of the range I had let it try: the model had never been allowed down
+to the size the mountain gives.</p>
 <p><strong>On what it was made of, I still cannot tell you.</strong> The model
 leans towards a lot of ice. But that leaning comes from one measurement and
 nothing else: satellites found about 12 million cubic metres of rock left in
@@ -631,7 +586,7 @@ the acceleration you get the mass. That gives them something nobody else has:
 a weight that owes nothing to satellite pictures and nothing to anyone's model
 of how the thing flowed. Their answer is somewhere between half a billion and two billion tonnes of
 material, which sounds hopelessly vague and is — the guess about acceleration is doing a lot of work, and their own 24 attempts spread over a factor of 4.</p>
-<p>At first I read that as disagreeing with my 140 to 160 million cubic
+<p>At first I read that as disagreeing with my then 140 to 160 million cubic
 metres. It does not, and the reason is worth understanding. They are weighing
 the mass while it is <em>moving</em>, 7 to 20 km down the valley, by which time it has scraped up everything in its path. I am
 estimating what broke off the mountain at the top. Those are different things,
@@ -826,22 +781,22 @@ reads of these pages, on 5 and 6 September, caught several more. Every one is
 still up, dated, with the reason, on the
 <a href="changelog.html">changelog page</a>. I am not listing them here; the
 point is the rate, not the detail.</p>
-<p><strong>The size of the collapse is genuinely unknown</strong> and I have
-not settled it. See the section above. Seven versions of the routing model
-have failed, and the reason I stopped was a problem with my own scoring rather
-than with any one version.</p>
+<p><strong>The size of the collapse is measured, but by me</strong>, from
+someone else's data, and it is preliminary. If Shean and Bhushan publish a
+figure, it replaces mine. What the mass was made of is not settled at all.</p>
 <p><strong>The model puts the debris in the wrong place.</strong> Satellite
 stereo shows the main deposit 40–43 km downstream where the valley opens; mine
 drops it too early. geopera's model got this right and mine did not.</p>
 <p><strong>The border speed is the number I fit worst</strong>, and it is one
-of the inputs the size estimate was scored against. Five estimates exist — 54,
+of the things the model is scored against. Five estimates exist — 54,
 45–52, my own video reading of 47, my routing fit of 31, and a peer-reviewed
 19 — and I scored against 45–52. That is a real exposure, not a rounding
 error.</p>
-<p><strong>The lower river fails out of sample.</strong> The height it rose at
-Galchhi came out around 3.6 m against roughly 9 observed. The peak at Devghat
-met its factor-of-two test, but every passing run landed <em>below</em> the
-observation, which is "not contradicted" rather than "reproduced".</p>
+<p><strong>The lower river fails out of sample.</strong> At Galchhi every run
+that fits the top of the river puts the water 14 to 17 m deep, against 3.5 to 10
+on the mud lines; earlier versions missed it the other way. The peak at Devghat
+meets its factor-of-two test, which is "not contradicted" rather than
+"reproduced".</p>
 <p><strong>One correction worth naming, because it was mine and recent.</strong>
 On 8 September my literature search picked up an "additional flood volume" of
 19.96 million cubic metres and I briefly treated it as a new constraint. The
@@ -966,10 +921,9 @@ camera 22&nbsp;km away in seven minutes forty, which dry rock cannot do at any s
 ice is visible in the footage, and the run is what an ice-rich avalanche does on
 its own, lubricated the way a skate is; how much of the mass was ice is still open.
 Mud lines on a cliff where the flow hit head-on give the wave's depth and speed
-by a route that never touches the clock, and they agree with it. My estimate of the collapse is an order of magnitude below the largest published figures,
-and two measurements made late on 6 September, then six re-runs against the
-mapped water depths on 7 and 8 September, say it is probably too small; it is
-under revision. My model, given
+by a route that never touches the clock, and they agree with it. The collapse, measured from elevation data David Shean and Shashank Bhushan
+released, was 110 to 125 million cubic metres, preliminary, and the top half of
+my model agrees with it from the other end. My model, given
 the ability to scour a valley, matched the measured erosion — and then failed a test I designed to break it, which told me the flood was carrying two different
 kinds of sediment, not one. For the first 22&nbsp;km no warning chain
 that passes through a person could have worked. Below that the flood took
@@ -978,7 +932,7 @@ Devghat.</div>
 
 <footer>
 Independent analysis by <strong>Dave Hume</strong>, carried out with Claude
-(Anthropic) as a research assistant. Version 21, 5 October 2026. Findings and
+(Anthropic) as a research assistant. Version 22, 6 October 2026. Findings and
 casualty figures are as reported at that date and will change; retracted
 results are kept visible with their reasons. Code, data and the full evidence
 dossier are in the project repository. This event is also reported as the
