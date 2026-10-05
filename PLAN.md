@@ -1983,6 +1983,9 @@ Nothing promoted from this run on the day.
    model consistent at that volume, held-out timing passes in 4 of 15.
 2. **The interface sweep (§11c)**, now with the release pinned: take the
    junction hydrographs of these 15 runs and ask what the lower river needs to
-   put 3.5–9.9 m at Galchhi without breaking Malekhu.
+   put 3.5–9.9 m at Galchhi without breaking Malekhu. **The v14 run did NOT
+   save hydrographs** — only parameters and observables are in
+   `calcs/ensemble_samples_v14measured.npy` (column 0 = arm, M=0). Rerun the 15
+   arm-M passes (~3 min) and save Q(t) at km 22 first.
 3. Move km 0 to the scar and check nothing above moves.
 4. Identifiability check — now on a model whose volume is fixed by measurement.
