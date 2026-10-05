@@ -202,10 +202,16 @@ computed for a collapse five times larger than our own evidence supports, and
 describing it as "far below" the FFD's 20 Mm³, which it is not. Both rows are
 kept so the correction is visible rather than tidied away.
 
-Scenario 8 is the one that matters for the argument. It is the melt narrative
-steel-manned until it breaks: the largest published volume, four-fifths ice, the
-longest drop, *and* a heat-to-ice partition at the top of the literature's
-0.3–0.7 range, all at once.
+Scenario 8 was meant to be the melt narrative steel-manned until it breaks: the
+largest published volume, four-fifths ice, the longest drop, *and* a heat-to-ice
+partition at the top of the literature's 0.3–0.7 range, all at once. **It was
+not the steel-man, and scenarios 9–11 were added on 5 October to say so.** Melt
+here is energy-limited, the energy is the whole falling mass times the drop, and
+rock is three times as dense as ice, so four-fifths ice is close to the *least*
+favourable composition, not the most. Scenarios 9–11 also carry the detachment
+measured from the Shean & Bhushan DEMs (110–125 Mm³, preliminary; the 14–34
+envelope was ruled out on 1 October) and sweep the ice fraction instead of
+picking one.
 """)
 
 code(r'''
@@ -278,21 +284,77 @@ scenario("8. Absolute ceiling (200 Mm3, 80% ice, 4000 m, heat partition 0.70)",
          sed_entrain_Mm3=10, sed_porosity=0.3, sed_saturation=0.8)
 ''')
 
-md(r"""
-**Budget verdict.** Read scenarios 6 and 7 first: at the collapse size our own
-evidence supports, frictional melt is **1.1 Mm³**, or **2.5 Mm³** with every
-assumption turned in melting's favour — short of the FFD's ~20 Mm³ of "excess"
-water by a factor of eight. River-derived water (swept channel + inflow) is
-**32 Mm³** in the same run, three-quarters of the total.
+code(r'''
+# ---- added 5 Oct: scenarios 9-11, the measured volume, composition swept ----
+# 110-125 Mm3 from the Shean & Bhushan pre/post DEMs (preliminary). Ice fraction
+# over Model A's prior, 0.10-0.95, which the upper-corridor observables do not
+# narrow. Same arithmetic as section A of scenario(); mirrors
+# calcs/energy_water_budget.py.
+import numpy as np
+import matplotlib.pyplot as plt
 
-Melt reaches the official figure at exactly one point in the whole parameter
-space, scenario 8: **20.7 Mm³**, and only by taking the largest published volume
-— six times the top of our envelope — with four-fifths ice, a 4,000 m drop and a 0.70 heat
-partition simultaneously. Relax any single one of those and it falls away fast;
-scenario 4, identical but for a 0.50 partition, gives 14.8.
+def melt_Mm3(V_total_Mm3, ice_frac, drop_total_m, heat_to_ice_frac):
+    V = V_total_Mm3 * 1e6
+    m_ice = V * ice_frac * RHO_ICE
+    m_total = m_ice + V * (1 - ice_frac) * RHO_ROCK
+    m_energy = m_total * G * drop_total_m * heat_to_ice_frac / LF
+    return min(m_energy, m_ice) / RHO_W / 1e6
+
+ICE = np.linspace(0.10, 0.95, 171)
+for name, H, p in [("9. best evidence", 2400, 0.35),
+                   ("10. steel-man", 4000, 0.50),
+                   ("11. every input at its limit", 4000, 0.70)]:
+    for V in (110, 125):
+        m = np.array([melt_Mm3(V, f, H, p) for f in ICE])
+        over = ICE[m >= 20]
+        print(f"{name:30s} {V} Mm3: melt {m.min():4.1f}-{m.max():4.1f} Mm3, "
+              f"max at {ICE[m.argmax()]:.0%} ice; >= 20 Mm3 "
+              + (f"at {over.min():.0%}-{over.max():.0%} ice" if over.size else "never"))
+print(f"scenario 8's inputs at 21% ice instead of 80%: "
+      f"{melt_Mm3(200, 0.21, 4000, 0.70):.1f} Mm3")
+
+fig, ax = plt.subplots(figsize=(8, 4.6))
+for (lab, H, p), c in zip([("best evidence: 2,400 m, 0.35", 2400, 0.35),
+                           ("steel-man: 4,000 m, 0.50", 4000, 0.50),
+                           ("every input at its limit: 4,000 m, 0.70", 4000, 0.70)],
+                          ["#9ecae1", "#4292c6", "#08519c"]):
+    lo = [melt_Mm3(110, f, H, p) for f in ICE]
+    hi = [melt_Mm3(125, f, H, p) for f in ICE]
+    ax.fill_between(ICE * 100, lo, hi, color=c, alpha=0.85, label=lab)
+ax.axhline(20, color="k", ls="--", lw=1)
+ax.text(60, 20.5, "FFD 'excess water' ≈ 20 Mm³", fontsize=8)
+ax.set_xlabel("ice fraction of the 110–125 Mm³ released (%)")
+ax.set_ylabel("frictional melt (Mm³ of water)")
+ax.set_title("Melt at the measured volume: the rockier mass is the case for melt")
+ax.legend(fontsize=8, loc="upper center", bbox_to_anchor=(0.5, -0.16), ncol=3,
+          frameon=False)
+fig.tight_layout()
+plt.show()
+''')
+
+md(r"""
+**Budget verdict, revised 5 October.** Read scenarios 9–11 first. At the
+measured 110–125 Mm³, frictional melt is **2.7–7.8 Mm³ on best evidence** at
+any composition — less than half the FFD's ~20 Mm³ of "excess" water. At a 0.50
+partition it never reaches 20 (6.4–17.7). With every input at its limit — the
+4,000 m drop and a 0.70 partition — it gives 9.0–23.8, and **reaches 20 when the
+mass is 18–42% ice.** The maximum is at about a fifth ice, where the energy and
+the ice run out together: Shugar's Chamoli "critical value" again. So the
+corner the melt narrative needs is in play, and the finding holds on best
+evidence rather than across the range.
+
+*What this said until 5 October:* "Read scenarios 6 and 7 first: at the
+collapse size our own evidence supports, frictional melt is **1.1 Mm³**, or
+**2.5 Mm³** with every assumption turned in melting's favour — short of the
+FFD's ~20 Mm³ by a factor of eight … Melt reaches the official figure at exactly
+one point in the whole parameter space, scenario 8: **20.7 Mm³**." Scenarios 6–7
+were at an envelope since ruled out, and scenario 8 at 21% ice gives 37.8, so
+neither sentence was right. Scenarios 4–8 are kept above so the correction is
+visible.
 
 So the balance of terms *flips* relative to Chamoli under monsoon + short fall +
-long runout, and the size envelope makes the flip decisive rather than marginal.
+long runout on best evidence; at the measured size the flip is no longer
+decisive at the corner.
 The budget bounds the sources; only routing can test the arrival clocks and the
 Devghat peak. On to
 Phase B.
@@ -1263,14 +1325,17 @@ md(r"""
 - **The distal flood wave was overwhelmingly river-derived.** In the
   best-evidence snowplow scenario, ~78% of the active water at Devghat is swept
   channel water + baseflow collected en route; frictional ice melt is ~8%
-  (~3.7 of 47 Mm³) in that v1 100 Mm³ run; at the 14–34 Mm³ envelope of
-  Section 5 it is 1.1–2.5 Mm³, a few per cent (scenarios 6–7 above).
+  (~3.7 of 47 Mm³) in that v1 100 Mm³ run; at the measured 110–125 Mm³ it is
+  2.7–7.8 Mm³ on best evidence at any composition (scenario 9). *Until
+  5 October this read 1.1–2.5 Mm³, at the since-ruled-out 14–34 envelope.*
 - **Melt-only fails.** Switching off sweep-up leaves 3,383 m³/s at Devghat vs
   5,850 observed — 42% low — and ~4 Mm³ of new water vs FFD's ~20 Mm³ excess.
-  No defensible input set rescues it: melt is energy-limited (~12 kJ/kg from the
-  initial fall against 334 kJ/kg latent heat), and even the melt-maximal
-  steel-man budget at the envelope caps at 2.5 Mm³; only the 200 Mm³
-  every-dial case (scenario 8) reaches 20.7.
+  On best evidence no input set rescues it: melt is energy-limited (~12 kJ/kg
+  from the initial fall against 334 kJ/kg latent heat). **But one corner does
+  reach the FFD's ~20 Mm³ as a volume:** at the measured size, every input at its
+  limit and a mass 18–42% ice gives up to 23.8 (scenario 11). *Until 5 October
+  this said the steel-man capped at 2.5 Mm³ and only scenario 8 reached 20.7;
+  both were wrong (see the revised budget verdict).*
 - **The snowplow scenario matches the observations it was not fitted to**:
   Devghat peak 5,913 vs 5,850 m³/s, front arrival 403 min (15:20) exact, peak
   448 vs 443 min, gross/net water bracketing FFD's windowed 20 Mm³.

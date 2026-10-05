@@ -156,3 +156,54 @@ scenario("8. Absolute ceiling (200 Mm3, 80% ice, 4000 m, heat partition 0.70)",
          heat_to_ice_frac=0.70,
          channel_km=100, Q_river=300, v_river=3.0, event_hours=1.5,
          sed_entrain_Mm3=10, sed_porosity=0.3, sed_saturation=0.8)
+
+# ---------------------------------------------------------------------------
+# Scenarios 9-11 and a composition sweep, added 5 Oct 2026, at the measured
+# detachment volume: 110-125 Mm3 from the Shean & Bhushan pre/post DEMs,
+# preliminary (dossier §33). The 14-34 envelope behind scenarios 6-7 was ruled
+# out on 1 Oct (dossier §31a).
+#
+# THE CORRECTION. Scenarios 4, 7 and 8 treat 80% ice as the setting most
+# favourable to melt. It is close to the least. Melt here is energy-limited,
+# the energy is the whole falling mass times the drop, and rock is three times
+# as dense as ice, so at a fixed volume a rockier mass releases more heat. The
+# maximum sits where the energy and the ice run out together, the same
+# crossover scenario 0 finds for Chamoli: about a fifth ice at 4,000 m and a
+# 0.70 partition. So composition is swept, over Model A's ice prior (0.10-0.95),
+# which the upper-corridor observables do not narrow (dossier §30a, §34a).
+
+def melt_Mm3(V_total_Mm3, ice_frac, drop_total_m, heat_to_ice_frac):
+    """Section A of scenario(), alone: melt water in Mm3."""
+    V = V_total_Mm3 * 1e6
+    m_ice = V * ice_frac * RHO_ICE
+    m_total = m_ice + V * (1 - ice_frac) * RHO_ROCK
+    m_energy = m_total * G * drop_total_m * heat_to_ice_frac / LF
+    return min(m_energy, m_ice) / RHO_W / 1e6
+
+DIALS = [("9. Measured, best evidence (2400 m, partition 0.35)", 2400, 0.35),
+         ("10. Measured, steel-man (4000 m, partition 0.50)", 4000, 0.50),
+         ("11. Measured, every input at its limit (4000 m, partition 0.70)", 4000, 0.70)]
+ICE = [0.10 + 0.005 * i for i in range(171)]          # 0.10 ... 0.95
+
+print("\n=== Scenarios 9-11: measured 110-125 Mm3, ice fraction 0.10-0.95 ===")
+print("  FFD 'excess' at Devghat, 14:10-18:00: ~20 Mm3 (one significant figure)")
+for name, H, p in DIALS:
+    print(f"\n  {name}")
+    for V in (110, 125):
+        m = [melt_Mm3(V, f, H, p) for f in ICE]
+        k = max(range(len(ICE)), key=m.__getitem__)
+        print(f"    {V} Mm3: melt {min(m):5.1f} - {max(m):5.1f} Mm3"
+              f"  (max at {ICE[k]:.0%} ice; 30% ice {melt_Mm3(V, .30, H, p):5.1f},"
+              f" 80% ice {melt_Mm3(V, .80, H, p):5.1f})")
+    print(f"    reaches 20 Mm3 at: " + ", ".join(
+        f"{V} Mm3 {ICE[[melt_Mm3(V, f, H, p) >= 20 for f in ICE].index(True)]:.0%}"
+        f"-{ICE[len(ICE) - 1 - [melt_Mm3(V, f, H, p) >= 20 for f in ICE][::-1].index(True)]:.0%} ice"
+        if any(melt_Mm3(V, f, H, p) >= 20 for f in ICE) else f"{V} Mm3 never"
+        for V in (110, 125)))
+
+# Scenario 8 at a fifth ice: the old 'absolute ceiling' was not one.
+print(f"\n  Scenario 8's inputs at the crossover (200 Mm3, 21% ice, 4000 m, 0.70):"
+      f" {melt_Mm3(200, 0.21, 4000, 0.70):.1f} Mm3, against 20.7 at 80% ice")
+# The smallest volume at which every-dial melt reaches 20, composition free.
+v20 = next(v / 2 for v in range(100, 400) if max(melt_Mm3(v / 2, f, 4000, 0.70) for f in ICE) >= 20)
+print(f"  every-dial melt first reaches 20 Mm3 at ~{v20:.0f} Mm3 of collapse")

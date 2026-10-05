@@ -1110,7 +1110,9 @@ on the day it is computed. New results go in the changelog and move up after a
 night and one out-of-sample check. The retraction record is defensible — each of
 the five is attached to a named mechanism, which is what separates diligence
 from churn — but findings 04 and 05 were promoted the same day they were
-produced, and finding 03 was promoted and then withdrawn.
+produced, and finding 03 was promoted and then withdrawn. **The exception
+(written down 5 Oct, Dave's rule):** a correction that *weakens* a live finding
+goes up the day it is found; only results that *strengthen* one wait.
 
 ## 7. Effort estimate
 
@@ -1989,3 +1991,23 @@ Nothing promoted from this run on the day.
    arm-M passes (~3 min) and save Q(t) at km 22 first.
 3. Move km 0 to the scar and check nothing above moves.
 4. Identifiability check — now on a model whose volume is fixed by measurement.
+
+### 14c. 5 October, afternoon — finding 01 corrected; finding 04 promotion held for the night (dossier §35)
+
+The promotion pass started at 14:09 NZDT, 3 min after the last commit, so the
+night had not passed. **Dave's call: split by the rule (§6a).**
+
+- **Pushed today (weakens a finding):** finding 01 restated at the measured
+  volume with the composition swept. Best evidence 2.7–7.8 Mm³; every input at
+  its limit 9.0–23.8, reaching 20 at 18–42 % ice. 80 % ice was close to melt's
+  WORST case, not its best; §33g's "11–13, strengthens finding 01" was wrong in
+  direction. Chip green → blue. `calcs/energy_water_budget.py` scenarios 9–11.
+- **Committed locally, push after the night (strengthens a finding):**
+  finding 04 = measured 110–125 Mm³ (Shean & Bhushan, preliminary), Model A
+  consistent at that volume, held-out timing and peak in 4 of 15, Galchhi
+  failing in all; plus the grep for 140–160, 110–175 and 14–34 on every page.
+
+**Open from this, for Dave:** whether a heat partition of 0.70 is defensible at
+a fifth ice. The Chamoli validation says yes on the project's own terms. If
+that stands, finding 01's corner stays open until the composition is measured
+(May–Sept 2027 resurvey, §31c).

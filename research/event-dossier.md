@@ -3497,6 +3497,8 @@ fit either.
 at 200 Mm³, 80 % ice, 4,000 m, partition 0.70) becomes **11–13 Mm³** at
 110–125 with every other input at its limit. That strengthens finding 01; it
 waits for promotion like the volume itself, and is recorded in report §13.
+**[Wrong in direction — that is the 80 %-ice row, close to melt's least
+favourable composition. Swept, the corner reaches 20–24. See §35.]**
 
 ### 33h. Also changed on the site today
 
@@ -3586,6 +3588,94 @@ of three here.)
   upper-corridor model fits at that volume and, in 4 of 15 runs, passes the
   held-out downstream timing and peak; Galchhi still fails.
 - **Finding 01** unchanged in direction; its worst-case melt is 11–13 Mm³ (§33g).
+  **[Wrong: the worst case is 21–24 at a fifth ice. See §35.]**
 - **Model B now has a cleaner question:** with the release pinned at ~115–125
   and the junction hydrograph from these 15 runs, why is Galchhi 14–17 m in
   the model and 3.5–9.9 on the ground? The interface sweep (§11c) is the test.
+
+## 35. FINDING 01 CORRECTED — the ice dial was backwards (5 Oct, afternoon)
+
+The promotion pass for §33–34 started at 14:09 NZDT on 5 Oct, 3 min after
+`7e94021`. The night had not passed. Dave's call: split by the promotion rule.
+This correction weakens a live finding, so it goes up today; finding 04's
+promotion is prepared, committed locally and pushed after the night (PLAN §14c).
+The weakening exception was Dave's rule but was not written down; it now is
+(PLAN §6a, changelog header).
+
+### 35a. What was found
+
+§33g carried the volume into finding 01 by scaling the 80 %-ice row linearly
+(20.7 at 200 → 11–13 at 110–125) and called that a strengthening. The
+composition was never swept. `scenario()` is energy-limited unless the ice runs
+out, and the energy is the WHOLE falling mass: per unit volume,
+melt mass = min(k(ρr − (ρr − ρi)f), ρi f), with k = gHp/L. Rock is 3× ice, so at
+fixed volume a rockier mass is heavier and releases more heat. Melt peaks where
+the two caps meet, f* = kρr / (ρi + k(ρr − ρi)): **0.21 at 4,000 m and 0.70**.
+That is the same crossover scenario 0 finds for Chamoli (0.21 at 3,400 m and
+0.80), which is Shugar et al.'s "critical value". The workings' Chamoli cell
+has said "the energy cap sits just above the ice cap" since 2 Sept. The
+crossover was on the page; the steel-man went the other way.
+
+`calcs/energy_water_budget.py` scenarios 9–11, measured volume, ice 0.10–0.95
+(Model A's prior; the upper corridor does not narrow it, §30a, §34a):
+
+| dials | 110 Mm³ | 125 Mm³ | max at | reaches 20 |
+|---|---|---|---|---|
+| 9, best evidence (2,400 m, 0.35) | 2.7–6.8 | 3.1–7.8 | 10 % ice | never |
+| 10, steel-man (4,000 m, 0.50) | 6.4–15.6 | 7.3–17.7 | 16 % | never |
+| **11, every input at its limit (4,000 m, 0.70)** | 9.0–20.9 | 10.2–**23.8** | 22 % | **20–27 % / 18–42 % ice** |
+
+- At 80 % ice, row 11 is 11.4 / 13.0: §33g's 11–13 is that row, and it is
+  close to the composition LEAST favourable to melt.
+- Scenario 8's own inputs (200 Mm³, 4,000 m, 0.70) at 21 % ice: **37.8**, not
+  20.7. The "exactly one point in the whole parameter space" sentence has been
+  wrong since 5 Sept.
+- Composition free, every-dial melt first reaches 20 at **~106 Mm³** of
+  collapse. Every published estimate since early September is above that.
+- Checked two ways: the closed form by hand, and `scenario()` itself across
+  f = 0.13 / 0.21 / 0.30 / 0.47 / 0.80 (agree to 0.1).
+
+### 35b. What it does to finding 01
+
+**Holds on best evidence, not across the range.** On best evidence melt is
+2.7–7.8 Mm³ at every composition, under half the FFD's ~20. At a 0.50
+partition it never reaches 20. It reaches 20 only with the full drop AND a 0.70
+partition AND 18–42 % ice. Chip green → blue: green is defined on the landing
+page as "survives every combination of inputs I can still defend", and this
+does not.
+
+**Not examined, and the rescues I checked do not rescue it:**
+- *Is 0.70 physical at a fifth ice?* The project's own Chamoli validation runs
+  0.80 at 20 % ice and reproduces the published melt. So on the project's own
+  terms, yes. Not argued further.
+- *Does a rock-rich mass get the full 4,000 m?* Most rock stopped at the
+  km 40–43 deposit (1,293–1,353 m), ~3,400 m below the scar. At 3,400 m and
+  0.70 the corner peaks at **18.2 / 20.7** (110 / 125) — still straddling 20.
+  A reason found after the fact, it does not clear the corner, and it is not
+  on the page.
+- What would take the corner away: a measured composition above ~42 % ice, or
+  a partition shown to fall with ice content. Both are in report §13.
+
+### 35c. How it got through
+
+- Scenarios 4 (2 Sept), 7 and 8 (5 Sept) took 80 % ice as "every dial for
+  melt". The 5 Sept cold read fixed the volume and not the dial direction.
+- §33g, this morning, compounded it, and report §13 published "falls from
+  20.7 to 11–13 … only if the failed mass was predominantly ice" at 09:22
+  (`7c80fbb`). Live ~5 h.
+- The prompt for this session carried "worst case 11–13" forward. Caught by
+  carrying the measured number into the budget and sweeping the input the site
+  itself calls unresolved, instead of scaling the old row.
+
+### 35d. Changed on the site (pushed today)
+
+Landing v20: finding 01 text, chip, caveat with the old wording quoted; the
+"finding 01 does not" line in finding 04; "What changed recently". Plain v21:
+melt section, chart (bars now 3–8 / 11–13 / 21–24), caption, one-paragraph
+version. Report v21: header tile, §00 note, §04 table (old rows kept and
+relabelled, measured rows added) and text, a dated correction, §11, §12b
+callout, §13. Workings: scenarios 9–11 cell and figure, revised verdict with
+the old one quoted, closing bullets. README finding 1. Changelog entry.
+
+Finding 04, the 140–160 / 110–175 / 14–34 sweep and §34's promotion are NOT in
+this push (PLAN §14c).

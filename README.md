@@ -29,15 +29,19 @@ source is here and the licence permits it.
 
 ## What it found
 
-1. **The water was already in the river.** Melting ice is expensive and falling
-   is cheap: a ~1,200 m fall releases about 1/28th of the heat needed to melt a
-   kilogram of ice. At the collapse size finding 4 supports, frictional melt
-   caps at **1.1 Mm³** on best evidence and **2.5 Mm³** steel-manned, against
-   the ~20 Mm³ of "excess" water officially estimated. Melt reaches 20 only at
-   200 Mm³ with 80% ice, a 4,000 m drop *and* a heat partition at the top of the
-   published range — every dial at its limit at once (`calcs/energy_water_budget.py`,
-   scenarios 5–8). The wave was dominated by monsoon river water swept up en
-   route. Three routes agree, though they share a channel profile.
+1. **The water was already in the river — on best evidence.** Melting ice is
+   expensive and falling is cheap: a ~1,200 m fall releases about 1/28th of the
+   heat needed to melt a kilogram of ice. At the collapse size measured on
+   5 Oct from Shean and Bhushan's DEMs (110–125 Mm³, preliminary), frictional
+   melt is **2.7–7.8 Mm³** on best evidence at any composition, against the
+   ~20 Mm³ of "excess" water officially estimated. With every dial at its limit
+   (4,000 m drop, heat partition 0.70) *and* a mass 18–42% ice it reaches
+   20–24, so the corner is in play. Melt is energy-limited and rock is three
+   times as dense as ice, so the rockier mass is the case favourable to melt;
+   until 5 Oct this read 1.1 / 2.5 Mm³ at a since-ruled-out size, and treated
+   80% ice as the melt-maximal case (`calcs/energy_water_budget.py`, scenarios
+   9–11). The wave was dominated by monsoon river water swept up en route.
+   Three routes agree, though they share a channel profile.
 2. **It did not fall like dry rock.** The border CCTV clock discriminates what
    the falling mass was *made of*, not how big it was: dry-rock scenarios arrive
    at 17–30 min at any volume, ice-rich and wet ones arrive on time. Note the
