@@ -3677,5 +3677,11 @@ relabelled, measured rows added) and text, a dated correction, §11, §12b
 callout, §13. Workings: scenarios 9–11 cell and figure, revised verdict with
 the old one quoted, closing bullets. README finding 1. Changelog entry.
 
+Follow-up the same afternoon, found by the 14–34 grep: report §06's
+interactive explorer still defaulted to 21 Mm³ ("best evidence") and its
+"melt-maximal" preset was 200 Mm³ at 80 % ice, 0.50 — 14.8 Mm³. Now 118 Mm³
+(the middle of 110–125) and 125 Mm³ at 25 % ice, 0.70, 4,000 m — 23.1 Mm³.
+§06's "at the 14–34 envelope it is a few per cent" is now 3–8, up to 24.
+
 Finding 04, the 140–160 / 110–175 / 14–34 sweep and §34's promotion are NOT in
 this push (PLAN §14c).

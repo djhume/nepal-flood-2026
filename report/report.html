@@ -909,18 +909,21 @@ cannot supply the FFD's 20&nbsp;Mm³ — is unaffected.</p></div>
 <div class="explorer">
 <p class="eyebrow" style="margin-bottom:10px">Try your own assumptions</p>
 <p style="max-width:680px;margin:0 0 14px;font-size:15.5px">The contested inputs —
-source volume, ice fraction, heat partition — will firm up as teams publish. This
-explorer re-computes the full water ledger client-side with your values (front
-timing stays fixed at the calibrated fit) and scores the result against the two
-hard observations. <strong>The default source volume is now 21&nbsp;Mm³</strong>,
-the median of the consistency envelope in <a href="#s00" class="xref">§00</a>,
-not the 100&nbsp;Mm³ this report used on 2 September; the <em>v1 · 100 Mm³</em>
-preset reproduces the scenario table above, which was built on the older figure.
-Drag the volume from 21 to 200 and watch the melt share: that sweep is the whole
-of <a href="#s04" class="xref">§04</a> in one control.</p>
+ice fraction and heat partition — will firm up as teams publish. This explorer
+re-computes the full water ledger client-side with your values (front timing
+stays fixed at the calibrated fit) and scores the result against the two hard
+observations. <strong>The default source volume is now 118&nbsp;Mm³</strong>,
+the middle of the 110–125&nbsp;Mm³ measured on 5 October from David Shean and
+Shashank Bhushan's elevation data, preliminary
+(<a href="#s12b" class="xref">§12b</a>). It was 21 until then, the median of an
+envelope since ruled out, and 100 on 2 September; the <em>v1 · 100 Mm³</em>
+preset reproduces the scenario table above, which was built on that figure. Set
+the drop to 4,000&nbsp;m and the heat to 70%, then drag the ice fraction from
+90% down to 20%: melt rises. That is the 5 October correction to
+<a href="#s04" class="xref">§04</a> in one control.</p>
 <div class="controls">
-  <div class="ctl"><label>source volume <output id="o-vol">21 Mm³</output></label>
-    <input type="range" id="c-vol" min="10" max="220" step="1" value="21"></div>
+  <div class="ctl"><label>source volume <output id="o-vol">118 Mm³</output></label>
+    <input type="range" id="c-vol" min="10" max="220" step="1" value="118"></div>
   <div class="ctl"><label>ice fraction <output id="o-ice">30%</output></label>
     <input type="range" id="c-ice" min="0" max="90" step="5" value="30"></div>
   <div class="ctl"><label>heat entering ice <output id="o-part">35%</output></label>
@@ -935,10 +938,10 @@ of <a href="#s04" class="xref">§04</a> in one control.</p>
     <input type="range" id="c-pore" min="0" max="15" step="0.5" value="9"></div>
 </div>
 <div class="runbtns" id="presets">
-  <button data-preset="best" aria-pressed="true">Best evidence · 21 Mm³</button>
+  <button data-preset="best" aria-pressed="true">Best evidence · 118 Mm³</button>
   <button data-preset="v1" aria-pressed="false">v1 · 100 Mm³</button>
   <button data-preset="meltonly" aria-pressed="false">Melt-only</button>
-  <button data-preset="meltmax" aria-pressed="false">Melt-maximal</button>
+  <button data-preset="meltmax" aria-pressed="false">Melt-maximal · 125 Mm³, 25% ice</button>
 </div>
 <div id="fig-explorer" role="img" aria-label="Interactive stacked water sources chart"></div>
 <div class="readouts">
@@ -957,8 +960,9 @@ energy budget's best estimate, the wave arrives at Devghat a fifth too small.
 The scenarios that work are the ones where <strong>close to four-fifths of the
 water in the distal wave is channel-derived</strong> — swept-up monsoon flow plus
 collected baseflow — with saturated-sediment pore water second and glacier melt
-a ~8% term in that v1 run (at the 14–34&nbsp;Mm³ envelope it is a few per
-cent). In the upper gorge, where the world's cameras pointed, there was almost
+a ~8% term in that v1 run. At the measured 110–125&nbsp;Mm³ melt is
+3–8&nbsp;Mm³ on best evidence, and up to 24 at the corner
+<a href="#s04" class="xref">§04</a> describes. In the upper gorge, where the world's cameras pointed, there was almost
 no river water to displace (<a href="#s04b" class="xref">§04b</a>); with every kilometre downstream
 the river's share compounds.</p>
 
@@ -1897,15 +1901,20 @@ Object.values(CTL).forEach(function(id){
     refresh();
   });
 });
-/* best: the median of the 14-34 Mm3 consistency envelope (section 00), which
-   replaced the 100 Mm3 this report used on 2 September. v1 keeps that older
-   figure reachable, because the scenario table in section 06 was computed on
-   it and a reader has to be able to reproduce what they are reading. */
+/* best: the middle of the 110-125 Mm3 measured from the DEMs on 5 October
+   (section 12b). It was 21 until then, the median of the 14-34 envelope ruled
+   out on 1 October, and 100 on 2 September. v1 keeps that older figure
+   reachable, because the scenario table in section 06 was computed on it and
+   a reader has to be able to reproduce what they are reading.
+   meltmax: the melt-maximal corner at the measured size, the ice fraction on
+   the slider's 5% step nearest the ~21% crossover. Until 5 October it was
+   200 Mm3 at 80% ice and a 0.50 partition; 80% ice is close to the least
+   favourable composition for melt (section 04). */
 const PRESETS = {
-  best:    {vol:21,  ice:30, part:35, drop:2400, bf:100, sweep:80, pore:9},
+  best:    {vol:118, ice:30, part:35, drop:2400, bf:100, sweep:80, pore:9},
   v1:      {vol:100, ice:30, part:35, drop:2400, bf:100, sweep:80, pore:9},
   meltonly:{vol:100, ice:30, part:35, drop:2400, bf:100, sweep:0,  pore:0},
-  meltmax: {vol:200, ice:80, part:50, drop:4000, bf:100, sweep:30, pore:4}};
+  meltmax: {vol:125, ice:25, part:70, drop:4000, bf:100, sweep:30, pore:4}};
 document.querySelectorAll("#presets button").forEach(function(btn){
   btn.addEventListener("click", function(){
     const p = PRESETS[btn.dataset.preset];
