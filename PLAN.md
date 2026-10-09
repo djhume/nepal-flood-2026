@@ -2025,3 +2025,67 @@ what was kept as the record is listed in dossier §36.
 2. Move km 0 to the scar and check nothing above moves.
 3. Identifiability check on a model whose volume is fixed by measurement.
 4. Finding 01's corner (§14c): is a 0.70 partition defensible at a fifth ice?
+
+## 15. PARKED — 9 October 2026, for some months (Dave's call)
+
+Parked cleanly: nothing half-done, nothing committed and unpushed. The site
+says so on the landing page ("What happens next"), in the changelog and in
+report §00.
+
+### 15a. The state it was parked in
+
+| finding | status at parking | rests on |
+|---|---|---|
+| 01 the water was in the river | **holds on best evidence** (blue, since 5 Oct) | composition; corner reaches ~20 Mm³ at 18–42 % ice with a 0.70 partition (§14c) |
+| 02 not dry rock | blue, unchanged | the border clock |
+| 03 the method travels | one of two stands, unchanged | Chamoli |
+| 04 collapse size | **110–125 Mm³ measured, preliminary** (blue, since 6 Oct) | Shean & Bhushan's DEMs; Model A agrees, held-out in 4 of 15 |
+| 05 falsified, then fixed | blue, unchanged | — |
+| 06 not settled | open | composition; Galchhi fails in every run |
+
+### 15b. Restart checklist, in order
+
+1. **Read** this section, §14c–14d and dossier §33–36.
+2. **Literature since 9 Oct.** In particular: has Shean & Bhushan's group (or
+   anyone) published a volume or composition from the DEMs? If so it replaces
+   ours (§14 standing rules) — carry it everywhere the day it lands. Has
+   Huang, Wang & Chen's seismic paper moved? Any deposit resurvey?
+3. **The junction test (§11c), first piece of new work.**
+   - Regenerate the junction hydrographs of the 15 arm-M passes: rerun them from
+     `calcs/ensemble_samples_v14measured.npy` (column 0 = arm, M = 0) with
+     `calcs/ensemble_v14_measured.py`'s engine, saving Q(t) at km 22. ~3 min.
+     The v14 run saved none (§14b).
+   - Build the Model B harness: inject a junction hydrograph at km 22 in
+     `model/unified.py`, carry a composition tracer for the first ~15 km.
+   - **Pre-register before running** (as §14a): sweep peak Q, duration, volume,
+     composition at km 22; score the per-station profile
+     (`calcs/fit_vs_chainage.py`), the lags, the FFD windowed volume and the
+     arrivals; Galchhi 3.5–9.9 m, Malekhu 163 min ±20 %, Kalikhola ~337 ±20 %,
+     Devghat ~2,900 m³/s ×2 (§14a windows). Commit, then run.
+   - Either answer is a result (§11c).
+4. Move km 0 to the scar (28.2880 N, 85.5262 E) and check nothing above moves.
+5. Identifiability check on the saved samples.
+6. Finding 01's corner: is a 0.70 heat partition defensible at a fifth ice?
+   (The Chamoli validation runs 0.80 at 20 %.) Settled finally only by the
+   composition.
+
+### 15c. Things that will restart it sooner, or need watching
+
+- **The deposit resurvey across a full melt season, ~May–Sept 2027** (§31c):
+  the only clean composition discriminator, and what finding 01's corner waits
+  on.
+- A published volume or composition from Shean & Bhushan or anyone using
+  their data.
+- The DHM gauge records at Betrawati (447) and Galchhi becoming public. Not
+  requested and not to be requested (§26j).
+- A correction via the issue tracker — those go up promptly, parked or not.
+
+### 15d. Housekeeping that stays open
+
+- `PUBLISHING.md` "STILL to clear": redistribution terms for
+  `data/ffd_report.pdf` and `data/198_discharge.csv` — unresolved since
+  September.
+- `data/dem_rasuwa/` is local only (gitignored, ~1 GB, CC BY-NC 4.0). On a new
+  machine, refetch from the Zenodo DOIs per §13 before rerunning
+  `calcs/dem_volume.py`.
+- Site rebuild order is in the README; `report/build_site.py` checks links.

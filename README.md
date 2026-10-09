@@ -214,8 +214,10 @@ and remains a useful explanation of storage, junctions and pulse structure.
 
 ## Status, licence, and use
 
-Version 7, 6 September 2026 (late). Preliminary, independent, AI-assisted analysis
-published days after the event. Five results have been withdrawn or reversed in
+**Paused from 9 October 2026, for some months** — `PLAN.md` §15 has the
+restart checklist. Site at that date: landing v22, plain and report v22.
+Preliminary, independent, AI-assisted analysis, first published days after the
+event. Five results have been withdrawn or reversed in
 that time and all five remain readable on the site with their reasons.
 **Not peer-reviewed, not read by any Nepali scientist, and not suitable as the
 basis of an operational warning system or evacuation decision without
